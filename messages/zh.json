@@ -169,25 +169,40 @@
       "panoramic": "全景",
       "mobile": "移动"
     },
+    "gallery": "图库",
     "cta": "获取规格和报价"
   },
   "Partners": {
     "title": "我们的合作伙伴",
+    "headline": "在板式网球生态系统中共同成长",
+    "subhead": "为共同成功而建立的战略伙伴关系",
     "description": "加入板式网球生态系统中的领先公司和组织网络。",
+    "body": "PadelO₂与具有前瞻性的公司、俱乐部和投资者合作，以扩大全球板式网球社区。我们提供各种适合您业务需求的合作伙伴模式，从品牌合作到合资企业和技术许可。",
     "benefits": {
+      "title": "合作伙伴优势",
       "visibility": {
         "title": "品牌可见性",
-        "description": "在快速增长的板式网球市场中增加您的品牌曝光度"
+        "description": "通过联合营销和活动合作伙伴关系，在快速增长的板式网球市场中增加您的品牌曝光度"
       },
       "roi": {
         "title": "投资回报机会",
-        "description": "获得板式网球基础设施的有利可图投资机会"
+        "description": "获得板式网球基础设施、技术和全球扩张的有利可图投资机会"
       },
       "marketing": {
         "title": "联合营销",
-        "description": "在营销活动和事件上合作"
+        "description": "在营销活动、锦标赛和活动中合作，以接触更广泛的受众"
+      },
+      "technology": {
+        "title": "技术访问",
+        "description": "利用我们的AI驱动训练机器、球场管理系统和数字平台"
+      },
+      "network": {
+        "title": "全球网络",
+        "description": "通过我们的生态系统与全球板式网球社区、俱乐部和球员建立联系"
       }
-    }
+    },
+    "partners": "我们的合作伙伴",
+    "cta": "成为合作伙伴"
   },
   "Contact": {
     "title": "联系我们",
@@ -205,7 +220,9 @@
         "support": "支持"
       },
       "submit": "发送消息",
-      "sending": "发送中..."
+      "sending": "发送中...",
+      "success": "消息发送成功！",
+      "error": "发送消息时出错。请重试。"
     }
   },
   "WhatsApp": {

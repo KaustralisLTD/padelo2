@@ -8,6 +8,7 @@
     "export": "next build",
     "start": "next start",
     "lint": "next lint",
+    "build:static": "bash build-static.sh",
     "deploy:ftp": "bash deploy-ftp.sh",
     "deploy:static": "bash deploy-static.sh"
   },

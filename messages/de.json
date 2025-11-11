@@ -87,7 +87,10 @@
   },
   "Academy": {
     "title": "Padel Akademie",
+    "headline": "Trainiere Meister, Baue Gemeinschaft",
+    "subhead": "Professionelle Zertifizierungs- und Entwicklungsprogramme",
     "description": "Umfassende Trainingsprogramme für Trainer und Spieler, angetrieben von KI und intelligenter Technologie.",
+    "body": "PadelO₂ Academy bietet erstklassige Trainingsprogramme für Trainer und Spieler aller Niveaus. Unser Lehrplan kombiniert traditionelle Padel-Techniken mit bahnbrechender KI-Technologie und schafft eine einzigartige Lernerfahrung, die sich an die Bedürfnisse jedes Einzelnen anpasst.",
     "programs": {
       "coach": {
         "title": "Trainerausbildung",
@@ -101,7 +104,8 @@
         "title": "Intelligentes Training",
         "description": "IoT-verbundene Trainingsmaschinen mit KI-Analyse und Echtzeit-Leistungsverfolgung."
       }
-    }
+    },
+    "cta": "Akademie Beitreten"
   },
   "Machines": {
     "title": "KI-Gesteuerte Trainingsmaschinen",
@@ -165,25 +169,40 @@
       "panoramic": "Panorama",
       "mobile": "Mobil"
     },
+    "gallery": "Galerie",
     "cta": "Spezifikationen & Angebot erhalten"
   },
   "Partners": {
     "title": "Unsere Partner",
+    "headline": "Gemeinsam Wachsen im Padel-Ökosystem",
+    "subhead": "Strategische Partnerschaften für gegenseitigen Erfolg",
     "description": "Werden Sie Teil eines Netzwerks führender Unternehmen und Organisationen im Padel-Ökosystem.",
+    "body": "PadelO₂ arbeitet mit zukunftsorientierten Unternehmen, Clubs und Investoren zusammen, um die globale Padel-Community zu erweitern. Wir bieten verschiedene Partnerschaftsmodelle, die auf Ihre Geschäftsbedürfnisse zugeschnitten sind, von Markenkooperationen bis hin zu Joint Ventures und Technologielizenzierung.",
     "benefits": {
+      "title": "Partnerschaftsvorteile",
       "visibility": {
         "title": "Markenbekanntheit",
-        "description": "Erhöhen Sie Ihre Markenpräsenz im wachsenden Padel-Markt"
+        "description": "Erhöhen Sie Ihre Markenpräsenz im wachsenden Padel-Markt durch Co-Marketing und Event-Partnerschaften"
       },
       "roi": {
         "title": "ROI-Möglichkeiten",
-        "description": "Zugang zu profitablen Investitionsmöglichkeiten in Padel-Infrastruktur"
+        "description": "Zugang zu profitablen Investitionsmöglichkeiten in Padel-Infrastruktur, Technologie und globale Expansion"
       },
       "marketing": {
         "title": "Co-Marketing",
-        "description": "Zusammenarbeit bei Marketingkampagnen und Veranstaltungen"
+        "description": "Zusammenarbeit bei Marketingkampagnen, Turnieren und Veranstaltungen, um breitere Zielgruppen zu erreichen"
+      },
+      "technology": {
+        "title": "Technologiezugang",
+        "description": "Nutzen Sie unsere KI-gesteuerten Trainingsmaschinen, Platzverwaltungssysteme und digitale Plattformen"
+      },
+      "network": {
+        "title": "Globales Netzwerk",
+        "description": "Verbinden Sie sich mit Padel-Communities, Clubs und Spielern weltweit durch unser Ökosystem"
       }
-    }
+    },
+    "partners": "Unsere Partner",
+    "cta": "Partner Werden"
   },
   "Contact": {
     "title": "Kontaktieren Sie Uns",
@@ -201,7 +220,9 @@
         "support": "Support"
       },
       "submit": "Nachricht Senden",
-      "sending": "Wird gesendet..."
+      "sending": "Wird gesendet...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
     }
   },
   "WhatsApp": {

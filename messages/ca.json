@@ -188,6 +188,7 @@
       "panoramic": "Panoràmic",
       "mobile": "Mòbil"
     },
+    "gallery": "Galeria",
     "cta": "Obtenir especificacions i pressupost"
   },
   "Partners": {
@@ -197,6 +198,7 @@
     "description": "Uneix-te a una xarxa d'empreses i organitzacions líder en l'ecosistema del pàdel.",
     "body": "PadelO₂ s'associa amb empreses, clubs i inversors amb visió de futur per expandir la comunitat global del pàdel. Oferim diversos models d'associació adaptats a les necessitats del teu negoci, des de col·laboracions de marca fins a empreses conjuntes i llicències de tecnologia.",
     "benefits": {
+      "title": "Avantatges de l'Associació",
       "visibility": {
         "title": "Visibilitat de Marca",
         "description": "Augmenta l'exposició de la teva marca al mercat del pàdel en creixement a través de co-marketing i associacions d'esdeveniments"
@@ -218,6 +220,7 @@
         "description": "Connecta't amb comunitats, clubs i jugadors de pàdel arreu del món a través del nostre ecosistema"
       }
     },
+    "partners": "Els Nostres Socis",
     "cta": "Convertir-se en Soci"
   },
   "Tournaments": {

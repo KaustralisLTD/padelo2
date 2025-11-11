@@ -87,7 +87,10 @@
   },
   "Academy": {
     "title": "Padel Akademi",
+    "headline": "Treng Mestere, Bygg Fellesskap",
+    "subhead": "Profesjonelle sertifiserings- og utviklingsprogrammer",
     "description": "Omfattende treningsprogrammer for trenere og spillere, drevet av AI og smart teknologi.",
+    "body": "PadelO₂ Academy tilbyr verdensklasse treningsprogrammer for trenere og spillere på alle nivåer. Vår læreplan kombinerer tradisjonelle padel teknikker med banebrytende AI-teknologi, noe som skaper en unik læringsopplevelse som tilpasser seg hver enkelt persons behov.",
     "programs": {
       "coach": {
         "title": "Trener Trening",
@@ -101,7 +104,8 @@
         "title": "Smart Trening",
         "description": "IoT-tilkoblede treningsmaskiner med AI-analyse og sanntids ytelsessporing."
       }
-    }
+    },
+    "cta": "Bli Medlem av Akademiet"
   },
   "Machines": {
     "title": "AI-Drevne Treningsmaskiner",
@@ -165,25 +169,40 @@
       "panoramic": "Panoramisk",
       "mobile": "Mobil"
     },
+    "gallery": "Galleri",
     "cta": "Få spesifikasjoner og tilbud"
   },
   "Partners": {
     "title": "Våre Partnere",
+    "headline": "Voks Sammen i Padel Økosystemet",
+    "subhead": "Strategiske partnerskap for gjensidig suksess",
     "description": "Bli medlem av et nettverk av ledende selskaper og organisasjoner i padel økosystemet.",
+    "body": "PadelO₂ samarbeider med fremsynede selskaper, klubber og investorer for å utvide det globale padel fellesskapet. Vi tilbyr ulike partnerskapsmodeller skreddersydd til dine forretningsbehov, fra merkevare samarbeid til joint ventures og teknologilicensiering.",
     "benefits": {
+      "title": "Partnerskapsfordeler",
       "visibility": {
         "title": "Merkevare Synlighet",
-        "description": "Øk merkevareeksponeringen din i den voksende padel markedet"
+        "description": "Øk merkevareeksponeringen din i den voksende padel markedet gjennom co-marketing og arrangementspartnerskap"
       },
       "roi": {
         "title": "ROI Muligheter",
-        "description": "Få tilgang til lønnsomme investeringsmuligheter i padel infrastruktur"
+        "description": "Få tilgang til lønnsomme investeringsmuligheter i padel infrastruktur, teknologi og global ekspansjon"
       },
       "marketing": {
         "title": "Co-Marketing",
-        "description": "Samarbeid om markedsføringskampanjer og arrangementer"
+        "description": "Samarbeid om markedsføringskampanjer, turneringer og arrangementer for å nå bredere målgrupper"
+      },
+      "technology": {
+        "title": "Teknologi Tilgang",
+        "description": "Utnytt våre AI-drevne treningsmaskiner, banehåndteringssystemer og digitale plattformer"
+      },
+      "network": {
+        "title": "Globalt Nettverk",
+        "description": "Koble til padel fellesskap, klubber og spillere verden over gjennom vårt økosystem"
       }
-    }
+    },
+    "partners": "Våre Partnere",
+    "cta": "Bli Partner"
   },
   "Contact": {
     "title": "Kontakt Oss",
@@ -201,7 +220,9 @@
         "support": "Støtte"
       },
       "submit": "Send Melding",
-      "sending": "Sender..."
+      "sending": "Sender...",
+      "success": "Melding sendt!",
+      "error": "Feil ved sending av melding. Prøv igjen."
     }
   },
   "WhatsApp": {
