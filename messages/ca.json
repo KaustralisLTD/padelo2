@@ -1,0 +1,280 @@
+{
+  "Navigation": {
+    "home": "Inici",
+    "tournaments": "Torneigs",
+    "academy": "Acadèmia",
+    "machines": "Màquines",
+    "courts": "Pistes",
+    "investments": "Inversions",
+    "partners": "Socis",
+    "about": "Sobre",
+    "contact": "Contacte"
+  },
+  "Footer": {
+    "tagline": "Respira i Viu",
+    "quickLinks": "Enllaços Ràpids",
+    "tournaments": "Torneigs",
+    "academy": "Acadèmia",
+    "investments": "Inversions",
+    "company": "Empresa",
+    "about": "Sobre Nosaltres",
+    "partners": "Socis",
+    "contact": "Contacte",
+    "legal": "Legal",
+    "rights": "Tots els drets reservats"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Ecosistema innovador de pàdel que combina torneigs, entrenament, màquines amb IA i construcció global de pistes",
+    "ctaPrimary": "Explorar",
+    "ctaSecondary": "Saber Més"
+  },
+  "Timeline": {
+    "title": "Història del Pàdel",
+    "future": "Futur",
+    "items": {
+      "1969": {
+        "title": "El Naixement del Pàdel",
+        "description": "El pàdel va ser inventat a Acapulco, Mèxic per Enrique Corcuera. La primera pista es va construir a casa seva."
+      },
+      "1990s": {
+        "title": "Expansió Europea",
+        "description": "El pàdel es va estendre per Espanya i va començar a guanyar popularitat a Europa, establint-se com a esport competitiu."
+      },
+      "2010s": {
+        "title": "Reconeixement Global",
+        "description": "El pàdel es va convertir en un dels esports de més ràpid creixement al món, amb torneigs professionals i federacions internacionals."
+      },
+      "2025": {
+        "title": "Innovació PadelO₂",
+        "description": "Introducció de màquines d'entrenament amb IA, pistes connectades per IoT i oportunitats d'inversió global."
+      },
+      "future": {
+        "title": "El Futur del Pàdel",
+        "description": "PadelO₂ lidera la transformació del pàdel a través de la tecnologia, sostenibilitat i construcció de comunitat global."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Inversions Conjunts",
+    "headline": "Construeix el Futur del Pàdel amb Nosaltres",
+    "subhead": "Co-inverteix en pistes, IA i expansió global",
+    "body": "PadelO₂ obre models de associació per a inversors i clubs: instal·lació de pistes sota ingressos del club, participació en màquines d'IA (lloguer/subscripció), xarxes locals conjuntes. Proporcionem tecnologia, marca i estàndards operatius; els socis proporcionen ubicacions i mercat. Els models d'ingressos depenen del format i la regió.",
+    "models": {
+      "title": "Models (aproximadament)",
+      "revenueShare": {
+        "title": "Revenue-share",
+        "description": "Pista i màquines"
+      },
+      "leaseToOwn": {
+        "title": "Lease-to-own / рассрочка",
+        "description": "Plans de pagament a terminis"
+      },
+      "localJv": {
+        "title": "Local JV",
+        "description": "Participació en xarxa de clubs/lloguer"
+      },
+      "techLicensing": {
+        "title": "Tech licensing",
+        "description": "API, White-label"
+      }
+    },
+    "note": "Nota: els indicadors de rendibilitat depenen del país, trànsit i costos del lloc; model financer proporcionat després del breu.",
+    "stats": {
+      "projects": "Projectes Actius",
+      "funds": "Fons Totals",
+      "countries": "Països"
+    },
+    "cta": "Sol·licitar presentació d'inversió"
+  },
+  "InvestmentModal": {
+    "title": "Consulta d'Inversió",
+    "name": "Nom Complet",
+    "email": "Correu Electrònic",
+    "company": "Empresa (Opcional)",
+    "investmentSize": "Mida d'Inversió",
+    "selectSize": "Seleccioneu la mida d'inversió",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Cancel·lar",
+    "submit": "Enviar",
+    "submitting": "Enviant..."
+  },
+  "Academy": {
+    "title": "Acadèmia de Pàdel",
+    "headline": "Entrena Campions, Construeix Comunitat",
+    "subhead": "Programes professionals de certificació i desenvolupament",
+    "description": "Programes d'entrenament integrals per a entrenadors i jugadors, impulsats per IA i tecnologia intel·ligent.",
+    "body": "PadelO₂ Academy ofereix programes d'entrenament de classe mundial per a entrenadors i jugadors de tots els nivells. El nostre currículum combina tècniques tradicionals de pàdel amb tecnologia d'IA de última generació, creant una experiència d'aprenentatge única que s'adapta a les necessitats de cada individu.",
+    "programs": {
+      "coach": {
+        "title": "Entrenament d'Entrenadors",
+        "description": "Programes de certificació professional per a entrenadors de pàdel amb metodologies d'ensenyament avançades. Aprèn d'experts de la indústria i obtén certificació per entrenar jugadors de tots els nivells."
+      },
+      "player": {
+        "title": "Desenvolupament de Jugadors",
+        "description": "Programes d'entrenament personalitzats dissenyats per millorar tècnica, estratègia i rendiment. Segueix el teu progrés amb anàlisi impulsada per IA i retroalimentació personalitzada."
+      },
+      "smart": {
+        "title": "Entrenament Intel·ligent",
+        "description": "Màquines d'entrenament connectades per IoT amb anàlisi d'IA i seguiment de rendiment en temps real. Entrena de manera més intel·ligent amb informació basada en dades i programes d'entrenament adaptatius."
+      }
+    },
+    "cta": "Uneix-te a l'Acadèmia"
+  },
+  "Machines": {
+    "title": "Màquines d'Entrenament amb IA",
+    "headline": "Entrena amb Intel·ligència",
+    "subhead": "Màquines de pàdel connectades per IoT amb entrenament d'IA en temps real",
+    "body": "Les nostres màquines no només serveixen pilotes, aprenen. Centenars d'escenaris adaptats al teu objectiu: ritme, direcció, efecte, sèries 'intel·ligents' dirigides a debilitats específiques. La IA registra la teva tècnica, ajusta exercicis i progressa amb tu. Control des de l'app: perfils de jugadors, 'entrenador virtual', informes de sessions i recomanacions prèvies al partit.",
+    "features": {
+      "aiDrills": {
+        "title": "Exercicis d'IA",
+        "description": "Personalització basada en errors persistents"
+      },
+      "visionAnalysis": {
+        "title": "Anàlisi de Visió",
+        "description": "Càmera/lidar per a mètriques precises"
+      },
+      "virtualCoach": {
+        "title": "Entrenador Virtual",
+        "description": "Indicacions de veu sincronitzades amb el ritme de respiració"
+      },
+      "cloudApi": {
+        "title": "Núvol i API",
+        "description": "Gestió de club, horaris, facturació"
+      },
+      "rentalMode": {
+        "title": "Mode Lloguer",
+        "description": "Autoservei mitjançant casella QR"
+      }
+    },
+    "cta": "Explorar les màquines"
+  },
+  "Courts": {
+    "title": "Pistes de Pàdel",
+    "headline": "Pistes que Respiren Rendiment",
+    "subhead": "Interiors, exteriors, panoràmiques i mòbils — dissenyades i lliurades",
+    "body": "Dissenyem i construïm pistes de classe mundial: fonaments, càrregues de vent, acústica, il·luminació i vidre certificat. Solucions panoràmiques per a clubs i rodatges de mitjans, mòbils per a esdeveniments pop-up. Cicle complet: inspecció del lloc → disseny → producció → instal·lació → servei.",
+    "features": {
+      "types": {
+        "title": "Interior/Exterior/Panoràmic/Mòbil",
+        "description": "Paquets climàtics"
+      },
+      "certificates": {
+        "title": "Certificats de Materials i Vidre",
+        "description": "Garantia de 24–36 mesos"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Esquemes d'il·luminació de visibilitat uniforme"
+      },
+      "options": {
+        "title": "Opcions Adicionals",
+        "description": "Anti-reflex, drenatge, anti-vibració"
+      },
+      "timeline": {
+        "title": "Terminis",
+        "description": "6–10 setmanes clau en mà (segons projecte)"
+      }
+    },
+    "tabs": {
+      "indoor": "Interior",
+      "outdoor": "Exterior",
+      "panoramic": "Panoràmic",
+      "mobile": "Mòbil"
+    },
+    "cta": "Obtenir especificacions i pressupost"
+  },
+  "Partners": {
+    "title": "Els Nostres Socis",
+    "headline": "Creixem Junts en l'Ecosistema del Pàdel",
+    "subhead": "Associacions estratègiques per al èxit mutu",
+    "description": "Uneix-te a una xarxa d'empreses i organitzacions líder en l'ecosistema del pàdel.",
+    "body": "PadelO₂ s'associa amb empreses, clubs i inversors amb visió de futur per expandir la comunitat global del pàdel. Oferim diversos models d'associació adaptats a les necessitats del teu negoci, des de col·laboracions de marca fins a empreses conjuntes i llicències de tecnologia.",
+    "benefits": {
+      "visibility": {
+        "title": "Visibilitat de Marca",
+        "description": "Augmenta l'exposició de la teva marca al mercat del pàdel en creixement a través de co-marketing i associacions d'esdeveniments"
+      },
+      "roi": {
+        "title": "Oportunitats de ROI",
+        "description": "Accedeix a oportunitats d'inversió rendibles en infraestructura de pàdel, tecnologia i expansió global"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Col·labora en campanyes de màrqueting, tornejos i esdeveniments per arribar a audiències més àmplies"
+      },
+      "technology": {
+        "title": "Accés a Tecnologia",
+        "description": "Aprofita les nostres màquines d'entrenament amb IA, sistemes de gestió de pistes i plataformes digitals"
+      },
+      "network": {
+        "title": "Xarxa Global",
+        "description": "Connecta't amb comunitats, clubs i jugadors de pàdel arreu del món a través del nostre ecosistema"
+      }
+    },
+    "cta": "Convertir-se en Soci"
+  },
+  "Tournaments": {
+    "title": "Tornejos",
+    "headline": "Competir al Nivell Més Alt",
+    "subhead": "Uneix-te a tornejos professionals i amateurs de pàdel arreu del món",
+    "description": "Descobreix propers tornejos de pàdel i registra't per competir.",
+    "body": "PadelO₂ organitza i dona suport a tornejos a tots els nivells, des de competicions de clubs locals fins a campionats internacionals. Tant si ets un jugador professional com un apassionat amateur, troba el torneig perfecte per mostrar les teves habilitats i connectar-te amb la comunitat del pàdel.",
+    "cta": "Registra't Ara"
+  },
+  "Contact": {
+    "title": "Contacta'ns",
+    "description": "Tens preguntes? Ens encantaria saber de tu.",
+    "form": {
+      "name": "Nom",
+      "email": "Correu Electrònic",
+      "message": "Missatge",
+      "topic": "Tema",
+      "selectTopic": "Selecciona un tema",
+      "topics": {
+        "general": "Consulta General",
+        "investments": "Inversions",
+        "partnerships": "Associacions",
+        "support": "Suport"
+      },
+      "submit": "Enviar Missatge",
+      "sending": "Enviant...",
+      "success": "Missatge enviat amb èxit!",
+      "error": "Error en enviar el missatge. Si us plau, torna-ho a provar."
+    }
+  },
+  "WhatsApp": {
+    "button": "Xatejar a WhatsApp",
+    "message": "Hola! M'interessa conèixer més sobre els seus serveis de pàdel."
+  },
+  "About": {
+    "title": "Sobre PadelO₂",
+    "headline": "Respira i Viu",
+    "subhead": "Una plataforma multilingüe per a l'ecosistema global del pàdel",
+    "body": "PadelO₂ és una marca que uneix competicions, entrenament i tecnologia. Construïm pistes, produïm màquines d'entrenament amb IA, desenvolupem l'Acadèmia i creem oportunitats d'inversió per al creixement del pàdel arreu del món. Els nostres productes parlen diferents idiomes i donen suport a comunitats locals.",
+    "mission": "La nostra missió és mostrar la història, creixement i futur del pàdel de forma visual i interactiva, perquè cada jugador 'respiri' el joc.",
+    "highlights": {
+      "title": "Destacats",
+      "multilanguage": {
+        "title": "Multiidioma",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Ecosistema Complet",
+        "description": "Màquines IA + Acadèmia + Pistes + Inversions — tot en un"
+      },
+      "design": {
+        "title": "ADN de Disseny",
+        "description": "Neó-aqua, tipografia neta, ritme 'respiratori'"
+      }
+    },
+    "cta": "Coneix l'equip"
+  }
+}
+

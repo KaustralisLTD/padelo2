@@ -1,0 +1,212 @@
+{
+  "Navigation": {
+    "home": "Hjem",
+    "tournaments": "Turneringer",
+    "academy": "Akademi",
+    "machines": "Maskiner",
+    "courts": "Baner",
+    "investments": "Investeringer",
+    "partners": "Partnere",
+    "about": "Om",
+    "contact": "Kontakt"
+  },
+  "Footer": {
+    "tagline": "Pust og Lev",
+    "quickLinks": "Hurtige Lenker",
+    "tournaments": "Turneringer",
+    "academy": "Akademi",
+    "investments": "Investeringer",
+    "company": "Selskap",
+    "about": "Om Oss",
+    "partners": "Partnere",
+    "contact": "Kontakt",
+    "legal": "Juridisk",
+    "rights": "Alle rettigheter forbeholdt"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Innovativt padel økosystem som kombinerer turneringer, trening, AI-drevne maskiner og global bane konstruksjon",
+    "ctaPrimary": "Utforsk",
+    "ctaSecondary": "Lær Mer"
+  },
+  "Timeline": {
+    "title": "Padel Historie",
+    "future": "Fremtid",
+    "items": {
+      "1969": {
+        "title": "Fødselen av Padel",
+        "description": "Padel ble oppfunnet i Acapulco, Mexico av Enrique Corcuera. Den første banen ble bygget i hans hjem."
+      },
+      "1990s": {
+        "title": "Europeisk Ekspansjon",
+        "description": "Padel spredte seg over Spanien og begynte å vinne popularitet i Europa, og etablerte seg som en konkurransedyktig sport."
+      },
+      "2010s": {
+        "title": "Global Anerkjennelse",
+        "description": "Padel ble en av de raskest voksende idrettene verden over, med profesjonelle turneringer og internasjonale forbund."
+      },
+      "2025": {
+        "title": "PadelO₂ Innovasjon",
+        "description": "Introduksjon av AI-drevne treningsmaskiner, IoT-tilkoblede baner og globale investeringsmuligheter."
+      },
+      "future": {
+        "title": "Fremtiden for Padel",
+        "description": "PadelO₂ leder transformasjonen av padel gjennom teknologi, bærekraft og global fellesskapsbygging."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Felles Investeringer",
+    "headline": "Bygg Fremtiden for Padel med Oss",
+    "subhead": "Co-invester i baner, AI og global ekspansjon",
+    "body": "PadelO₂ åpner partnerskapsmodeller for investorer og klubber: baneinstallasjon under klubinntekter, deltakelse i AI-maskiner (leie/abonnement), felles lokale nettverk. Vi leverer teknologi, merkevare og operative standarder; partnere leverer lokasjoner og marked. Inntektsmodeller avhenger av format og region.",
+    "description": "Bli med oss i å bygge fremtiden for padel. Invester i baner, AI-teknologier og globale ekspansjonsmuligheter.",
+    "stats": {
+      "projects": "Aktive Prosjekter",
+      "funds": "Totale Midler",
+      "countries": "Land"
+    },
+    "cta": "Bli Partner"
+  },
+  "InvestmentModal": {
+    "title": "Investeringsforespørsel",
+    "name": "Fullt Navn",
+    "email": "E-postadresse",
+    "company": "Selskap (Valgfritt)",
+    "investmentSize": "Investeringsstørrelse",
+    "selectSize": "Velg investeringsstørrelse",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Avbryt",
+    "submit": "Send",
+    "submitting": "Sender..."
+  },
+  "Academy": {
+    "title": "Padel Akademi",
+    "description": "Omfattende treningsprogrammer for trenere og spillere, drevet av AI og smart teknologi.",
+    "programs": {
+      "coach": {
+        "title": "Trener Trening",
+        "description": "Profesjonelle sertifiseringsprogrammer for padel trenere med avanserte undervisningsmetodologier."
+      },
+      "player": {
+        "title": "Spiller Utvikling",
+        "description": "Personaliserte treningsprogrammer designet for å forbedre teknikk, strategi og ytelse."
+      },
+      "smart": {
+        "title": "Smart Trening",
+        "description": "IoT-tilkoblede treningsmaskiner med AI-analyse og sanntids ytelsessporing."
+      }
+    }
+  },
+  "Machines": {
+    "title": "AI-Drevne Treningsmaskiner",
+    "headline": "Treng med Intelligens",
+    "subhead": "IoT-tilkoblede padel maskiner med sanntids AI coaching",
+    "body": "Våre maskiner serverer ikke bare baller — de lærer. Hundrevis av scenarier skreddersydd for ditt mål: tempo, retning, spinn, 'smarte' serier rettet mot spesifikke svakheter. AI sporer din teknikk, justerer øvelser og utvikler seg med deg. Kontroll fra appen: spillerprofiler, 'virtuell trener', sesjonsrapporter og pre-match anbefalinger.",
+    "features": {
+      "aiDrills": {
+        "title": "AI Øvelser",
+        "description": "Personalisering basert på vedvarende feil"
+      },
+      "visionAnalysis": {
+        "title": "Vision Analyse",
+        "description": "Kamera/lidar for presise målinger"
+      },
+      "virtualCoach": {
+        "title": "Virtuell Trener",
+        "description": "Stemmeinstruksjoner synkronisert med pusterytme"
+      },
+      "cloudApi": {
+        "title": "Cloud & API",
+        "description": "Klubbforvaltning, tidsplaner, fakturering"
+      },
+      "rentalMode": {
+        "title": "Leiemodus",
+        "description": "Selvbetjening via QR-skap"
+      }
+    },
+    "cta": "Utforsk maskinene"
+  },
+  "Courts": {
+    "title": "Padel Baner",
+    "headline": "Baner som Puster Ytelse",
+    "subhead": "Innendørs, utendørs, panoramiske og mobile — konstruert og levert",
+    "body": "Vi designer og bygger verdensklasse baner: fundamenter, vindbelastninger, akustikk, belysning og sertifisert glass. Panoramiske løsninger for klubber og mediaopptak, mobile for pop-up arrangementer. Fullstendig syklus: stedundersøkelse → design → produksjon → installasjon → service.",
+    "features": {
+      "types": {
+        "title": "Innendørs/Utendørs/Panoramisk/Mobil",
+        "description": "Klimapakker"
+      },
+      "certificates": {
+        "title": "Materiale & Glass Sertifikater",
+        "description": "24–36 måneders garanti"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Ensartede synlighetsbelysningsskjemaer"
+      },
+      "options": {
+        "title": "Tilleggsalternativer",
+        "description": "Anti-blending, drenering, anti-vibrasjon"
+      },
+      "timeline": {
+        "title": "Tidslinje",
+        "description": "6–10 uker nøkkelferdig (prosjektbasert)"
+      }
+    },
+    "tabs": {
+      "indoor": "Innendørs",
+      "outdoor": "Utendørs",
+      "panoramic": "Panoramisk",
+      "mobile": "Mobil"
+    },
+    "cta": "Få spesifikasjoner og tilbud"
+  },
+  "Partners": {
+    "title": "Våre Partnere",
+    "description": "Bli medlem av et nettverk av ledende selskaper og organisasjoner i padel økosystemet.",
+    "benefits": {
+      "visibility": {
+        "title": "Merkevare Synlighet",
+        "description": "Øk merkevareeksponeringen din i den voksende padel markedet"
+      },
+      "roi": {
+        "title": "ROI Muligheter",
+        "description": "Få tilgang til lønnsomme investeringsmuligheter i padel infrastruktur"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Samarbeid om markedsføringskampanjer og arrangementer"
+      }
+    }
+  },
+  "Contact": {
+    "title": "Kontakt Oss",
+    "description": "Har du spørsmål? Vi vil gjerne høre fra deg.",
+    "form": {
+      "name": "Navn",
+      "email": "E-post",
+      "message": "Melding",
+      "topic": "Emne",
+      "selectTopic": "Velg et emne",
+      "topics": {
+        "general": "Generell Forespørsel",
+        "investments": "Investeringer",
+        "partnerships": "Partnerskap",
+        "support": "Støtte"
+      },
+      "submit": "Send Melding",
+      "sending": "Sender..."
+    }
+  },
+  "WhatsApp": {
+    "button": "Chat på WhatsApp",
+    "message": "Hei! Jeg er interessert i å lære mer om deres padel-tjenester."
+  }
+}
+

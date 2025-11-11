@@ -1,0 +1,216 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "tournaments": "Toernooien",
+    "academy": "Academie",
+    "machines": "Machines",
+    "courts": "Banen",
+    "investments": "Investeringen",
+    "partners": "Partners",
+    "about": "Over",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "tagline": "Adem en Leef",
+    "quickLinks": "Snelle Links",
+    "tournaments": "Toernooien",
+    "academy": "Academie",
+    "investments": "Investeringen",
+    "company": "Bedrijf",
+    "about": "Over Ons",
+    "partners": "Partners",
+    "contact": "Contact",
+    "legal": "Juridisch",
+    "rights": "Alle rechten voorbehouden"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Innovatief padel ecosysteem dat toernooien, training, AI-aangedreven machines en wereldwijde baanconstructie combineert",
+    "ctaPrimary": "Verken",
+    "ctaSecondary": "Meer Weten"
+  },
+  "Timeline": {
+    "title": "Geschiedenis van Padel",
+    "future": "Toekomst",
+    "items": {
+      "1969": {
+        "title": "De Geboorte van Padel",
+        "description": "Padel werd uitgevonden in Acapulco, Mexico door Enrique Corcuera. De eerste baan werd gebouwd in zijn huis."
+      },
+      "1990s": {
+        "title": "Europese Expansie",
+        "description": "Padel verspreidde zich over Spanje en begon populariteit te winnen in Europa, en vestigde zich als een competitieve sport."
+      },
+      "2010s": {
+        "title": "Wereldwijde Erkenning",
+        "description": "Padel werd een van de snelst groeiende sporten wereldwijd, met professionele toernooien en internationale federaties."
+      },
+      "2025": {
+        "title": "PadelO₂ Innovatie",
+        "description": "Introductie van AI-aangedreven trainingsmachines, IoT-verbonden banen en wereldwijde investeringsmogelijkheden."
+      },
+      "future": {
+        "title": "De Toekomst van Padel",
+        "description": "PadelO₂ leidt de transformatie van padel door technologie, duurzaamheid en wereldwijde gemeenschapsopbouw."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Gezamenlijke Investeringen",
+    "headline": "Bouw de Toekomst van Padel met Ons",
+    "subhead": "Co-investeer in banen, AI en wereldwijde expansie",
+    "body": "PadelO₂ opent partnerschapsmodellen voor investeerders en clubs: baaninstallatie onder clubinkomsten, deelname aan AI-machines (verhuur/abonnement), gezamenlijke lokale netwerken. Wij leveren technologie, merk en operationele standaarden; partners leveren locaties en markt. Inkomstenmodellen zijn afhankelijk van formaat en regio.",
+    "description": "Doe mee met ons in het bouwen van de toekomst van padel. Investeer in banen, AI-technologieën en wereldwijde expansiemogelijkheden.",
+    "stats": {
+      "projects": "Actieve Projecten",
+      "funds": "Totale Fondsen",
+      "countries": "Landen"
+    },
+    "cta": "Word Partner"
+  },
+  "InvestmentModal": {
+    "title": "Investeringsvraag",
+    "name": "Volledige Naam",
+    "email": "E-mailadres",
+    "company": "Bedrijf (Optioneel)",
+    "investmentSize": "Investeringsgrootte",
+    "selectSize": "Selecteer investeringsgrootte",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Annuleren",
+    "submit": "Verzenden",
+    "submitting": "Verzenden..."
+  },
+  "Academy": {
+    "title": "Padel Academie",
+    "headline": "Train Kampioenen, Bouw Gemeenschap",
+    "subhead": "Professionele certificerings- en ontwikkelingsprogramma's",
+    "description": "Uitgebreide trainingsprogramma's voor coaches en spelers, aangedreven door AI en slimme technologie.",
+    "body": "PadelO₂ Academy biedt trainingsprogramma's van wereldklasse voor coaches en spelers op alle niveaus. Ons curriculum combineert traditionele padeltechnieken met geavanceerde AI-technologie, waardoor een unieke leerervaring ontstaat die zich aanpast aan de behoeften van elk individu.",
+    "cta": "Meer informatie",
+    "programs": {
+      "coach": {
+        "title": "Coach Training",
+        "description": "Professionele certificeringsprogramma's voor padel coaches met geavanceerde lesmethodologieën."
+      },
+      "player": {
+        "title": "Speler Ontwikkeling",
+        "description": "Gepersonaliseerde trainingsprogramma's ontworpen om techniek, strategie en prestaties te verbeteren."
+      },
+      "smart": {
+        "title": "Slimme Training",
+        "description": "IoT-verbonden trainingsmachines met AI-analyse en real-time prestatievolging."
+      }
+    }
+  },
+  "Machines": {
+    "title": "AI-Aangedreven Trainingsmachines",
+    "headline": "Train met Intelligentie",
+    "subhead": "IoT-verbonden padel machines met real-time AI coaching",
+    "body": "Onze machines serveren niet alleen ballen — ze leren. Honderden scenario's afgestemd op uw doel: tempo, richting, effect, 'slimme' series gericht op specifieke zwaktes. AI volgt uw techniek, past oefeningen aan en vordert met u mee. Bediening via de app: spelerprofielen, 'virtuele coach', sessierapporten en pre-match aanbevelingen.",
+    "features": {
+      "aiDrills": {
+        "title": "AI Oefeningen",
+        "description": "Personalisatie gebaseerd op aanhoudende fouten"
+      },
+      "visionAnalysis": {
+        "title": "Vision Analyse",
+        "description": "Camera/lidar voor nauwkeurige metingen"
+      },
+      "virtualCoach": {
+        "title": "Virtuele Coach",
+        "description": "Spraakprompts gesynchroniseerd met ademhalingsritme"
+      },
+      "cloudApi": {
+        "title": "Cloud & API",
+        "description": "Clubbeheer, schema's, facturering"
+      },
+      "rentalMode": {
+        "title": "Verhuurmodus",
+        "description": "Self-service via QR-locker"
+      }
+    },
+    "cta": "Machines verkennen"
+  },
+  "Courts": {
+    "title": "Padel Banen",
+    "headline": "Banen die Prestaties Ademen",
+    "subhead": "Binnen, buiten, panoramisch en mobiel — ontworpen en geleverd",
+    "body": "We ontwerpen en bouwen wereldklasse banen: funderingen, windbelasting, akoestiek, verlichting en gecertificeerd glas. Panoramische oplossingen voor clubs en media-opnames, mobiele voor pop-up evenementen. Volledige cyclus: locatieonderzoek → ontwerp → productie → installatie → service.",
+    "features": {
+      "types": {
+        "title": "Binnen/Buiten/Panoramisch/Mobiel",
+        "description": "Klimaatpakketten"
+      },
+      "certificates": {
+        "title": "Materiaal & Glas Certificaten",
+        "description": "24–36 maanden garantie"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Uniforme zichtbaarheid verlichtingsschema's"
+      },
+      "options": {
+        "title": "Aanvullende Opties",
+        "description": "Anti-verblinding, drainage, anti-trilling"
+      },
+      "timeline": {
+        "title": "Tijdlijn",
+        "description": "6–10 weken sleutelklaar (projectgebaseerd)"
+      }
+    },
+    "tabs": {
+      "indoor": "Binnen",
+      "outdoor": "Buiten",
+      "panoramic": "Panoramisch",
+      "mobile": "Mobiel"
+    },
+    "cta": "Specificaties & offerte krijgen"
+  },
+  "Partners": {
+    "title": "Onze Partners",
+    "description": "Word lid van een netwerk van toonaangevende bedrijven en organisaties in het padel ecosysteem.",
+    "benefits": {
+      "visibility": {
+        "title": "Merkzichtbaarheid",
+        "description": "Verhoog uw merkexpositie in de groeiende padel markt"
+      },
+      "roi": {
+        "title": "ROI Mogelijkheden",
+        "description": "Toegang tot winstgevende investeringsmogelijkheden in padel infrastructuur"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Samenwerken aan marketingcampagnes en evenementen"
+      }
+    }
+  },
+  "Contact": {
+    "title": "Neem Contact Op",
+    "description": "Heeft u vragen? We horen graag van u.",
+    "form": {
+      "name": "Naam",
+      "email": "E-mail",
+      "message": "Bericht",
+      "topic": "Onderwerp",
+      "selectTopic": "Selecteer een onderwerp",
+      "topics": {
+        "general": "Algemene Vraag",
+        "investments": "Investeringen",
+        "partnerships": "Partnerschappen",
+        "support": "Ondersteuning"
+      },
+      "submit": "Verzend Bericht",
+      "sending": "Verzenden..."
+    }
+  },
+  "WhatsApp": {
+    "button": "Chat op WhatsApp",
+    "message": "Hallo! Ik ben geïnteresseerd in meer informatie over uw padel diensten."
+  }
+}
+

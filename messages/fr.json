@@ -1,0 +1,238 @@
+{
+  "Navigation": {
+    "home": "Accueil",
+    "tournaments": "Tournois",
+    "academy": "Académie",
+    "machines": "Machines",
+    "courts": "Terrains",
+    "investments": "Investissements",
+    "partners": "Partenaires",
+    "about": "À Propos",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "tagline": "Respire et Vis",
+    "quickLinks": "Liens Rapides",
+    "tournaments": "Tournois",
+    "academy": "Académie",
+    "investments": "Investissements",
+    "company": "Entreprise",
+    "about": "À Propos de Nous",
+    "partners": "Partenaires",
+    "contact": "Contact",
+    "legal": "Légal",
+    "rights": "Tous droits réservés"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Écosystème innovant du padel combinant tournois, entraînement, machines alimentées par IA et construction mondiale de terrains",
+    "ctaPrimary": "Explorer",
+    "ctaSecondary": "En Savoir Plus"
+  },
+  "Timeline": {
+    "title": "Histoire du Padel",
+    "future": "Avenir",
+    "items": {
+      "1969": {
+        "title": "La Naissance du Padel",
+        "description": "Le padel a été inventé à Acapulco, Mexique par Enrique Corcuera. Le premier terrain a été construit dans sa maison."
+      },
+      "1990s": {
+        "title": "Expansion Européenne",
+        "description": "Le padel s'est répandu en Espagne et a commencé à gagner en popularité en Europe, s'établissant comme un sport compétitif."
+      },
+      "2010s": {
+        "title": "Reconnaissance Mondiale",
+        "description": "Le padel est devenu l'un des sports à la croissance la plus rapide au monde, avec des tournois professionnels et des fédérations internationales."
+      },
+      "2025": {
+        "title": "Innovation PadelO₂",
+        "description": "Introduction de machines d'entraînement alimentées par IA, terrains connectés IoT et opportunités d'investissement mondiales."
+      },
+      "future": {
+        "title": "L'Avenir du Padel",
+        "description": "PadelO₂ mène la transformation du padel grâce à la technologie, la durabilité et la construction de communautés mondiales."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Investissements Conjoints",
+    "headline": "Construisez l'Avenir du Padel avec Nous",
+    "subhead": "Co-investissez dans des terrains, l'IA et l'expansion mondiale",
+    "body": "PadelO₂ ouvre des modèles de partenariat pour les investisseurs et les clubs : installation de terrains sous revenus du club, participation aux machines IA (location/abonnement), réseaux locaux conjoints. Nous fournissons la technologie, la marque et les normes opérationnelles ; les partenaires fournissent les emplacements et le marché. Les modèles de revenus dépendent du format et de la région.",
+    "description": "Rejoignez-nous pour construire l'avenir du padel. Investissez dans des terrains, des technologies IA et des opportunités d'expansion mondiale.",
+    "stats": {
+      "projects": "Projets Actifs",
+      "funds": "Fonds Totaux",
+      "countries": "Pays"
+    },
+    "cta": "Devenir Partenaire"
+  },
+  "InvestmentModal": {
+    "title": "Demande d'Investissement",
+    "name": "Nom Complet",
+    "email": "Adresse Email",
+    "company": "Entreprise (Optionnel)",
+    "investmentSize": "Taille d'Investissement",
+    "selectSize": "Sélectionnez la taille d'investissement",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Annuler",
+    "submit": "Envoyer",
+    "submitting": "Envoi en cours..."
+  },
+  "Academy": {
+    "title": "Académie Padel",
+    "headline": "Former des Champions, Construire une Communauté",
+    "subhead": "Programmes professionnels de certification et de développement",
+    "description": "Programmes d'entraînement complets pour entraîneurs et joueurs, alimentés par IA et technologie intelligente.",
+    "body": "PadelO₂ Academy propose des programmes d'entraînement de classe mondiale pour les entraîneurs et les joueurs de tous niveaux. Notre programme combine les techniques traditionnelles du padel avec une technologie IA de pointe, créant une expérience d'apprentissage unique qui s'adapte aux besoins de chaque individu.",
+    "programs": {
+      "coach": {
+        "title": "Formation des Entraîneurs",
+        "description": "Programmes de certification professionnelle pour entraîneurs de padel avec méthodologies d'enseignement avancées. Apprenez auprès d'experts de l'industrie et obtenez une certification pour entraîner des joueurs de tous niveaux."
+      },
+      "player": {
+        "title": "Développement des Joueurs",
+        "description": "Programmes d'entraînement personnalisés conçus pour améliorer la technique, la stratégie et les performances. Suivez vos progrès avec des analyses alimentées par l'IA et des commentaires personnalisés."
+      },
+      "smart": {
+        "title": "Entraînement Intelligent",
+        "description": "Machines d'entraînement connectées IoT avec analyse IA et suivi des performances en temps réel. Entraînez-vous plus intelligemment avec des informations basées sur les données et des programmes d'entraînement adaptatifs."
+      }
+    },
+    "cta": "Rejoindre l'Académie"
+  },
+  "Machines": {
+    "title": "Machines d'Entraînement Alimentées par IA",
+    "headline": "Entraînez-vous avec l'Intelligence",
+    "subhead": "Machines padel connectées IoT avec coaching IA en temps réel",
+    "body": "Nos machines ne servent pas seulement des balles, elles apprennent. Des centaines de scénarios adaptés à votre objectif : rythme, direction, effet, séries 'intelligentes' ciblant des faiblesses spécifiques. L'IA suit votre technique, ajuste les exercices et progresse avec vous. Contrôle depuis l'application : profils de joueurs, 'coach virtuel', rapports de session et recommandations pré-match.",
+    "features": {
+      "aiDrills": {
+        "title": "Exercices d'IA",
+        "description": "Personnalisation basée sur les erreurs persistantes"
+      },
+      "visionAnalysis": {
+        "title": "Analyse Visuelle",
+        "description": "Caméra/lidar pour des métriques précises"
+      },
+      "virtualCoach": {
+        "title": "Coach Virtuel",
+        "description": "Indications vocales synchronisées avec le rythme de respiration"
+      },
+      "cloudApi": {
+        "title": "Cloud et API",
+        "description": "Gestion de club, horaires, facturation"
+      },
+      "rentalMode": {
+        "title": "Mode Location",
+        "description": "Self-service via casier QR"
+      }
+    },
+    "cta": "Explorer les machines"
+  },
+  "Courts": {
+    "title": "Terrains Padel",
+    "headline": "Terrains qui Respirent la Performance",
+    "subhead": "Intérieurs, extérieurs, panoramiques et mobiles — conçus et livrés",
+    "body": "Nous concevons et construisons des terrains de classe mondiale : fondations, charges de vent, acoustique, éclairage et verre certifié. Solutions panoramiques pour clubs et tournages médias, mobiles pour événements pop-up. Cycle complet : inspection du site → conception → production → installation → service.",
+    "features": {
+      "types": {
+        "title": "Intérieur/Extérieur/Panoramique/Mobile",
+        "description": "Packages climatiques"
+      },
+      "certificates": {
+        "title": "Certificats Matériaux et Verre",
+        "description": "Garantie 24–36 mois"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Schémas d'éclairage de visibilité uniforme"
+      },
+      "options": {
+        "title": "Options Supplémentaires",
+        "description": "Anti-reflet, drainage, anti-vibration"
+      },
+      "timeline": {
+        "title": "Délais",
+        "description": "6–10 semaines clé en main (selon projet)"
+      }
+    },
+    "tabs": {
+      "indoor": "Intérieur",
+      "outdoor": "Extérieur",
+      "panoramic": "Panoramique",
+      "mobile": "Mobile"
+    },
+    "cta": "Obtenir spécifications et devis"
+  },
+  "Partners": {
+    "title": "Nos Partenaires",
+    "headline": "Grandir Ensemble dans l'Écosystème du Padel",
+    "subhead": "Partenariats stratégiques pour un succès mutuel",
+    "description": "Rejoignez un réseau d'entreprises et d'organisations leaders dans l'écosystème du padel.",
+    "body": "PadelO₂ s'associe avec des entreprises, clubs et investisseurs visionnaires pour étendre la communauté mondiale du padel. Nous offrons divers modèles de partenariat adaptés à vos besoins commerciaux, des collaborations de marque aux coentreprises et licences technologiques.",
+    "benefits": {
+      "visibility": {
+        "title": "Visibilité de la Marque",
+        "description": "Augmentez l'exposition de votre marque sur le marché du padel en croissance grâce au co-marketing et aux partenariats d'événements"
+      },
+      "roi": {
+        "title": "Opportunités ROI",
+        "description": "Accédez à des opportunités d'investissement rentables dans l'infrastructure du padel, la technologie et l'expansion mondiale"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Collaborez sur des campagnes marketing, des tournois et des événements pour atteindre des audiences plus larges"
+      },
+      "technology": {
+        "title": "Accès à la Technologie",
+        "description": "Tirez parti de nos machines d'entraînement alimentées par l'IA, systèmes de gestion de terrains et plateformes numériques"
+      },
+      "network": {
+        "title": "Réseau Mondial",
+        "description": "Connectez-vous avec les communautés, clubs et joueurs de padel du monde entier grâce à notre écosystème"
+      }
+    },
+    "cta": "Devenir Partenaire"
+  },
+  "Tournaments": {
+    "title": "Tournois",
+    "headline": "Compétir au Plus Haut Niveau",
+    "subhead": "Rejoignez des tournois de padel professionnels et amateurs dans le monde entier",
+    "description": "Découvrez les prochains tournois de padel et inscrivez-vous pour participer.",
+    "body": "PadelO₂ organise et soutient des tournois à tous les niveaux, des compétitions de clubs locaux aux championnats internationaux. Que vous soyez un joueur professionnel ou un amateur passionné, trouvez le tournoi parfait pour montrer vos compétences et vous connecter avec la communauté du padel.",
+    "cta": "S'inscrire Maintenant"
+  },
+  "Contact": {
+    "title": "Contactez-Nous",
+    "description": "Vous avez des questions ? Nous aimerions vous entendre.",
+    "form": {
+      "name": "Nom",
+      "email": "Email",
+      "message": "Message",
+      "topic": "Sujet",
+      "selectTopic": "Sélectionnez un sujet",
+      "topics": {
+        "general": "Demande Générale",
+        "investments": "Investissements",
+        "partnerships": "Partenariats",
+        "support": "Support"
+      },
+      "submit": "Envoyer le Message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé avec succès!",
+      "error": "Erreur lors de l'envoi du message. Veuillez réessayer."
+    }
+  },
+  "WhatsApp": {
+    "button": "Discuter sur WhatsApp",
+    "message": "Bonjour! Je suis intéressé par vos services de padel."
+  }
+}
+

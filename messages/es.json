@@ -1,0 +1,280 @@
+{
+  "Navigation": {
+    "home": "Inicio",
+    "tournaments": "Torneos",
+    "academy": "Academia",
+    "machines": "Máquinas",
+    "courts": "Canchas",
+    "investments": "Inversiones",
+    "partners": "Socios",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "Footer": {
+    "tagline": "Respira y Vive",
+    "quickLinks": "Enlaces Rápidos",
+    "tournaments": "Torneos",
+    "academy": "Academia",
+    "investments": "Inversiones",
+    "company": "Empresa",
+    "about": "Acerca de Nosotros",
+    "partners": "Socios",
+    "contact": "Contacto",
+    "legal": "Legal",
+    "rights": "Todos los derechos reservados"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Ecosistema innovador de pádel que combina torneos, entrenamiento, máquinas con IA y construcción global de canchas",
+    "ctaPrimary": "Explorar",
+    "ctaSecondary": "Saber Más"
+  },
+  "Timeline": {
+    "title": "Historia del Pádel",
+    "future": "Futuro",
+    "items": {
+      "1969": {
+        "title": "El Nacimiento del Pádel",
+        "description": "El pádel fue inventado en Acapulco, México por Enrique Corcuera. La primera cancha se construyó en su casa."
+      },
+      "1990s": {
+        "title": "Expansión Europea",
+        "description": "El pádel se extendió por España y comenzó a ganar popularidad en Europa, estableciéndose como deporte competitivo."
+      },
+      "2010s": {
+        "title": "Reconocimiento Global",
+        "description": "El pádel se convirtió en uno de los deportes de más rápido crecimiento en el mundo, con torneos profesionales y federaciones internacionales."
+      },
+      "2025": {
+        "title": "Innovación PadelO₂",
+        "description": "Introducción de máquinas de entrenamiento con IA, canchas conectadas por IoT y oportunidades de inversión global."
+      },
+      "future": {
+        "title": "El Futuro del Pádel",
+        "description": "PadelO₂ lidera la transformación del pádel a través de la tecnología, sostenibilidad y construcción de comunidad global."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Inversiones Conjuntas",
+    "headline": "Construye el Futuro del Pádel con Nosotros",
+    "subhead": "Co-invierte en canchas, IA y expansión global",
+    "body": "PadelO₂ abre modelos de asociación para inversores y clubes: instalación de canchas bajo ingresos del club, participación en máquinas de IA (alquiler/suscripción), redes locales conjuntas. Proporcionamos tecnología, marca y estándares operativos; los socios proporcionan ubicaciones y mercado. Los modelos de ingresos dependen del formato y la región.",
+    "models": {
+      "title": "Modelos (aproximadamente)",
+      "revenueShare": {
+        "title": "Revenue-share",
+        "description": "Cancha y máquinas"
+      },
+      "leaseToOwn": {
+        "title": "Lease-to-own / рассрочка",
+        "description": "Planes de pago a plazos"
+      },
+      "localJv": {
+        "title": "Local JV",
+        "description": "Participación en red de clubes/alquiler"
+      },
+      "techLicensing": {
+        "title": "Tech licensing",
+        "description": "API, White-label"
+      }
+    },
+    "note": "Nota: los indicadores de rentabilidad dependen del país, tráfico y costos del lugar; modelo financiero proporcionado después del brief.",
+    "stats": {
+      "projects": "Proyectos Activos",
+      "funds": "Fondos Totales",
+      "countries": "Países"
+    },
+    "cta": "Solicitar presentación de inversión"
+  },
+  "InvestmentModal": {
+    "title": "Consulta de Inversión",
+    "name": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "company": "Empresa (Opcional)",
+    "investmentSize": "Tamaño de Inversión",
+    "selectSize": "Seleccione el tamaño de inversión",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "submitting": "Enviando..."
+  },
+  "Academy": {
+    "title": "Academia de Pádel",
+    "headline": "Entrena Campeones, Construye Comunidad",
+    "subhead": "Programas profesionales de certificación y desarrollo",
+    "description": "Programas de entrenamiento integrales para entrenadores y jugadores, impulsados por IA y tecnología inteligente.",
+    "body": "PadelO₂ Academy ofrece programas de entrenamiento de clase mundial para entrenadores y jugadores de todos los niveles. Nuestro plan de estudios combina técnicas tradicionales de pádel con tecnología de IA de vanguardia, creando una experiencia de aprendizaje única que se adapta a las necesidades de cada individuo.",
+    "programs": {
+      "coach": {
+        "title": "Entrenamiento de Entrenadores",
+        "description": "Programas de certificación profesional para entrenadores de pádel con metodologías de enseñanza avanzadas. Aprende de expertos de la industria y obtén certificación para entrenar jugadores de todos los niveles."
+      },
+      "player": {
+        "title": "Desarrollo de Jugadores",
+        "description": "Programas de entrenamiento personalizados diseñados para mejorar técnica, estrategia y rendimiento. Rastrea tu progreso con análisis impulsados por IA y retroalimentación personalizada."
+      },
+      "smart": {
+        "title": "Entrenamiento Inteligente",
+        "description": "Máquinas de entrenamiento conectadas por IoT con análisis de IA y seguimiento de rendimiento en tiempo real. Entrena de manera más inteligente con información basada en datos y programas de entrenamiento adaptativos."
+      }
+    },
+    "cta": "Únete a la Academia"
+  },
+  "Machines": {
+    "title": "Máquinas de Entrenamiento con IA",
+    "headline": "Entrena con Inteligencia",
+    "subhead": "Máquinas de pádel conectadas por IoT con entrenamiento de IA en tiempo real",
+    "body": "Nuestras máquinas no solo sirven pelotas, aprenden. Cientos de escenarios adaptados a tu objetivo: ritmo, dirección, efecto, series 'inteligentes' dirigidas a debilidades específicas. La IA registra tu técnica, ajusta ejercicios y progresa contigo. Control desde la app: perfiles de jugadores, 'entrenador virtual', informes de sesiones y recomendaciones previas al partido.",
+    "features": {
+      "aiDrills": {
+        "title": "Ejercicios de IA",
+        "description": "Personalización basada en errores persistentes"
+      },
+      "visionAnalysis": {
+        "title": "Análisis de Visión",
+        "description": "Cámara/lidar para métricas precisas"
+      },
+      "virtualCoach": {
+        "title": "Entrenador Virtual",
+        "description": "Indicaciones de voz sincronizadas con el ritmo de respiración"
+      },
+      "cloudApi": {
+        "title": "Nube y API",
+        "description": "Gestión de club, horarios, facturación"
+      },
+      "rentalMode": {
+        "title": "Modo Alquiler",
+        "description": "Autoservicio mediante casillero QR"
+      }
+    },
+    "cta": "Explorar las máquinas"
+  },
+  "About": {
+    "title": "Acerca de PadelO₂",
+    "headline": "Respira y Vive",
+    "subhead": "Una plataforma multilingüe para el ecosistema global del pádel",
+    "body": "PadelO₂ es una marca que une competiciones, entrenamiento y tecnología. Construimos canchas, producimos máquinas de entrenamiento con IA, desarrollamos la Academia y creamos oportunidades de inversión para el crecimiento del pádel en todo el mundo. Nuestros productos hablan diferentes idiomas y apoyan comunidades locales.",
+    "mission": "Nuestra misión es mostrar la historia, crecimiento y futuro del pádel de forma visual e interactiva, para que cada jugador 'respire' el juego.",
+    "highlights": {
+      "title": "Destacados",
+      "multilanguage": {
+        "title": "Multiidioma",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Ecosistema Completo",
+        "description": "Máquinas IA + Academia + Canchas + Inversiones — todo en uno"
+      },
+      "design": {
+        "title": "ADN de Diseño",
+        "description": "Neon-aqua, tipografía limpia, ritmo 'respiratorio'"
+      }
+    },
+    "cta": "Conoce al equipo"
+  },
+  "Courts": {
+    "title": "Canchas de Pádel",
+    "headline": "Canchas que Respiran Rendimiento",
+    "subhead": "Interiores, exteriores, panorámicas y móviles — diseñadas y entregadas",
+    "body": "Diseñamos y construimos canchas de clase mundial: cimientos, cargas de viento, acústica, iluminación y vidrio certificado. Soluciones panorámicas para clubes y rodajes de medios, móviles para eventos pop-up. Ciclo completo: inspección del sitio → diseño → producción → instalación → servicio.",
+    "features": {
+      "types": {
+        "title": "Interior/Exterior/Panorámico/Móvil",
+        "description": "Paquetes climáticos"
+      },
+      "certificates": {
+        "title": "Certificados de Materiales y Vidrio",
+        "description": "Garantía de 24–36 meses"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Esquemas de iluminación de visibilidad uniforme"
+      },
+      "options": {
+        "title": "Opciones Adicionales",
+        "description": "Anti-reflejo, drenaje, anti-vibración"
+      },
+      "timeline": {
+        "title": "Plazos",
+        "description": "6–10 semanas llave en mano (según proyecto)"
+      }
+    },
+    "tabs": {
+      "indoor": "Interior",
+      "outdoor": "Exterior",
+      "panoramic": "Panorámico",
+      "mobile": "Móvil"
+    },
+    "cta": "Obtener especificaciones y cotización"
+  },
+  "Partners": {
+    "title": "Nuestros Socios",
+    "headline": "Crecer Juntos en el Ecosistema del Pádel",
+    "subhead": "Asociaciones estratégicas para el éxito mutuo",
+    "description": "Únete a una red de empresas y organizaciones líderes en el ecosistema del pádel.",
+    "body": "PadelO₂ se asocia con empresas, clubes e inversores con visión de futuro para expandir la comunidad global del pádel. Ofrecemos varios modelos de asociación adaptados a las necesidades de su negocio, desde colaboraciones de marca hasta empresas conjuntas y licencias de tecnología.",
+    "benefits": {
+      "title": "Beneficios de la Asociación",
+      "visibility": {
+        "title": "Visibilidad de Marca",
+        "description": "Aumenta la exposición de tu marca en el mercado del pádel en crecimiento a través de co-marketing y asociaciones de eventos"
+      },
+      "roi": {
+        "title": "Oportunidades de ROI",
+        "description": "Accede a oportunidades de inversión rentables en infraestructura de pádel, tecnología y expansión global"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Colabora en campañas de marketing, torneos y eventos para llegar a audiencias más amplias"
+      },
+      "technology": {
+        "title": "Acceso a Tecnología",
+        "description": "Aprovecha nuestras máquinas de entrenamiento con IA, sistemas de gestión de canchas y plataformas digitales"
+      },
+      "network": {
+        "title": "Red Global",
+        "description": "Conéctate con comunidades, clubes y jugadores de pádel en todo el mundo a través de nuestro ecosistema"
+      }
+    },
+    "partners": "Nuestros Socios",
+    "cta": "Conviértete en Socio"
+  },
+  "Tournaments": {
+    "title": "Torneos",
+    "headline": "Compite en el Nivel Más Alto",
+    "subhead": "Únete a torneos profesionales y amateur de pádel en todo el mundo",
+    "description": "Descubre próximos torneos de pádel y regístrate para competir.",
+    "body": "PadelO₂ organiza y apoya torneos en todos los niveles, desde competencias de clubes locales hasta campeonatos internacionales. Ya seas un jugador profesional o un apasionado amateur, encuentra el torneo perfecto para mostrar tus habilidades y conectarte con la comunidad del pádel.",
+    "cta": "Regístrate Ahora"
+  },
+  "Contact": {
+    "title": "Contáctanos",
+    "description": "¿Tienes preguntas? Nos encantaría saber de ti.",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo Electrónico",
+      "message": "Mensaje",
+      "topic": "Tema",
+      "selectTopic": "Selecciona un tema",
+      "topics": {
+        "general": "Consulta General",
+        "investments": "Inversiones",
+        "partnerships": "Asociaciones",
+        "support": "Soporte"
+      },
+      "submit": "Enviar Mensaje",
+      "sending": "Enviando..."
+    }
+  },
+  "WhatsApp": {
+    "button": "Chatear en WhatsApp",
+    "message": "¡Hola! Me interesa conocer más sobre sus servicios de pádel."
+  }
+}
+

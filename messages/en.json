@@ -1,0 +1,282 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "tournaments": "Tournaments",
+    "academy": "Academy",
+    "machines": "Machines",
+    "courts": "Courts",
+    "investments": "Investments",
+    "partners": "Partners",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "Footer": {
+    "tagline": "Breathe and Live",
+    "quickLinks": "Quick Links",
+    "tournaments": "Tournaments",
+    "academy": "Academy",
+    "investments": "Investments",
+    "company": "Company",
+    "about": "About Us",
+    "partners": "Partners",
+    "contact": "Contact",
+    "legal": "Legal",
+    "rights": "All rights reserved"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Innovative padel ecosystem combining tournaments, training, AI-powered machines, and global court construction",
+    "ctaPrimary": "Explore",
+    "ctaSecondary": "Learn More"
+  },
+  "Timeline": {
+    "title": "History of Padel",
+    "future": "Future",
+    "items": {
+      "1969": {
+        "title": "The Birth of Padel",
+        "description": "Padel was invented in Acapulco, Mexico by Enrique Corcuera. The first court was built in his home."
+      },
+      "1990s": {
+        "title": "European Expansion",
+        "description": "Padel spread across Spain and began gaining popularity in Europe, establishing itself as a competitive sport."
+      },
+      "2010s": {
+        "title": "Global Recognition",
+        "description": "Padel became one of the fastest-growing sports worldwide, with professional tournaments and international federations."
+      },
+      "2025": {
+        "title": "PadelO₂ Innovation",
+        "description": "Introduction of AI-powered training machines, IoT-connected courts, and global investment opportunities."
+      },
+      "future": {
+        "title": "The Future of Padel",
+        "description": "PadelO₂ leads the transformation of padel through technology, sustainability, and global community building."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Joint Investments",
+    "headline": "Build the Future of Padel with Us",
+    "subhead": "Co-invest in courts, AI, and global expansion",
+    "body": "PadelO₂ opens partnership models for investors and clubs: court installation under club revenue, participation in AI machines (rental/subscription), joint local networks. We provide technology, brand, and operational standards; partners provide locations and market. Revenue models depend on format and region.",
+    "models": {
+      "title": "Models (примерно)",
+      "revenueShare": {
+        "title": "Revenue-share",
+        "description": "Court & machines"
+      },
+      "leaseToOwn": {
+        "title": "Lease-to-own / рассрочка",
+        "description": "Installment plans"
+      },
+      "localJv": {
+        "title": "Local JV",
+        "description": "Stake in club/rental network"
+      },
+      "techLicensing": {
+        "title": "Tech licensing",
+        "description": "API, White-label"
+      }
+    },
+    "note": "Note: profitability indicators depend on country, traffic, and venue costs; financial model provided after brief.",
+    "stats": {
+      "projects": "Active Projects",
+      "funds": "Total Funds",
+      "countries": "Countries"
+    },
+    "cta": "Request investment deck"
+  },
+  "InvestmentModal": {
+    "title": "Investment Inquiry",
+    "name": "Full Name",
+    "email": "Email Address",
+    "company": "Company (Optional)",
+    "investmentSize": "Investment Size",
+    "selectSize": "Select investment size",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "submitting": "Submitting..."
+  },
+  "Academy": {
+    "title": "Padel Academy",
+    "headline": "Train Champions, Build Community",
+    "subhead": "Professional certification and development programs",
+    "description": "Comprehensive training programs for coaches and players, powered by AI and smart technology.",
+    "body": "PadelO₂ Academy offers world-class training programs for coaches and players at all levels. Our curriculum combines traditional padel techniques with cutting-edge AI technology, creating a unique learning experience that adapts to each individual's needs.",
+    "programs": {
+      "coach": {
+        "title": "Coach Training",
+        "description": "Professional certification programs for padel coaches with advanced teaching methodologies. Learn from industry experts and get certified to train players at all levels."
+      },
+      "player": {
+        "title": "Player Development",
+        "description": "Personalized training programs designed to improve technique, strategy, and performance. Track your progress with AI-powered analytics and personalized feedback."
+      },
+      "smart": {
+        "title": "Smart Training",
+        "description": "IoT-connected training machines with AI analysis and real-time performance tracking. Train smarter with data-driven insights and adaptive training programs."
+      }
+    },
+    "cta": "Join the Academy"
+  },
+  "Machines": {
+    "title": "AI-Powered Training Machines",
+    "headline": "Train with Intelligence",
+    "subhead": "IoT-connected padel machines with real-time AI coaching",
+    "body": "Our machines don't just serve balls — they learn. Hundreds of scenarios tailored to your goal: pace, direction, spin, 'smart' series targeting specific weaknesses. AI tracks your technique, adjusts exercises, and progresses with you. Control from the app: player profiles, 'virtual coach', session reports, and pre-match recommendations.",
+    "features": {
+      "aiDrills": {
+        "title": "AI Drills",
+        "description": "Personalization based on persistent errors"
+      },
+      "visionAnalysis": {
+        "title": "Vision Analysis",
+        "description": "Camera/lidar for precise metrics"
+      },
+      "virtualCoach": {
+        "title": "Virtual Coach",
+        "description": "Voice prompts synchronized with breathing rhythm"
+      },
+      "cloudApi": {
+        "title": "Cloud & API",
+        "description": "Club management, schedules, billing"
+      },
+      "rentalMode": {
+        "title": "Rental Mode",
+        "description": "Self-service via QR locker"
+      }
+    },
+    "cta": "Explore the machines"
+  },
+  "About": {
+    "title": "About PadelO₂",
+    "headline": "Breathe and Live",
+    "subhead": "A multi-language platform for the global padel ecosystem",
+    "body": "PadelO₂ is a brand that unites competitions, training, and technology. We build courts, produce AI training machines, develop the Academy, and create investment opportunities for padel growth worldwide. Our products speak different languages and support local communities.",
+    "mission": "Our mission is to showcase the history, growth, and future of padel visually and interactively, so every player 'breathes' the game.",
+    "highlights": {
+      "title": "Highlights",
+      "multilanguage": {
+        "title": "Multi-language",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Complete Ecosystem",
+        "description": "AI-Machines + Academy + Courts + Investments — all in one"
+      },
+      "design": {
+        "title": "Design DNA",
+        "description": "Neon-aqua, clean typography, 'breathing' rhythm"
+      }
+    },
+    "cta": "Meet the team"
+  },
+  "Courts": {
+    "title": "Padel Courts",
+    "headline": "Courts that Breathe Performance",
+    "subhead": "Indoor, outdoor, panoramic, and mobile — engineered and delivered",
+    "body": "We design and build world-class courts: foundations, wind loads, acoustics, lighting, and certified glass. Panoramic solutions for clubs and media shoots, mobile ones for pop-up events. Full cycle: site survey → design → production → installation → service.",
+    "features": {
+      "types": {
+        "title": "Indoor/Outdoor/Panoramic/Mobile",
+        "description": "Climate packages"
+      },
+      "certificates": {
+        "title": "Material & Glass Certificates",
+        "description": "24–36 month warranty"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Uniform visibility lighting schemes"
+      },
+      "options": {
+        "title": "Additional Options",
+        "description": "Anti-glare, drainage, anti-vibration"
+      },
+      "timeline": {
+        "title": "Timeline",
+        "description": "6–10 weeks turnkey (project-based)"
+      }
+    },
+    "tabs": {
+      "indoor": "Indoor",
+      "outdoor": "Outdoor",
+      "panoramic": "Panoramic",
+      "mobile": "Mobile"
+    },
+    "cta": "Get specs & quote"
+  },
+  "Partners": {
+    "title": "Our Partners",
+    "headline": "Grow Together in the Padel Ecosystem",
+    "subhead": "Strategic partnerships for mutual success",
+    "description": "Join a network of leading companies and organizations in the padel ecosystem.",
+    "body": "PadelO₂ partners with forward-thinking companies, clubs, and investors to expand the global padel community. We offer various partnership models tailored to your business needs, from brand collaborations to joint ventures and technology licensing.",
+    "benefits": {
+      "title": "Partnership Benefits",
+      "visibility": {
+        "title": "Brand Visibility",
+        "description": "Increase your brand exposure in the growing padel market through co-marketing and event partnerships"
+      },
+      "roi": {
+        "title": "ROI Opportunities",
+        "description": "Access profitable investment opportunities in padel infrastructure, technology, and global expansion"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Collaborate on marketing campaigns, tournaments, and events to reach wider audiences"
+      },
+      "technology": {
+        "title": "Technology Access",
+        "description": "Leverage our AI-powered training machines, court management systems, and digital platforms"
+      },
+      "network": {
+        "title": "Global Network",
+        "description": "Connect with padel communities, clubs, and players worldwide through our ecosystem"
+      }
+    },
+    "partners": "Our Partners",
+    "cta": "Become a Partner"
+  },
+  "Tournaments": {
+    "title": "Tournaments",
+    "headline": "Compete at the Highest Level",
+    "subhead": "Join professional and amateur padel tournaments worldwide",
+    "description": "Discover upcoming padel tournaments and register to compete.",
+    "body": "PadelO₂ organizes and supports tournaments at all levels, from local club competitions to international championships. Whether you're a professional player or a passionate amateur, find the perfect tournament to showcase your skills and connect with the padel community.",
+    "cta": "Register Now"
+  },
+  "Contact": {
+    "title": "Get in Touch",
+    "description": "Have questions? We'd love to hear from you.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "topic": "Topic",
+      "selectTopic": "Select a topic",
+      "topics": {
+        "general": "General Inquiry",
+        "investments": "Investments",
+        "partnerships": "Partnerships",
+        "support": "Support"
+      },
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message. Please try again."
+    }
+  },
+  "WhatsApp": {
+    "button": "Chat on WhatsApp",
+    "message": "Hello! I'm interested in learning more about your padel services."
+  }
+}
+

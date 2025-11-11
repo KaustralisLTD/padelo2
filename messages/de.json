@@ -1,0 +1,212 @@
+{
+  "Navigation": {
+    "home": "Startseite",
+    "tournaments": "Turniere",
+    "academy": "Akademie",
+    "machines": "Maschinen",
+    "courts": "Plätze",
+    "investments": "Investitionen",
+    "partners": "Partner",
+    "about": "Über",
+    "contact": "Kontakt"
+  },
+  "Footer": {
+    "tagline": "Atme und Lebe",
+    "quickLinks": "Schnelllinks",
+    "tournaments": "Turniere",
+    "academy": "Akademie",
+    "investments": "Investitionen",
+    "company": "Unternehmen",
+    "about": "Über Uns",
+    "partners": "Partner",
+    "contact": "Kontakt",
+    "legal": "Rechtliches",
+    "rights": "Alle Rechte vorbehalten"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "Innovatives Padel-Ökosystem, das Turniere, Training, KI-gesteuerte Maschinen und globalen Platzbau kombiniert",
+    "ctaPrimary": "Erkunden",
+    "ctaSecondary": "Mehr Erfahren"
+  },
+  "Timeline": {
+    "title": "Geschichte des Padels",
+    "future": "Zukunft",
+    "items": {
+      "1969": {
+        "title": "Die Geburt des Padels",
+        "description": "Padel wurde in Acapulco, Mexiko von Enrique Corcuera erfunden. Der erste Platz wurde in seinem Haus gebaut."
+      },
+      "1990s": {
+        "title": "Europäische Expansion",
+        "description": "Padel verbreitete sich in Spanien und begann in Europa an Popularität zu gewinnen, etablierte sich als Wettkampfsport."
+      },
+      "2010s": {
+        "title": "Globale Anerkennung",
+        "description": "Padel wurde zu einer der am schnellsten wachsenden Sportarten weltweit, mit professionellen Turnieren und internationalen Verbänden."
+      },
+      "2025": {
+        "title": "PadelO₂ Innovation",
+        "description": "Einführung von KI-gesteuerten Trainingsmaschinen, IoT-verbundenen Plätzen und globalen Investitionsmöglichkeiten."
+      },
+      "future": {
+        "title": "Die Zukunft des Padels",
+        "description": "PadelO₂ führt die Transformation des Padels durch Technologie, Nachhaltigkeit und globalen Gemeinschaftsaufbau an."
+      }
+    }
+  },
+  "Investments": {
+    "title": "Gemeinsame Investitionen",
+    "headline": "Bauen Sie die Zukunft des Padels mit Uns",
+    "subhead": "Co-investieren Sie in Plätze, KI und globale Expansion",
+    "body": "PadelO₂ öffnet Partnerschaftsmodelle für Investoren und Clubs: Platzinstallation unter Clubeinnahmen, Teilnahme an KI-Maschinen (Miete/Abonnement), gemeinsame lokale Netzwerke. Wir liefern Technologie, Marke und operative Standards; Partner liefern Standorte und Markt. Einnahmemodelle hängen von Format und Region ab.",
+    "description": "Begleiten Sie uns beim Aufbau der Zukunft des Padels. Investieren Sie in Plätze, KI-Technologien und globale Expansionsmöglichkeiten.",
+    "stats": {
+      "projects": "Aktive Projekte",
+      "funds": "Gesamtmittel",
+      "countries": "Länder"
+    },
+    "cta": "Partner Werden"
+  },
+  "InvestmentModal": {
+    "title": "Investitionsanfrage",
+    "name": "Vollständiger Name",
+    "email": "E-Mail-Adresse",
+    "company": "Unternehmen (Optional)",
+    "investmentSize": "Investitionsgröße",
+    "selectSize": "Investitionsgröße auswählen",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "Abbrechen",
+    "submit": "Absenden",
+    "submitting": "Wird gesendet..."
+  },
+  "Academy": {
+    "title": "Padel Akademie",
+    "description": "Umfassende Trainingsprogramme für Trainer und Spieler, angetrieben von KI und intelligenter Technologie.",
+    "programs": {
+      "coach": {
+        "title": "Trainerausbildung",
+        "description": "Professionelle Zertifizierungsprogramme für Padel-Trainer mit fortgeschrittenen Unterrichtsmethoden."
+      },
+      "player": {
+        "title": "Spielerentwicklung",
+        "description": "Personalisierte Trainingsprogramme zur Verbesserung von Technik, Strategie und Leistung."
+      },
+      "smart": {
+        "title": "Intelligentes Training",
+        "description": "IoT-verbundene Trainingsmaschinen mit KI-Analyse und Echtzeit-Leistungsverfolgung."
+      }
+    }
+  },
+  "Machines": {
+    "title": "KI-Gesteuerte Trainingsmaschinen",
+    "headline": "Trainiere mit Intelligenz",
+    "subhead": "IoT-verbundene Padel-Maschinen mit Echtzeit-KI-Coaching",
+    "body": "Unsere Maschinen servieren nicht nur Bälle — sie lernen. Hunderte von Szenarien, die auf Ihr Ziel zugeschnitten sind: Tempo, Richtung, Spin, 'intelligente' Serien, die auf spezifische Schwächen abzielen. KI verfolgt Ihre Technik, passt Übungen an und entwickelt sich mit Ihnen weiter. Steuerung über die App: Spielerprofile, 'virtueller Trainer', Sitzungsberichte und Vor-Match-Empfehlungen.",
+    "features": {
+      "aiDrills": {
+        "title": "KI-Übungen",
+        "description": "Personalisierung basierend auf anhaltenden Fehlern"
+      },
+      "visionAnalysis": {
+        "title": "Vision-Analyse",
+        "description": "Kamera/Lidar für präzise Metriken"
+      },
+      "virtualCoach": {
+        "title": "Virtueller Trainer",
+        "description": "Sprachaufforderungen synchronisiert mit Atemrhythmus"
+      },
+      "cloudApi": {
+        "title": "Cloud & API",
+        "description": "Club-Management, Zeitpläne, Abrechnung"
+      },
+      "rentalMode": {
+        "title": "Mietmodus",
+        "description": "Self-Service über QR-Schließfach"
+      }
+    },
+    "cta": "Maschinen erkunden"
+  },
+  "Courts": {
+    "title": "Padel Plätze",
+    "headline": "Plätze, die Leistung atmen",
+    "subhead": "Innen-, Außen-, Panorama- und mobile — konstruiert und geliefert",
+    "body": "Wir entwerfen und bauen Weltklasse-Plätze: Fundamente, Windlasten, Akustik, Beleuchtung und zertifiziertes Glas. Panorama-Lösungen für Clubs und Medienaufnahmen, mobile für Pop-up-Events. Vollständiger Zyklus: Standortbesichtigung → Design → Produktion → Installation → Service.",
+    "features": {
+      "types": {
+        "title": "Innen/Außen/Panorama/Mobil",
+        "description": "Klimapakete"
+      },
+      "certificates": {
+        "title": "Material- & Glaszertifikate",
+        "description": "24–36 Monate Garantie"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "Einheitliche Sichtbarkeits-Beleuchtungsschemata"
+      },
+      "options": {
+        "title": "Zusätzliche Optionen",
+        "description": "Blendfrei, Entwässerung, Anti-Vibration"
+      },
+      "timeline": {
+        "title": "Zeitplan",
+        "description": "6–10 Wochen schlüsselfertig (projektbasiert)"
+      }
+    },
+    "tabs": {
+      "indoor": "Innen",
+      "outdoor": "Außen",
+      "panoramic": "Panorama",
+      "mobile": "Mobil"
+    },
+    "cta": "Spezifikationen & Angebot erhalten"
+  },
+  "Partners": {
+    "title": "Unsere Partner",
+    "description": "Werden Sie Teil eines Netzwerks führender Unternehmen und Organisationen im Padel-Ökosystem.",
+    "benefits": {
+      "visibility": {
+        "title": "Markenbekanntheit",
+        "description": "Erhöhen Sie Ihre Markenpräsenz im wachsenden Padel-Markt"
+      },
+      "roi": {
+        "title": "ROI-Möglichkeiten",
+        "description": "Zugang zu profitablen Investitionsmöglichkeiten in Padel-Infrastruktur"
+      },
+      "marketing": {
+        "title": "Co-Marketing",
+        "description": "Zusammenarbeit bei Marketingkampagnen und Veranstaltungen"
+      }
+    }
+  },
+  "Contact": {
+    "title": "Kontaktieren Sie Uns",
+    "description": "Haben Sie Fragen? Wir würden gerne von Ihnen hören.",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "message": "Nachricht",
+      "topic": "Thema",
+      "selectTopic": "Thema auswählen",
+      "topics": {
+        "general": "Allgemeine Anfrage",
+        "investments": "Investitionen",
+        "partnerships": "Partnerschaften",
+        "support": "Support"
+      },
+      "submit": "Nachricht Senden",
+      "sending": "Wird gesendet..."
+    }
+  },
+  "WhatsApp": {
+    "button": "Auf WhatsApp chatten",
+    "message": "Hallo! Ich interessiere mich für weitere Informationen über Ihre Padel-Dienste."
+  }
+}
+

@@ -1,0 +1,19 @@
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
+import CourtsContent from '@/components/pages/CourtsContent';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Courts' });
+  
+  return {
+    title: `${t('title')} - PadelO₂`,
+    description: t('subhead'),
+  };
+}
+
+export default function CourtsPage() {
+  return <CourtsContent />;
+}
+
+

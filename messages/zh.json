@@ -1,0 +1,216 @@
+{
+  "Navigation": {
+    "home": "首页",
+    "tournaments": "锦标赛",
+    "academy": "学院",
+    "machines": "机器",
+    "courts": "球场",
+    "investments": "投资",
+    "partners": "合作伙伴",
+    "about": "关于",
+    "contact": "联系"
+  },
+  "Footer": {
+    "tagline": "呼吸与生活",
+    "quickLinks": "快速链接",
+    "tournaments": "锦标赛",
+    "academy": "学院",
+    "investments": "投资",
+    "company": "公司",
+    "about": "关于我们",
+    "partners": "合作伙伴",
+    "contact": "联系",
+    "legal": "法律",
+    "rights": "版权所有"
+  },
+  "Hero": {
+    "title": "PadelO₂",
+    "subtitle": "创新的板式网球生态系统，结合锦标赛、训练、AI驱动的机器和全球球场建设",
+    "ctaPrimary": "探索",
+    "ctaSecondary": "了解更多"
+  },
+  "Timeline": {
+    "title": "板式网球历史",
+    "future": "未来",
+    "items": {
+      "1969": {
+        "title": "板式网球的诞生",
+        "description": "板式网球由恩里克·科尔库埃拉在墨西哥阿卡普尔科发明。第一个球场建在他的家中。"
+      },
+      "1990s": {
+        "title": "欧洲扩张",
+        "description": "板式网球在西班牙传播，开始在欧洲获得 popularity，确立为竞技运动。"
+      },
+      "2010s": {
+        "title": "全球认可",
+        "description": "板式网球成为全球增长最快的运动之一，拥有职业锦标赛和国际联合会。"
+      },
+      "2025": {
+        "title": "PadelO₂ 创新",
+        "description": "引入AI驱动的训练机器、物联网连接的球场和全球投资机会。"
+      },
+      "future": {
+        "title": "板式网球的未来",
+        "description": "PadelO₂通过技术、可持续性和全球社区建设引领板式网球的转型。"
+      }
+    }
+  },
+  "Investments": {
+    "title": "联合投资",
+    "headline": "与我们共建板式网球的未来",
+    "subhead": "共同投资球场、AI和全球扩张",
+    "body": "PadelO₂为投资者和俱乐部开放合作伙伴模式：在俱乐部收入下安装球场，参与AI机器（租赁/订阅），联合本地网络。我们提供技术、品牌和运营标准；合作伙伴提供位置和市场。收入模式取决于格式和地区。",
+    "description": "加入我们，共同建设板式网球的未来。投资球场、AI技术和全球扩张机会。",
+    "stats": {
+      "projects": "活跃项目",
+      "funds": "总资金",
+      "countries": "国家"
+    },
+    "cta": "成为合作伙伴"
+  },
+  "InvestmentModal": {
+    "title": "投资咨询",
+    "name": "全名",
+    "email": "电子邮件",
+    "company": "公司（可选）",
+    "investmentSize": "投资规模",
+    "selectSize": "选择投资规模",
+    "sizes": {
+      "small": "€10K - €50K",
+      "medium": "€50K - €250K",
+      "large": "€250K - €1M",
+      "enterprise": "€1M+"
+    },
+    "cancel": "取消",
+    "submit": "提交",
+    "submitting": "提交中..."
+  },
+  "Academy": {
+    "title": "板式网球学院",
+    "headline": "培养冠军，建设社区",
+    "subhead": "专业认证和发展计划",
+    "description": "为教练和球员提供全面的培训计划，由AI和智能技术驱动。",
+    "body": "PadelO₂学院为各级教练和球员提供世界一流的培训计划。我们的课程将传统板式网球技术与前沿AI技术相结合，创造独特的个性化学习体验。",
+    "cta": "了解更多",
+    "programs": {
+      "coach": {
+        "title": "教练培训",
+        "description": "为板式网球教练提供具有先进教学方法的专业认证计划。"
+      },
+      "player": {
+        "title": "球员发展",
+        "description": "旨在提高技术、策略和表现的个人化培训计划。"
+      },
+      "smart": {
+        "title": "智能训练",
+        "description": "物联网连接的训练机器，具有AI分析和实时性能跟踪。"
+      }
+    }
+  },
+  "Machines": {
+    "title": "AI驱动的训练机器",
+    "headline": "智能训练",
+    "subhead": "物联网连接的板式网球机器，具有实时AI指导",
+    "body": "我们的机器不仅仅是发球 — 它们会学习。数百种针对您目标的场景：节奏、方向、旋转，针对特定弱点的'智能'系列。AI跟踪您的技术，调整练习并与您一起进步。通过应用程序控制：球员档案、'虚拟教练'、会话报告和赛前建议。",
+    "features": {
+      "aiDrills": {
+        "title": "AI训练",
+        "description": "基于持续错误的个性化"
+      },
+      "visionAnalysis": {
+        "title": "视觉分析",
+        "description": "相机/激光雷达用于精确测量"
+      },
+      "virtualCoach": {
+        "title": "虚拟教练",
+        "description": "与呼吸节奏同步的语音提示"
+      },
+      "cloudApi": {
+        "title": "云和API",
+        "description": "俱乐部管理、时间表、计费"
+      },
+      "rentalMode": {
+        "title": "租赁模式",
+        "description": "通过QR储物柜自助服务"
+      }
+    },
+    "cta": "探索机器"
+  },
+  "Courts": {
+    "title": "板式网球场",
+    "headline": "呼吸性能的球场",
+    "subhead": "室内、室外、全景和移动 — 工程设计和交付",
+    "body": "我们设计和建造世界级球场：基础、风荷载、声学、照明和认证玻璃。为俱乐部和媒体拍摄提供全景解决方案，为快闪活动提供移动解决方案。完整周期：场地勘察 → 设计 → 生产 → 安装 → 服务。",
+    "features": {
+      "types": {
+        "title": "室内/室外/全景/移动",
+        "description": "气候包"
+      },
+      "certificates": {
+        "title": "材料和玻璃证书",
+        "description": "24–36个月保修"
+      },
+      "lighting": {
+        "title": "Soft O₂ Light",
+        "description": "均匀可见性照明方案"
+      },
+      "options": {
+        "title": "附加选项",
+        "description": "防眩光、排水、防振动"
+      },
+      "timeline": {
+        "title": "时间表",
+        "description": "6–10周交钥匙（基于项目）"
+      }
+    },
+    "tabs": {
+      "indoor": "室内",
+      "outdoor": "室外",
+      "panoramic": "全景",
+      "mobile": "移动"
+    },
+    "cta": "获取规格和报价"
+  },
+  "Partners": {
+    "title": "我们的合作伙伴",
+    "description": "加入板式网球生态系统中的领先公司和组织网络。",
+    "benefits": {
+      "visibility": {
+        "title": "品牌可见性",
+        "description": "在快速增长的板式网球市场中增加您的品牌曝光度"
+      },
+      "roi": {
+        "title": "投资回报机会",
+        "description": "获得板式网球基础设施的有利可图投资机会"
+      },
+      "marketing": {
+        "title": "联合营销",
+        "description": "在营销活动和事件上合作"
+      }
+    }
+  },
+  "Contact": {
+    "title": "联系我们",
+    "description": "有问题吗？我们很乐意听到您的消息。",
+    "form": {
+      "name": "姓名",
+      "email": "电子邮件",
+      "message": "消息",
+      "topic": "主题",
+      "selectTopic": "选择一个主题",
+      "topics": {
+        "general": "一般咨询",
+        "investments": "投资",
+        "partnerships": "合作伙伴关系",
+        "support": "支持"
+      },
+      "submit": "发送消息",
+      "sending": "发送中..."
+    }
+  },
+  "WhatsApp": {
+    "button": "在 WhatsApp 上聊天",
+    "message": "你好！我想了解更多关于您的板式网球服务。"
+  }
+}
+
