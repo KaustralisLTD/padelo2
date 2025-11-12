@@ -8,7 +8,9 @@
     "investments": "Inversions",
     "partners": "Socis",
     "about": "Sobre",
-    "contact": "Contacte"
+    "contact": "Contacte",
+    "login": "Iniciar Sessió",
+    "profile": "Perfil"
   },
   "Footer": {
     "tagline": "Respira i Viu",
@@ -124,7 +126,8 @@
         "description": "Màquines d'entrenament connectades per IoT amb anàlisi d'IA i seguiment de rendiment en temps real. Entrena de manera més intel·ligent amb informació basada en dades i programes d'entrenament adaptatius."
       }
     },
-    "cta": "Uneix-te a l'Acadèmia"
+    "cta": "Uneix-te a l'Acadèmia",
+    "back": "Tornar"
   },
   "Machines": {
     "title": "Màquines d'Entrenament amb IA",
@@ -153,7 +156,8 @@
         "description": "Autoservei mitjançant casella QR"
       }
     },
-    "cta": "Explorar les màquines"
+    "cta": "Explorar les màquines",
+    "back": "Tornar"
   },
   "Courts": {
     "title": "Pistes de Pàdel",
@@ -189,7 +193,8 @@
       "mobile": "Mòbil"
     },
     "gallery": "Galeria",
-    "cta": "Obtenir especificacions i pressupost"
+    "cta": "Obtenir especificacions i pressupost",
+    "back": "Tornar"
   },
   "Partners": {
     "title": "Els Nostres Socis",
@@ -221,7 +226,8 @@
       }
     },
     "partners": "Els Nostres Socis",
-    "cta": "Convertir-se en Soci"
+    "cta": "Convertir-se en Soci",
+    "back": "Tornar"
   },
   "Tournaments": {
     "title": "Tornejos",
@@ -229,7 +235,94 @@
     "subhead": "Uneix-te a tornejos professionals i amateurs de pàdel arreu del món",
     "description": "Descobreix propers tornejos de pàdel i registra't per competir.",
     "body": "PadelO₂ organitza i dona suport a tornejos a tots els nivells, des de competicions de clubs locals fins a campionats internacionals. Tant si ets un jugador professional com un apassionat amateur, troba el torneig perfecte per mostrar les teves habilitats i connectar-te amb la comunitat del pàdel.",
-    "cta": "Registra't Ara"
+    "cta": "Registra't Ara",
+    "verySoon": "MOLT AViat",
+    "comingSoon": "Aviat",
+    "back": "Tornar a tornejos",
+    "registerFor": "Registre per a",
+    "photoUploadInfo": "Si us plau, puja la teva foto. Nom de l'arxiu: Nom_Cognom.jpg (ex: Joan_Perez.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 Desembre 2025"
+    },
+    "tournament2": {
+      "name": "Proper Torneig",
+      "subtitle": "Detalls Aviat",
+      "date": "Per Confirmar"
+    },
+    "categories": {
+      "male1": "Masculí 1",
+      "male2": "Masculí 2",
+      "female1": "Femení 1",
+      "female2": "Femení 2",
+      "mixed1": "Mixt 1",
+      "mixed2": "Mixt 2"
+    },
+    "form": {
+      "firstName": "Nom",
+      "lastName": "Cognom",
+      "email": "Email",
+      "telegram": "Compte de Telegram",
+      "phone": "Telèfon",
+      "categories": "Categories",
+      "selectMultiple": "Pots seleccionar diverses (ex: Masculí + Mixt)",
+      "categoryHelp": "Només pots seleccionar una Masculina (1 o 2), una Femenina (1 o 2) i una Mixta (1 o 2). Pots triar Masculina + Mixta o Femenina + Mixta, però no pots seleccionar dues Masculines, dues Femenines ni dues Mixtes alhora.",
+      "tshirtSize": "Mida de Samarreta",
+      "selectSize": "Selecciona mida",
+      "addPartner": "Afegir Parella",
+      "removePartner": "Eliminar Parella",
+      "partnerName": "Nom de Parella",
+      "partnerEmail": "Email de Parella",
+      "partnerPhone": "Telèfon de Parella",
+      "partnerTshirtSize": "Talla de Samarreta de la Parella",
+      "partnerSelectSize": "Selecciona la talla de la parella",
+      "partnerPhoto": "Foto de la Parella",
+      "partnerPhotoOptional": "Puja la foto de la parella (opcional)",
+      "message": "Missatge",
+      "messagePlaceholder": "M'agradaria deixar preferències addicionals sobre l'horari dels meus partits",
+      "optional": "Opcional",
+      "registerButton": "REGISTRAR-SE ARA",
+      "submitting": "Enviant...",
+      "success": "Registre exitós! Si us plau, revisa el teu correu per confirmació.",
+      "error": "Error en enviar el registre. Si us plau, intenta de nou.",
+      "validation": {
+        "selectCategory": "Si us plau, selecciona almenys una categoria"
+      },
+      "photoInstructions": {
+        "title": "Instruccions per Pujar Foto",
+        "text": "Si us plau, puja la teva foto per al torneig. La foto s'usarà per al teu perfil de jugador i materials del torneig.",
+        "filename": "Format del nom de l'arxiu",
+        "filenameExample": "Nom_Cognom.jpg (ex: Joan_Perez.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registre Confirmat",
+      "description": "El teu registre al torneig ha estat confirmat",
+      "loading": "Confirmant el teu registre...",
+      "success": "El teu registre ha estat confirmat amb èxit!",
+      "error": "Enllaç de confirmació invàlid o expirat. Si us plau, contacta amb suport.",
+      "backToTournaments": "Tornar a Tornejos",
+      "registrationDetails": "Detalls del Registre",
+      "goToDashboard": "Anar al Tauler"
+    },
+    "dashboard": {
+      "title": "Tauler de Participant del Torneig",
+      "description": "El teu tauler de registre del torneig",
+      "loading": "Carregant el teu tauler...",
+      "noRegistration": "No s'ha trobat registre. Si us plau, registra't en un torneig primer.",
+      "registerNow": "Registra't Ara",
+      "registrationInfo": "Informació del Registre",
+      "tournamentInfo": "Informació del Torneig",
+      "tournament": "Torneig",
+      "status": "Estat",
+      "confirmed": "Confirmat",
+      "pending": "Pendent de Confirmació",
+      "partnerInfo": "Informació de Parella",
+      "photoUpload": "Pujar Foto",
+      "photoInstructions": "Si us plau, puja la teva foto. L'arxiu ha de dir-se: Nom_Cognom.jpg",
+      "uploadPhoto": "Pujar Foto"
+    }
   },
   "Contact": {
     "title": "Contacta'ns",
@@ -256,6 +349,31 @@
     "button": "Xatejar a WhatsApp",
     "message": "Hola! M'interessa conèixer més sobre els seus serveis de pàdel."
   },
+  "Login": {
+    "title": "Iniciar Sessió",
+    "description": "Accedeix al teu compte",
+    "loginTitle": "Benvingut",
+    "loginDescription": "Inicia sessió al teu compte",
+    "registerTitle": "Crear Compte",
+    "registerDescription": "Uneix-te a la comunitat PadelO₂",
+    "login": "Iniciar Sessió",
+    "profile": "Perfil",
+    "register": "Registrar-se",
+    "email": "Email",
+    "password": "Contrasenya",
+    "firstName": "Nom",
+    "lastName": "Cognom",
+    "confirmPassword": "Confirmar Contrasenya",
+    "loginButton": "Iniciar Sessió",
+    "registerButton": "Crear Compte",
+    "submitting": "Processant...",
+    "errors": {
+      "invalidCredentials": "Email o contrasenya invàlids",
+      "passwordMismatch": "Les contrasenyes no coincideixen",
+      "registrationFailed": "Registre fallit. Torna-ho a provar.",
+      "generic": "S'ha produït un error. Torna-ho a provar."
+    }
+  },
   "About": {
     "title": "Sobre PadelO₂",
     "headline": "Respira i Viu",
@@ -280,4 +398,3 @@
     "cta": "Coneix l'equip"
   }
 }
-

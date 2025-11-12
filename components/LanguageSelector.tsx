@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
+import { useTheme } from '@/contexts/ThemeContext';
 import { locales } from '@/i18n';
 
 const languageNames: Record<string, string> = {
@@ -27,6 +28,7 @@ const LanguageSelector = () => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { theme } = useTheme();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,7 +51,11 @@ const LanguageSelector = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 text-sm font-poppins text-text-secondary hover:text-primary transition-colors border border-gray-700 rounded-lg hover:border-primary"
+        className={`flex items-center space-x-2 px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
+          theme === 'light'
+            ? 'text-white/90 hover:text-primary border-white/20 hover:border-primary'
+            : 'text-text-secondary hover:text-primary border-border'
+        }`}
       >
         <span>{languageNames[locale] || locale.toUpperCase()}</span>
         <svg
@@ -68,14 +74,29 @@ const LanguageSelector = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-32 bg-background-secondary border border-gray-700 rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto">
+        <div className="absolute top-full right-0 mt-2 w-32 bg-background-secondary border border-border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-secondary">
+          <style jsx>{`
+            div::-webkit-scrollbar {
+              width: 6px;
+            }
+            div::-webkit-scrollbar-track {
+              background: var(--background-secondary);
+            }
+            div::-webkit-scrollbar-thumb {
+              background: var(--primary);
+              border-radius: 3px;
+            }
+            div::-webkit-scrollbar-thumb:hover {
+              background: var(--accent);
+            }
+          `}</style>
           {locales.map((loc) => (
             <button
               key={loc}
               onClick={() => handleLanguageChange(loc)}
-              className={`w-full text-left px-4 py-2 text-sm font-poppins transition-colors hover:bg-gray-800 ${
+              className={`w-full text-left px-4 py-2 text-sm font-poppins transition-colors hover:bg-background ${
                 locale === loc
-                  ? 'text-primary bg-gray-800'
+                  ? 'text-primary bg-background'
                   : 'text-text-secondary'
               }`}
             >

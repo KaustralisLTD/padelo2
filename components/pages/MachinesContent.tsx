@@ -24,7 +24,7 @@ export default function MachinesContent() {
           {t('title')}
         </h1>
         
-        <h2 className="text-3xl md:text-4xl font-orbitron font-semibold mb-3 text-center text-text mt-8">
+        <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-3 text-center text-text mt-8">
           {t('headline')}
         </h2>
         
@@ -67,7 +67,7 @@ export default function MachinesContent() {
               <div className="flex items-start gap-4">
                 <span className="text-3xl">{feature.icon}</span>
                 <div>
-                  <h3 className="text-lg font-orbitron font-semibold mb-2 text-text">
+                  <h3 className="text-lg font-poppins font-bold mb-2 text-text">
                     {t(`features.${feature.key}.title`)}
                   </h3>
                   <p className="text-text-secondary font-poppins text-sm">
@@ -94,7 +94,7 @@ export default function MachinesContent() {
               onClick={() => setShowForm(false)}
               className="mb-6 text-text-secondary hover:text-primary font-poppins transition-colors"
             >
-              ← {t('back', { defaultValue: 'Back' })}
+              ← {t('back')}
             </button>
             <ContactForm email="rent@padelo2.com" subject="Machine Rental Inquiry" />
           </div>

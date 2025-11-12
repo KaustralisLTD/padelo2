@@ -1,16 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #0E0E10;
-  --background-secondary: #111111;
   --primary: #00C4FF;
   --accent: #00FFE0;
+}
+
+/* Dark Theme (default) */
+[data-theme='dark'] {
+  --background: #0E0E10;
+  --background-secondary: #111111;
   --text: #EAF9FF;
   --text-secondary: #B0B0B0;
+  --text-tertiary: #808080;
+  --border: #1F1F1F;
+  --border-hover: #2F2F2F;
+}
+
+/* Light Theme */
+[data-theme='light'] {
+  --background: #FFFFFF;
+  --background-secondary: #F5F5F5;
+  --text: #1A1A1A;
+  --text-secondary: #4A4A4A;
+  --text-tertiary: #6B6B6B;
+  --border: #E0E0E0;
+  --border-hover: #D0D0D0;
 }
 
 * {
@@ -28,10 +46,13 @@ body {
   color: var(--text);
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 @layer utilities {

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
+import { useTheme } from '@/contexts/ThemeContext';
 import LanguageSelector from './LanguageSelector';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,6 +13,8 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { theme } = useTheme();
   const t = useTranslations('Navigation');
   const locale = useLocale();
   const pathname = usePathname();
@@ -24,10 +27,26 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Check if user is authenticated
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      fetch('/api/auth/login', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setIsAuthenticated(!!data.session);
+        })
+        .catch(() => setIsAuthenticated(false));
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
   const navItems = [
-    { key: 'home', href: `/${locale}` },
-    { key: 'tournaments', href: `/${locale}/tournaments` },
     { key: 'academy', href: `/${locale}/academy` },
+    { key: 'tournaments', href: `/${locale}/tournaments` },
     { key: 'machines', href: `/${locale}/machines` },
     { key: 'courts', href: `/${locale}/courts` },
     { key: 'investments', href: `/${locale}/investments` },
@@ -42,8 +61,10 @@ const Header = () => {
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-background/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
+          ? 'bg-[#0E0E10]/95 backdrop-blur-md shadow-lg'
+          : theme === 'light'
+            ? 'bg-[#0E0E10]/95 backdrop-blur-md'
+            : 'bg-transparent'
       }`}
     >
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -73,18 +94,36 @@ const Header = () => {
               key={item.key}
               href={item.href}
               className={`text-sm font-poppins transition-colors hover:text-primary ${
-                pathname === item.href ? 'text-primary' : 'text-text-secondary'
+                pathname === item.href 
+                  ? 'text-primary' 
+                  : theme === 'light'
+                    ? 'text-white/90'
+                    : 'text-text-secondary'
               }`}
             >
               {t(item.key)}
             </Link>
           ))}
+          <Link
+            href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
+            className={`text-sm font-poppins transition-colors hover:text-primary ${
+              theme === 'light'
+                ? 'text-white/90'
+                : 'text-text-secondary'
+            }`}
+          >
+            {isAuthenticated ? t('profile') : t('login')}
+          </Link>
           <LanguageSelector />
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden text-text"
+          className={`lg:hidden transition-colors ${
+            theme === 'light'
+              ? 'text-white'
+              : 'text-text'
+          }`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -120,7 +159,7 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-background-secondary border-t border-gray-800"
+            className="lg:hidden bg-background-secondary border-t border-border"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
               {navItems.map((item) => (
@@ -135,7 +174,16 @@ const Header = () => {
                   {t(item.key)}
                 </Link>
               ))}
-              <div className="pt-4 border-t border-gray-800">
+              <Link
+                href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block text-sm font-poppins transition-colors hover:text-primary ${
+                  (pathname === `/${locale}/login` || pathname === `/${locale}/profile`) ? 'text-primary' : 'text-text-secondary'
+                }`}
+              >
+                {isAuthenticated ? t('profile') : t('login')}
+              </Link>
+              <div className="pt-4 border-t border-border">
                 <LanguageSelector />
               </div>
             </div>

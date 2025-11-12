@@ -13,24 +13,31 @@
     "deploy:static": "bash deploy-static.sh"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.0",
+    "@types/bcrypt": "^6.0.0",
+    "bcrypt": "^6.0.0",
+    "framer-motion": "^11.0.0",
+    "mysql2": "^3.6.5",
     "next": "^14.2.0",
+    "next-intl": "^3.15.0",
+    "nodemailer": "^6.9.8",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "next-intl": "^3.15.0",
-    "framer-motion": "^11.0.0",
-    "react-intersection-observer": "^9.5.0"
+    "react-intersection-observer": "^9.5.0",
+    "resend": "^3.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
+    "@types/nodemailer": "^6.4.14",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.3.0",
-    "tailwindcss": "^3.4.0",
-    "postcss": "^8.4.0",
     "autoprefixer": "^10.4.0",
+    "dotenv": "^17.2.3",
     "eslint": "^8.56.0",
-    "eslint-config-next": "^14.2.0"
+    "eslint-config-next": "^14.2.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.3.0"
   }
 }
-
-

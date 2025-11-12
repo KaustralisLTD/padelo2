@@ -27,7 +27,7 @@ export default function CourtsContent() {
           {t('title')}
         </h1>
         
-        <h2 className="text-3xl md:text-4xl font-orbitron font-semibold mb-3 text-center text-text mt-8">
+        <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-3 text-center text-text mt-8">
           {t('headline')}
         </h2>
         
@@ -60,7 +60,7 @@ export default function CourtsContent() {
 
         {/* Court Images Gallery */}
         <div className="mb-12">
-          <h3 className="text-2xl font-orbitron font-semibold mb-6 text-center text-text">
+          <h3 className="text-2xl font-poppins font-bold mb-6 text-center text-text">
             {t('gallery', { defaultValue: 'Gallery' })}
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -98,7 +98,7 @@ export default function CourtsContent() {
               <div className="flex items-start gap-4">
                 <span className="text-3xl">{feature.icon}</span>
                 <div>
-                  <h3 className="text-lg font-orbitron font-semibold mb-2 text-text">
+                  <h3 className="text-lg font-poppins font-bold mb-2 text-text">
                     {t(`features.${feature.key}.title`)}
                   </h3>
                   <p className="text-text-secondary font-poppins text-sm">
@@ -125,7 +125,7 @@ export default function CourtsContent() {
               onClick={() => setShowForm(false)}
               className="mb-6 text-text-secondary hover:text-primary font-poppins transition-colors"
             >
-              ← {t('back', { defaultValue: 'Back' })}
+              ← {t('back')}
             </button>
             <ContactForm email="club@padelo2.com" subject="Court Quote Request" />
           </div>

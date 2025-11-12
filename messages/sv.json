@@ -8,7 +8,9 @@
     "investments": "Investeringar",
     "partners": "Partners",
     "about": "Om",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "login": "Logga in",
+    "profile": "Profil"
   },
   "Footer": {
     "tagline": "Andas och Lev",
@@ -105,7 +107,8 @@
         "description": "IoT-anslutna träningsmaskiner med AI-analys och realtids prestationsspårning."
       }
     },
-    "cta": "Gå Med i Akademin"
+    "cta": "Gå Med i Akademin",
+    "back": "Tillbaka"
   },
   "Machines": {
     "title": "AI-Drivna Träningsmaskiner",
@@ -134,7 +137,8 @@
         "description": "Självbetjäning via QR-skåp"
       }
     },
-    "cta": "Utforska maskinerna"
+    "cta": "Utforska maskinerna",
+    "back": "Tillbaka"
   },
   "Courts": {
     "title": "Padel Banor",
@@ -170,7 +174,8 @@
       "mobile": "Mobil"
     },
     "gallery": "Galleri",
-    "cta": "Få specifikationer och offert"
+    "cta": "Få specifikationer och offert",
+    "back": "Tillbaka"
   },
   "Partners": {
     "title": "Våra Partners",
@@ -202,7 +207,103 @@
       }
     },
     "partners": "Våra Partners",
-    "cta": "Bli Partner"
+    "cta": "Bli Partner",
+    "back": "Tillbaka"
+  },
+  "Tournaments": {
+    "title": "Turneringar",
+    "headline": "Tävla på Högsta Nivå",
+    "subhead": "Gå med i professionella och amatör padel turneringar världen över",
+    "description": "Upptäck kommande padel turneringar och registrera dig för att tävla.",
+    "body": "PadelO₂ organiserar och stödjer turneringar på alla nivåer, från lokala klubbtävlingar till internationella mästerskap. Oavsett om du är en professionell spelare eller en passionerad amatör, hitta den perfekta turneringen för att visa dina färdigheter och ansluta dig med padel gemenskapen.",
+    "cta": "Registrera Dig Nu",
+    "verySoon": "MYCKET SNART",
+    "comingSoon": "Kommer Snart",
+    "back": "Tillbaka till Turneringar",
+    "registerFor": "Registrering för",
+    "photoUploadInfo": "Ladda upp din foto. Filnamn: Förnamn_Efternamn.jpg (t.ex: Erik_Andersson.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 December 2025"
+    },
+    "tournament2": {
+      "name": "Kommande Turnering",
+      "subtitle": "Detaljer Kommer Snart",
+      "date": "TBA"
+    },
+    "categories": {
+      "male1": "Herr 1",
+      "male2": "Herr 2",
+      "female1": "Dam 1",
+      "female2": "Dam 2",
+      "mixed1": "Mixed 1",
+      "mixed2": "Mixed 2"
+    },
+    "form": {
+      "firstName": "Förnamn",
+      "lastName": "Efternamn",
+      "email": "Email",
+      "telegram": "Telegram Konto",
+      "phone": "Telefon",
+      "categories": "Kategorier",
+      "selectMultiple": "Du kan välja flera (t.ex: Herr + Mixed)",
+      "categoryHelp": "Du kan bara välja en Herr (1 eller 2), en Dam (1 eller 2) och en Mixed (1 eller 2). Du kan välja Herr + Mixed eller Dam + Mixed, men du kan inte välja två Herr-, två Dam- eller två Mixed-kategorier samtidigt.",
+      "tshirtSize": "T-shirt Storlek",
+      "selectSize": "Välj storlek",
+      "addPartner": "Lägg till Partner",
+      "removePartner": "Ta bort Partner",
+      "partnerName": "Partner Namn",
+      "partnerEmail": "Partner Email",
+      "partnerPhone": "Partner Telefon",
+      "partnerTshirtSize": "Partnerns T-shirtstorlek",
+      "partnerSelectSize": "Välj partnerns storlek",
+      "partnerPhoto": "Partnerfoto",
+      "partnerPhotoOptional": "Ladda upp partnerfoto (valfritt)",
+      "message": "Meddelande",
+      "messagePlaceholder": "Jag skulle vilja lämna ytterligare preferenser angående tidsplanen för mina matcher",
+      "optional": "Valfritt",
+      "registerButton": "REGISTRERA DIG NU",
+      "submitting": "Skickar...",
+      "success": "Registrering lyckades! Kontrollera din email för bekräftelse.",
+      "error": "Fel vid sändning av registrering. Försök igen.",
+      "validation": {
+        "selectCategory": "Välj minst en kategori"
+      },
+      "photoInstructions": {
+        "title": "Instruktioner för Foto Uppladdning",
+        "text": "Ladda upp din foto för turneringen. Foton kommer att användas för din spelarprofil och turneringsmaterial.",
+        "filename": "Filnamn format",
+        "filenameExample": "Förnamn_Efternamn.jpg (t.ex: Erik_Andersson.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registrering Bekräftad",
+      "description": "Din turneringsregistrering är bekräftad",
+      "loading": "Bekräftar din registrering...",
+      "success": "Din registrering har bekräftats!",
+      "error": "Ogiltig eller utgången bekräftelselänk. Kontakta support.",
+      "backToTournaments": "Tillbaka till Turneringar",
+      "registrationDetails": "Registreringsdetaljer",
+      "goToDashboard": "Gå till Dashboard"
+    },
+    "dashboard": {
+      "title": "Turneringsdeltagare Dashboard",
+      "description": "Din turneringsregistreringsdashboard",
+      "loading": "Laddar din dashboard...",
+      "noRegistration": "Ingen registrering hittades. Registrera dig först för en turnering.",
+      "registerNow": "Registrera Dig Nu",
+      "registrationInfo": "Registreringsinformation",
+      "tournamentInfo": "Turneringsinformation",
+      "tournament": "Turnering",
+      "status": "Status",
+      "confirmed": "Bekräftad",
+      "pending": "Väntar på Bekräftelse",
+      "partnerInfo": "Partnerinformation",
+      "photoUpload": "Foto Uppladdning",
+      "photoInstructions": "Ladda upp din foto. Filen ska heta: Förnamn_Efternamn.jpg",
+      "uploadPhoto": "Ladda Upp Foto"
+    }
   },
   "Contact": {
     "title": "Kontakta Oss",
@@ -228,6 +329,30 @@
   "WhatsApp": {
     "button": "Chatta på WhatsApp",
     "message": "Hej! Jag är intresserad av att lära mig mer om era padel-tjänster."
+  },
+  "Login": {
+    "title": "Logga In",
+    "description": "Få tillgång till ditt konto",
+    "loginTitle": "Välkommen Tillbaka",
+    "loginDescription": "Logga in på ditt konto",
+    "registerTitle": "Skapa Konto",
+    "registerDescription": "Gå med i PadelO₂ gemenskapen",
+    "login": "Logga In",
+    "profile": "Profil",
+    "register": "Registrera",
+    "email": "Email",
+    "password": "Lösenord",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "confirmPassword": "Bekräfta Lösenord",
+    "loginButton": "Logga In",
+    "registerButton": "Skapa Konto",
+    "submitting": "Bearbetar...",
+    "errors": {
+      "invalidCredentials": "Ogiltig email eller lösenord",
+      "passwordMismatch": "Lösenorden matchar inte",
+      "registrationFailed": "Registrering misslyckades. Försök igen.",
+      "generic": "Ett fel uppstod. Försök igen."
+    }
   }
 }
-

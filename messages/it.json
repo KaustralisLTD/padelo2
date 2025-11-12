@@ -8,7 +8,9 @@
     "investments": "Investimenti",
     "partners": "Partner",
     "about": "Chi Siamo",
-    "contact": "Contatti"
+    "contact": "Contatti",
+    "login": "Accedi",
+    "profile": "Profilo"
   },
   "Footer": {
     "tagline": "Respira e Vivi",
@@ -105,7 +107,8 @@
         "description": "Macchine di allenamento connesse IoT con analisi IA e monitoraggio delle prestazioni in tempo reale. Allena in modo più intelligente con informazioni basate sui dati e programmi di allenamento adattivi."
       }
     },
-    "cta": "Unisciti all'Accademia"
+    "cta": "Unisciti all'Accademia",
+    "back": "Indietro"
   },
   "Machines": {
     "title": "Macchine di Allenamento Alimentate da IA",
@@ -134,7 +137,8 @@
         "description": "Self-service tramite armadietto QR"
       }
     },
-    "cta": "Esplora le macchine"
+    "cta": "Esplora le macchine",
+    "back": "Indietro"
   },
   "Courts": {
     "title": "Campi Padel",
@@ -170,7 +174,8 @@
       "mobile": "Mobile"
     },
     "gallery": "Galleria",
-    "cta": "Ottieni specifiche e preventivo"
+    "cta": "Ottieni specifiche e preventivo",
+    "back": "Indietro"
   },
   "Partners": {
     "title": "I Nostri Partner",
@@ -200,7 +205,8 @@
         "description": "Connettiti con comunità, club e giocatori di padel in tutto il mondo attraverso il nostro ecosistema"
       }
     },
-    "cta": "Diventa Partner"
+    "cta": "Diventa Partner",
+    "back": "Indietro"
   },
   "Tournaments": {
     "title": "Tornei",
@@ -208,7 +214,94 @@
     "subhead": "Unisciti a tornei di padel professionali e amatoriali in tutto il mondo",
     "description": "Scopri i prossimi tornei di padel e registrati per competere.",
     "body": "PadelO₂ organizza e supporta tornei a tutti i livelli, dalle competizioni di club locali ai campionati internazionali. Che tu sia un giocatore professionista o un appassionato amatore, trova il torneo perfetto per mostrare le tue abilità e connetterti con la comunità del padel.",
-    "cta": "Registrati Ora"
+    "cta": "Registrati Ora",
+    "verySoon": "MOLTO PRESTO",
+    "comingSoon": "Prossimamente",
+    "back": "Torna ai Tornei",
+    "registerFor": "Registrazione per",
+    "photoUploadInfo": "Si prega di caricare la tua foto. Nome file: Nome_Cognome.jpg (es: Mario_Rossi.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 Dicembre 2025"
+    },
+    "tournament2": {
+      "name": "Prossimo Torneo",
+      "subtitle": "Dettagli Prossimamente",
+      "date": "Da Confermare"
+    },
+    "categories": {
+      "male1": "Maschile 1",
+      "male2": "Maschile 2",
+      "female1": "Femminile 1",
+      "female2": "Femminile 2",
+      "mixed1": "Misto 1",
+      "mixed2": "Misto 2"
+    },
+    "form": {
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Email",
+      "telegram": "Account Telegram",
+      "phone": "Telefono",
+      "categories": "Categorie",
+      "selectMultiple": "Puoi selezionare più opzioni (es: Maschile + Misto)",
+      "categoryHelp": "Puoi selezionare solo una categoria Maschile (1 o 2), una Femminile (1 o 2) e una Mista (1 o 2). Puoi scegliere Maschile + Mista o Femminile + Mista, ma non puoi selezionare due categorie Maschili, due Femminili o due Miste contemporaneamente.",
+      "tshirtSize": "Taglia T-shirt",
+      "selectSize": "Seleziona taglia",
+      "addPartner": "Aggiungi Partner",
+      "removePartner": "Rimuovi Partner",
+      "partnerName": "Nome Partner",
+      "partnerEmail": "Email Partner",
+      "partnerPhone": "Telefono Partner",
+      "partnerTshirtSize": "Taglia maglietta del partner",
+      "partnerSelectSize": "Seleziona la taglia del partner",
+      "partnerPhoto": "Foto del partner",
+      "partnerPhotoOptional": "Carica la foto del partner (opzionale)",
+      "message": "Messaggio",
+      "messagePlaceholder": "Vorrei lasciare preferenze aggiuntive riguardo agli orari delle mie partite",
+      "optional": "Opzionale",
+      "registerButton": "REGISTRATI ORA",
+      "submitting": "Invio in corso...",
+      "success": "Registrazione riuscita! Controlla la tua email per la conferma.",
+      "error": "Errore nell'invio della registrazione. Riprova.",
+      "validation": {
+        "selectCategory": "Seleziona almeno una categoria"
+      },
+      "photoInstructions": {
+        "title": "Istruzioni per Caricare Foto",
+        "text": "Si prega di caricare la tua foto per il torneo. La foto sarà utilizzata per il tuo profilo giocatore e i materiali del torneo.",
+        "filename": "Formato nome file",
+        "filenameExample": "Nome_Cognome.jpg (es: Mario_Rossi.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registrazione Confermata",
+      "description": "La tua registrazione al torneo è stata confermata",
+      "loading": "Conferma della tua registrazione...",
+      "success": "La tua registrazione è stata confermata con successo!",
+      "error": "Link di conferma non valido o scaduto. Contatta il supporto.",
+      "backToTournaments": "Torna ai Tornei",
+      "registrationDetails": "Dettagli Registrazione",
+      "goToDashboard": "Vai alla Dashboard"
+    },
+    "dashboard": {
+      "title": "Dashboard Partecipante Torneo",
+      "description": "La tua dashboard di registrazione al torneo",
+      "loading": "Caricamento della tua dashboard...",
+      "noRegistration": "Nessuna registrazione trovata. Registrati prima a un torneo.",
+      "registerNow": "Registrati Ora",
+      "registrationInfo": "Informazioni Registrazione",
+      "tournamentInfo": "Informazioni Torneo",
+      "tournament": "Torneo",
+      "status": "Stato",
+      "confirmed": "Confermato",
+      "pending": "In Attesa di Conferma",
+      "partnerInfo": "Informazioni Partner",
+      "photoUpload": "Caricamento Foto",
+      "photoInstructions": "Si prega di caricare la tua foto. Il file deve essere nominato: Nome_Cognome.jpg",
+      "uploadPhoto": "Carica Foto"
+    }
   },
   "Contact": {
     "title": "Contattaci",
@@ -234,6 +327,30 @@
   "WhatsApp": {
     "button": "Chatta su WhatsApp",
     "message": "Ciao! Sono interessato a saperne di più sui vostri servizi di padel."
+  },
+  "Login": {
+    "title": "Accedi",
+    "description": "Accedi al tuo account",
+    "loginTitle": "Bentornato",
+    "loginDescription": "Accedi al tuo account",
+    "registerTitle": "Crea Account",
+    "registerDescription": "Unisciti alla comunità PadelO₂",
+    "login": "Accedi",
+    "profile": "Profilo",
+    "register": "Registrati",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "confirmPassword": "Conferma Password",
+    "loginButton": "Accedi",
+    "registerButton": "Crea Account",
+    "submitting": "Elaborazione...",
+    "errors": {
+      "invalidCredentials": "Email o password non validi",
+      "passwordMismatch": "Le password non corrispondono",
+      "registrationFailed": "Registrazione fallita. Riprova.",
+      "generic": "Si è verificato un errore. Riprova."
+    }
   }
 }
-

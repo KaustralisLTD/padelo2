@@ -8,7 +8,9 @@
     "investments": "Investeringen",
     "partners": "Partners",
     "about": "Over",
-    "contact": "Contact"
+    "contact": "Contact",
+    "login": "Inloggen",
+    "profile": "Profiel"
   },
   "Footer": {
     "tagline": "Adem en Leef",
@@ -105,7 +107,8 @@
         "title": "Slimme Training",
         "description": "IoT-verbonden trainingsmachines met AI-analyse en real-time prestatievolging."
       }
-    }
+    },
+    "back": "Terug"
   },
   "Machines": {
     "title": "AI-Aangedreven Trainingsmachines",
@@ -134,7 +137,8 @@
         "description": "Self-service via QR-locker"
       }
     },
-    "cta": "Machines verkennen"
+    "cta": "Machines verkennen",
+    "back": "Terug"
   },
   "Courts": {
     "title": "Padel Banen",
@@ -170,24 +174,135 @@
       "mobile": "Mobiel"
     },
     "gallery": "Galerij",
-    "cta": "Specificaties & offerte krijgen"
+    "cta": "Specificaties & offerte krijgen",
+    "back": "Terug"
   },
   "Partners": {
     "title": "Onze Partners",
+    "headline": "Samen Groeien in het Padel Ecosysteem",
+    "subhead": "Strategische partnerschappen voor wederzijds succes",
     "description": "Word lid van een netwerk van toonaangevende bedrijven en organisaties in het padel ecosysteem.",
+    "body": "PadelO₂ werkt samen met vooruitstrevende bedrijven, clubs en investeerders om de wereldwijde padel gemeenschap uit te breiden. We bieden verschillende partnerschapsmodellen op maat voor uw bedrijfsbehoeften, van merk samenwerkingen tot joint ventures en technologielicenties.",
     "benefits": {
+      "title": "Partnerschapsvoordelen",
       "visibility": {
         "title": "Merkzichtbaarheid",
-        "description": "Verhoog uw merkexpositie in de groeiende padel markt"
+        "description": "Verhoog uw merkexpositie in de groeiende padel markt door co-marketing en evenementenpartnerschappen"
       },
       "roi": {
         "title": "ROI Mogelijkheden",
-        "description": "Toegang tot winstgevende investeringsmogelijkheden in padel infrastructuur"
+        "description": "Toegang tot winstgevende investeringsmogelijkheden in padel infrastructuur, technologie en wereldwijde expansie"
       },
       "marketing": {
         "title": "Co-Marketing",
-        "description": "Samenwerken aan marketingcampagnes en evenementen"
+        "description": "Samenwerken aan marketingcampagnes, toernooien en evenementen om bredere doelgroepen te bereiken"
+      },
+      "technology": {
+        "title": "Technologie Toegang",
+        "description": "Gebruik onze AI-aangedreven trainingsmachines, baanbeheersystemen en digitale platforms"
+      },
+      "network": {
+        "title": "Wereldwijd Netwerk",
+        "description": "Verbind met padel gemeenschappen, clubs en spelers wereldwijd via ons ecosysteem"
       }
+    },
+    "partners": "Onze Partners",
+    "cta": "Word Partner",
+    "back": "Terug"
+  },
+  "Tournaments": {
+    "title": "Toernooien",
+    "headline": "Competitie op het Hoogste Niveau",
+    "subhead": "Doe mee aan professionele en amateure padel toernooien wereldwijd",
+    "description": "Ontdek aankomende padel toernooien en registreer je om deel te nemen.",
+    "body": "PadelO₂ organiseert en ondersteunt toernooien op alle niveaus, van lokale clubcompetities tot internationale kampioenschappen. Of je nu een professionele speler bent of een gepassioneerde amateur, vind het perfecte toernooi om je vaardigheden te tonen en contact te maken met de padel gemeenschap.",
+    "cta": "Registreer Nu",
+    "verySoon": "ZEER BINNENKORT",
+    "comingSoon": "Binnenkort",
+    "back": "Terug naar Toernooien",
+    "registerFor": "Registratie voor",
+    "photoUploadInfo": "Upload uw foto. Bestandsnaam: Voornaam_Achternaam.jpg (bijv: Jan_Jansen.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 December 2025"
+    },
+    "tournament2": {
+      "name": "Aankomend Toernooi",
+      "subtitle": "Details Binnenkort",
+      "date": "Nader Te Bepalen"
+    },
+    "categories": {
+      "male1": "Heren 1",
+      "male2": "Heren 2",
+      "female1": "Dames 1",
+      "female2": "Dames 2",
+      "mixed1": "Gemengd 1",
+      "mixed2": "Gemengd 2"
+    },
+    "form": {
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "email": "Email",
+      "telegram": "Telegram Account",
+      "phone": "Telefoon",
+      "categories": "Categorieën",
+      "selectMultiple": "U kunt meerdere selecteren (bijv: Heren + Gemengd)",
+      "categoryHelp": "U kunt slechts één Heren (1 of 2), één Dames (1 of 2) en één Gemengd (1 of 2) selecteren. U kunt Heren + Gemengd of Dames + Gemengd kiezen, maar u kunt niet twee Heren-, twee Dames- of twee Gemengde categorieën tegelijk selecteren.",
+      "tshirtSize": "T-shirt Maat",
+      "selectSize": "Selecteer maat",
+      "addPartner": "Partner Toevoegen",
+      "removePartner": "Partner Verwijderen",
+      "partnerName": "Partner Naam",
+      "partnerEmail": "Partner Email",
+      "partnerPhone": "Partner Telefoon",
+      "partnerTshirtSize": "T-shirtmaat partner",
+      "partnerSelectSize": "Kies de maat van de partner",
+      "partnerPhoto": "Foto van partner",
+      "partnerPhotoOptional": "Upload een partnerfoto (optioneel)",
+      "message": "Bericht",
+      "messagePlaceholder": "Ik zou graag aanvullende voorkeuren willen achterlaten met betrekking tot de timing van mijn wedstrijden",
+      "optional": "Optioneel",
+      "registerButton": "REGISTREER NU",
+      "submitting": "Verzenden...",
+      "success": "Registratie succesvol! Controleer uw email voor bevestiging.",
+      "error": "Fout bij het verzenden van de registratie. Probeer het opnieuw.",
+      "validation": {
+        "selectCategory": "Selecteer ten minste één categorie"
+      },
+      "photoInstructions": {
+        "title": "Foto Upload Instructies",
+        "text": "Upload uw foto voor het toernooi. De foto wordt gebruikt voor uw spelerprofiel en toernooimateriaal.",
+        "filename": "Bestandsnaam formaat",
+        "filenameExample": "Voornaam_Achternaam.jpg (bijv: Jan_Jansen.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registratie Bevestigd",
+      "description": "Uw toernooi registratie is bevestigd",
+      "loading": "Uw registratie bevestigen...",
+      "success": "Uw registratie is succesvol bevestigd!",
+      "error": "Ongeldige of verlopen bevestigingslink. Neem contact op met ondersteuning.",
+      "backToTournaments": "Terug naar Toernooien",
+      "registrationDetails": "Registratie Details",
+      "goToDashboard": "Ga naar Dashboard"
+    },
+    "dashboard": {
+      "title": "Toernooi Deelnemer Dashboard",
+      "description": "Uw toernooi registratie dashboard",
+      "loading": "Uw dashboard laden...",
+      "noRegistration": "Geen registratie gevonden. Registreer u eerst voor een toernooi.",
+      "registerNow": "Registreer Nu",
+      "registrationInfo": "Registratie Informatie",
+      "tournamentInfo": "Toernooi Informatie",
+      "tournament": "Toernooi",
+      "status": "Status",
+      "confirmed": "Bevestigd",
+      "pending": "In Afwachting van Bevestiging",
+      "partnerInfo": "Partner Informatie",
+      "photoUpload": "Foto Upload",
+      "photoInstructions": "Upload uw foto. Het bestand moet worden genoemd: Voornaam_Achternaam.jpg",
+      "uploadPhoto": "Upload Foto"
     }
   },
   "Contact": {
@@ -214,4 +329,3 @@
     "message": "Hallo! Ik ben geïnteresseerd in meer informatie over uw padel diensten."
   }
 }
-

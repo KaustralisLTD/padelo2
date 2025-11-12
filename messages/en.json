@@ -8,7 +8,9 @@
     "investments": "Investments",
     "partners": "Partners",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "login": "Login",
+    "profile": "Profile"
   },
   "Footer": {
     "tagline": "Breathe and Live",
@@ -124,7 +126,8 @@
         "description": "IoT-connected training machines with AI analysis and real-time performance tracking. Train smarter with data-driven insights and adaptive training programs."
       }
     },
-    "cta": "Join the Academy"
+    "cta": "Join the Academy",
+    "back": "Back"
   },
   "Machines": {
     "title": "AI-Powered Training Machines",
@@ -153,7 +156,8 @@
         "description": "Self-service via QR locker"
       }
     },
-    "cta": "Explore the machines"
+    "cta": "Explore the machines",
+    "back": "Back"
   },
   "About": {
     "title": "About PadelO₂",
@@ -212,7 +216,8 @@
       "mobile": "Mobile"
     },
     "gallery": "Gallery",
-    "cta": "Get specs & quote"
+    "cta": "Get specs & quote",
+    "back": "Back"
   },
   "Partners": {
     "title": "Our Partners",
@@ -244,7 +249,8 @@
       }
     },
     "partners": "Our Partners",
-    "cta": "Become a Partner"
+    "cta": "Become a Partner",
+    "back": "Back"
   },
   "Tournaments": {
     "title": "Tournaments",
@@ -252,7 +258,94 @@
     "subhead": "Join professional and amateur padel tournaments worldwide",
     "description": "Discover upcoming padel tournaments and register to compete.",
     "body": "PadelO₂ organizes and supports tournaments at all levels, from local club competitions to international championships. Whether you're a professional player or a passionate amateur, find the perfect tournament to showcase your skills and connect with the padel community.",
-    "cta": "Register Now"
+    "cta": "Register Now",
+    "verySoon": "VERY SOON",
+    "comingSoon": "Coming Soon",
+    "back": "Back to tournaments",
+    "registerFor": "Register for",
+    "photoUploadInfo": "Please upload your photo. File name: FirstName_LastName.jpg (e.g., John_Doe.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "December 19-21, 2025"
+    },
+    "tournament2": {
+      "name": "Upcoming Tournament",
+      "subtitle": "Details Coming Soon",
+      "date": "TBA"
+    },
+    "categories": {
+      "male1": "Men's 1",
+      "male2": "Men's 2",
+      "female1": "Women's 1",
+      "female2": "Women's 2",
+      "mixed1": "Mixed 1",
+      "mixed2": "Mixed 2"
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "telegram": "Telegram Account",
+      "phone": "Phone",
+      "categories": "Categories",
+      "selectMultiple": "You can select multiple (e.g., Men's + Mixed)",
+      "categoryHelp": "You can only select one Men's (1 or 2), one Women's (1 or 2), and one Mixed (1 or 2). You may combine Men's + Mixed or Women's + Mixed, but you cannot select two Men's, two Women's, or two Mixed categories at the same time.",
+      "tshirtSize": "T-shirt Size",
+      "selectSize": "Select size",
+      "addPartner": "Add Partner",
+      "removePartner": "Remove Partner",
+      "partnerName": "Partner Name",
+      "partnerEmail": "Partner Email",
+      "partnerPhone": "Partner Phone",
+      "partnerTshirtSize": "Partner T-shirt Size",
+      "partnerSelectSize": "Select partner size",
+      "partnerPhoto": "Partner Photo",
+      "partnerPhotoOptional": "Upload partner photo (optional)",
+      "message": "Message",
+      "messagePlaceholder": "I would like to leave additional preferences regarding the timing of my games",
+      "optional": "Optional",
+      "registerButton": "REGISTER NOW",
+      "submitting": "Submitting...",
+      "success": "Registration successful! Please check your email for confirmation.",
+      "error": "Error submitting registration. Please try again.",
+      "validation": {
+        "selectCategory": "Please select at least one category"
+      },
+      "photoInstructions": {
+        "title": "Photo Upload Instructions",
+        "text": "Please upload your photo for the tournament. The photo will be used for your player profile and tournament materials.",
+        "filename": "File name format",
+        "filenameExample": "FirstName_LastName.jpg (e.g., John_Doe.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registration Confirmed",
+      "description": "Your tournament registration has been confirmed",
+      "loading": "Confirming your registration...",
+      "success": "Your registration has been successfully confirmed!",
+      "error": "Invalid or expired confirmation link. Please contact support.",
+      "backToTournaments": "Back to Tournaments",
+      "registrationDetails": "Registration Details",
+      "goToDashboard": "Go to Dashboard"
+    },
+    "dashboard": {
+      "title": "Tournament Participant Dashboard",
+      "description": "Your tournament registration dashboard",
+      "loading": "Loading your dashboard...",
+      "noRegistration": "No registration found. Please register for a tournament first.",
+      "registerNow": "Register Now",
+      "registrationInfo": "Registration Information",
+      "tournamentInfo": "Tournament Information",
+      "tournament": "Tournament",
+      "status": "Status",
+      "confirmed": "Confirmed",
+      "pending": "Pending Confirmation",
+      "partnerInfo": "Partner Information",
+      "photoUpload": "Photo Upload",
+      "photoInstructions": "Please upload your photo. The file should be named: FirstName_LastName.jpg",
+      "uploadPhoto": "Upload Photo"
+    }
   },
   "Contact": {
     "title": "Get in Touch",
@@ -278,6 +371,130 @@
   "WhatsApp": {
     "button": "Chat on WhatsApp",
     "message": "Hello! I'm interested in learning more about your padel services."
+  },
+  "Login": {
+    "title": "Login",
+    "description": "Access your account",
+    "loginTitle": "Welcome Back",
+    "loginDescription": "Sign in to your account",
+    "registerTitle": "Create Account",
+    "registerDescription": "Join PadelO₂ community",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Sign In",
+    "registerButton": "Create Account",
+    "submitting": "Processing...",
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "passwordMismatch": "Passwords do not match",
+      "registrationFailed": "Registration failed. Please try again.",
+      "generic": "An error occurred. Please try again."
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "description": "Your personal dashboard",
+    "loading": "Loading...",
+    "superadmin": {
+      "title": "Super Admin Dashboard",
+      "description": "Manage all aspects of PadelO₂",
+      "manageUsers": "Manage Users",
+      "manageUsersDesc": "Create, edit, and manage all user accounts",
+      "manageTournaments": "Manage Tournaments",
+      "manageTournamentsDesc": "Create and manage tournaments",
+      "manageStaff": "Manage Staff",
+      "manageStaffDesc": "Assign roles and manage staff members"
+    },
+    "staff": {
+      "title": "Staff Dashboard",
+      "description": "Manage tournaments and registrations",
+      "manageRegistrations": "Manage Registrations",
+      "manageRegistrationsDesc": "View and edit tournament registrations",
+      "editPlayers": "Edit Players",
+      "editPlayersDesc": "Manage player lists and information"
+    },
+    "participant": {
+      "title": "Participant Dashboard",
+      "description": "Your tournament information",
+      "myRegistration": "My Registration",
+      "myRegistrationDesc": "View your tournament registration details",
+      "schedule": "My Schedule",
+      "scheduleDesc": "View your match schedule",
+      "results": "My Results",
+      "resultsDesc": "View your match results"
+    }
+  },
+  "Admin": {
+    "loading": "Loading...",
+    "backToDashboard": "Back to Dashboard",
+    "users": {
+      "title": "Manage Users",
+      "description": "Create, edit, and manage all user accounts",
+      "comingSoon": "User management interface coming soon...",
+      "createUser": "Create User",
+      "editUser": "Edit User",
+      "email": "Email",
+      "name": "Name",
+      "role": "Role",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "noUsers": "No users found",
+      "password": "Password",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update"
+    },
+    "tournaments": {
+      "title": "Manage Tournaments",
+      "description": "Create and manage tournaments",
+      "comingSoon": "Tournament management interface coming soon..."
+    },
+    "staff": {
+      "title": "Manage Staff",
+      "description": "Assign roles and manage staff members",
+      "comingSoon": "Staff management interface coming soon..."
+    }
+  },
+  "Profile": {
+    "title": "Profile",
+    "description": "Manage your personal information and settings",
+    "loading": "Loading profile...",
+    "backToDashboard": "Back to Dashboard",
+    "photo": "Photo",
+    "noPhoto": "No photo",
+    "photoHint": "Maximum 5MB. JPG, PNG formats.",
+    "photoSizeError": "Photo size must be less than 5MB",
+    "basicInfo": "Basic Information",
+    "contactInfo": "Contact Information",
+    "additionalInfo": "Additional Information",
+    "email": "Email",
+    "role": "Role",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "telegram": "Telegram",
+    "dateOfBirth": "Date of Birth",
+    "tshirtSize": "T-shirt Size",
+    "selectSize": "Select size",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Failed to update profile. Please try again.",
+    "roles": {
+      "superadmin": "Super Admin",
+      "staff": "Staff",
+      "participant": "Participant"
+    }
   }
 }
 

@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
+import { useTheme } from '@/contexts/ThemeContext';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
   const [logoError, setLogoError] = useState(false);
+  const { theme } = useTheme();
   const t = useTranslations('Hero');
+  const locale = useLocale();
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -22,7 +26,11 @@ const Hero = () => {
         >
           <source src="/videos/hero-bg.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/30 to-background/50" />
+        <div className={`absolute inset-0 ${
+          theme === 'light'
+            ? 'bg-gradient-to-b from-black/50 via-black/40 to-black/60'
+            : 'bg-gradient-to-b from-background/40 via-background/30 to-background/50'
+        }`} />
       </div>
 
       {/* Content */}
@@ -66,12 +74,18 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <button className="px-8 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity">
+          <Link 
+            href={`/${locale}/tournaments`}
+            className="px-8 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
             {t('ctaPrimary')}
-          </button>
-          <button className="px-8 py-3 border-2 border-primary text-primary font-orbitron font-semibold rounded-lg hover:bg-primary/10 transition-colors">
+          </Link>
+          <Link 
+            href={`/${locale}/about`}
+            className="px-8 py-3 border-2 border-primary text-primary font-orbitron font-semibold rounded-lg hover:bg-primary/10 transition-colors"
+          >
             {t('ctaSecondary')}
-          </button>
+          </Link>
         </motion.div>
       </div>
 

@@ -8,7 +8,9 @@
     "investments": "Investeringer",
     "partners": "Partnere",
     "about": "Om",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "login": "Log ind",
+    "profile": "Profil"
   },
   "Footer": {
     "tagline": "Træk Vejret og Lev",
@@ -105,7 +107,8 @@
         "description": "IoT-forbundne træningsmaskiner med AI-analyse og realtids præstationssporing."
       }
     },
-    "cta": "Bliv Medlem af Akademiet"
+    "cta": "Bliv Medlem af Akademiet",
+    "back": "Tilbage"
   },
   "Machines": {
     "title": "AI-Drevne Træningsmaskiner",
@@ -134,7 +137,8 @@
         "description": "Selvbetjening via QR-skab"
       }
     },
-    "cta": "Udforsk maskinerne"
+    "cta": "Udforsk maskinerne",
+    "back": "Tilbage"
   },
   "Courts": {
     "title": "Padel Baner",
@@ -170,7 +174,8 @@
       "mobile": "Mobil"
     },
     "gallery": "Galleri",
-    "cta": "Få specifikationer og tilbud"
+    "cta": "Få specifikationer og tilbud",
+    "back": "Tilbage"
   },
   "Partners": {
     "title": "Vores Partnere",
@@ -202,7 +207,103 @@
       }
     },
     "partners": "Vores Partnere",
-    "cta": "Bliv Partner"
+    "cta": "Bliv Partner",
+    "back": "Tilbage"
+  },
+  "Tournaments": {
+    "title": "Turneringer",
+    "headline": "Konkurrér på Det Højeste Niveau",
+    "subhead": "Deltag i professionelle og amatør padel turneringer verden over",
+    "description": "Opdag kommende padel turneringer og registrer dig for at deltage.",
+    "body": "PadelO₂ organiserer og støtter turneringer på alle niveauer, fra lokale klubkonkurrencer til internationale mesterskaber. Uanset om du er en professionel spiller eller en passioneret amatør, find den perfekte turnering for at vise dine færdigheder og forbinde dig med padel fællesskabet.",
+    "cta": "Registrer Dig Nu",
+    "verySoon": "MEGET SNART",
+    "comingSoon": "Kommer Snart",
+    "back": "Tilbage til Turneringer",
+    "registerFor": "Registrering for",
+    "photoUploadInfo": "Upload venligst dit foto. Filnavn: Fornavn_Efternavn.jpg (fx: Jens_Hansen.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 December 2025"
+    },
+    "tournament2": {
+      "name": "Kommende Turnering",
+      "subtitle": "Detaljer Kommer Snart",
+      "date": "TBA"
+    },
+    "categories": {
+      "male1": "Herre 1",
+      "male2": "Herre 2",
+      "female1": "Dame 1",
+      "female2": "Dame 2",
+      "mixed1": "Mixed 1",
+      "mixed2": "Mixed 2"
+    },
+    "form": {
+      "firstName": "Fornavn",
+      "lastName": "Efternavn",
+      "email": "Email",
+      "telegram": "Telegram Konto",
+      "phone": "Telefon",
+      "categories": "Kategorier",
+      "selectMultiple": "Du kan vælge flere (fx: Herre + Mixed)",
+      "categoryHelp": "Du kan kun vælge én Herre (1 eller 2), én Kvinde (1 eller 2) og én Mixed (1 eller 2). Du kan vælge Herre + Mixed eller Kvinde + Mixed, men du kan ikke vælge to Herre-, to Kvinde- eller to Mixed-kategorier samtidigt.",
+      "tshirtSize": "T-shirt Størrelse",
+      "selectSize": "Vælg størrelse",
+      "addPartner": "Tilføj Partner",
+      "removePartner": "Fjern Partner",
+      "partnerName": "Partner Navn",
+      "partnerEmail": "Partner Email",
+      "partnerPhone": "Partner Telefon",
+      "partnerTshirtSize": "Partner T-shirt størrelse",
+      "partnerSelectSize": "Vælg partnerens størrelse",
+      "partnerPhoto": "Partnerfoto",
+      "partnerPhotoOptional": "Upload partnerfoto (valgfrit)",
+      "message": "Besked",
+      "messagePlaceholder": "Jeg vil gerne efterlade yderligere præferencer vedrørende tidsplanen for mine kampe",
+      "optional": "Valgfrit",
+      "registerButton": "REGISTRER DIG NU",
+      "submitting": "Sender...",
+      "success": "Registrering succesfuld! Tjek venligst din email for bekræftelse.",
+      "error": "Fejl ved afsendelse af registrering. Prøv venligst igen.",
+      "validation": {
+        "selectCategory": "Vælg venligst mindst én kategori"
+      },
+      "photoInstructions": {
+        "title": "Instruktioner til Foto Upload",
+        "text": "Upload venligst dit foto til turneringen. Fotoet vil blive brugt til din spillerprofil og turneringsmaterialer.",
+        "filename": "Filnavn format",
+        "filenameExample": "Fornavn_Efternavn.jpg (fx: Jens_Hansen.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registrering Bekræftet",
+      "description": "Din turneringsregistrering er bekræftet",
+      "loading": "Bekræfter din registrering...",
+      "success": "Din registrering er blevet bekræftet!",
+      "error": "Ugyldigt eller udløbet bekræftelseslink. Kontakt venligst support.",
+      "backToTournaments": "Tilbage til Turneringer",
+      "registrationDetails": "Registreringsdetaljer",
+      "goToDashboard": "Gå til Dashboard"
+    },
+    "dashboard": {
+      "title": "Turneringsdeltager Dashboard",
+      "description": "Dit turneringsregistreringsdashboard",
+      "loading": "Indlæser dit dashboard...",
+      "noRegistration": "Ingen registrering fundet. Registrer dig venligst til en turnering først.",
+      "registerNow": "Registrer Dig Nu",
+      "registrationInfo": "Registreringsinformation",
+      "tournamentInfo": "Turneringsinformation",
+      "tournament": "Turnering",
+      "status": "Status",
+      "confirmed": "Bekræftet",
+      "pending": "Afventer Bekræftelse",
+      "partnerInfo": "Partnerinformation",
+      "photoUpload": "Foto Upload",
+      "photoInstructions": "Upload venligst dit foto. Filen skal hedde: Fornavn_Efternavn.jpg",
+      "uploadPhoto": "Upload Foto"
+    }
   },
   "Contact": {
     "title": "Kontakt Os",
@@ -228,6 +329,30 @@
   "WhatsApp": {
     "button": "Chat på WhatsApp",
     "message": "Hej! Jeg er interesseret i at lære mere om jeres padel tjenester."
+  },
+  "Login": {
+    "title": "Log Ind",
+    "description": "Adgang til din konto",
+    "loginTitle": "Velkommen Tilbage",
+    "loginDescription": "Log ind på din konto",
+    "registerTitle": "Opret Konto",
+    "registerDescription": "Bliv medlem af PadelO₂ fællesskabet",
+    "login": "Log Ind",
+    "profile": "Profil",
+    "register": "Registrer",
+    "email": "Email",
+    "password": "Adgangskode",
+    "firstName": "Fornavn",
+    "lastName": "Efternavn",
+    "confirmPassword": "Bekræft Adgangskode",
+    "loginButton": "Log Ind",
+    "registerButton": "Opret Konto",
+    "submitting": "Behandler...",
+    "errors": {
+      "invalidCredentials": "Ugyldig email eller adgangskode",
+      "passwordMismatch": "Adgangskoder matcher ikke",
+      "registrationFailed": "Registrering mislykkedes. Prøv igen.",
+      "generic": "Der opstod en fejl. Prøv igen."
+    }
   }
 }
-

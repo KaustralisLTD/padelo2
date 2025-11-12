@@ -1,23 +1,29 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales } from '@/i18n';
+import ClientProviders from '@/components/providers/ClientProviders';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import ThemeToggle from '@/components/ThemeToggle';
+import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/schema';
 import '../globals.css';
 
-export const metadata: Metadata = {
-  title: 'PadelO₂ - Breathe and Live',
-  description: 'Innovative padel sports ecosystem combining tournaments, training, AI-powered machines, and global court construction.',
-  keywords: 'padel, tournaments, training, AI machines, padel courts, investments',
-  openGraph: {
-    title: 'PadelO₂ - Breathe and Live',
-    description: 'Innovative padel sports ecosystem',
-    type: 'website',
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'Home' });
+  
+  return generateSEOMetadata({
+    title: t('title') || 'PadelO₂ - Breathe and Live',
+    description: t('subhead') || 'Innovative padel sports ecosystem combining tournaments, training, AI-powered machines, and global court construction.',
+    keywords: ['padel', 'tournaments', 'training', 'AI machines', 'padel courts', 'investments', 'padel academy', 'padel equipment'],
+    path: '',
+  }, locale);
+}
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -39,15 +45,56 @@ export default async function RootLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // Generate Schema.org structured data
+  const organizationSchema = generateOrganizationSchema(locale);
+  const websiteSchema = generateWebSiteSchema(locale);
+
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+              })();
+            `,
+          }}
+        />
+        {/* Schema.org Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        {/* Schema.org WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+        {/* Additional meta tags */}
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#00C4FF" />
+        <meta name="msapplication-TileColor" content="#00C4FF" />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body>
-        <NextIntlClientProvider messages={messages}>
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-        </NextIntlClientProvider>
+        <ClientProviders>
+          <NextIntlClientProvider messages={messages}>
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+            <ThemeToggle />
+          </NextIntlClientProvider>
+        </ClientProviders>
       </body>
     </html>
   );

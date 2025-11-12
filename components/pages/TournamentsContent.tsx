@@ -3,14 +3,32 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import ContactForm from '@/components/forms/ContactForm';
+import TournamentRegistrationForm from '@/components/forms/TournamentRegistrationForm';
 
 export default function TournamentsContent() {
   const t = useTranslations('Tournaments');
   const [showForm, setShowForm] = useState(false);
   const [selectedTournament, setSelectedTournament] = useState<number | null>(null);
 
-  const tournaments = [1, 2, 3, 4, 5, 6];
+  const tournaments = [
+    {
+      id: 1,
+      name: t('tournament1.name'),
+      subtitle: t('tournament1.subtitle'),
+      date: t('tournament1.date'),
+      image: '/images/tournaments/tournament-1.png',
+      isActive: true,
+    },
+    {
+      id: 2,
+      name: t('tournament2.name'),
+      subtitle: t('tournament2.subtitle'),
+      date: t('tournament2.date'),
+      image: '/images/tournaments/tournament-2.jpg',
+      isActive: false,
+      verySoon: true,
+    },
+  ];
 
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
@@ -19,7 +37,7 @@ export default function TournamentsContent() {
           {t('title')}
         </h1>
         
-        <h2 className="text-3xl md:text-4xl font-orbitron font-semibold mb-3 text-center text-text mt-8">
+        <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-3 text-center text-text mt-8">
           {t('headline')}
         </h2>
         
@@ -35,13 +53,26 @@ export default function TournamentsContent() {
 
         {!showForm ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {tournaments.map((i) => (
-                <div key={i} className="bg-background-secondary rounded-lg border border-gray-800 hover:border-primary transition-colors overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              {tournaments.map((tournament) => (
+                <div
+                  key={tournament.id}
+                  onClick={() => {
+                    if (tournament.isActive) {
+                      setSelectedTournament(tournament.id);
+                      setShowForm(true);
+                    }
+                  }}
+                  className={`bg-background-secondary rounded-lg border border-border hover:border-primary transition-all overflow-hidden ${
+                    tournament.isActive
+                      ? 'cursor-pointer hover:shadow-lg hover:scale-[1.02]'
+                      : 'cursor-not-allowed opacity-75'
+                  }`}
+                >
                   <div className="relative h-48 w-full">
                     <Image
-                      src={`/images/tournaments/tournament-${i}.jpg`}
-                      alt={`${t('tournament', { defaultValue: 'Tournament' })} ${i}`}
+                      src={tournament.image}
+                      alt={tournament.name}
                       fill
                       className="object-cover"
                       onError={(e) => {
@@ -53,23 +84,33 @@ export default function TournamentsContent() {
                         }
                       }}
                     />
+                    {tournament.verySoon && (
+                      <div className="absolute top-4 right-4 bg-gradient-primary text-background px-4 py-2 rounded-lg font-orbitron font-bold text-sm">
+                        {t('verySoon')}
+                      </div>
+                    )}
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-orbitron font-semibold mb-3 text-text">
-                      {t('tournament', { defaultValue: 'Tournament' })} {i}
+                    <h3 className="text-xl font-poppins font-bold mb-2 text-text">
+                      {tournament.name}
                     </h3>
+                    {tournament.subtitle && (
+                      <p className="text-lg font-orbitron font-semibold mb-2 text-primary">
+                        {tournament.subtitle}
+                      </p>
+                    )}
                     <p className="text-text-secondary font-poppins text-sm mb-4">
-                      {t('date', { defaultValue: 'Date: Coming Soon' })}
+                      {tournament.date}
                     </p>
-                    <button
-                      onClick={() => {
-                        setSelectedTournament(i);
-                        setShowForm(true);
-                      }}
-                      className="w-full px-4 py-2 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+                    <div
+                      className={`w-full px-4 py-2 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg text-center transition-opacity ${
+                        tournament.isActive
+                          ? 'hover:opacity-90'
+                          : 'opacity-50 cursor-not-allowed'
+                      }`}
                     >
-                      {t('cta')}
-                    </button>
+                      {tournament.isActive ? t('cta') : t('comingSoon')}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -84,14 +125,19 @@ export default function TournamentsContent() {
               }}
               className="mb-6 text-text-secondary hover:text-primary font-poppins transition-colors"
             >
-              ← {t('back', { defaultValue: 'Back to tournaments' })}
+              ← {t('back')}
             </button>
             <div className="mb-6">
-              <h3 className="text-2xl font-orbitron font-semibold mb-2 text-text">
-                {t('registerFor', { defaultValue: 'Register for' })} {t('tournament', { defaultValue: 'Tournament' })} {selectedTournament}
+              <h3 className="text-2xl font-poppins font-bold mb-2 text-text">
+                {t('registerFor')} {tournaments.find(t => t.id === selectedTournament)?.name}
               </h3>
             </div>
-            <ContactForm email="event@padelo2.com" subject={`Tournament ${selectedTournament} Registration`} />
+            {selectedTournament && (
+              <TournamentRegistrationForm
+                tournamentId={selectedTournament}
+                tournamentName={tournaments.find(t => t.id === selectedTournament)?.name || ''}
+              />
+            )}
           </div>
         )}
       </div>

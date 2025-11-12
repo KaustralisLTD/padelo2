@@ -22,7 +22,7 @@ export default function PartnersContent() {
           {t('title')}
         </h1>
         
-        <h2 className="text-3xl md:text-4xl font-orbitron font-semibold mb-3 text-center text-text mt-8">
+        <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-3 text-center text-text mt-8">
           {t('headline')}
         </h2>
         
@@ -38,7 +38,7 @@ export default function PartnersContent() {
 
         {/* Benefits */}
         <div className="mb-12">
-          <h3 className="text-2xl font-orbitron font-semibold mb-6 text-center text-text">
+          <h3 className="text-2xl font-poppins font-bold mb-6 text-center text-text">
             {t('benefits.title')}:
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -48,7 +48,7 @@ export default function PartnersContent() {
                 className="bg-background-secondary p-6 rounded-lg border border-gray-800 hover:border-primary transition-colors"
               >
                 <div className="text-3xl mb-3">{benefit.icon}</div>
-                <h4 className="text-lg font-orbitron font-semibold mb-2 text-text">
+                <h4 className="text-lg font-poppins font-bold mb-2 text-text">
                   {t(`benefits.${benefit.key}.title`)}
                 </h4>
                 <p className="text-text-secondary font-poppins text-sm">
@@ -61,7 +61,7 @@ export default function PartnersContent() {
 
         {/* Partner Logos */}
         <div className="mb-12">
-          <h3 className="text-2xl font-orbitron font-semibold mb-6 text-center text-text">
+          <h3 className="text-2xl font-poppins font-bold mb-6 text-center text-text">
             {t('partners')}
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -91,7 +91,7 @@ export default function PartnersContent() {
 
         {/* Contact Form */}
         <div className="mt-16">
-          <h3 className="text-2xl font-orbitron font-semibold mb-6 text-center text-text">
+          <h3 className="text-2xl font-poppins font-bold mb-6 text-center text-text">
             {t('cta')}
           </h3>
           <ContactForm email="partner@padelo2.com" subject="Partnership Inquiry" />

@@ -8,7 +8,9 @@
     "investments": "الاستثمارات",
     "partners": "الشركاء",
     "about": "من نحن",
-    "contact": "اتصل بنا"
+    "contact": "اتصل بنا",
+    "login": "تسجيل الدخول",
+    "profile": "الملف الشخصي"
   },
   "Footer": {
     "tagline": "تنفس وعش",
@@ -204,6 +206,101 @@
     "partners": "شركاؤنا",
     "cta": "كن شريكاً"
   },
+  "Tournaments": {
+    "title": "البطولات",
+    "headline": "تنافس على أعلى مستوى",
+    "subhead": "انضم إلى بطولات البادل الاحترافية والهواة في جميع أنحاء العالم",
+    "description": "اكتشف بطولات البادل القادمة وسجل للمشاركة.",
+    "body": "ينظم PadelO₂ ويدعم البطولات على جميع المستويات، من منافسات الأندية المحلية إلى البطولات الدولية. سواء كنت لاعباً محترفاً أو هاوياً شغوفاً، ابحث عن البطولة المثالية لإظهار مهاراتك والتواصل مع مجتمع البادل.",
+    "cta": "سجل الآن",
+    "verySoon": "قريباً جداً",
+    "comingSoon": "قريباً",
+    "back": "العودة إلى البطولات",
+    "registerFor": "التسجيل لـ",
+    "photoUploadInfo": "يرجى تحميل صورتك. اسم الملف: الاسم_اللقب.jpg (مثال: أحمد_محمد.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 ديسمبر 2025"
+    },
+    "tournament2": {
+      "name": "بطولة قادمة",
+      "subtitle": "التفاصيل قريباً",
+      "date": "قيد التأكيد"
+    },
+    "categories": {
+      "male1": "رجال 1",
+      "male2": "رجال 2",
+      "female1": "سيدات 1",
+      "female2": "سيدات 2",
+      "mixed1": "مختلط 1",
+      "mixed2": "مختلط 2"
+    },
+    "form": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "telegram": "حساب Telegram",
+      "phone": "الهاتف",
+      "categories": "الفئات",
+      "selectMultiple": "يمكنك اختيار عدة فئات (مثال: رجال + مختلط)",
+      "categoryHelp": "يمكنك اختيار فئة واحدة فقط من الرجال (1 أو 2)، وفئة واحدة من النساء (1 أو 2)، وفئة واحدة من المختلط (1 أو 2). يمكنك اختيار رجال + مختلط أو نساء + مختلط، ولكن لا يمكنك اختيار فئتين رجال أو فئتين نساء أو فئتين مختلط في نفس الوقت.",
+      "tshirtSize": "مقاس القميص",
+      "selectSize": "اختر المقاس",
+      "addPartner": "إضافة شريك",
+      "removePartner": "إزالة الشريك",
+      "partnerName": "اسم الشريك",
+      "partnerEmail": "بريد الشريك الإلكتروني",
+      "partnerPhone": "هاتف الشريك",
+      "partnerTshirtSize": "مقاس قميص الشريك",
+      "partnerSelectSize": "اختر مقاس الشريك",
+      "partnerPhoto": "صورة الشريك",
+      "partnerPhotoOptional": "ارفع صورة الشريك (اختياري)",
+      "message": "الرسالة",
+      "messagePlaceholder": "أود ترك تفضيلات إضافية فيما يتعلق بتوقيت مبارياتي",
+      "optional": "اختياري",
+      "registerButton": "سجل الآن",
+      "submitting": "جارٍ الإرسال...",
+      "success": "تم التسجيل بنجاح! يرجى التحقق من بريدك الإلكتروني للتأكيد.",
+      "error": "خطأ في إرسال التسجيل. يرجى المحاولة مرة أخرى.",
+      "validation": {
+        "selectCategory": "يرجى اختيار فئة واحدة على الأقل"
+      },
+      "photoInstructions": {
+        "title": "تعليمات تحميل الصورة",
+        "text": "يرجى تحميل صورتك للبطولة. ستُستخدم الصورة لملف اللاعب ومواد البطولة.",
+        "filename": "تنسيق اسم الملف",
+        "filenameExample": "الاسم_اللقب.jpg (مثال: أحمد_محمد.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "تم تأكيد التسجيل",
+      "description": "تم تأكيد تسجيلك في البطولة",
+      "loading": "جارٍ تأكيد تسجيلك...",
+      "success": "تم تأكيد تسجيلك بنجاح!",
+      "error": "رابط التأكيد غير صالح أو منتهي الصلاحية. يرجى الاتصال بالدعم.",
+      "backToTournaments": "العودة إلى البطولات",
+      "registrationDetails": "تفاصيل التسجيل",
+      "goToDashboard": "انتقل إلى لوحة التحكم"
+    },
+    "dashboard": {
+      "title": "لوحة تحكم مشارك البطولة",
+      "description": "لوحة تحكم تسجيل البطولة الخاصة بك",
+      "loading": "جارٍ تحميل لوحة التحكم...",
+      "noRegistration": "لم يتم العثور على تسجيل. يرجى التسجيل في بطولة أولاً.",
+      "registerNow": "سجل الآن",
+      "registrationInfo": "معلومات التسجيل",
+      "tournamentInfo": "معلومات البطولة",
+      "tournament": "البطولة",
+      "status": "الحالة",
+      "confirmed": "مؤكد",
+      "pending": "في انتظار التأكيد",
+      "partnerInfo": "معلومات الشريك",
+      "photoUpload": "تحميل الصورة",
+      "photoInstructions": "يرجى تحميل صورتك. يجب أن يكون اسم الملف: الاسم_اللقب.jpg",
+      "uploadPhoto": "تحميل الصورة"
+    }
+  },
   "Contact": {
     "title": "اتصل بنا",
     "description": "هل لديك أسئلة؟ نحن نحب أن نسمع منك.",
@@ -228,6 +325,37 @@
   "WhatsApp": {
     "button": "الدردشة على واتساب",
     "message": "مرحباً! أنا مهتم بمعرفة المزيد عن خدمات البادل الخاصة بكم."
+  },
+  "Profile": {
+    "title": "Profile",
+    "description": "Manage your personal information and settings",
+    "loading": "Loading profile...",
+    "backToDashboard": "Back to Dashboard",
+    "photo": "Photo",
+    "noPhoto": "No photo",
+    "photoHint": "Maximum 5MB. JPG, PNG formats.",
+    "photoSizeError": "Photo size must be less than 5MB",
+    "basicInfo": "Basic Information",
+    "contactInfo": "Contact Information",
+    "additionalInfo": "Additional Information",
+    "email": "Email",
+    "role": "Role",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "telegram": "Telegram",
+    "dateOfBirth": "Date of Birth",
+    "tshirtSize": "T-shirt Size",
+    "selectSize": "Select size",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "updateSuccess": "Profile updated successfully!",
+    "updateError": "Failed to update profile. Please try again.",
+    "roles": {
+      "superadmin": "Super Admin",
+      "staff": "Staff",
+      "participant": "Participant"
+    }
   }
 }
-

@@ -8,7 +8,9 @@
     "investments": "投资",
     "partners": "合作伙伴",
     "about": "关于",
-    "contact": "联系"
+    "contact": "联系",
+    "login": "登录",
+    "profile": "个人资料"
   },
   "Footer": {
     "tagline": "呼吸与生活",
@@ -105,7 +107,8 @@
         "title": "智能训练",
         "description": "物联网连接的训练机器，具有AI分析和实时性能跟踪。"
       }
-    }
+    },
+    "back": "返回"
   },
   "Machines": {
     "title": "AI驱动的训练机器",
@@ -134,7 +137,8 @@
         "description": "通过QR储物柜自助服务"
       }
     },
-    "cta": "探索机器"
+    "cta": "探索机器",
+    "back": "返回"
   },
   "Courts": {
     "title": "板式网球场",
@@ -170,7 +174,8 @@
       "mobile": "移动"
     },
     "gallery": "图库",
-    "cta": "获取规格和报价"
+    "cta": "获取规格和报价",
+    "back": "返回"
   },
   "Partners": {
     "title": "我们的合作伙伴",
@@ -202,7 +207,103 @@
       }
     },
     "partners": "我们的合作伙伴",
-    "cta": "成为合作伙伴"
+    "cta": "成为合作伙伴",
+    "back": "返回"
+  },
+  "Tournaments": {
+    "title": "锦标赛",
+    "headline": "在最高水平竞争",
+    "subhead": "参加世界各地的专业和业余板式网球锦标赛",
+    "description": "发现即将举行的板式网球锦标赛并注册参赛。",
+    "body": "PadelO₂组织和支持各级别的锦标赛，从本地俱乐部比赛到国际锦标赛。无论您是专业球员还是热情的业余爱好者，找到完美的锦标赛来展示您的技能并与板式网球社区建立联系。",
+    "cta": "立即注册",
+    "verySoon": "即将到来",
+    "comingSoon": "即将推出",
+    "back": "返回锦标赛",
+    "registerFor": "注册",
+    "photoUploadInfo": "请上传您的照片。文件名：名_姓.jpg（例如：张三.jpg）",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "2025年12月19-21日"
+    },
+    "tournament2": {
+      "name": "即将举行的锦标赛",
+      "subtitle": "详情即将公布",
+      "date": "待定"
+    },
+    "categories": {
+      "male1": "男子1组",
+      "male2": "男子2组",
+      "female1": "女子1组",
+      "female2": "女子2组",
+      "mixed1": "混合1组",
+      "mixed2": "混合2组"
+    },
+    "form": {
+      "firstName": "名",
+      "lastName": "姓",
+      "email": "电子邮件",
+      "telegram": "Telegram账户",
+      "phone": "电话",
+      "categories": "类别",
+      "selectMultiple": "可以选择多个（例如：男子 + 混合）",
+      "categoryHelp": "只能从男子类别中选择一个（1或2）、女子类别中选择一个（1或2）以及混合类别中选择一个（1或2）。可以选择男子 + 混合或女子 + 混合，但不能同时选择两个男子、两个女子或两个混合类别。",
+      "tshirtSize": "T恤尺寸",
+      "selectSize": "选择尺寸",
+      "addPartner": "添加搭档",
+      "removePartner": "移除搭档",
+      "partnerName": "搭档姓名",
+      "partnerEmail": "搭档电子邮件",
+      "partnerPhone": "搭档电话",
+      "partnerTshirtSize": "搭档T恤尺寸",
+      "partnerSelectSize": "选择搭档尺寸",
+      "partnerPhoto": "搭档照片",
+      "partnerPhotoOptional": "上传搭档照片（可选）",
+      "message": "消息",
+      "messagePlaceholder": "我想留下关于我比赛时间的额外偏好",
+      "optional": "可选",
+      "registerButton": "立即注册",
+      "submitting": "提交中...",
+      "success": "注册成功！请检查您的电子邮件以确认。",
+      "error": "提交注册时出错。请重试。",
+      "validation": {
+        "selectCategory": "请至少选择一个类别"
+      },
+      "photoInstructions": {
+        "title": "照片上传说明",
+        "text": "请上传您的锦标赛照片。照片将用于您的球员资料和锦标赛材料。",
+        "filename": "文件名格式",
+        "filenameExample": "名_姓.jpg（例如：张三.jpg）"
+      }
+    },
+    "confirmation": {
+      "title": "注册已确认",
+      "description": "您的锦标赛注册已确认",
+      "loading": "正在确认您的注册...",
+      "success": "您的注册已成功确认！",
+      "error": "无效或过期的确认链接。请联系支持。",
+      "backToTournaments": "返回锦标赛",
+      "registrationDetails": "注册详情",
+      "goToDashboard": "前往仪表板"
+    },
+    "dashboard": {
+      "title": "锦标赛参与者仪表板",
+      "description": "您的锦标赛注册仪表板",
+      "loading": "正在加载您的仪表板...",
+      "noRegistration": "未找到注册。请先注册锦标赛。",
+      "registerNow": "立即注册",
+      "registrationInfo": "注册信息",
+      "tournamentInfo": "锦标赛信息",
+      "tournament": "锦标赛",
+      "status": "状态",
+      "confirmed": "已确认",
+      "pending": "等待确认",
+      "partnerInfo": "搭档信息",
+      "photoUpload": "照片上传",
+      "photoInstructions": "请上传您的照片。文件应命名为：名_姓.jpg",
+      "uploadPhoto": "上传照片"
+    }
   },
   "Contact": {
     "title": "联系我们",
@@ -228,6 +329,30 @@
   "WhatsApp": {
     "button": "在 WhatsApp 上聊天",
     "message": "你好！我想了解更多关于您的板式网球服务。"
+  },
+  "Login": {
+    "title": "登录",
+    "description": "访问您的账户",
+    "loginTitle": "欢迎回来",
+    "loginDescription": "登录您的账户",
+    "registerTitle": "创建账户",
+    "registerDescription": "加入 PadelO₂ 社区",
+    "login": "登录",
+    "profile": "个人资料",
+    "register": "注册",
+    "email": "电子邮件",
+    "password": "密码",
+    "firstName": "名",
+    "lastName": "姓",
+    "confirmPassword": "确认密码",
+    "loginButton": "登录",
+    "registerButton": "创建账户",
+    "submitting": "处理中...",
+    "errors": {
+      "invalidCredentials": "电子邮件或密码无效",
+      "passwordMismatch": "密码不匹配",
+      "registrationFailed": "注册失败。请重试。",
+      "generic": "发生错误。请重试。"
+    }
   }
 }
-

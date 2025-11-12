@@ -10,14 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         background: {
-          DEFAULT: "#0E0E10",
-          secondary: "#111111",
+          DEFAULT: "var(--background)",
+          secondary: "var(--background-secondary)",
         },
         primary: "#00C4FF",
+        "primary-light": "#33D0FF",
         accent: "#00FFE0",
         text: {
-          DEFAULT: "#EAF9FF",
-          secondary: "#B0B0B0",
+          DEFAULT: "var(--text)",
+          secondary: "var(--text-secondary)",
+          tertiary: "var(--text-tertiary)",
+        },
+        border: {
+          DEFAULT: "var(--border)",
+          hover: "var(--border-hover)",
         },
       },
       fontFamily: {

@@ -8,7 +8,9 @@
     "investments": "Inversiones",
     "partners": "Socios",
     "about": "Acerca de",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "login": "Iniciar Sesión",
+    "profile": "Perfil"
   },
   "Footer": {
     "tagline": "Respira y Vive",
@@ -124,7 +126,8 @@
         "description": "Máquinas de entrenamiento conectadas por IoT con análisis de IA y seguimiento de rendimiento en tiempo real. Entrena de manera más inteligente con información basada en datos y programas de entrenamiento adaptativos."
       }
     },
-    "cta": "Únete a la Academia"
+    "cta": "Únete a la Academia",
+    "back": "Atrás"
   },
   "Machines": {
     "title": "Máquinas de Entrenamiento con IA",
@@ -153,7 +156,8 @@
         "description": "Autoservicio mediante casillero QR"
       }
     },
-    "cta": "Explorar las máquinas"
+    "cta": "Explorar las máquinas",
+    "back": "Atrás"
   },
   "About": {
     "title": "Acerca de PadelO₂",
@@ -212,7 +216,8 @@
       "mobile": "Móvil"
     },
     "gallery": "Galería",
-    "cta": "Obtener especificaciones y cotización"
+    "cta": "Obtener especificaciones y cotización",
+    "back": "Atrás"
   },
   "Partners": {
     "title": "Nuestros Socios",
@@ -244,7 +249,8 @@
       }
     },
     "partners": "Nuestros Socios",
-    "cta": "Conviértete en Socio"
+    "cta": "Conviértete en Socio",
+    "back": "Atrás"
   },
   "Tournaments": {
     "title": "Torneos",
@@ -252,7 +258,94 @@
     "subhead": "Únete a torneos profesionales y amateur de pádel en todo el mundo",
     "description": "Descubre próximos torneos de pádel y regístrate para competir.",
     "body": "PadelO₂ organiza y apoya torneos en todos los niveles, desde competencias de clubes locales hasta campeonatos internacionales. Ya seas un jugador profesional o un apasionado amateur, encuentra el torneo perfecto para mostrar tus habilidades y conectarte con la comunidad del pádel.",
-    "cta": "Regístrate Ahora"
+    "cta": "Regístrate Ahora",
+    "verySoon": "MUY PRONTO",
+    "comingSoon": "Próximamente",
+    "back": "Volver a torneos",
+    "registerFor": "Registro para",
+    "photoUploadInfo": "Por favor, sube tu foto. Nombre del archivo: Nombre_Apellido.jpg (ej: Juan_Perez.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 Diciembre 2025"
+    },
+    "tournament2": {
+      "name": "Próximo Torneo",
+      "subtitle": "Detalles Próximamente",
+      "date": "Por Confirmar"
+    },
+    "categories": {
+      "male1": "Masculino 1",
+      "male2": "Masculino 2",
+      "female1": "Femenino 1",
+      "female2": "Femenino 2",
+      "mixed1": "Mixto 1",
+      "mixed2": "Mixto 2"
+    },
+    "form": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "telegram": "Cuenta de Telegram",
+      "phone": "Teléfono",
+      "categories": "Categorías",
+      "selectMultiple": "Puedes seleccionar varias (ej: Masculino + Mixto)",
+      "categoryHelp": "Solo puedes seleccionar una Masculina (1 o 2), una Femenina (1 o 2) y una Mixta (1 o 2). Puedes elegir Masculina + Mixta o Femenina + Mixta, pero no puedes seleccionar dos Masculinas, dos Femeninas ni dos Mixtas al mismo tiempo.",
+      "tshirtSize": "Talla de Camiseta",
+      "selectSize": "Selecciona talla",
+      "addPartner": "Añadir Pareja",
+      "removePartner": "Eliminar Pareja",
+      "partnerName": "Nombre de Pareja",
+      "partnerEmail": "Email de Pareja",
+      "partnerPhone": "Teléfono de Pareja",
+      "partnerTshirtSize": "Talla de Camiseta de la Pareja",
+      "partnerSelectSize": "Selecciona la talla de la pareja",
+      "partnerPhoto": "Foto de la Pareja",
+      "partnerPhotoOptional": "Sube la foto de la pareja (opcional)",
+      "message": "Mensaje",
+      "messagePlaceholder": "Me gustaría dejar preferencias adicionales sobre el horario de mis partidos",
+      "optional": "Opcional",
+      "registerButton": "REGISTRARSE AHORA",
+      "submitting": "Enviando...",
+      "success": "¡Registro exitoso! Por favor, revisa tu correo para confirmación.",
+      "error": "Error al enviar el registro. Por favor, intenta de nuevo.",
+      "validation": {
+        "selectCategory": "Por favor, selecciona al menos una categoría"
+      },
+      "photoInstructions": {
+        "title": "Instrucciones para Subir Foto",
+        "text": "Por favor, sube tu foto para el torneo. La foto se usará para tu perfil de jugador y materiales del torneo.",
+        "filename": "Formato del nombre del archivo",
+        "filenameExample": "Nombre_Apellido.jpg (ej: Juan_Perez.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registro Confirmado",
+      "description": "Tu registro al torneo ha sido confirmado",
+      "loading": "Confirmando tu registro...",
+      "success": "¡Tu registro ha sido confirmado exitosamente!",
+      "error": "Enlace de confirmación inválido o expirado. Por favor, contacta con soporte.",
+      "backToTournaments": "Volver a Torneos",
+      "registrationDetails": "Detalles del Registro",
+      "goToDashboard": "Ir al Panel"
+    },
+    "dashboard": {
+      "title": "Panel de Participante del Torneo",
+      "description": "Tu panel de registro del torneo",
+      "loading": "Cargando tu panel...",
+      "noRegistration": "No se encontró registro. Por favor, regístrate en un torneo primero.",
+      "registerNow": "Registrarse Ahora",
+      "registrationInfo": "Información del Registro",
+      "tournamentInfo": "Información del Torneo",
+      "tournament": "Torneo",
+      "status": "Estado",
+      "confirmed": "Confirmado",
+      "pending": "Pendiente de Confirmación",
+      "partnerInfo": "Información de Pareja",
+      "photoUpload": "Subir Foto",
+      "photoInstructions": "Por favor, sube tu foto. El archivo debe llamarse: Nombre_Apellido.jpg",
+      "uploadPhoto": "Subir Foto"
+    }
   },
   "Contact": {
     "title": "Contáctanos",
@@ -278,4 +371,3 @@
     "message": "¡Hola! Me interesa conocer más sobre sus servicios de pádel."
   }
 }
-

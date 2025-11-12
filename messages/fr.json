@@ -8,7 +8,9 @@
     "investments": "Investissements",
     "partners": "Partenaires",
     "about": "À Propos",
-    "contact": "Contact"
+    "contact": "Contact",
+    "login": "Connexion",
+    "profile": "Profil"
   },
   "Footer": {
     "tagline": "Respire et Vis",
@@ -105,7 +107,8 @@
         "description": "Machines d'entraînement connectées IoT avec analyse IA et suivi des performances en temps réel. Entraînez-vous plus intelligemment avec des informations basées sur les données et des programmes d'entraînement adaptatifs."
       }
     },
-    "cta": "Rejoindre l'Académie"
+    "cta": "Rejoindre l'Académie",
+    "back": "Retour"
   },
   "Machines": {
     "title": "Machines d'Entraînement Alimentées par IA",
@@ -134,7 +137,8 @@
         "description": "Self-service via casier QR"
       }
     },
-    "cta": "Explorer les machines"
+    "cta": "Explorer les machines",
+    "back": "Retour"
   },
   "Courts": {
     "title": "Terrains Padel",
@@ -170,7 +174,8 @@
       "mobile": "Mobile"
     },
     "gallery": "Galerie",
-    "cta": "Obtenir spécifications et devis"
+    "cta": "Obtenir spécifications et devis",
+    "back": "Retour"
   },
   "Partners": {
     "title": "Nos Partenaires",
@@ -200,7 +205,8 @@
         "description": "Connectez-vous avec les communautés, clubs et joueurs de padel du monde entier grâce à notre écosystème"
       }
     },
-    "cta": "Devenir Partenaire"
+    "cta": "Devenir Partenaire",
+    "back": "Retour"
   },
   "Tournaments": {
     "title": "Tournois",
@@ -208,7 +214,94 @@
     "subhead": "Rejoignez des tournois de padel professionnels et amateurs dans le monde entier",
     "description": "Découvrez les prochains tournois de padel et inscrivez-vous pour participer.",
     "body": "PadelO₂ organise et soutient des tournois à tous les niveaux, des compétitions de clubs locaux aux championnats internationaux. Que vous soyez un joueur professionnel ou un amateur passionné, trouvez le tournoi parfait pour montrer vos compétences et vous connecter avec la communauté du padel.",
-    "cta": "S'inscrire Maintenant"
+    "cta": "S'inscrire Maintenant",
+    "verySoon": "TRÈS BIENTÔT",
+    "comingSoon": "Bientôt",
+    "back": "Retour aux tournois",
+    "registerFor": "Inscription pour",
+    "photoUploadInfo": "Veuillez télécharger votre photo. Nom du fichier: Prénom_Nom.jpg (ex: Jean_Dupont.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "19-21 Décembre 2025"
+    },
+    "tournament2": {
+      "name": "Tournoi à Venir",
+      "subtitle": "Détails Bientôt",
+      "date": "À Confirmer"
+    },
+    "categories": {
+      "male1": "Masculin 1",
+      "male2": "Masculin 2",
+      "female1": "Féminin 1",
+      "female2": "Féminin 2",
+      "mixed1": "Mixte 1",
+      "mixed2": "Mixte 2"
+    },
+    "form": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "telegram": "Compte Telegram",
+      "phone": "Téléphone",
+      "categories": "Catégories",
+      "selectMultiple": "Vous pouvez sélectionner plusieurs (ex: Masculin + Mixte)",
+      "categoryHelp": "Vous ne pouvez sélectionner qu'une seule catégorie Masculin (1 ou 2), une seule Féminin (1 ou 2) et une seule Mixte (1 ou 2). Vous pouvez choisir Masculin + Mixte ou Féminin + Mixte, mais vous ne pouvez pas sélectionner deux catégories Masculin, deux Féminin ou deux Mixte simultanément.",
+      "tshirtSize": "Taille de T-shirt",
+      "selectSize": "Sélectionner la taille",
+      "addPartner": "Ajouter un Partenaire",
+      "removePartner": "Retirer le Partenaire",
+      "partnerName": "Nom du Partenaire",
+      "partnerEmail": "Email du Partenaire",
+      "partnerPhone": "Téléphone du Partenaire",
+      "partnerTshirtSize": "Taille de t-shirt du partenaire",
+      "partnerSelectSize": "Sélectionnez la taille du partenaire",
+      "partnerPhoto": "Photo du partenaire",
+      "partnerPhotoOptional": "Téléchargez la photo du partenaire (optionnel)",
+      "message": "Message",
+      "messagePlaceholder": "Je souhaite laisser des préférences supplémentaires concernant l'horaire de mes matchs",
+      "optional": "Optionnel",
+      "registerButton": "S'INSCRIRE MAINTENANT",
+      "submitting": "Envoi en cours...",
+      "success": "Inscription réussie! Veuillez vérifier votre email pour confirmation.",
+      "error": "Erreur lors de l'envoi de l'inscription. Veuillez réessayer.",
+      "validation": {
+        "selectCategory": "Veuillez sélectionner au moins une catégorie"
+      },
+      "photoInstructions": {
+        "title": "Instructions de Téléchargement de Photo",
+        "text": "Veuillez télécharger votre photo pour le tournoi. La photo sera utilisée pour votre profil de joueur et les matériaux du tournoi.",
+        "filename": "Format du nom de fichier",
+        "filenameExample": "Prénom_Nom.jpg (ex: Jean_Dupont.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Inscription Confirmée",
+      "description": "Votre inscription au tournoi a été confirmée",
+      "loading": "Confirmation de votre inscription...",
+      "success": "Votre inscription a été confirmée avec succès!",
+      "error": "Lien de confirmation invalide ou expiré. Veuillez contacter le support.",
+      "backToTournaments": "Retour aux Tournois",
+      "registrationDetails": "Détails de l'Inscription",
+      "goToDashboard": "Aller au Tableau de Bord"
+    },
+    "dashboard": {
+      "title": "Tableau de Bord du Participant",
+      "description": "Votre tableau de bord d'inscription au tournoi",
+      "loading": "Chargement de votre tableau de bord...",
+      "noRegistration": "Aucune inscription trouvée. Veuillez vous inscrire à un tournoi d'abord.",
+      "registerNow": "S'inscrire Maintenant",
+      "registrationInfo": "Informations d'Inscription",
+      "tournamentInfo": "Informations du Tournoi",
+      "tournament": "Tournoi",
+      "status": "Statut",
+      "confirmed": "Confirmé",
+      "pending": "En Attente de Confirmation",
+      "partnerInfo": "Informations du Partenaire",
+      "photoUpload": "Téléchargement de Photo",
+      "photoInstructions": "Veuillez télécharger votre photo. Le fichier doit être nommé: Prénom_Nom.jpg",
+      "uploadPhoto": "Télécharger la Photo"
+    }
   },
   "Contact": {
     "title": "Contactez-Nous",
@@ -234,6 +327,30 @@
   "WhatsApp": {
     "button": "Discuter sur WhatsApp",
     "message": "Bonjour! Je suis intéressé par vos services de padel."
+  },
+  "Login": {
+    "title": "Connexion",
+    "description": "Accéder à votre compte",
+    "loginTitle": "Bon Retour",
+    "loginDescription": "Connectez-vous à votre compte",
+    "registerTitle": "Créer un Compte",
+    "registerDescription": "Rejoignez la communauté PadelO₂",
+    "login": "Connexion",
+    "profile": "Profil",
+    "register": "S'inscrire",
+    "email": "Email",
+    "password": "Mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "confirmPassword": "Confirmer le Mot de passe",
+    "loginButton": "Se Connecter",
+    "registerButton": "Créer un Compte",
+    "submitting": "Traitement...",
+    "errors": {
+      "invalidCredentials": "Email ou mot de passe invalide",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "registrationFailed": "Inscription échouée. Réessayez.",
+      "generic": "Une erreur s'est produite. Réessayez."
+    }
   }
 }
-

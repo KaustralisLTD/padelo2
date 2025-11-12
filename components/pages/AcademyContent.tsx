@@ -20,7 +20,7 @@ export default function AcademyContent() {
           {t('title')}
         </h1>
         
-        <h2 className="text-3xl md:text-4xl font-orbitron font-semibold mb-3 text-center text-text mt-8">
+        <h2 className="text-3xl md:text-4xl font-poppins font-bold mb-3 text-center text-text mt-8">
           {t('headline')}
         </h2>
         
@@ -62,7 +62,7 @@ export default function AcademyContent() {
               className="bg-background-secondary p-6 rounded-lg border border-gray-800 hover:border-primary transition-colors"
             >
               <div className="text-4xl mb-4 text-center">{program.icon}</div>
-              <h3 className="text-xl font-orbitron font-semibold mb-3 text-text text-center">
+              <h3 className="text-xl font-poppins font-bold mb-3 text-text text-center">
                 {t(`programs.${program.key}.title`)}
               </h3>
               <p className="text-text-secondary font-poppins text-sm leading-relaxed">
@@ -74,7 +74,7 @@ export default function AcademyContent() {
 
         {/* Contact Form */}
         <div className="mt-16">
-          <h3 className="text-2xl font-orbitron font-semibold mb-6 text-center text-text">
+          <h3 className="text-2xl font-poppins font-bold mb-6 text-center text-text">
             {t('cta')}
           </h3>
           <ContactForm email="coach@padelo2.com" subject="Academy Inquiry" />
