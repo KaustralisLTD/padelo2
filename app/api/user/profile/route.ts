@@ -135,7 +135,13 @@ export async function PUT(request: NextRequest) {
       [session.userId]
     ) as any[];
 
+    if (rows.length === 0) {
+      console.error('User not found after update:', session.userId);
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
     const user = rows[0];
+    console.log('Profile retrieved successfully');
     return NextResponse.json({
       profile: {
         id: user.id,
