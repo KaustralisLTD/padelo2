@@ -8,7 +8,7 @@ export default function ContactContent() {
 
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
-      <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text text-center title-with-subscript">
+      <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text text-center title-with-subscript">
         {t('title')}
       </h1>
       <p className="text-text-secondary font-poppins text-lg text-center max-w-2xl mx-auto mb-12">

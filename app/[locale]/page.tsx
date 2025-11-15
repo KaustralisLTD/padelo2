@@ -1,4 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
+import type { Metadata } from 'next';
 import Hero from '@/components/sections/Hero';
 import HistoryTimeline from '@/components/sections/HistoryTimeline';
 import Investments from '@/components/sections/Investments';
@@ -7,6 +8,29 @@ import Machines from '@/components/sections/Machines';
 import Courts from '@/components/sections/Courts';
 import Partners from '@/components/sections/Partners';
 import { generateServiceSchema } from '@/lib/schema';
+import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { getSEOData } from '@/lib/seo-data';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const seo = getSEOData('/', locale);
+  
+  if (!seo) {
+    return generateSEOMetadata({
+      title: 'PadelO₂ — AI Training, Courts, Academy & Tournaments',
+      description: 'The padel ecosystem: AI-powered training machines, pro court construction, academy and global tournaments. Breathe and play with PadelO₂.',
+      path: '',
+    }, locale);
+  }
+  
+  return generateSEOMetadata({
+    title: seo.title,
+    description: seo.description,
+    keywords: ['padel ecosystem', 'AI padel machines', 'padel courts', 'padel academy', 'tournaments'],
+    path: '',
+  }, locale);
+}
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

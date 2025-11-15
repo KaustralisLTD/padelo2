@@ -46,7 +46,8 @@ export function generateMetadata(config: SEOConfig, locale: string): Metadata {
   } = config;
 
   const url = `${baseUrl}/${locale}${path}`;
-  const fullTitle = `${title} | PadelO₂`;
+  // Title already includes | PadelO₂ from seo-data.ts, so don't add it again
+  const fullTitle = title.includes('| PadelO₂') ? title : `${title} | PadelO₂`;
   const ogLocale = ogLocales[locale] || 'en_US';
 
   return {
@@ -117,25 +118,66 @@ export function generateMetadata(config: SEOConfig, locale: string): Metadata {
   };
 }
 
-// Generate alternate language links
+// Generate alternate language links with proper locale mapping
 function generateAlternateLanguages(path: string, currentLocale: string): Record<string, string> {
   const alternates: Record<string, string> = {};
   
+  // Map internal locale codes to hreflang codes
+  const hreflangMap: Record<string, string> = {
+    en: 'en',
+    es: 'es',
+    ua: 'uk',
+    ru: 'ru',
+    ca: 'ca',
+    de: 'de',
+    fr: 'fr',
+    it: 'it',
+    nl: 'nl',
+    da: 'da',
+    sv: 'sv',
+    no: 'nb',
+    zh: 'zh-CN',
+    ar: 'ar',
+  };
+  
   locales.forEach((locale) => {
-    alternates[locale] = `${baseUrl}/${locale}${path}`;
+    const hreflang = hreflangMap[locale] || locale;
+    alternates[hreflang] = `${baseUrl}/${locale}${path}`;
   });
+
+  // Add x-default
+  alternates['x-default'] = `${baseUrl}/en${path}`;
 
   return alternates;
 }
 
-// Generate hreflang tags for HTML head
+// Generate hreflang tags for HTML head with proper locale mapping
 export function generateHreflangTags(path: string): Array<{ rel: string; hreflang: string; href: string }> {
   const tags: Array<{ rel: string; hreflang: string; href: string }> = [];
   
+  // Map internal locale codes to hreflang codes
+  const hreflangMap: Record<string, string> = {
+    en: 'en',
+    es: 'es',
+    ua: 'uk',
+    ru: 'ru',
+    ca: 'ca',
+    de: 'de',
+    fr: 'fr',
+    it: 'it',
+    nl: 'nl',
+    da: 'da',
+    sv: 'sv',
+    no: 'nb',
+    zh: 'zh-CN',
+    ar: 'ar',
+  };
+  
   locales.forEach((locale) => {
+    const hreflang = hreflangMap[locale] || locale;
     tags.push({
       rel: 'alternate',
-      hreflang: locale,
+      hreflang,
       href: `${baseUrl}/${locale}${path}`,
     });
   });

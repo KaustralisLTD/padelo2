@@ -165,19 +165,65 @@ export default function ProfileContent() {
     return null;
   }
 
+  const handleLogout = async () => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      router.push(`/${locale}/login`);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem('auth_token');
+        router.push(`/${locale}/login`);
+      } else {
+        // Even if logout fails, clear local storage and redirect
+        localStorage.removeItem('auth_token');
+        router.push(`/${locale}/login`);
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      localStorage.removeItem('auth_token');
+      router.push(`/${locale}/login`);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        {/* Action buttons at the top */}
+        <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           <Link
             href={`/${locale}/dashboard`}
             className="text-text-secondary hover:text-primary font-poppins transition-colors"
           >
             ← {t('backToDashboard')}
           </Link>
+          
+          <div className="flex gap-3">
+            <Link
+              href={`/${locale}/participant-dashboard`}
+              className="px-4 py-2 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              {t('goToParticipantDashboard')}
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-500/20 border border-red-500 text-red-400 font-poppins font-semibold rounded-lg hover:bg-red-500/30 transition-colors"
+            >
+              {t('logout')}
+            </button>
+          </div>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text">
+        <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
           {t('title')}
         </h1>
         <p className="text-xl text-text-secondary font-poppins mb-12">

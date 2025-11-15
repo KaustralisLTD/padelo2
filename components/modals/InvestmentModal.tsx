@@ -16,18 +16,61 @@ const InvestmentModal = ({ isOpen, onClose }: InvestmentModalProps) => {
     email: '',
     company: '',
     investmentSize: '',
+    message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // TODO: Implement form submission
-    setTimeout(() => {
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/investments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || undefined,
+          investmentSize: formData.investmentSize,
+          message: formData.message || undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          investmentSize: '',
+          message: '',
+        });
+        // Close modal after 2 seconds
+        setTimeout(() => {
+          onClose();
+          setSubmitStatus('idle');
+        }, 2000);
+      } else {
+        setSubmitStatus('error');
+        setErrorMessage(data.error || 'Failed to submit investment request');
+      }
+    } catch (error) {
+      console.error('Investment form error:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Network error. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      onClose();
-      alert('Form submitted successfully!');
-    }, 1000);
+    }
   };
 
   return (
@@ -119,6 +162,32 @@ const InvestmentModal = ({ isOpen, onClose }: InvestmentModalProps) => {
                     <option value="enterprise">{t('sizes.enterprise')}</option>
                   </select>
                 </div>
+
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('message') || 'Message (optional)'}
+                  </label>
+                  <textarea
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    rows={4}
+                    className="w-full px-4 py-2 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors resize-none"
+                    placeholder={t('messagePlaceholder') || 'Tell us more about your investment interest...'}
+                  />
+                </div>
+
+                {/* Status messages */}
+                {submitStatus === 'success' && (
+                  <div className="bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded-lg text-sm font-poppins">
+                    {t('success') || 'Request submitted successfully!'}
+                  </div>
+                )}
+
+                {submitStatus === 'error' && (
+                  <div className="bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded-lg text-sm font-poppins">
+                    {errorMessage || t('error') || 'Failed to submit request. Please try again.'}
+                  </div>
+                )}
 
                 <div className="flex gap-4 pt-4">
                   <button

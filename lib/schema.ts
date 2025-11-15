@@ -177,3 +177,53 @@ export function generateFAQSchema(faqs: Array<{ question: string; answer: string
   };
 }
 
+// Generate Product schema for AI machines
+export function generateProductSchema(
+  locale: string,
+  product: {
+    name: string;
+    description: string;
+    brand: string;
+    category: string;
+    image?: string;
+    offers?: {
+      availability?: string;
+      priceCurrency?: string;
+    };
+  }
+): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    brand: {
+      '@type': 'Brand',
+      name: product.brand,
+    },
+    category: product.category,
+    description: product.description,
+    image: product.image ? [product.image] : undefined,
+    offers: product.offers ? {
+      '@type': 'Offer',
+      availability: product.offers.availability || 'https://schema.org/PreOrder',
+      priceCurrency: product.offers.priceCurrency || 'EUR',
+    } : undefined,
+  };
+}
+
+// Generate Service schema for court construction (enhanced)
+export function generateCourtConstructionServiceSchema(locale: string): object {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'Padel court construction',
+    provider: {
+      '@type': 'Organization',
+      name: 'PadelO₂',
+      url: `${baseUrl}/${locale}`,
+    },
+    areaServed: 'Worldwide',
+    description: 'Indoor/outdoor & panoramic padel courts, turnkey installation with glass walls, foundations, lighting & maintenance.',
+  };
+}
+

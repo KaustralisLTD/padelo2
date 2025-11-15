@@ -76,7 +76,7 @@ export default function DashboardContent() {
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-orbitron font-bold mb-8 gradient-text text-center">
+        <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-8 gradient-text text-center">
           {t('dashboard.title')}
         </h1>
 

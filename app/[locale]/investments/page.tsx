@@ -20,11 +20,11 @@ export default function InvestmentsPage() {
     <>
       <div className="container mx-auto px-4 py-20 mt-20">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text text-center">
+          <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text text-center">
             {t('title')}
           </h1>
           
-          <h2 className="text-3xl md:text-4xl font-orbitron font-semibold mb-3 text-center text-text mt-8">
+          <h2 className="text-3xl md:text-4xl font-poppins font-semibold mb-3 text-center text-text mt-8">
             {t('headline')}
           </h2>
           
@@ -60,7 +60,7 @@ export default function InvestmentsPage() {
 
           {/* Investment Models */}
           <div className="mb-8">
-            <h3 className="text-2xl font-orbitron font-semibold mb-6 text-center text-text">
+            <h3 className="text-2xl font-poppins font-semibold mb-6 text-center text-text">
               {t('models.title')}:
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -72,7 +72,7 @@ export default function InvestmentsPage() {
                   <div className="flex items-start gap-4">
                     <span className="text-3xl">{model.icon}</span>
                     <div>
-                      <h4 className="text-lg font-orbitron font-semibold mb-2 text-text">
+                      <h4 className="text-lg font-poppins font-semibold mb-2 text-text">
                         {t(`models.${model.key}.title`)}
                       </h4>
                       <p className="text-text-secondary font-poppins text-sm">
@@ -95,7 +95,7 @@ export default function InvestmentsPage() {
           <div className="text-center">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="px-8 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity text-lg"
+              className="px-8 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity text-lg"
             >
               {t('cta')} →
             </button>

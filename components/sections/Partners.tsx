@@ -24,7 +24,7 @@ const Partners = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-6 gradient-text">
+          <h2 className="text-4xl md:text-5xl font-poppins font-bold mb-6 gradient-text">
             {t('title')}
           </h2>
           <p className="text-text-secondary font-poppins text-lg max-w-2xl mx-auto mb-8">

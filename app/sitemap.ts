@@ -18,17 +18,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const sitemapEntries: MetadataRoute.Sitemap = [];
 
+  // Map internal locale codes to hreflang codes
+  const hreflangMap: Record<string, string> = {
+    en: 'en',
+    es: 'es',
+    ua: 'uk',
+    ru: 'ru',
+    ca: 'ca',
+    de: 'de',
+    fr: 'fr',
+    it: 'it',
+    nl: 'nl',
+    da: 'da',
+    sv: 'sv',
+    no: 'nb',
+    zh: 'zh-CN',
+    ar: 'ar',
+  };
+
   locales.forEach((locale) => {
     routes.forEach((route) => {
+      const alternates: Record<string, string> = {};
+      locales.forEach((loc) => {
+        const hreflang = hreflangMap[loc] || loc;
+        alternates[hreflang] = `${baseUrl}/${loc}${route.path}`;
+      });
+      
       sitemapEntries.push({
         url: `${baseUrl}/${locale}${route.path}`,
         lastModified: new Date(),
         changeFrequency: route.changeFrequency,
         priority: route.priority,
         alternates: {
-          languages: Object.fromEntries(
-            locales.map((loc) => [loc, `${baseUrl}/${loc}${route.path}`])
-          ),
+          languages: alternates,
         },
       });
     });

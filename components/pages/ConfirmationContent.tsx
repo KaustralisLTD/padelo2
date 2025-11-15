@@ -95,7 +95,7 @@ export default function ConfirmationContent({ token }: ConfirmationContentProps)
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-3xl md:text-4xl font-orbitron font-bold mb-4 gradient-text">
+          <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-4 gradient-text">
             {t('confirmation.title')}
           </h1>
           <p className="text-text-secondary font-poppins text-lg mb-6">

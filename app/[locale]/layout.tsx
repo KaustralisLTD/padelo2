@@ -50,7 +50,7 @@ export default async function RootLayout({
   const websiteSchema = generateWebSiteSchema(locale);
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

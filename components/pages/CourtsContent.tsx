@@ -23,7 +23,7 @@ export default function CourtsContent() {
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text text-center">
+        <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text text-center">
           {t('title')}
         </h1>
         

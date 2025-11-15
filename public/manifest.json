@@ -1,0 +1,17 @@
+{
+  "name": "PadelO₂ - Breathe and Live",
+  "short_name": "PadelO₂",
+  "description": "Innovative padel sports ecosystem combining tournaments, training, AI-powered machines, and global court construction.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#00ff88",
+  "icons": [
+    {
+      "src": "/logo-header.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
+

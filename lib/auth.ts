@@ -1,6 +1,6 @@
 // Authentication and authorization utilities
 
-export type UserRole = 'superadmin' | 'staff' | 'participant';
+export type UserRole = 'superadmin' | 'tournament_admin' | 'manager' | 'coach' | 'staff' | 'participant';
 
 export interface User {
   id: string;

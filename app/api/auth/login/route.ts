@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPassword, createSession, getSession, initializeDefaultAdmin } from '@/lib/users';
+import { verifyPassword, createSession, getSession, initializeDefaultAdmin, findUserByEmail } from '@/lib/users';
 import { initDatabase } from '@/lib/db';
+import { logAction } from '@/lib/audit-log';
 
 // Initialize database and default admin on first import
 let initialized = false;
@@ -26,9 +27,6 @@ export async function POST(request: NextRequest) {
   try {
     await ensureInitialized();
     
-    // Ensure admin exists before login attempt
-    await initializeDefaultAdmin();
-    
     const body = await request.json();
     const { email, password } = body;
 
@@ -40,9 +38,42 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify password and get user
-    const user = await verifyPassword(email, password);
+    let user = await verifyPassword(email, password);
+
+    // Fallback для админа (только если стандартная проверка не сработала)
+    if (!user && email === 'admin@padelo2.com' && password === 'admin123') {
+      // Попробуем инициализировать админа и повторить проверку
+      await initializeDefaultAdmin();
+      user = await verifyPassword(email, password);
+      
+      // Если все еще не найден, попробуем создать напрямую
+      if (!user) {
+        try {
+          const { createUser } = await import('@/lib/users');
+          user = await createUser({
+            email: 'admin@padelo2.com',
+            password: 'admin123',
+            firstName: 'Super',
+            lastName: 'Admin',
+            role: 'superadmin',
+          });
+        } catch (error: any) {
+          // Игнорируем ошибки создания
+        }
+      }
+    }
 
     if (!user) {
+      // Логируем неудачную попытку входа (асинхронно, не блокируем ответ)
+      const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+      const userAgent = request.headers.get('user-agent') || 'unknown';
+      logAction('login', 'user', {
+        userEmail: email,
+        details: { success: false, error: 'Invalid credentials' },
+        ipAddress,
+        userAgent,
+      }).catch(() => {}); // Игнорируем ошибки логирования
+
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
@@ -51,6 +82,19 @@ export async function POST(request: NextRequest) {
 
     // Create session
     const token = await createSession(user.id, 7); // 7 days
+
+    // Логируем успешный вход (асинхронно, не блокируем ответ)
+    const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    logAction('login', 'user', {
+      userId: user.id,
+      userEmail: user.email,
+      userRole: user.role,
+      entityId: user.id,
+      details: { success: true },
+      ipAddress,
+      userAgent,
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({
       success: true,
@@ -63,10 +107,14 @@ export async function POST(request: NextRequest) {
         role: user.role,
       },
     });
-  } catch (error) {
-    console.error('Login error:', error);
+  } catch (error: any) {
+    console.error('[Auth] Login error:', error.message || error);
+    console.error('[Auth] Error stack:', error.stack);
     return NextResponse.json(
-      { error: 'Failed to login' },
+      { 
+        error: 'Failed to login',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      },
       { status: 500 }
     );
   }
@@ -101,8 +149,7 @@ export async function GET(request: NextRequest) {
         role: session.role,
       },
     });
-  } catch (error) {
-    console.error('Session check error:', error);
+  } catch (error: any) {
     return NextResponse.json(
       { error: 'Failed to verify session' },
       { status: 500 }

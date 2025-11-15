@@ -56,7 +56,7 @@ const HistoryTimeline = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-orbitron font-bold text-center mb-16 gradient-text"
+          className="text-4xl md:text-5xl font-poppins font-bold text-center mb-16 gradient-text"
         >
           {t('title')}
         </motion.h2>

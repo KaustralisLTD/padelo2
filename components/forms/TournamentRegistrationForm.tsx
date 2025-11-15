@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 
 interface Partner {
@@ -35,6 +35,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [partnerPhotoError, setPartnerPhotoError] = useState<string | null>(null);
+  const [profileLoaded, setProfileLoaded] = useState(false);
 
   const categoryGroups = {
     male: [
@@ -52,6 +53,51 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   };
 
   const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+  // Автозаполнение формы данными пользователя, если он залогинен
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      // Проверяем наличие токена
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      
+      if (!token || profileLoaded) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/user/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const profile = data.profile;
+
+          if (profile) {
+            // Автозаполняем только пустые поля
+            setFormData(prev => ({
+              firstName: prev.firstName || profile.firstName || '',
+              lastName: prev.lastName || profile.lastName || '',
+              email: prev.email || profile.email || '',
+              telegram: prev.telegram || profile.telegram || '',
+              phone: prev.phone || profile.phone || '',
+              tshirtSize: prev.tshirtSize || profile.tshirtSize || '',
+              categories: prev.categories,
+              message: prev.message,
+            }));
+            setProfileLoaded(true);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user profile:', error);
+        // Не показываем ошибку пользователю, просто не заполняем форму
+      }
+    };
+
+    loadUserProfile();
+  }, [profileLoaded]);
 
   const handleCategoryChange = (category: string) => {
     setFormData(prev => {
@@ -518,18 +564,20 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         />
       </div>
 
-      {/* Photo Upload Instructions */}
-      <div className="p-4 bg-background-secondary border border-gray-700 rounded-lg">
-        <p className="text-sm font-poppins text-text-secondary mb-2">
-          <strong className="text-text">{t('form.photoInstructions.title')}:</strong>
-        </p>
-        <p className="text-sm font-poppins text-text-secondary">
-          {t('form.photoInstructions.text')}
-        </p>
-        <p className="text-sm font-poppins text-text-secondary mt-2">
-          <strong>{t('form.photoInstructions.filename')}:</strong> {t('form.photoInstructions.filenameExample')}
-        </p>
-      </div>
+      {/* Photo Upload Instructions - Only for Partner */}
+      {showPartner && (
+        <div className="p-4 bg-background-secondary border border-gray-700 rounded-lg">
+          <p className="text-sm font-poppins text-text-secondary mb-2">
+            <strong className="text-text">{t('form.photoInstructions.title')}:</strong>
+          </p>
+          <p className="text-sm font-poppins text-text-secondary">
+            {t('form.photoInstructions.text')}
+          </p>
+          <p className="text-sm font-poppins text-text-secondary mt-2">
+            <strong>{t('form.photoInstructions.filename')}:</strong> {t('form.photoInstructions.filenameExample')}
+          </p>
+        </div>
+      )}
 
       {submitStatus === 'success' && (
         <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-sm font-poppins">

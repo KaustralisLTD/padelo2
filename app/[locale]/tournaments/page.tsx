@@ -1,17 +1,27 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import TournamentsContent from '@/components/pages/TournamentsContent';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { getSEOData } from '@/lib/seo-data';
 import { generateEventSchema } from '@/lib/schema';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'Tournaments' });
+  const seo = getSEOData('/tournaments', locale);
+  
+  if (!seo) {
+    return generateSEOMetadata({
+      title: 'Padel Tournaments — Register & Compete Worldwide',
+      description: 'Join PadelO₂ tournaments: categories, schedules, live results and registration. Compete globally with the best players.',
+      keywords: ['padel tournaments', 'padel competitions', 'padel events', 'padel registration', 'padel matches'],
+      path: '/tournaments',
+    }, locale);
+  }
   
   return generateSEOMetadata({
-    title: t('title'),
-    description: t('subhead') || t('body'),
+    title: seo.title,
+    description: seo.description,
     keywords: ['padel tournaments', 'padel competitions', 'padel events', 'padel registration', 'padel matches'],
     path: '/tournaments',
   }, locale);

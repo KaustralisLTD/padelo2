@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
     }
 
     const tournaments = await getAllTournaments();
+    console.log(`[GET /api/admin/tournaments] Found ${tournaments.length} tournaments`);
     return NextResponse.json({ tournaments });
   } catch (error: any) {
     console.error('Error getting tournaments:', error);

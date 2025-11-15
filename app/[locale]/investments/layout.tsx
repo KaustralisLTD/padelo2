@@ -1,16 +1,26 @@
 import type { Metadata } from 'next';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { getSEOData } from '@/lib/seo-data';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'Investments' });
+  const seo = getSEOData('/investments', locale);
+  
+  if (!seo) {
+    return generateSEOMetadata({
+      title: 'Joint Investments in Padel — Courts, Tech & Growth',
+      description: 'Co-invest with PadelO₂: courts, AI tech and expansion. Transparent terms, ROI models and revenue sharing.',
+      keywords: ['invest in padel courts', 'joint investments', 'ROI', 'revenue sharing', 'club partnerships'],
+      path: '/investments',
+    }, locale);
+  }
   
   return generateSEOMetadata({
-    title: t('title'),
-    description: t('subhead') || t('body'),
-    keywords: ['padel investments', 'padel funding', 'padel opportunities', 'padel business', 'padel partnerships'],
+    title: seo.title,
+    description: seo.description,
+    keywords: ['invest in padel courts', 'joint investments', 'ROI', 'revenue sharing', 'club partnerships'],
     path: '/investments',
   }, locale);
 }
@@ -22,4 +32,3 @@ export default function InvestmentsLayout({
 }) {
   return children;
 }
-

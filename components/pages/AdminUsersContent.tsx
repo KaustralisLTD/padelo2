@@ -22,6 +22,8 @@ export default function AdminUsersContent() {
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'list' | 'bookings' | 'matches' | 'wallet' | 'events' | 'trainings' | 'profile'>('list');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -31,6 +33,16 @@ export default function AdminUsersContent() {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  
+  // Данные для вкладок
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [matches, setMatches] = useState<any[]>([]);
+  const [wallet, setWallet] = useState<any>(null);
+  const [walletTransactions, setWalletTransactions] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
+  const [trainings, setTrainings] = useState<any[]>([]);
+  const [profile, setProfile] = useState<any>(null);
+  const [loadingTab, setLoadingTab] = useState(false);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
@@ -56,6 +68,82 @@ export default function AdminUsersContent() {
         router.push(`/${locale}/login`);
       });
   }, [locale, router]);
+
+  // Загрузка данных при смене вкладки
+  useEffect(() => {
+    if (selectedUserId && activeTab !== 'list') {
+      fetchTabData(activeTab);
+    }
+  }, [selectedUserId, activeTab, token]);
+
+  const fetchTabData = async (tab: string) => {
+    if (!token || !selectedUserId) return;
+    
+    setLoadingTab(true);
+    try {
+      switch (tab) {
+        case 'bookings':
+          const bookingsRes = await fetch(`/api/admin/users/${selectedUserId}/bookings`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (bookingsRes.ok) {
+            const bookingsData = await bookingsRes.json();
+            setBookings(bookingsData.bookings || []);
+          }
+          break;
+        case 'matches':
+          const matchesRes = await fetch(`/api/admin/users/${selectedUserId}/matches`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (matchesRes.ok) {
+            const matchesData = await matchesRes.json();
+            setMatches(matchesData.matches || []);
+          }
+          break;
+        case 'wallet':
+          const walletRes = await fetch(`/api/admin/users/${selectedUserId}/wallet`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (walletRes.ok) {
+            const walletData = await walletRes.json();
+            setWallet(walletData.wallet || null);
+            setWalletTransactions(walletData.transactions || []);
+          }
+          break;
+        case 'events':
+          const eventsRes = await fetch(`/api/admin/users/${selectedUserId}/events`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (eventsRes.ok) {
+            const eventsData = await eventsRes.json();
+            setEvents(eventsData.events || []);
+          }
+          break;
+        case 'trainings':
+          const trainingsRes = await fetch(`/api/admin/users/${selectedUserId}/trainings`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (trainingsRes.ok) {
+            const trainingsData = await trainingsRes.json();
+            setTrainings(trainingsData.trainings || []);
+          }
+          break;
+        case 'profile':
+          const profileRes = await fetch(`/api/admin/users/${selectedUserId}/profile`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (profileRes.ok) {
+            const profileData = await profileRes.json();
+            setProfile(profileData);
+          }
+          break;
+      }
+    } catch (err) {
+      console.error(`Error fetching ${tab} data:`, err);
+    } finally {
+      setLoadingTab(false);
+    }
+  };
 
   const fetchUsers = async () => {
     if (!token) return;
@@ -214,7 +302,7 @@ export default function AdminUsersContent() {
         </div>
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text">
+            <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
               {t('users.title')}
             </h1>
             <p className="text-xl text-text-secondary font-poppins">
@@ -241,6 +329,89 @@ export default function AdminUsersContent() {
           </div>
         )}
 
+        {/* Вкладки */}
+        <div className="mb-6 flex gap-2 border-b border-border">
+          <button
+            onClick={() => {
+              setActiveTab('list');
+              setSelectedUserId(null);
+            }}
+            className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+              activeTab === 'list'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-text-secondary hover:text-text'
+            }`}
+          >
+            {t('users.list')}
+          </button>
+          {selectedUserId && (
+            <>
+              <button
+                onClick={() => setActiveTab('bookings')}
+                className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+                  activeTab === 'bookings'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text'
+                }`}
+              >
+                {t('users.bookings')}
+              </button>
+              <button
+                onClick={() => setActiveTab('matches')}
+                className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+                  activeTab === 'matches'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text'
+                }`}
+              >
+                {t('users.matches')}
+              </button>
+              <button
+                onClick={() => setActiveTab('wallet')}
+                className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+                  activeTab === 'wallet'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text'
+                }`}
+              >
+                {t('users.wallet')}
+              </button>
+              <button
+                onClick={() => setActiveTab('events')}
+                className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+                  activeTab === 'events'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text'
+                }`}
+              >
+                {t('users.events')}
+              </button>
+              <button
+                onClick={() => setActiveTab('trainings')}
+                className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+                  activeTab === 'trainings'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text'
+                }`}
+              >
+                {t('users.trainings')}
+              </button>
+              <button
+                onClick={() => setActiveTab('profile')}
+                className={`px-6 py-3 font-poppins font-semibold transition-colors border-b-2 ${
+                  activeTab === 'profile'
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-text-secondary hover:text-text'
+                }`}
+              >
+                {t('users.profile')}
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Контент вкладок */}
+        {activeTab === 'list' && (
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -275,6 +446,15 @@ export default function AdminUsersContent() {
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
                         <button
+                          onClick={() => {
+                            setSelectedUserId(user.id);
+                            setActiveTab('profile');
+                          }}
+                          className="px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors font-poppins"
+                        >
+                          {t('users.view')}
+                        </button>
+                        <button
                           onClick={() => openEditModal(user)}
                           className="px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors font-poppins"
                         >
@@ -299,6 +479,255 @@ export default function AdminUsersContent() {
             )}
           </div>
         </div>
+        )}
+
+        {/* Вкладки для выбранного пользователя */}
+        {selectedUserId && activeTab !== 'list' && (
+          <div className="bg-background-secondary rounded-lg border border-border p-6">
+            {loadingTab ? (
+              <div className="text-center py-8">
+                <p className="text-text-secondary font-poppins">{t('loading')}</p>
+              </div>
+            ) : (
+              <>
+                {activeTab === 'bookings' && (
+                  <div>
+                    <h3 className="text-xl font-poppins font-bold mb-4 text-text">{t('users.bookings')}</h3>
+                    {bookings.length === 0 ? (
+                      <p className="text-text-secondary font-poppins">{t('users.noBookings')}</p>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-background border-b border-border">
+                            <tr>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.bookingTournament')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.bookingCategories')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.bookingStatus')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.bookingDate')}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {bookings.map((booking) => (
+                              <tr key={booking.id} className="border-b border-border hover:bg-background/50">
+                                <td className="p-4 text-text font-poppins">{booking.tournamentName}</td>
+                                <td className="p-4 text-text-secondary font-poppins">
+                                  {Array.isArray(booking.categories) ? booking.categories.join(', ') : booking.categories}
+                                </td>
+                                <td className="p-4">
+                                  <span className={`px-2 py-1 rounded text-xs font-poppins ${
+                                    booking.confirmed ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                                  }`}>
+                                    {booking.confirmed ? t('users.confirmed') : t('users.pending')}
+                                  </span>
+                                </td>
+                                <td className="p-4 text-text-secondary font-poppins text-sm">
+                                  {new Date(booking.createdAt).toLocaleDateString(locale)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'matches' && (
+                  <div>
+                    <h3 className="text-xl font-poppins font-bold mb-4 text-text">{t('users.matches')}</h3>
+                    {matches.length === 0 ? (
+                      <p className="text-text-secondary font-poppins">{t('users.noMatches')}</p>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-background border-b border-border">
+                            <tr>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.matchTournament')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.matchPair1')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.matchPair2')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.matchScore')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.matchDate')}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {matches.map((match) => (
+                              <tr key={match.id} className="border-b border-border hover:bg-background/50">
+                                <td className="p-4 text-text font-poppins">{match.tournamentName}</td>
+                                <td className="p-4 text-text-secondary font-poppins">{match.pair1Player || '-'}</td>
+                                <td className="p-4 text-text-secondary font-poppins">{match.pair2Player || '-'}</td>
+                                <td className="p-4 text-text font-poppins">
+                                  {match.pair1Games !== null && match.pair2Games !== null 
+                                    ? `${match.pair1Games} - ${match.pair2Games}`
+                                    : t('users.noScore')}
+                                </td>
+                                <td className="p-4 text-text-secondary font-poppins text-sm">
+                                  {match.matchDate ? new Date(match.matchDate).toLocaleString(locale) : '-'}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'wallet' && (
+                  <div>
+                    <h3 className="text-xl font-poppins font-bold mb-4 text-text">{t('users.wallet')}</h3>
+                    {wallet && (
+                      <div className="mb-6 p-4 bg-background rounded-lg border border-border">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-text-secondary font-poppins text-sm">{t('users.walletBalance')}</p>
+                            <p className="text-2xl font-poppins font-bold text-text">
+                              {wallet.balance.toFixed(2)} {wallet.currency}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    <h4 className="text-lg font-poppins font-semibold mb-4 text-text">{t('users.transactions')}</h4>
+                    {walletTransactions.length === 0 ? (
+                      <p className="text-text-secondary font-poppins">{t('users.noTransactions')}</p>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead className="bg-background border-b border-border">
+                            <tr>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.transactionType')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.transactionAmount')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.transactionStatus')}</th>
+                              <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.transactionDate')}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {walletTransactions.map((transaction) => (
+                              <tr key={transaction.id} className="border-b border-border hover:bg-background/50">
+                                <td className="p-4 text-text font-poppins">{transaction.type}</td>
+                                <td className={`p-4 font-poppins font-semibold ${
+                                  transaction.type === 'deposit' || transaction.type === 'refund' 
+                                    ? 'text-green-400' 
+                                    : 'text-red-400'
+                                }`}>
+                                  {transaction.type === 'deposit' || transaction.type === 'refund' ? '+' : '-'}
+                                  {transaction.amount.toFixed(2)} {transaction.currency}
+                                </td>
+                                <td className="p-4">
+                                  <span className={`px-2 py-1 rounded text-xs font-poppins ${
+                                    transaction.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                                    transaction.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                                    'bg-red-500/20 text-red-400'
+                                  }`}>
+                                    {transaction.status}
+                                  </span>
+                                </td>
+                                <td className="p-4 text-text-secondary font-poppins text-sm">
+                                  {new Date(transaction.createdAt).toLocaleString(locale)}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'events' && (
+                  <div>
+                    <h3 className="text-xl font-poppins font-bold mb-4 text-text">{t('users.events')}</h3>
+                    {events.length === 0 ? (
+                      <p className="text-text-secondary font-poppins">{t('users.noEvents')}</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {events.map((event) => (
+                          <div key={event.id} className="p-4 bg-background rounded-lg border border-border">
+                            <h4 className="text-lg font-poppins font-semibold text-text mb-2">{event.name}</h4>
+                            <div className="grid grid-cols-2 gap-2 text-sm text-text-secondary font-poppins">
+                              <div>
+                                <span className="font-semibold">{t('users.eventStartDate')}:</span> {event.startDate ? new Date(event.startDate).toLocaleDateString(locale) : '-'}
+                              </div>
+                              <div>
+                                <span className="font-semibold">{t('users.eventEndDate')}:</span> {event.endDate ? new Date(event.endDate).toLocaleDateString(locale) : '-'}
+                              </div>
+                              <div>
+                                <span className="font-semibold">{t('users.eventLocation')}:</span> {event.location || '-'}
+                              </div>
+                              <div>
+                                <span className="font-semibold">{t('users.eventStatus')}:</span> {event.status}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'trainings' && (
+                  <div>
+                    <h3 className="text-xl font-poppins font-bold mb-4 text-text">{t('users.trainings')}</h3>
+                    {trainings.length === 0 ? (
+                      <p className="text-text-secondary font-poppins">{t('users.noTrainings')}</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {trainings.map((training) => (
+                          <div key={training.id} className="p-4 bg-background rounded-lg border border-border">
+                            <p className="text-text font-poppins">{training.name || training.id}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'profile' && profile && (
+                  <div>
+                    <h3 className="text-xl font-poppins font-bold mb-4 text-text">{t('users.profile')}</h3>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="p-4 bg-background rounded-lg border border-border">
+                        <p className="text-text-secondary font-poppins text-sm mb-1">{t('users.email')}</p>
+                        <p className="text-text font-poppins font-semibold">{profile.profile.email}</p>
+                      </div>
+                      <div className="p-4 bg-background rounded-lg border border-border">
+                        <p className="text-text-secondary font-poppins text-sm mb-1">{t('users.name')}</p>
+                        <p className="text-text font-poppins font-semibold">
+                          {profile.profile.firstName} {profile.profile.lastName}
+                        </p>
+                      </div>
+                      <div className="p-4 bg-background rounded-lg border border-border">
+                        <p className="text-text-secondary font-poppins text-sm mb-1">{t('users.role')}</p>
+                        <p className="text-text font-poppins font-semibold">{profile.profile.role}</p>
+                      </div>
+                      <div className="p-4 bg-background rounded-lg border border-border">
+                        <p className="text-text-secondary font-poppins text-sm mb-1">{t('users.phone')}</p>
+                        <p className="text-text font-poppins font-semibold">{profile.profile.phone || '-'}</p>
+                      </div>
+                    </div>
+                    <div className="p-4 bg-background rounded-lg border border-border">
+                      <h4 className="text-lg font-poppins font-semibold mb-4 text-text">{t('users.statistics')}</h4>
+                      <div className="grid grid-cols-3 gap-4">
+                        <div>
+                          <p className="text-text-secondary font-poppins text-sm">{t('users.totalRegistrations')}</p>
+                          <p className="text-2xl font-poppins font-bold text-text">{profile.stats.totalRegistrations}</p>
+                        </div>
+                        <div>
+                          <p className="text-text-secondary font-poppins text-sm">{t('users.confirmedRegistrations')}</p>
+                          <p className="text-2xl font-poppins font-bold text-text">{profile.stats.confirmedRegistrations}</p>
+                        </div>
+                        <div>
+                          <p className="text-text-secondary font-poppins text-sm">{t('users.totalMatches')}</p>
+                          <p className="text-2xl font-poppins font-bold text-text">{profile.stats.totalMatches}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
         {/* Create/Edit Modal */}
         {(showCreateModal || editingUser) && (

@@ -10,7 +10,16 @@
     "lint": "next lint",
     "build:static": "bash build-static.sh",
     "deploy:ftp": "bash deploy-ftp.sh",
-    "deploy:static": "bash deploy-static.sh"
+    "deploy:static": "bash deploy-static.sh",
+    "create-tournament": "tsx scripts/create-initial-tournament.ts",
+    "create-test-tournament": "tsx scripts/create-test-tournament.ts",
+    "add-test-participants": "tsx scripts/add-test-participants.ts",
+    "distribute-test-participants": "tsx scripts/distribute-test-participants.ts",
+    "close-db-connections": "tsx scripts/close-db-connections.ts",
+    "check-db-connections": "tsx scripts/check-db-connections.ts",
+    "check-indexes": "tsx scripts/check-and-fix-indexes.ts",
+    "create-admin": "tsx scripts/create-admin.ts",
+    "create-admin-direct": "tsx scripts/create-admin-direct.ts"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.0",

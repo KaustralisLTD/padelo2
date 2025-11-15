@@ -39,11 +39,17 @@ export default function LoginContent() {
 
         if (response.ok) {
           const data = await response.json();
+          if (data.token) {
           localStorage.setItem('auth_token', data.token);
-          localStorage.setItem('user_role', data.role);
+            localStorage.setItem('user_role', data.user?.role || 'participant');
           router.push(`/${locale}/dashboard`);
         } else {
           setError(t('errors.invalidCredentials'));
+          }
+        } else {
+          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+          console.error('Login error:', errorData);
+          setError(errorData.error || t('errors.invalidCredentials'));
         }
       } else {
         // Register logic
@@ -83,7 +89,7 @@ export default function LoginContent() {
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-md mx-auto">
-        <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text text-center title-with-subscript">
+        <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text text-center title-with-subscript">
           {isLogin ? t('loginTitle') : t('registerTitle')}
         </h1>
         <p className="text-xl text-text-secondary font-poppins text-center mb-8">

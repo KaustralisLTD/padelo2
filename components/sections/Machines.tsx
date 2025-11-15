@@ -17,7 +17,7 @@ const Machines = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-6 gradient-text">
+            <h2 className="text-4xl md:text-5xl font-poppins font-bold mb-6 gradient-text">
               {t('title')}
             </h2>
             <p className="text-text-secondary font-poppins text-lg mb-6 leading-relaxed">

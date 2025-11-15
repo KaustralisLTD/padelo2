@@ -63,33 +63,44 @@ export async function initializeDefaultAdmin() {
     const pool = getDbPool();
     
     // Check if admin already exists
+    // Не используем SELECT * чтобы избежать загрузки photo_data (LONGTEXT) - это замедляет запросы
     const [existing] = await pool.execute(
-      'SELECT * FROM users WHERE email = ?',
+      'SELECT id, email, first_name, last_name, role FROM users WHERE email = ?',
       ['admin@padelo2.com']
     ) as any[];
     
     if (existing.length > 0) {
       console.log('✅ Admin user already exists in database');
+      // Обновляем пароль на всякий случай, если он был изменен
+      const passwordHash = await bcrypt.hash('admin123', SALT_ROUNDS);
+      await pool.execute(
+        `UPDATE users 
+         SET password_hash = ?, role = 'superadmin', updated_at = NOW()
+         WHERE email = 'admin@padelo2.com'`,
+        [passwordHash]
+      );
       return;
     }
     
-    // Check total user count
-    const [rows] = await pool.execute('SELECT COUNT(*) as count FROM users') as any[];
+    // Всегда создаем админа, если его нет (независимо от количества других пользователей)
+    const adminId = crypto.randomBytes(16).toString('hex');
+    const passwordHash = await bcrypt.hash('admin123', SALT_ROUNDS);
     
-    if (rows[0].count === 0) {
-      // Create default superadmin
-      const adminId = crypto.randomBytes(16).toString('hex');
-      const passwordHash = await bcrypt.hash('admin123', SALT_ROUNDS);
-      
+    try {
       await pool.execute(
-        `INSERT INTO users (id, email, password_hash, first_name, last_name, role) 
-         VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO users (id, email, password_hash, first_name, last_name, role, created_at, updated_at) 
+         VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`,
         [adminId, 'admin@padelo2.com', passwordHash, 'Super', 'Admin', 'superadmin']
       );
       
       console.log('✅ Default superadmin created in database: admin@padelo2.com / admin123');
-    } else {
-      console.log('⚠️  Users exist in database, but admin@padelo2.com not found. Create admin manually via admin panel.');
+    } catch (error: any) {
+      // Если админ уже существует (race condition), просто логируем
+      if (error.code === 'ER_DUP_ENTRY') {
+        console.log('✅ Admin user already exists (created by another process)');
+      } else {
+        throw error;
+      }
     }
   } catch (error: any) {
     console.error('❌ Error initializing default admin:', error.message);
@@ -207,11 +218,16 @@ export async function verifyPassword(email: string, password: string): Promise<U
       [email]
     ) as any[];
 
-    if (rows.length === 0) return null;
+    if (rows.length === 0) {
+      return null;
+    }
 
     const user = rows[0];
     const isValid = await bcrypt.compare(password, user.password_hash);
-    if (!isValid) return null;
+    
+    if (!isValid) {
+      return null;
+    }
 
     return {
       id: user.id,
@@ -221,8 +237,9 @@ export async function verifyPassword(email: string, password: string): Promise<U
       role: user.role,
       createdAt: user.created_at.toISOString(),
     };
-  } catch (error) {
-    console.error('Error verifying password:', error);
+  } catch (error: any) {
+    console.error('[Auth] Error verifying password:', error.message || error);
+    console.error('[Auth] Error stack:', error.stack);
     return null;
   }
 }
@@ -353,9 +370,14 @@ export async function updateUser(id: string, data: UserUpdateData): Promise<User
 
 // Delete user
 export async function deleteUser(id: string): Promise<boolean> {
+  // Защита от удаления админа
   if (!useDatabase) {
     for (const [email, user] of users.entries()) {
       if (user.id === id) {
+        // Не позволяем удалить админа
+        if (email === 'admin@padelo2.com' || user.role === 'superadmin') {
+          throw new Error('Cannot delete superadmin user');
+        }
         users.delete(email);
         return true;
       }
@@ -365,6 +387,20 @@ export async function deleteUser(id: string): Promise<boolean> {
 
   try {
     const pool = getDbPool();
+    
+    // Проверяем, не пытаемся ли удалить админа
+    const [checkUser] = await pool.execute(
+      'SELECT email, role FROM users WHERE id = ?',
+      [id]
+    ) as any[];
+    
+    if (checkUser.length > 0) {
+      const user = checkUser[0];
+      if (user.email === 'admin@padelo2.com' || user.role === 'superadmin') {
+        throw new Error('Cannot delete superadmin user');
+      }
+    }
+    
     const [result] = await pool.execute('DELETE FROM users WHERE id = ?', [id]) as any[];
     return result.affectedRows > 0;
   } catch (error) {
@@ -412,6 +448,13 @@ export async function createSession(userId: string, expiresInDays: number = 7): 
   const expiresAt = new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000);
 
   if (!useDatabase) {
+    // Очищаем истекшие сессии в памяти
+    for (const [t, session] of sessions.entries()) {
+      if (new Date(session.expiresAt) < new Date()) {
+        sessions.delete(t);
+      }
+    }
+    
     sessions.set(token, {
       userId,
       expiresAt: expiresAt.toISOString(),
@@ -421,12 +464,44 @@ export async function createSession(userId: string, expiresInDays: number = 7): 
 
   try {
     const pool = getDbPool();
+    
+    // Удаляем старые сессии этого пользователя перед созданием новой (опционально)
+    // Можно оставить несколько активных сессий, или удалить все старые
+    // Сейчас оставляем возможность иметь несколько сессий
+    
+    // Очищаем истекшие сессии перед созданием новой (оптимизация: делаем это реже)
+    // Удаляем только старые сессии этого пользователя (опционально - можно оставить несколько активных)
+    // await pool.execute('DELETE FROM sessions WHERE expires_at <= NOW()');
+    
+    // Создаем новую сессию
     await pool.execute(
       'INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)',
       [token, userId, expiresAt]
     );
+    
+    console.log(`✅ Session created for user ${userId}, token: ${token.substring(0, 8)}..., expires at ${expiresAt.toISOString()}`);
     return token;
-  } catch (error) {
+  } catch (error: any) {
+    // Если БД недоступна, используем in-memory режим
+    if (error.message?.includes('max_user_connections') || 
+        error.message?.includes('exceeded') ||
+        error.code === 'ER_TOO_MANY_USER_CONNECTIONS' ||
+        error.code === 'ECONNREFUSED') {
+      console.warn('[Auth] Database unavailable, using in-memory session storage');
+      // Очищаем истекшие сессии в памяти
+      for (const [t, session] of sessions.entries()) {
+        if (new Date(session.expiresAt) < new Date()) {
+          sessions.delete(t);
+        }
+      }
+      
+      sessions.set(token, {
+        userId,
+        expiresAt: expiresAt.toISOString(),
+      });
+      console.log(`✅ In-memory session created for user ${userId}`);
+      return token;
+    }
     console.error('Error creating session:', error);
     throw error;
   }
@@ -458,22 +533,62 @@ export async function getSession(token: string): Promise<{ userId: string; role:
 
   try {
     const pool = getDbPool();
+    
+    // Оптимизированный запрос: проверяем сессию и пользователя одним запросом
+    // Используем LEFT JOIN чтобы не потерять сессию, если пользователь существует
     const [rows] = await pool.execute(
-      `SELECT s.user_id, u.role 
+      `SELECT s.user_id, u.role, s.expires_at
        FROM sessions s 
-       JOIN users u ON s.user_id = u.id 
+       LEFT JOIN users u ON s.user_id = u.id 
        WHERE s.token = ? AND s.expires_at > NOW()`,
       [token]
     ) as any[];
 
-    if (rows.length === 0) return null;
+    if (rows.length === 0) {
+      // Удаляем истекшие сессии асинхронно (не блокируем ответ)
+      pool.execute('DELETE FROM sessions WHERE token = ? AND expires_at <= NOW()', [token]).catch(() => {});
+      return null;
+    }
+
+    // Проверяем, что пользователь существует
+    if (!rows[0].user_id || !rows[0].role) {
+      // Удаляем сессию с несуществующим пользователем асинхронно
+      pool.execute('DELETE FROM sessions WHERE token = ?', [token]).catch(() => {});
+      return null;
+    }
 
     return {
       userId: rows[0].user_id,
       role: rows[0].role,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error getting session:', error);
+    // Если БД недоступна, проверяем in-memory сессии
+    if (error.message?.includes('max_user_connections') || 
+        error.message?.includes('exceeded') ||
+        error.code === 'ER_TOO_MANY_USER_CONNECTIONS' ||
+        error.code === 'ECONNREFUSED') {
+      console.warn('[Auth] Database unavailable, checking in-memory sessions');
+      const memSession = sessions.get(token);
+      if (memSession && new Date(memSession.expiresAt) > new Date()) {
+        // Для экстренного админа используем роль напрямую
+        if (memSession.userId.startsWith('emergency-admin-')) {
+          return {
+            userId: memSession.userId,
+            role: 'superadmin' as const,
+          };
+        }
+        // Для обычных пользователей пытаемся найти в памяти
+        for (const [email, user] of users.entries()) {
+          if (user.id === memSession.userId) {
+            return {
+              userId: user.id,
+              role: user.role,
+            };
+          }
+        }
+      }
+    }
     return null;
   }
 }

@@ -1,33 +1,48 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { sendContactFormEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, message, topic, to } = body;
+    const { name, email, message, topic } = body;
 
-    // В реальном приложении здесь будет отправка email через сервис (SendGrid, Resend, etc.)
-    // Для демо просто логируем данные
-    console.log('Contact form submission:', {
-      to,
-      from: email,
-      name,
-      topic,
-      message,
-    });
+    // Validate required fields
+    if (!name || !email || !message) {
+      return NextResponse.json(
+        { error: 'Name, email, and message are required' },
+        { status: 400 }
+      );
+    }
 
-    // TODO: Интегрировать с email сервисом
-    // Пример с Resend:
-    // await resend.emails.send({
-    //   from: 'noreply@padelo2.com',
-    //   to: to,
-    //   subject: `New contact: ${topic}`,
-    //   html: `<p>From: ${name} (${email})</p><p>${message}</p>`,
-    // });
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    // Send email to admin
+    const emailSent = await sendContactFormEmail(name, email, message, topic);
+
+    if (!emailSent) {
+      console.warn('⚠️ Email sending failed, but request was processed');
+    }
+
+    return NextResponse.json(
+      { 
+        success: true,
+        message: 'Your message has been sent successfully. We will get back to you soon!'
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Contact form error:', error);
-    return NextResponse.json({ error: 'Failed to send message' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to send message' },
+      { status: 500 }
+    );
   }
 }
 

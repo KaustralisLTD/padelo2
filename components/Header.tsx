@@ -45,15 +45,21 @@ const Header = () => {
   }, []);
 
   const navItems = [
-    { key: 'academy', href: `/${locale}/academy` },
-    { key: 'tournaments', href: `/${locale}/tournaments` },
-    { key: 'machines', href: `/${locale}/machines` },
-    { key: 'courts', href: `/${locale}/courts` },
-    { key: 'investments', href: `/${locale}/investments` },
-    { key: 'partners', href: `/${locale}/partners` },
     { key: 'about', href: `/${locale}/about` },
+    { key: 'academy', href: `/${locale}/academy` },
+    { key: 'machines', href: `/${locale}/machines` },
+    { key: 'tournaments', href: `/${locale}/tournaments` },
+    { key: 'merchandise', href: `/${locale}/merchandise` },
+    { key: 'courts', href: `/${locale}/courts` },
+    { key: 'partners', href: `/${locale}/partners` },
+    { key: 'investments', href: `/${locale}/investments` },
     { key: 'contact', href: `/${locale}/contact` },
   ];
+
+  // Добавляем Dashboard первым в меню для залогиненных пользователей
+  const authenticatedNavItems = isAuthenticated 
+    ? [{ key: 'dashboard', href: `/${locale}/dashboard` }, ...navItems]
+    : navItems;
 
   return (
     <motion.header
@@ -89,7 +95,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center space-x-8">
-          {navItems.map((item) => (
+          {authenticatedNavItems.map((item) => (
             <Link
               key={item.key}
               href={item.href}
@@ -112,7 +118,7 @@ const Header = () => {
                 : 'text-text-secondary'
             }`}
           >
-            {isAuthenticated ? t('profile') : t('login')}
+            {isAuthenticated ? t('account') : t('login')}
           </Link>
           <LanguageSelector />
         </div>
@@ -162,7 +168,7 @@ const Header = () => {
             className="lg:hidden bg-background-secondary border-t border-border"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
-              {navItems.map((item) => (
+              {authenticatedNavItems.map((item) => (
                 <Link
                   key={item.key}
                   href={item.href}
@@ -181,7 +187,7 @@ const Header = () => {
                   (pathname === `/${locale}/login` || pathname === `/${locale}/profile`) ? 'text-primary' : 'text-text-secondary'
                 }`}
               >
-                {isAuthenticated ? t('profile') : t('login')}
+                {isAuthenticated ? t('account') : t('login')}
               </Link>
               <div className="pt-4 border-t border-border">
                 <LanguageSelector />

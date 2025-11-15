@@ -1,18 +1,27 @@
 import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { getSEOData } from '@/lib/seo-data';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'About' });
+  const seo = getSEOData('/about', locale);
+  
+  if (!seo) {
+    return generateSEOMetadata({
+      title: 'About PadelO₂ — Innovation in the Padel Ecosystem',
+      description: 'We build the future of padel: AI machines, global courts, academy and joint investments. Breathe and play.',
+      keywords: ['about PadelO2', 'padel innovation brand', 'mission vision', 'history of padel'],
+      path: '/about',
+    }, locale);
+  }
   
   return generateSEOMetadata({
-    title: t('title'),
-    description: t('subhead') || t('body'),
-    keywords: ['padel company', 'padel ecosystem', 'padel innovation', 'about padel', 'padel mission'],
+    title: seo.title,
+    description: seo.description,
+    keywords: ['about PadelO2', 'padel innovation brand', 'mission vision', 'history of padel'],
     path: '/about',
   }, locale);
 }

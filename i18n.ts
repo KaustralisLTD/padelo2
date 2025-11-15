@@ -9,10 +9,21 @@ export default getRequestConfig(async ({ locale }) => {
     notFound();
   }
 
-  return {
-    locale,
-    messages: (await import(`./messages/${locale}.json`)).default
-  };
+  try {
+    const messages = (await import(`./messages/${locale}.json`)).default;
+    return {
+      locale,
+      messages
+    };
+  } catch (error) {
+    console.error(`[i18n] Failed to load messages for locale ${locale}:`, error);
+    // Fallback to English if locale file is missing
+    const fallbackMessages = (await import(`./messages/en.json`)).default;
+    return {
+      locale,
+      messages: fallbackMessages
+    };
+  }
 });
 
 

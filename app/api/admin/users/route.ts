@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate role
-    const validRoles: UserRole[] = ['superadmin', 'staff', 'participant'];
+    const validRoles: UserRole[] = ['superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant'];
     const userRole = role && validRoles.includes(role) ? role : 'participant';
 
     const user = await createUser({
@@ -177,7 +177,7 @@ export async function PUT(request: NextRequest) {
     // Validate role if provided
     let userRole: UserRole | undefined;
     if (role) {
-      const validRoles: UserRole[] = ['superadmin', 'staff', 'participant'];
+      const validRoles: UserRole[] = ['superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant'];
       if (validRoles.includes(role)) {
         userRole = role;
       }

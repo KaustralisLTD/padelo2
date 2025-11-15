@@ -33,7 +33,7 @@ const Investments = () => {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-6 gradient-text">
+            <h2 className="text-4xl md:text-5xl font-poppins font-bold mb-6 gradient-text">
               {t('title')}
             </h2>
             <p className="text-text-secondary font-poppins text-lg mb-8 leading-relaxed">

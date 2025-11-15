@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import TournamentRegistrationForm from '@/components/forms/TournamentRegistrationForm';
+import TournamentDetails from '@/components/TournamentDetails';
 
 export default function TournamentsContent() {
   const t = useTranslations('Tournaments');
@@ -24,7 +25,7 @@ export default function TournamentsContent() {
       name: t('tournament2.name'),
       subtitle: t('tournament2.subtitle'),
       date: t('tournament2.date'),
-      image: '/images/tournaments/tournament-2.jpg',
+      image: '/images/tournaments/tournament-1.png', // Используем существующее изображение
       isActive: false,
       verySoon: true,
     },
@@ -33,7 +34,7 @@ export default function TournamentsContent() {
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-orbitron font-bold mb-4 gradient-text text-center title-with-subscript">
+        <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text text-center title-with-subscript">
           {t('title')}
         </h1>
         
@@ -133,10 +134,13 @@ export default function TournamentsContent() {
               </h3>
             </div>
             {selectedTournament && (
-              <TournamentRegistrationForm
-                tournamentId={selectedTournament}
-                tournamentName={tournaments.find(t => t.id === selectedTournament)?.name || ''}
-              />
+              <>
+                <TournamentDetails tournamentId={selectedTournament} />
+                <TournamentRegistrationForm
+                  tournamentId={selectedTournament}
+                  tournamentName={tournaments.find(t => t.id === selectedTournament)?.name || ''}
+                />
+              </>
             )}
           </div>
         )}
