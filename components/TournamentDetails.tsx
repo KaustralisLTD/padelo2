@@ -22,6 +22,8 @@ interface Tournament {
   locationCoordinates?: { lat: number; lng: number } | null;
   eventSchedule?: EventScheduleItem[] | null;
   maxParticipants: number | null;
+  priceSingleCategory?: number | null;
+  priceDoubleCategory?: number | null;
   status: string;
 }
 

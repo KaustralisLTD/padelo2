@@ -784,7 +784,7 @@ export async function distributePlayersToGroups(
           regCategories = JSON.parse(reg.categories);
         } catch {
           // Если не JSON, попробуем как строку с запятыми
-          regCategories = reg.categories.split(',').map(c => c.trim());
+          regCategories = reg.categories.split(',').map((c: string) => c.trim());
         }
       } else if (Array.isArray(reg.categories)) {
         regCategories = reg.categories;

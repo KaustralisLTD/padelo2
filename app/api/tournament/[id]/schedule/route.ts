@@ -8,16 +8,20 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  let tournamentId: number | null = null;
+  let category: string | null = null;
+  let groupId: string | null = null;
+  
   try {
     const { id } = await params;
-    const tournamentId = parseInt(id, 10);
+    tournamentId = parseInt(id, 10);
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
 
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-    const groupId = searchParams.get('groupId');
+    category = searchParams.get('category');
+    groupId = searchParams.get('groupId');
 
     let pool;
     try {
@@ -315,9 +319,9 @@ export async function GET(
     console.error('Error fetching schedule:', {
       error: error.message,
       stack: error.stack,
-      tournamentId,
-      category,
-      groupId,
+      tournamentId: tournamentId || undefined,
+      category: category || undefined,
+      groupId: groupId || undefined,
     });
     
     // Логируем ошибку в audit log
@@ -332,11 +336,11 @@ export async function GET(
             userId: session.userId,
             userEmail: user?.email,
             userRole: session.role,
-            entityId: tournamentId,
+            entityId: tournamentId || undefined,
             details: {
               error: error.message,
               action: 'fetch_schedule',
-              category,
+              category: category || undefined,
               groupId,
             },
             ipAddress: getIpAddress(request),
@@ -363,6 +367,7 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  let tournamentId: number | null = null;
   try {
     // Проверка авторизации
     const authHeader = request.headers.get('authorization');
@@ -378,7 +383,7 @@ export async function POST(
     }
 
     const { id } = await params;
-    const tournamentId = parseInt(id, 10);
+    tournamentId = parseInt(id, 10);
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
@@ -505,7 +510,7 @@ export async function POST(
             userId: session.userId,
             userEmail: user?.email,
             userRole: session.role,
-            entityId: tournamentId,
+            entityId: tournamentId || undefined,
             details: {
               error: error.message,
               stack: error.stack,
@@ -531,6 +536,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  let tournamentId: number | null = null;
   try {
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth-token')?.value;
@@ -545,7 +551,7 @@ export async function DELETE(
     }
 
     const { id } = await params;
-    const tournamentId = parseInt(id, 10);
+    tournamentId = parseInt(id, 10);
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
@@ -596,7 +602,7 @@ export async function DELETE(
             userId: session.userId,
             userEmail: user?.email,
             userRole: session.role,
-            entityId: tournamentId,
+            entityId: tournamentId || undefined,
             details: {
               error: error.message,
               action: 'clear_schedule',

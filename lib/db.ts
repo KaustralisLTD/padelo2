@@ -121,7 +121,7 @@ export async function executeQuery<T = any>(
   const pool = getDbPool();
   
   // Создаем Promise с таймаутом
-  const queryPromise = pool.execute(query, params);
+  const queryPromise = pool.execute(query, params) as Promise<[T[], any]>;
   const timeoutPromise = new Promise<never>((_, reject) => {
     setTimeout(() => reject(new Error('Query timeout after 30 seconds')), 30000);
   });

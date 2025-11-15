@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { updateGroupPair } from '@/lib/tournaments';
 import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
@@ -11,6 +11,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  let body: any = {};
   try {
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
@@ -25,7 +26,15 @@ export async function PUT(
     }
 
     const { id } = await params;
-    const body = await request.json();
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      return NextResponse.json(
+        { error: 'Invalid JSON in request body' },
+        { status: 400 }
+      );
+    }
+    
     const { pairId, player1RegistrationId, player2RegistrationId, partner1RegistrationId, partner2RegistrationId } = body;
 
     if (!pairId) {
@@ -42,10 +51,14 @@ export async function PUT(
       partner2RegistrationId: partner2RegistrationId || null,
     });
 
+    // Получаем email пользователя для логирования
+    const user = await findUserById(session.userId);
+    const userEmail = user?.email || 'unknown';
+
     // Логируем действие
     await logAction('update', 'pair', {
       userId: session.userId,
-      userEmail: session.email,
+      userEmail: userEmail,
       userRole: session.role,
       entityId: pairId,
       details: {
@@ -67,11 +80,14 @@ export async function PUT(
     try {
       const session = await getSession(request.headers.get('authorization')?.replace('Bearer ', '') || '');
       if (session) {
+        const user = await findUserById(session.userId);
+        const userEmail = user?.email || 'unknown';
+        
         await logAction('error', 'pair', {
           userId: session.userId,
-          userEmail: session.email,
+          userEmail: userEmail,
           userRole: session.role,
-          entityId: body.pairId,
+          entityId: body?.pairId || 'unknown',
           details: {
             error: error.message,
             stack: error.stack,

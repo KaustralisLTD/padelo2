@@ -12,7 +12,7 @@ export interface User {
 }
 
 // Role permissions
-export const rolePermissions = {
+export const rolePermissions: Record<UserRole, string[]> = {
   superadmin: [
     'manage_users',
     'manage_tournaments',
@@ -20,6 +20,22 @@ export const rolePermissions = {
     'view_all_data',
     'edit_players',
     'manage_staff',
+  ],
+  tournament_admin: [
+    'manage_tournaments',
+    'manage_registrations',
+    'edit_players',
+    'view_participants',
+  ],
+  manager: [
+    'manage_tournaments',
+    'manage_registrations',
+    'edit_players',
+    'view_participants',
+  ],
+  coach: [
+    'view_participants',
+    'edit_players',
   ],
   staff: [
     'manage_tournaments',

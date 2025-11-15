@@ -485,20 +485,20 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
 
     // Оптимистичное обновление - сразу обновляем локальное состояние
     const updatedBracket = JSON.parse(JSON.stringify(bracket));
-    const updatedSourceGroup = updatedBracket[selectedCategory || '']?.find(g => g.id === draggedPair.groupId);
-    const updatedTargetGroup = updatedBracket[selectedCategory || '']?.find(g => g.id === targetGroupId);
+    const updatedSourceGroup = updatedBracket[selectedCategory || '']?.find((g: any) => g.id === draggedPair.groupId);
+    const updatedTargetGroup = updatedBracket[selectedCategory || '']?.find((g: any) => g.id === targetGroupId);
     
     if (updatedSourceGroup && updatedTargetGroup) {
       // Удаляем из исходной группы
-      updatedSourceGroup.pairs = updatedSourceGroup.pairs.filter(p => p.id !== draggedPair.pairId);
+      updatedSourceGroup.pairs = updatedSourceGroup.pairs.filter((p: any) => p.id !== draggedPair.pairId);
       // Сохраняем оригинальный номер пары, если он свободен в целевой группе
       const originalPairNumber = pairToMove.pairNumber;
-      const isNumberFree = !updatedTargetGroup.pairs.some(p => p.pairNumber === originalPairNumber);
+      const isNumberFree = !updatedTargetGroup.pairs.some((p: any) => p.pairNumber === originalPairNumber);
       
       // Используем оригинальный номер, если свободен, иначе находим следующий
       const newPairNumber = isNumberFree 
         ? originalPairNumber 
-        : Math.max(...updatedTargetGroup.pairs.map(p => p.pairNumber), 0) + 1;
+        : Math.max(...updatedTargetGroup.pairs.map((p: any) => p.pairNumber), 0) + 1;
       
       // Добавляем в целевую группу с сохраненным или новым номером
       updatedTargetGroup.pairs.push({ ...pairToMove, pairNumber: newPairNumber });
@@ -682,8 +682,8 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
               body: JSON.stringify({
           player1RegistrationId: player1RegId,
           player2RegistrationId: player2RegId,
-          partner1RegistrationId: partner1RegId,
-          partner2RegistrationId: partner2RegId,
+          partner1RegistrationId: null,
+          partner2RegistrationId: null,
         }),
       });
 

@@ -27,7 +27,7 @@ export async function GET(
     ) as any[];
 
     // Get all pairs for all groups (оптимизация: один запрос вместо множественных)
-    const groupIds = groups.map(g => g.id);
+    const groupIds = groups.map((g: any) => g.id);
     if (groupIds.length === 0) {
       return NextResponse.json({ bracket: {} });
     }

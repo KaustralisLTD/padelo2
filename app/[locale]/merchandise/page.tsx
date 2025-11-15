@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return generateSEOMetadata({
     title: seo.title,
     description: seo.description,
-    keywords: seo.keywords || ['padel merchandise', 'tournament products', 'custom t-shirts', 'padel trophies'],
+    keywords: ['padel merchandise', 'tournament products', 'custom t-shirts', 'padel trophies', 'sports medals', 'tournament accessories'],
     path: '/merchandise',
   }, locale);
 }

@@ -254,6 +254,7 @@ export async function generateNextPlayoffStageSchedule(
         pair2Id: match.pair2_id,
         matchDate: new Date(matchTime),
         courtNumber,
+        matchOrder: courtIndex + 1,
       });
       
       // Переходим к следующему корту

@@ -208,7 +208,7 @@ export default function MerchandiseContent() {
           <p className="text-text-secondary font-poppins text-center mb-6">
             {t('contact.description')}
           </p>
-          <ContactForm />
+          <ContactForm email="merchandise@padelo2.com" subject="Merchandise Inquiry" />
         </div>
       </div>
     </div>

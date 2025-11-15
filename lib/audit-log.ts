@@ -202,11 +202,12 @@ export function getIpAddress(request: Request | NextRequest): string | undefined
     return request.headers.get('x-real-ip') || undefined;
   } else {
     // Для NextRequest
-    const forwarded = request.headers.get('x-forwarded-for');
+    const nextRequest = request as NextRequest;
+    const forwarded = nextRequest.headers.get('x-forwarded-for');
     if (forwarded) {
       return forwarded.split(',')[0].trim();
     }
-    return request.headers.get('x-real-ip') || undefined;
+    return nextRequest.headers.get('x-real-ip') || undefined;
   }
 }
 
@@ -217,7 +218,8 @@ export function getUserAgent(request: Request | NextRequest): string | undefined
   if (request instanceof Request) {
     return request.headers.get('user-agent') || undefined;
   } else {
-    return request.headers.get('user-agent') || undefined;
+    const nextRequest = request as NextRequest;
+    return nextRequest.headers.get('user-agent') || undefined;
   }
 }
 
