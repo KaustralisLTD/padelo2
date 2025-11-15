@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
-import { initializeDefaultAdmin } from '@/lib/users';
 
 export const dynamic = 'force-dynamic';
 
@@ -56,40 +55,17 @@ export async function GET() {
         ['admin@padelo2.com']
       ) as any[];
 
-      // Если админа нет, пытаемся создать
+      // Если админа нет, сообщаем об этом (не создаем автоматически)
       if (adminCheck.length === 0) {
-        try {
-          await initializeDefaultAdmin();
-          const [newAdminCheck] = await pool.execute(
-            'SELECT id, email, role FROM users WHERE email = ?',
-            ['admin@padelo2.com']
-          ) as any[];
-          
-          return NextResponse.json({
-            success: true,
-            database_configured: true,
-            database_connected: true,
-            admin_exists: newAdminCheck.length > 0,
-            admin_created: newAdminCheck.length > 0,
-            admin_email: 'admin@padelo2.com',
-            admin_password: 'admin123',
-            message: newAdminCheck.length > 0 
-              ? 'Database connected. Admin created successfully.' 
-              : 'Database connected but admin creation failed.'
-          });
-        } catch (adminError: any) {
-          console.error('Error creating admin:', adminError);
-          return NextResponse.json({
-            success: true,
-            database_configured: true,
-            database_connected: true,
-            admin_exists: false,
-            admin_created: false,
-            admin_error: adminError.message,
-            admin_error_code: adminError.code,
-            message: 'Database connected but admin creation failed. Use /api/admin/create-admin to create admin.'
-          });
-        }
+        return NextResponse.json({
+          success: true,
+          database_configured: true,
+          database_connected: true,
+          admin_exists: false,
+          admin_created: false,
+          message: 'Database connected but admin does not exist. Use /api/admin/create-admin to create admin.',
+          hint: 'Open https://www.padelo2.com/api/admin/create-admin in browser to create admin'
+        });
       }
 
       return NextResponse.json({
