@@ -3,6 +3,8 @@ import { verifyPassword, createSession, getSession, initializeDefaultAdmin, find
 import { initDatabase } from '@/lib/db';
 import { logAction } from '@/lib/audit-log';
 
+export const dynamic = 'force-dynamic';
+
 // Initialize database and default admin on first import
 let initialized = false;
 async function ensureInitialized() {
