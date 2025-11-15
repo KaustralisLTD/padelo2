@@ -53,7 +53,7 @@ const LanguageSelector = () => {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center space-x-2 px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
           theme === 'light'
-            ? 'text-white/90 hover:text-primary border-white/20 hover:border-primary'
+            ? 'text-white/90 hover:text-primary border-white/30 hover:border-primary bg-white/10 backdrop-blur-sm'
             : 'text-text-secondary hover:text-primary border-border'
         }`}
       >
@@ -74,13 +74,17 @@ const LanguageSelector = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-32 bg-background-secondary border border-border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary scrollbar-track-background-secondary">
+        <div className={`absolute top-full right-0 mt-2 w-32 border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary ${
+          theme === 'light'
+            ? 'bg-white/95 backdrop-blur-md border-white/30'
+            : 'bg-background-secondary border-border scrollbar-track-background-secondary'
+        }`}>
           <style jsx>{`
             div::-webkit-scrollbar {
               width: 6px;
             }
             div::-webkit-scrollbar-track {
-              background: var(--background-secondary);
+              background: ${theme === 'light' ? 'rgba(255, 255, 255, 0.1)' : 'var(--background-secondary)'};
             }
             div::-webkit-scrollbar-thumb {
               background: var(--primary);
@@ -94,10 +98,12 @@ const LanguageSelector = () => {
             <button
               key={loc}
               onClick={() => handleLanguageChange(loc)}
-              className={`w-full text-left px-4 py-2 text-sm font-poppins transition-colors hover:bg-background ${
+              className={`w-full text-left px-4 py-2 text-sm font-poppins transition-colors ${
                 locale === loc
-                  ? 'text-primary bg-background'
-                  : 'text-text-secondary'
+                  ? `text-primary ${theme === 'light' ? 'bg-primary/10' : 'bg-background'}`
+                  : theme === 'light'
+                    ? 'text-gray-800 hover:bg-gray-100'
+                    : 'text-text-secondary hover:bg-background'
               }`}
             >
               {languageNames[loc]}
