@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { countParticipantsByCategory, getTotalParticipantSlots, getUniqueParticipantCount } from '@/lib/tournaments';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET - получить статистику участников по категориям для турнира
  * ВАЖНО: Если участник зарегистрирован в нескольких категориях, он считается

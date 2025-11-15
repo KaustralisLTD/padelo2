@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { getPoolStats, getDbPool } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET - получить статистику пула соединений БД (только для superadmin)
  */

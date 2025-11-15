@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { getAuditLogs } from '@/lib/audit-log';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET - получить логи аудита с фильтрацией (только для superadmin)
  */
