@@ -100,13 +100,30 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   }, [selectedCategory]); // Убрали bracket из зависимостей, чтобы избежать циклов
 
   // Отдельный useEffect для проверки завершенности после загрузки bracket
+  // Но только если еще не все группы завершены
   useEffect(() => {
     if (selectedCategory && bracket[selectedCategory] && Object.keys(bracket).length > 0) {
-      // Проверяем завершенность только если bracket был загружен
-      const timer = setTimeout(() => {
-        checkGroupCompletions();
-      }, 800); // Увеличена задержка для надежности
-      return () => clearTimeout(timer);
+      // Проверяем, все ли обычные группы уже завершены
+      const regularGroups = bracket[selectedCategory].filter(g => {
+        const isKnockoutStage = g.groupName?.toLowerCase().includes('match') ||
+                                g.groupName?.toLowerCase().includes('quarterfinal') ||
+                                g.groupName?.toLowerCase().includes('semifinal') ||
+                                g.groupName?.toLowerCase().includes('final') ||
+                                g.groupName?.toLowerCase().includes('quarter') ||
+                                g.groupName?.toLowerCase().includes('semi');
+        return !isKnockoutStage;
+      });
+      
+      // Проверяем завершенность только если есть незавершенные группы
+      const allCompleted = regularGroups.every(g => g.isCompleted === true);
+      if (!allCompleted) {
+        const timer = setTimeout(() => {
+          checkGroupCompletions();
+        }, 800);
+        return () => clearTimeout(timer);
+      } else {
+        console.log('[useEffect] All regular groups are completed, skipping checkGroupCompletions');
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bracket]);
