@@ -195,6 +195,34 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
             console.log(`[checkGroupCompletions] Group ${group.id} diagnostics:`, data.diagnostics);
             console.log(`[checkGroupCompletions] Group ${group.id} - Expected: ${data.diagnostics.expectedMatches}, Total: ${data.diagnostics.totalMatches}, Completed: ${data.diagnostics.completedMatches}`);
             
+            // Если матчи не созданы или не все созданы, создаем недостающие
+            if (data.diagnostics.totalMatches < data.diagnostics.expectedMatches) {
+              console.log(`[checkGroupCompletions] Group ${group.id} - Missing ${data.diagnostics.expectedMatches - data.diagnostics.totalMatches} matches, creating them...`);
+              try {
+                const createResponse = await fetch(`/api/tournament/${tournamentId}/group/${group.id}/create-matches`, {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+                    'Content-Type': 'application/json',
+                  },
+                });
+                if (createResponse.ok) {
+                  const createData = await createResponse.json();
+                  console.log(`[checkGroupCompletions] Group ${group.id} - Created ${createData.created} matches`);
+                  // Перепроверяем завершенность после создания матчей
+                  const recheckResponse = await fetch(`/api/tournament/${tournamentId}/group/${group.id}/completed`);
+                  if (recheckResponse.ok) {
+                    const recheckData = await recheckResponse.json();
+                    return { groupId: group.id, completed: recheckData.completed, diagnostics: recheckData.diagnostics };
+                  }
+                } else {
+                  console.error(`[checkGroupCompletions] Failed to create matches for group ${group.id}`);
+                }
+              } catch (error) {
+                console.error(`[checkGroupCompletions] Error creating matches for group ${group.id}:`, error);
+              }
+            }
+            
             // Показываем незавершенные матчи
             const incompleteMatches = data.diagnostics.matches.filter((m: any) => !m.isCompleted);
             if (incompleteMatches.length > 0) {

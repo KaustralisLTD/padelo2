@@ -185,6 +185,106 @@ export async function saveMatchResult(
 }
 
 /**
+ * Create missing matches for a group (round-robin)
+ * This function will create all matches that should exist but don't
+ */
+export async function createMissingMatchesForGroup(groupId: number): Promise<{ created: number; matches: Match[] }> {
+  if (!useDatabase) {
+    throw new Error('Database not configured');
+  }
+  
+  try {
+    const pool = getDbPool();
+    
+    // Get all pairs in the group
+    const [pairs] = await pool.execute(
+      'SELECT id FROM tournament_group_pairs WHERE group_id = ? AND player1_registration_id IS NOT NULL',
+      [groupId]
+    ) as any[];
+    
+    if (pairs.length < 2) {
+      console.log(`[createMissingMatchesForGroup] Group ${groupId}: Less than 2 pairs (${pairs.length}), cannot create matches`);
+      return { created: 0, matches: [] };
+    }
+    
+    // Generate all expected matches (round-robin)
+    const pairIds = pairs.map((p: any) => p.id);
+    const expectedMatches: Array<{ pair1Id: number; pair2Id: number }> = [];
+    
+    for (let i = 0; i < pairIds.length; i++) {
+      for (let j = i + 1; j < pairIds.length; j++) {
+        expectedMatches.push({
+          pair1Id: pairIds[i],
+          pair2Id: pairIds[j],
+        });
+      }
+    }
+    
+    // Get existing matches
+    const [existingMatches] = await pool.execute(
+      `SELECT pair1_id, pair2_id FROM tournament_matches WHERE group_id = ?`,
+      [groupId]
+    ) as any[];
+    
+    const existingPairs = new Set(
+      existingMatches.map((m: any) => `${Math.min(m.pair1_id, m.pair2_id)}-${Math.max(m.pair1_id, m.pair2_id)}`)
+    );
+    
+    // Find missing matches
+    const missingMatches = expectedMatches.filter(match => {
+      const key = `${Math.min(match.pair1Id, match.pair2Id)}-${Math.max(match.pair1Id, match.pair2Id)}`;
+      return !existingPairs.has(key);
+    });
+    
+    if (missingMatches.length === 0) {
+      console.log(`[createMissingMatchesForGroup] Group ${groupId}: All matches already exist`);
+      return { created: 0, matches: [] };
+    }
+    
+    console.log(`[createMissingMatchesForGroup] Group ${groupId}: Creating ${missingMatches.length} missing matches`);
+    
+    // Create missing matches
+    const createdMatches: Match[] = [];
+    for (const match of missingMatches) {
+      const [result] = await pool.execute(
+        `INSERT INTO tournament_matches (group_id, pair1_id, pair2_id, created_at, updated_at)
+         VALUES (?, ?, ?, NOW(), NOW())`,
+        [groupId, match.pair1Id, match.pair2Id]
+      ) as any;
+      
+      const [rows] = await pool.execute(
+        'SELECT * FROM tournament_matches WHERE id = ?',
+        [result.insertId]
+      ) as any[];
+      
+      const row = rows[0];
+      createdMatches.push({
+        id: row.id,
+        groupId: row.group_id,
+        pair1Id: row.pair1_id,
+        pair2Id: row.pair2_id,
+        pair1Games: row.pair1_games,
+        pair2Games: row.pair2_games,
+        pair1Points: row.pair1_points,
+        pair2Points: row.pair2_points,
+        winnerPairId: row.winner_pair_id,
+        matchDate: row.match_date ? row.match_date.toISOString() : null,
+        reportedAt: row.reported_at ? row.reported_at.toISOString() : null,
+        reportedBy: row.reported_by,
+        createdAt: row.created_at.toISOString(),
+        updatedAt: row.updated_at ? row.updated_at.toISOString() : undefined,
+      });
+    }
+    
+    console.log(`[createMissingMatchesForGroup] Group ${groupId}: ✅ Created ${createdMatches.length} matches`);
+    return { created: createdMatches.length, matches: createdMatches };
+  } catch (error: any) {
+    console.error(`[createMissingMatchesForGroup] Error creating matches for group ${groupId}:`, error);
+    throw error;
+  }
+}
+
+/**
  * Get standings for a group (points, games won/lost, average)
  */
 export async function getGroupStandings(groupId: number): Promise<any[]> {
