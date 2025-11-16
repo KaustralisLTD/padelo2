@@ -204,16 +204,18 @@ export async function generateNextPlayoffStageSchedule(
     }
     
     // Получаем занятые корты на ближайшее время
+    // Используем JOIN с tournament_groups для получения tournament_id
     const [occupiedCourts] = await pool.execute(
-      `SELECT court_number, MAX(match_date) as last_match_time
-       FROM tournament_matches 
-       WHERE tournament_id = (SELECT tournament_id FROM tournament_groups WHERE id = ? LIMIT 1)
-       AND match_date >= ?
-       AND match_date < DATE_ADD(?, INTERVAL 2 HOUR)
-       AND court_number IS NOT NULL
-       GROUP BY court_number
+      `SELECT tm.court_number, MAX(tm.match_date) as last_match_time
+       FROM tournament_matches tm
+       JOIN tournament_groups tg ON tm.group_id = tg.id
+       WHERE tg.tournament_id = ?
+       AND tm.match_date >= ?
+       AND tm.match_date < DATE_ADD(?, INTERVAL 2 HOUR)
+       AND tm.court_number IS NOT NULL
+       GROUP BY tm.court_number
        ORDER BY last_match_time DESC`,
-      [groupIds[0], startTime, startTime]
+      [tournamentId, startTime, startTime]
     ) as any[];
     
     // Определяем свободные корты
