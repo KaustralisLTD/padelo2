@@ -343,7 +343,17 @@ export async function generateNextPlayoffStageSchedule(
       }
       
       // Используем созданные матчи
+      matches.length = 0; // Очищаем массив
       matches.push(...matchesAfterCreate);
+    }
+    
+    if (matches.length === 0) {
+      console.log(`[generateNextPlayoffStageSchedule] No matches to schedule after all checks`);
+      return { 
+        success: false, 
+        matchesGenerated: 0, 
+        error: 'No unscheduled matches found for next stage' 
+      };
     }
     
     // Определяем текущее время и ближайшее доступное время
