@@ -107,17 +107,37 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
             </p>
           )}
           {tournament.locationCoordinates && (
-            <div className="w-full h-64 rounded-lg overflow-hidden border border-border">
-              <iframe
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}&q=${tournament.locationCoordinates.lat},${tournament.locationCoordinates.lng}&zoom=15`}
-              />
-            </div>
+            <>
+              {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
+                <div className="w-full h-64 rounded-lg overflow-hidden border border-border">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${tournament.locationCoordinates.lat},${tournament.locationCoordinates.lng}&zoom=15`}
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-64 rounded-lg overflow-hidden border border-border bg-background-secondary flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <p className="text-text-secondary font-poppins mb-3">
+                      Карта недоступна. Нажмите на ссылку ниже, чтобы открыть в Google Maps.
+                    </p>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${tournament.locationCoordinates.lat},${tournament.locationCoordinates.lng}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-4 py-2 bg-primary text-white rounded-lg font-poppins hover:bg-primary-dark transition-colors"
+                    >
+                      Открыть в Google Maps
+                    </a>
+                  </div>
+                </div>
+              )}
+            </>
           )}
           {tournament.locationCoordinates && (
             <a
