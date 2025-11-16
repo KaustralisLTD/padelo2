@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { logAction } from '@/lib/audit-log';
+import { createMissingMatchesForGroup } from '@/lib/matches';
 
 /**
  * PUT - переместить пару в другую группу
@@ -67,11 +68,37 @@ export async function PUT(
       newPairNumber = maxPair[0].max_num + 1;
     }
     
+    // Удаляем старые матчи, связанные с этой парой в исходной группе
+    // (матчи, где эта пара была pair1_id или pair2_id)
+    await pool.execute(
+      `DELETE FROM tournament_matches 
+       WHERE group_id = ? AND (pair1_id = ? OR pair2_id = ?)`,
+      [sourceGroupId, pairId, pairId]
+    );
+    
+    console.log(`[Move Pair] Deleted matches for pair ${pairId} from source group ${sourceGroupId}`);
+
     // Обновляем пару (сохраняем уникальный id, меняем только group_id и pair_number)
     await pool.execute(
       'UPDATE tournament_group_pairs SET group_id = ?, pair_number = ? WHERE id = ?',
       [targetGroupId, newPairNumber, pairId]
     );
+
+    // Пересоздаем матчи для исходной группы (без перемещенной пары)
+    try {
+      const sourceResult = await createMissingMatchesForGroup(sourceGroupId);
+      console.log(`[Move Pair] Recreated ${sourceResult.created} matches for source group ${sourceGroupId}`);
+    } catch (error) {
+      console.error(`[Move Pair] Error recreating matches for source group ${sourceGroupId}:`, error);
+    }
+
+    // Пересоздаем матчи для целевой группы (с перемещенной парой)
+    try {
+      const targetResult = await createMissingMatchesForGroup(targetGroupId);
+      console.log(`[Move Pair] Recreated ${targetResult.created} matches for target group ${targetGroupId}`);
+    } catch (error) {
+      console.error(`[Move Pair] Error recreating matches for target group ${targetGroupId}:`, error);
+    }
 
     // Логируем перемещение пары
     const user = await findUserById(session.userId);

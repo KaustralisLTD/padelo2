@@ -1015,6 +1015,21 @@ export async function distributePlayersToGroups(
     }
   }
   
+  // После распределения игроков автоматически создаем матчи для всех групп
+  console.log(`[distributePlayersToGroups] Creating matches for ${groups.length} groups...`);
+  const { createMissingMatchesForGroup } = await import('./matches');
+  
+  for (const group of groups) {
+    try {
+      const result = await createMissingMatchesForGroup(group.id);
+      if (result.created > 0) {
+        console.log(`[distributePlayersToGroups] Created ${result.created} matches for ${group.groupName} (ID: ${group.id})`);
+      }
+    } catch (error) {
+      console.error(`[distributePlayersToGroups] Error creating matches for group ${group.id}:`, error);
+    }
+  }
+  
   return { distributed, groups };
 }
 
