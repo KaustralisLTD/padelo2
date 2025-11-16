@@ -1315,6 +1315,8 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                 <tbody>
                   {matches
                     .filter((match) => {
+                      // Фильтруем по категории
+                      if (match.category !== selectedCategory) return false;
                       // Фильтруем только обычные группы (не knockout stage)
                       const isKnockout = match.group_name?.toLowerCase().includes('match') ||
                                         match.group_name?.toLowerCase().includes('quarterfinal') ||
@@ -1450,6 +1452,8 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           ) : (() => {
             // Фильтруем только матчи Play Off
             const playoffMatches = matches.filter((match) => {
+              // Фильтруем по категории
+              if (match.category !== selectedCategory) return false;
               const isKnockout = match.group_name?.toLowerCase().includes('match') ||
                                 match.group_name?.toLowerCase().includes('quarterfinal') ||
                                 match.group_name?.toLowerCase().includes('semifinal') ||
