@@ -264,26 +264,86 @@ export async function generateNextPlayoffStageSchedule(
     console.log(`[generateNextPlayoffStageSchedule] Groups to schedule:`, groupsToSchedule.map((g: any) => ({ id: g.id, name: g.group_name })));
     console.log(`[generateNextPlayoffStageSchedule] Group IDs:`, groupIds);
     
+    if (groupIds.length === 0) {
+      console.log(`[generateNextPlayoffStageSchedule] No groups to schedule`);
+      return { 
+        success: false, 
+        matchesGenerated: 0, 
+        error: 'No groups to schedule' 
+      };
+    }
+    
     const placeholders = groupIds.map(() => '?').join(',');
     
-    const [matches] = await pool.execute(
-      `SELECT id, group_id, pair1_id, pair2_id 
+    // Сначала проверим, есть ли вообще матчи в этих группах
+    const [allMatchesInGroups] = await pool.execute(
+      `SELECT id, group_id, pair1_id, pair2_id, match_date
        FROM tournament_matches 
-       WHERE group_id IN (${placeholders}) 
-       AND match_date IS NULL
+       WHERE group_id IN (${placeholders})
        ORDER BY group_id`,
       groupIds
     ) as any[];
     
-    console.log(`[generateNextPlayoffStageSchedule] Found ${matches.length} unscheduled matches:`, matches.map((m: any) => ({ id: m.id, groupId: m.group_id, pair1: m.pair1_id, pair2: m.pair2_id })));
+    console.log(`[generateNextPlayoffStageSchedule] All matches in groups (${groupIds.length} groups):`, allMatchesInGroups.map((m: any) => ({ 
+      id: m.id, 
+      groupId: m.group_id, 
+      pair1: m.pair1_id, 
+      pair2: m.pair2_id,
+      matchDate: m.match_date 
+    })));
+    
+    // Фильтруем только те, у которых match_date IS NULL
+    const matches = allMatchesInGroups.filter((m: any) => m.match_date === null);
+    
+    console.log(`[generateNextPlayoffStageSchedule] Found ${matches.length} unscheduled matches (out of ${allMatchesInGroups.length} total):`, matches.map((m: any) => ({ id: m.id, groupId: m.group_id, pair1: m.pair1_id, pair2: m.pair2_id })));
     
     if (matches.length === 0) {
-      console.log(`[generateNextPlayoffStageSchedule] No unscheduled matches found for next stage`);
-      return { 
-        success: false, 
-        matchesGenerated: 0, 
-        error: 'No unscheduled matches found for next stage' 
-      };
+      // Если матчей нет вообще, возможно они не были созданы - создаем их
+      console.log(`[generateNextPlayoffStageSchedule] No unscheduled matches found. Checking if matches need to be created...`);
+      
+      // Проверяем, есть ли пары в группах
+      for (const group of groupsToSchedule) {
+        const [pairs] = await pool.execute(
+          'SELECT id FROM tournament_group_pairs WHERE group_id = ? AND player1_registration_id IS NOT NULL',
+          [group.id]
+        ) as any[];
+        
+        console.log(`[generateNextPlayoffStageSchedule] Group ${group.id} (${group.group_name}): ${pairs.length} pairs with players`);
+        
+        if (pairs.length >= 2 && allMatchesInGroups.filter((m: any) => m.group_id === group.id).length === 0) {
+          // Создаем матч для этой группы
+          console.log(`[generateNextPlayoffStageSchedule] Creating match for group ${group.id}...`);
+          try {
+            const { createMissingMatchesForGroup } = await import('./matches');
+            const result = await createMissingMatchesForGroup(group.id);
+            console.log(`[generateNextPlayoffStageSchedule] Created ${result.created} matches for group ${group.id}`);
+          } catch (error) {
+            console.error(`[generateNextPlayoffStageSchedule] Error creating matches for group ${group.id}:`, error);
+          }
+        }
+      }
+      
+      // Перепроверяем после создания
+      const [matchesAfterCreate] = await pool.execute(
+        `SELECT id, group_id, pair1_id, pair2_id 
+         FROM tournament_matches 
+         WHERE group_id IN (${placeholders}) 
+         AND match_date IS NULL
+         ORDER BY group_id`,
+        groupIds
+      ) as any[];
+      
+      if (matchesAfterCreate.length === 0) {
+        console.log(`[generateNextPlayoffStageSchedule] Still no unscheduled matches found after creating matches`);
+        return { 
+          success: false, 
+          matchesGenerated: 0, 
+          error: 'No unscheduled matches found for next stage. Matches may already be scheduled or groups may not have enough pairs.' 
+        };
+      }
+      
+      // Используем созданные матчи
+      matches.push(...matchesAfterCreate);
     }
     
     // Определяем текущее время и ближайшее доступное время

@@ -919,7 +919,22 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           >
             {getCategoryLabel(category)}
             <span className="ml-2 text-sm opacity-75">
-              ({bracket[category].reduce((sum, g) => sum + g.pairs.length, 0)} {t('pair')})
+              ({bracket[category]
+                .filter(g => {
+                  // Считаем только обычные группы (не knockout stages)
+                  const isKnockoutStage = g.groupName?.toLowerCase().includes('match') ||
+                                          g.groupName?.toLowerCase().includes('quarterfinal') ||
+                                          g.groupName?.toLowerCase().includes('semifinal') ||
+                                          g.groupName?.toLowerCase().includes('final') ||
+                                          g.groupName?.toLowerCase().includes('quarter') ||
+                                          g.groupName?.toLowerCase().includes('semi');
+                  return !isKnockoutStage;
+                })
+                .reduce((sum, g) => {
+                  // Считаем только пары с игроками (где есть хотя бы один игрок)
+                  const pairsWithPlayers = g.pairs.filter(p => p.players && p.players.length > 0);
+                  return sum + pairsWithPlayers.length;
+                }, 0)} {t('pair')})
             </span>
           </button>
         ))}
