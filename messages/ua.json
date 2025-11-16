@@ -359,6 +359,8 @@
       "address": "Адреса проведення",
       "getDirections": "Отримати маршрут",
       "eventSchedule": "Розклад подій",
+      "showEvents": "Показати всі події",
+      "hideEvents": "Приховати події",
       "addEvent": "Додати подію",
       "removeEvent": "Видалити",
       "eventNumber": "Подія",

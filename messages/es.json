@@ -359,6 +359,8 @@
       "address": "Dirección del lugar",
       "getDirections": "Obtener indicaciones",
       "eventSchedule": "Programa de eventos",
+      "showEvents": "Mostrar todos los eventos",
+      "hideEvents": "Ocultar eventos",
       "addEvent": "Agregar evento",
       "removeEvent": "Eliminar",
       "eventNumber": "Evento",

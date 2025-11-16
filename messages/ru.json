@@ -359,6 +359,8 @@
       "address": "Адрес проведения",
       "getDirections": "Получить маршрут",
       "eventSchedule": "Расписание событий",
+      "showEvents": "Показать все события",
+      "hideEvents": "Скрыть события",
       "startDate": "Дата начала",
       "endDate": "Дата окончания",
       "registrationDeadline": "Дедлайн регистрации",

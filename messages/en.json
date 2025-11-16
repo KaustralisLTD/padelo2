@@ -277,6 +277,8 @@
       "address": "Venue Address",
       "getDirections": "Get Directions",
       "eventSchedule": "Event Schedule",
+      "showEvents": "Show All Events",
+      "hideEvents": "Hide Events",
       "startDate": "Start Date",
       "endDate": "End Date",
       "registrationDeadline": "Registration Deadline",

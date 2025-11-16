@@ -195,9 +195,8 @@ export default function AdminTournamentsContent() {
 
       if (response.ok) {
         setSuccess('Tournament updated successfully');
-        setEditingTournament(null);
-        resetForm();
         fetchTournaments();
+        closeModal();
         setTimeout(() => setSuccess(null), 3000);
       } else {
         setError(data.error || 'Failed to update tournament');
@@ -626,11 +625,45 @@ export default function AdminTournamentsContent() {
                   </div>
                   <div className="space-y-4">
                     {formData.eventSchedule.map((event, index) => (
-                      <div key={index} className="p-4 bg-background rounded-lg border border-border">
+                      <div 
+                        key={index} 
+                        draggable
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('text/plain', index.toString());
+                          e.currentTarget.style.opacity = '0.5';
+                        }}
+                        onDragEnd={(e) => {
+                          e.currentTarget.style.opacity = '1';
+                        }}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          e.currentTarget.style.borderColor = '#3b82f6';
+                        }}
+                        onDragLeave={(e) => {
+                          e.currentTarget.style.borderColor = '';
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          e.currentTarget.style.borderColor = '';
+                          const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                          if (draggedIndex !== index) {
+                            const updated = [...formData.eventSchedule];
+                            const [removed] = updated.splice(draggedIndex, 1);
+                            updated.splice(index, 0, removed);
+                            setFormData({ ...formData, eventSchedule: updated });
+                          }
+                        }}
+                        className="p-4 bg-background rounded-lg border border-border cursor-move hover:border-primary transition-colors"
+                      >
                         <div className="flex justify-between items-center mb-3">
-                          <span className="text-sm font-poppins font-semibold text-text">
-                            {t('tournaments.eventNumber')} {index + 1}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+                            </svg>
+                            <span className="text-sm font-poppins font-semibold text-text">
+                              {t('tournaments.eventNumber')} {index + 1}
+                            </span>
+                          </div>
                           <button
                             type="button"
                             onClick={() => setFormData({
