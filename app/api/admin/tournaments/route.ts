@@ -9,6 +9,8 @@ import {
   type Tournament,
 } from '@/lib/tournaments';
 
+export const dynamic = 'force-dynamic';
+
 // GET - получить все турниры
 export async function GET(request: NextRequest) {
   try {
@@ -111,7 +113,11 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ tournament });
   } catch (error: any) {
     console.error('Error updating tournament:', error);
-    return NextResponse.json({ error: error.message || 'Failed to update tournament' }, { status: 500 });
+    console.error('Error stack:', error.stack);
+    return NextResponse.json({ 
+      error: error.message || 'Failed to update tournament',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, { status: 500 });
   }
 }
 
