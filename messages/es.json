@@ -690,6 +690,8 @@
       }
     },
     "tournaments": {
+      "title": "Gestionar Torneos",
+      "description": "Descripción",
       "createTournament": "Crear Torneo",
       "editTournament": "Editar Torneo",
       "name": "Nombre",

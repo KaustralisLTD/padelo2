@@ -544,6 +544,8 @@
   },
   "Admin": {
     "tournaments": {
+      "title": "Turniere Verwalten",
+      "description": "Beschreibung",
       "createTournament": "Turnier Erstellen",
       "editTournament": "Turnier Bearbeiten",
       "name": "Name",

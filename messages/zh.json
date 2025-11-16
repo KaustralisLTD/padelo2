@@ -555,6 +555,8 @@
   },
   "Admin": {
     "tournaments": {
+      "title": "管理锦标赛",
+      "description": "描述",
       "createTournament": "创建锦标赛",
       "editTournament": "编辑锦标赛",
       "name": "名称",

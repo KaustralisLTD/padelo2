@@ -542,6 +542,8 @@
   },
   "Admin": {
     "tournaments": {
+      "title": "Toernooien Beheren",
+      "description": "Beschrijving",
       "createTournament": "Toernooi Aanmaken",
       "editTournament": "Toernooi Bewerken",
       "name": "Naam",

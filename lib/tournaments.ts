@@ -86,19 +86,49 @@ export async function getAllTournaments(): Promise<Tournament[]> {
     
     console.log(`[getAllTournaments] Found ${rows.length} tournaments in database`);
     
-    return rows.map((row: any) => ({
-      id: row.id,
-      name: row.name,
-      description: row.description,
-      startDate: row.start_date.toISOString(),
-      endDate: row.end_date.toISOString(),
-      registrationDeadline: row.registration_deadline ? row.registration_deadline.toISOString() : undefined,
-      location: row.location,
-      maxParticipants: row.max_participants,
-      status: row.status,
-      createdAt: row.created_at.toISOString(),
-      updatedAt: row.updated_at ? row.updated_at.toISOString() : undefined,
-    }));
+    return rows.map((row: any) => {
+      // Safely parse JSON fields
+      let locationCoordinates = undefined;
+      if (row.location_coordinates) {
+        try {
+          locationCoordinates = typeof row.location_coordinates === 'string' 
+            ? JSON.parse(row.location_coordinates) 
+            : row.location_coordinates;
+        } catch (e) {
+          console.error(`[getAllTournaments] Error parsing location_coordinates for tournament ${row.id}:`, e);
+        }
+      }
+      
+      let eventSchedule = undefined;
+      if (row.event_schedule) {
+        try {
+          eventSchedule = typeof row.event_schedule === 'string' 
+            ? JSON.parse(row.event_schedule) 
+            : row.event_schedule;
+        } catch (e) {
+          console.error(`[getAllTournaments] Error parsing event_schedule for tournament ${row.id}:`, e);
+        }
+      }
+      
+      return {
+        id: row.id,
+        name: row.name,
+        description: row.description,
+        startDate: row.start_date ? (row.start_date instanceof Date ? row.start_date.toISOString() : new Date(row.start_date).toISOString()) : '',
+        endDate: row.end_date ? (row.end_date instanceof Date ? row.end_date.toISOString() : new Date(row.end_date).toISOString()) : '',
+        registrationDeadline: row.registration_deadline ? (row.registration_deadline instanceof Date ? row.registration_deadline.toISOString() : new Date(row.registration_deadline).toISOString()) : undefined,
+        location: row.location,
+        locationAddress: row.location_address || undefined,
+        locationCoordinates,
+        eventSchedule,
+        maxParticipants: row.max_participants,
+        priceSingleCategory: row.price_single_category ? parseFloat(row.price_single_category) : undefined,
+        priceDoubleCategory: row.price_double_category ? parseFloat(row.price_double_category) : undefined,
+        status: row.status,
+        createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString()) : new Date().toISOString(),
+        updatedAt: row.updated_at ? (row.updated_at instanceof Date ? row.updated_at.toISOString() : new Date(row.updated_at).toISOString()) : undefined,
+      };
+    });
   } catch (error) {
     console.error('Error getting tournaments:', error);
     return [];

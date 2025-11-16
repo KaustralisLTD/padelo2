@@ -569,6 +569,8 @@
   },
   "Admin": {
     "tournaments": {
+      "title": "Administrer Turneringer",
+      "description": "Beskrivelse",
       "createTournament": "Opret Turnering",
       "editTournament": "Rediger Turnering",
       "name": "Navn",

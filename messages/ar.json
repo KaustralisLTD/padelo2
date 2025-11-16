@@ -574,6 +574,8 @@
   },
   "Admin": {
     "tournaments": {
+      "title": "إدارة البطولات",
+      "description": "الوصف",
       "createTournament": "إنشاء بطولة",
       "editTournament": "تعديل البطولة",
       "name": "الاسم",
