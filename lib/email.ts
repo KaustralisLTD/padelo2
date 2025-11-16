@@ -165,20 +165,49 @@ export async function sendEmailVerification(
   const t = translations[locale] || translations.en;
   
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
-      <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <h2 style="color: #4CAF50; margin-top: 0;">${t.greeting}</h2>
-        <p style="color: #333; font-size: 16px; line-height: 1.6;">${t.message}</p>
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; font-size: 16px;">${t.button}</a>
-        </div>
-        <p style="color: #666; font-size: 14px; margin-top: 30px;">${t.footer}</p>
-        <p style="color: #999; font-size: 12px; margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
-          Или скопируйте эту ссылку в браузер:<br>
-          <a href="${verificationUrl}" style="color: #4CAF50; word-break: break-all;">${verificationUrl}</a>
-        </p>
-      </div>
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+              <tr>
+                <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
+                  <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">🎾 PadelO2</h1>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 40px 30px;">
+                  <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 28px; font-weight: 700;">${t.greeting}</h2>
+                  <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">${t.message}</p>
+                  <div style="text-align: center; margin: 40px 0;">
+                    <a href="${verificationUrl}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.2s;">${t.button}</a>
+                  </div>
+                  <p style="color: #8a8a8a; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0;">${t.footer}</p>
+                  <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e8e8e8;">
+                    <p style="color: #999; font-size: 12px; margin: 0 0 10px 0;">Или скопируйте эту ссылку:</p>
+                    <p style="margin: 0;">
+                      <a href="${verificationUrl}" style="color: #667eea; word-break: break-all; font-size: 12px; text-decoration: none;">${verificationUrl}</a>
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="background: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e8e8e8;">
+                  <p style="color: #999; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} PadelO2. Все права защищены.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
   `;
 
   return await sendEmail({
@@ -222,19 +251,48 @@ export async function sendWelcomeEmail(
   const t = translations[locale] || translations.en;
   
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
-      <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <h2 style="color: #4CAF50; margin-top: 0;">${t.greeting}</h2>
-        <p style="color: #333; font-size: 16px; line-height: 1.6;">${t.message}</p>
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${siteUrl}/${locale}/dashboard" style="background-color: #4CAF50; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; font-size: 16px;">${t.button}</a>
-        </div>
-        <p style="color: #666; font-size: 14px; margin-top: 30px;">
-          С уважением,<br>
-          Команда PadelO2
-        </p>
-      </div>
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+              <tr>
+                <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
+                  <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">🎾 PadelO2</h1>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 40px 30px;">
+                  <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 28px; font-weight: 700;">${t.greeting}</h2>
+                  <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">${t.message}</p>
+                  <div style="text-align: center; margin: 40px 0;">
+                    <a href="${siteUrl}/${locale}/dashboard" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">${t.button}</a>
+                  </div>
+                  <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-top: 30px;">
+                    <p style="color: #4a4a4a; font-size: 14px; margin: 0; line-height: 1.6;">
+                      <strong>🎉 Добро пожаловать в сообщество PadelO2!</strong><br>
+                      Теперь вы можете регистрироваться на турниры, отслеживать результаты и общаться с другими игроками.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="background: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e8e8e8;">
+                  <p style="color: #999; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} PadelO2. Все права защищены.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
   `;
 
   return await sendEmail({
@@ -306,19 +364,51 @@ export async function sendRoleChangeNotification(
   const t = translations[locale] || translations.en;
   
   const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
-      <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <h2 style="color: #4CAF50; margin-top: 0;">${t.greeting}</h2>
-        <p style="color: #333; font-size: 16px; line-height: 1.6;">${t.message}</p>
-        <div style="text-align: center; margin: 30px 0;">
-          <a href="${siteUrl}/${locale}/admin" style="background-color: #4CAF50; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; font-size: 16px;">${t.button}</a>
-        </div>
-        <p style="color: #666; font-size: 14px; margin-top: 30px;">
-          С уважением,<br>
-          Команда PadelO2
-        </p>
-      </div>
-    </div>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+              <tr>
+                <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
+                  <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">🎾 PadelO2</h1>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 40px 30px;">
+                  <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 28px; font-weight: 700;">${t.greeting}</h2>
+                  <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">${t.message}</p>
+                  <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 12px; margin: 30px 0; border-left: 4px solid #667eea;">
+                    <p style="color: #1a1a1a; font-size: 16px; margin: 0; font-weight: 600;">Ваша новая роль: ${roleTranslations.ru[newRole] || newRole}</p>
+                  </div>
+                  <div style="text-align: center; margin: 40px 0;">
+                    <a href="${siteUrl}/${locale}/admin" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">${t.button}</a>
+                  </div>
+                  <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-top: 30px;">
+                    <p style="color: #4a4a4a; font-size: 14px; margin: 0; line-height: 1.6;">
+                      <strong>✨ Что дальше?</strong><br>
+                      Теперь у вас есть доступ к админ-панели, где вы можете управлять турнирами, участниками и настройками системы.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="background: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e8e8e8;">
+                  <p style="color: #999; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} PadelO2. Все права защищены.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
   `;
 
   return await sendEmail({

@@ -115,29 +115,57 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       [id]
     ) as any[];
     
-    if (rows.length === 0) return null;
+    if (rows.length === 0) {
+      console.error(`[getTournament] Tournament ${id} not found`);
+      return null;
+    }
     
     const row = rows[0];
+    
+    // Safely parse JSON fields
+    let locationCoordinates = undefined;
+    if (row.location_coordinates) {
+      try {
+        locationCoordinates = typeof row.location_coordinates === 'string' 
+          ? JSON.parse(row.location_coordinates) 
+          : row.location_coordinates;
+      } catch (e) {
+        console.error(`[getTournament] Error parsing location_coordinates for tournament ${id}:`, e);
+      }
+    }
+    
+    let eventSchedule = undefined;
+    if (row.event_schedule) {
+      try {
+        eventSchedule = typeof row.event_schedule === 'string' 
+          ? JSON.parse(row.event_schedule) 
+          : row.event_schedule;
+      } catch (e) {
+        console.error(`[getTournament] Error parsing event_schedule for tournament ${id}:`, e);
+      }
+    }
+    
     return {
       id: row.id,
       name: row.name,
       description: row.description,
-      startDate: row.start_date.toISOString(),
-      endDate: row.end_date.toISOString(),
-      registrationDeadline: row.registration_deadline ? row.registration_deadline.toISOString() : undefined,
+      startDate: row.start_date ? (row.start_date instanceof Date ? row.start_date.toISOString() : new Date(row.start_date).toISOString()) : '',
+      endDate: row.end_date ? (row.end_date instanceof Date ? row.end_date.toISOString() : new Date(row.end_date).toISOString()) : '',
+      registrationDeadline: row.registration_deadline ? (row.registration_deadline instanceof Date ? row.registration_deadline.toISOString() : new Date(row.registration_deadline).toISOString()) : undefined,
       location: row.location,
       locationAddress: row.location_address || undefined,
-      locationCoordinates: row.location_coordinates ? JSON.parse(row.location_coordinates) : undefined,
-      eventSchedule: row.event_schedule ? JSON.parse(row.event_schedule) : undefined,
+      locationCoordinates,
+      eventSchedule,
       maxParticipants: row.max_participants,
       priceSingleCategory: row.price_single_category ? parseFloat(row.price_single_category) : undefined,
       priceDoubleCategory: row.price_double_category ? parseFloat(row.price_double_category) : undefined,
       status: row.status,
-      createdAt: row.created_at.toISOString(),
-      updatedAt: row.updated_at ? row.updated_at.toISOString() : undefined,
+      createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString()) : new Date().toISOString(),
+      updatedAt: row.updated_at ? (row.updated_at instanceof Date ? row.updated_at.toISOString() : new Date(row.updated_at).toISOString()) : undefined,
     };
-  } catch (error) {
-    console.error('Error getting tournament:', error);
+  } catch (error: any) {
+    console.error(`[getTournament] Error getting tournament ${id}:`, error);
+    console.error('Error stack:', error.stack);
     return null;
   }
 }
@@ -242,13 +270,24 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   }
   
   values.push(id);
-  await pool.execute(
-    `UPDATE tournaments SET ${updates.join(', ')} WHERE id = ?`,
-    values
-  );
+  
+  try {
+    await pool.execute(
+      `UPDATE tournaments SET ${updates.join(', ')}, updated_at = NOW() WHERE id = ?`,
+      values
+    );
+  } catch (error: any) {
+    console.error('Error executing tournament update:', error);
+    console.error('SQL:', `UPDATE tournaments SET ${updates.join(', ')}, updated_at = NOW() WHERE id = ?`);
+    console.error('Values:', values);
+    throw new Error(`Database error: ${error.message}`);
+  }
   
   const updated = await getTournament(id);
-  if (!updated) throw new Error('Failed to update tournament');
+  if (!updated) {
+    console.error(`Tournament ${id} not found after update`);
+    throw new Error('Tournament not found after update');
+  }
   return updated;
 }
 
