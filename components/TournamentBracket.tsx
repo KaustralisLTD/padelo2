@@ -816,6 +816,12 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           {t('title')}
         </h2>
         <div className="flex gap-2">
+          <button
+            onClick={() => setShowSchedule(!showSchedule)}
+            className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors font-poppins text-sm"
+          >
+            {showSchedule ? t('hideSchedule') : t('schedule')}
+          </button>
           <Link
             href={`/${locale}/tournament/${tournamentId}/rules`}
             className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors font-poppins text-sm"
