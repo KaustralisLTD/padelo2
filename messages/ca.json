@@ -620,6 +620,8 @@
       "allCourts": "All Courts",
       "allMatches": "Tots els Partits",
       "noMatches": "No s'han trobat partits",
+      "refreshStatus": "Actualitzar Estat",
+      "editPlayer": "Editar Jugador",
       "clearFilters": "Neteja filtres",
       "filterByDays": "Filtrar per dies",
       "allDays": "Tots els dies",

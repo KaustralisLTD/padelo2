@@ -433,6 +433,8 @@
       "allCourts": "All Courts",
       "allMatches": "所有比赛",
       "noMatches": "未找到比赛",
+      "refreshStatus": "刷新状态",
+      "editPlayer": "编辑玩家",
       "clearFilters": "Clear Filters",
       "timeSlot": "Time",
       "editMatch": "Edit Match",

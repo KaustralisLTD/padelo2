@@ -429,6 +429,8 @@
       "allCourts": "All Courts",
       "allMatches": "جميع المباريات",
       "noMatches": "لم يتم العثور على مباريات",
+      "refreshStatus": "تحديث الحالة",
+      "editPlayer": "تعديل اللاعب",
       "clearFilters": "مسح عوامل التصفية",
       "filterByDays": "تصفية حسب الأيام",
       "allDays": "جميع الأيام",

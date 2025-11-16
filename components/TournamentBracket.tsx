@@ -376,11 +376,12 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           }, 1000);
         }
         
-        // Небольшая задержка перед проверкой завершенности, чтобы БД успела обновиться
+        // Обновляем статус завершенности групп сразу после сохранения
+        // Используем небольшую задержку, чтобы БД успела обновиться
         setTimeout(() => {
           console.log('[handleSaveResult] Triggering checkGroupCompletions after saving result');
           checkGroupCompletions(); // Обновляем статус завершенности групп
-        }, 1500);
+        }, 500);
       } else {
         const error = await response.json();
         alert(`${t('error')}: ${error.error}`);

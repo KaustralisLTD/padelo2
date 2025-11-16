@@ -431,6 +431,8 @@
       "allCourts": "All Courts",
       "allMatches": "Tutte le Partite",
       "noMatches": "Nessuna partita trovata",
+      "refreshStatus": "Aggiorna Stato",
+      "editPlayer": "Modifica Giocatore",
       "clearFilters": "Cancella filtri",
       "filterByDays": "Filtra per giorni",
       "allDays": "Tutti i giorni",

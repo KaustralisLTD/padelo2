@@ -433,6 +433,8 @@
       "allCourts": "All Courts",
       "allMatches": "Alle Kamper",
       "noMatches": "Ingen kamper funnet",
+      "refreshStatus": "Oppdater Status",
+      "editPlayer": "Rediger Spiller",
       "clearFilters": "Tøm filtre",
       "filterByDays": "Filtrer etter dager",
       "allDays": "Alle dager",

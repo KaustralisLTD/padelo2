@@ -433,6 +433,8 @@
       "allCourts": "All Courts",
       "allMatches": "Alla Matcher",
       "noMatches": "Inga matcher hittades",
+      "refreshStatus": "Uppdatera Status",
+      "editPlayer": "Redigera Spelare",
       "clearFilters": "Rensa filter",
       "filterByDays": "Filtrera efter dagar",
       "allDays": "Alla dagar",

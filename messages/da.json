@@ -433,6 +433,8 @@
       "allCourts": "All Courts",
       "allMatches": "Alle Kampe",
       "noMatches": "Ingen kampe fundet",
+      "refreshStatus": "Opdater Status",
+      "editPlayer": "Rediger Spiller",
       "clearFilters": "Ryd filtre",
       "filterByDays": "Filtrer efter dage",
       "allDays": "Alle dage",

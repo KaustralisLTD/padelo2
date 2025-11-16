@@ -45,19 +45,20 @@ export async function isGroupCompleted(groupId: number): Promise<boolean> {
     
     // Get completed matches (with results)
     // Проверяем либо games (для обычных матчей), либо sets (для knockout-матчей)
+    // Важно: проверяем, что оба значения не NULL (не просто заполнены, а именно не NULL)
     const [matches] = await pool.execute(
       `SELECT COUNT(*) as count 
        FROM tournament_matches 
        WHERE group_id = ? 
        AND (
-         (pair1_games IS NOT NULL AND pair2_games IS NOT NULL) OR
-         (pair1_set1 IS NOT NULL AND pair1_set2 IS NOT NULL AND pair2_set1 IS NOT NULL AND pair2_set2 IS NOT NULL)
+         (pair1_games IS NOT NULL AND pair2_games IS NOT NULL AND pair1_games >= 0 AND pair2_games >= 0) OR
+         (pair1_set1 IS NOT NULL AND pair1_set2 IS NOT NULL AND pair2_set1 IS NOT NULL AND pair2_set2 IS NOT NULL
+          AND pair1_set1 >= 0 AND pair1_set2 >= 0 AND pair2_set1 >= 0 AND pair2_set2 >= 0)
        )`,
       [groupId]
     ) as any[];
     
     const completedCount = matches[0].count;
-    const isCompleted = completedCount >= expectedMatches && totalMatchesCount >= expectedMatches;
     
     console.log(`[isGroupCompleted] Group ${groupId}: ${completedCount}/${expectedMatches} matches completed (total created: ${totalMatchesCount}), pairs: ${pairs.length}`);
     
@@ -69,6 +70,20 @@ export async function isGroupCompleted(groupId: number): Promise<boolean> {
     
     if (completedCount < expectedMatches) {
       console.log(`[isGroupCompleted] Group ${groupId}: Not all matches have results. Completed: ${completedCount}, Expected: ${expectedMatches}`);
+      // Дополнительная диагностика: проверим, какие матчи не завершены
+      const [incompleteMatches] = await pool.execute(
+        `SELECT id, pair1_id, pair2_id, pair1_games, pair2_games, 
+                pair1_set1, pair1_set2, pair2_set1, pair2_set2
+         FROM tournament_matches 
+         WHERE group_id = ? 
+         AND NOT (
+           (pair1_games IS NOT NULL AND pair2_games IS NOT NULL AND pair1_games >= 0 AND pair2_games >= 0) OR
+           (pair1_set1 IS NOT NULL AND pair1_set2 IS NOT NULL AND pair2_set1 IS NOT NULL AND pair2_set2 IS NOT NULL
+            AND pair1_set1 >= 0 AND pair1_set2 >= 0 AND pair2_set1 >= 0 AND pair2_set2 >= 0)
+         )`,
+        [groupId]
+      ) as any[];
+      console.log(`[isGroupCompleted] Group ${groupId}: Incomplete matches:`, incompleteMatches);
       return false;
     }
     

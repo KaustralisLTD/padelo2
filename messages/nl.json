@@ -433,6 +433,8 @@
       "allCourts": "All Courts",
       "allMatches": "Alle Wedstrijden",
       "noMatches": "Geen wedstrijden gevonden",
+      "refreshStatus": "Status Vernieuwen",
+      "editPlayer": "Speler Bewerken",
       "clearFilters": "Filters wissen",
       "filterByDays": "Filteren op dagen",
       "allDays": "Alle dagen",

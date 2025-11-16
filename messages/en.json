@@ -483,6 +483,8 @@
       "saving": "Saving...",
       "allMatches": "All Matches",
       "noMatches": "No matches found",
+      "refreshStatus": "Refresh Status",
+      "editPlayer": "Edit Player",
       "invalidResult": "Invalid result. Please enter valid numbers.",
       "adminPanel": "Admin Panel",
       "search": "Search",
