@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createUser, createSession, initializeDefaultAdmin } from '@/lib/users';
 import { initDatabase } from '@/lib/db';
+import { sendEmailVerification } from '@/lib/email';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,27 +50,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create new user (default role: participant)
+    // Generate email verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    
+    // Create new user (default role: participant) with verification token
     const user = await createUser({
       email,
       password,
       firstName,
       lastName,
       role: 'participant',
+      emailVerificationToken: verificationToken,
     });
 
-    // Create session
-    const token = await createSession(user.id, 7); // 7 days
+    // Send email verification
+    const locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    await sendEmailVerification(email, firstName, verificationToken, locale);
+
+    // Don't create session until email is verified
+    // User needs to verify email first
 
     return NextResponse.json({
       success: true,
-      token,
+      message: 'Registration successful. Please check your email to verify your account.',
       user: {
         id: user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
+        emailVerified: false,
       },
     });
   } catch (error: any) {

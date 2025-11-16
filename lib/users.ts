@@ -14,6 +14,7 @@ export interface UserCreateData {
   firstName: string;
   lastName: string;
   role?: UserRole;
+  emailVerificationToken?: string;
 }
 
 export interface UserUpdateData {
@@ -275,9 +276,9 @@ export async function createUser(data: UserCreateData): Promise<User> {
   try {
     const pool = getDbPool();
     await pool.execute(
-      `INSERT INTO users (id, email, password_hash, first_name, last_name, role) 
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [userId, data.email, passwordHash, data.firstName, data.lastName, role]
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, email_verified) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [userId, data.email, passwordHash, data.firstName, data.lastName, role, data.emailVerificationToken || null, false]
     );
 
     return {
@@ -297,11 +298,59 @@ export async function createUser(data: UserCreateData): Promise<User> {
   }
 }
 
+// Verify email
+export async function verifyEmail(token: string): Promise<{ success: boolean; user?: User; error?: string }> {
+  if (!useDatabase) {
+    return { success: false, error: 'Database not configured' };
+  }
+
+  try {
+    const pool = getDbPool();
+    const [rows] = await pool.execute(
+      'SELECT id, email, first_name, last_name, role, created_at, email_verified FROM users WHERE email_verification_token = ?',
+      [token]
+    ) as any[];
+
+    if (rows.length === 0) {
+      return { success: false, error: 'Invalid verification token' };
+    }
+
+    const user = rows[0];
+    
+    if (user.email_verified) {
+      return { success: false, error: 'Email already verified' };
+    }
+
+    // Update user to verified
+    await pool.execute(
+      'UPDATE users SET email_verified = TRUE, email_verified_at = NOW(), email_verification_token = NULL, updated_at = NOW() WHERE id = ?',
+      [user.id]
+    );
+
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        role: user.role,
+        createdAt: user.created_at.toISOString(),
+      },
+    };
+  } catch (error: any) {
+    console.error('Error verifying email:', error);
+    return { success: false, error: 'Failed to verify email' };
+  }
+}
+
 // Update user
-export async function updateUser(id: string, data: UserUpdateData): Promise<User | null> {
+export async function updateUser(id: string, data: UserUpdateData, sendRoleChangeEmail: boolean = true): Promise<User | null> {
   if (!useDatabase) {
     const user = users.get(id);
     if (!user) return null;
+    
+    const oldRole = user.role;
     
     if (data.email) user.email = data.email;
     if (data.firstName) user.firstName = data.firstName;
@@ -323,6 +372,16 @@ export async function updateUser(id: string, data: UserUpdateData): Promise<User
 
   try {
     const pool = getDbPool();
+    
+    // Get old user data to check role change
+    const [oldUserRows] = await pool.execute(
+      'SELECT role, first_name, email FROM users WHERE id = ?',
+      [id]
+    ) as any[];
+    
+    const oldUser = oldUserRows[0];
+    const oldRole = oldUser?.role;
+    
     const updates: string[] = [];
     const values: any[] = [];
 
@@ -358,7 +417,25 @@ export async function updateUser(id: string, data: UserUpdateData): Promise<User
       values
     );
 
-    return await findUserById(id);
+    const updatedUser = await findUserById(id);
+    
+    // Send role change notification if role changed and user exists
+    if (sendRoleChangeEmail && data.role && oldRole && data.role !== oldRole && updatedUser && oldUser) {
+      try {
+        const { sendRoleChangeNotification } = await import('./email');
+        await sendRoleChangeNotification(
+          oldUser.email,
+          oldUser.first_name,
+          data.role,
+          'en' // TODO: get locale from user preferences
+        );
+      } catch (emailError) {
+        console.error('Error sending role change notification:', emailError);
+        // Don't fail the update if email fails
+      }
+    }
+
+    return updatedUser;
   } catch (error: any) {
     if (error.code === 'ER_DUP_ENTRY') {
       throw new Error('User with this email already exists');

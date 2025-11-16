@@ -274,6 +274,21 @@ export async function initDatabase() {
   } catch (e: any) {
     if (!e.message.includes('Duplicate column name')) throw e;
   }
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN email_verified BOOLEAN DEFAULT FALSE');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN email_verification_token VARCHAR(64) DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN email_verified_at DATETIME DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
 
   // Add rules and available_courts to tournaments table
   try {
