@@ -189,7 +189,20 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
         if (response.ok) {
           const data = await response.json();
           console.log(`[checkGroupCompletions] Group ${group.id} (${group.groupName}): completed=${data.completed}`);
-          return { groupId: group.id, completed: data.completed };
+          
+          // Выводим диагностическую информацию, если группа не завершена
+          if (!data.completed && data.diagnostics) {
+            console.log(`[checkGroupCompletions] Group ${group.id} diagnostics:`, data.diagnostics);
+            console.log(`[checkGroupCompletions] Group ${group.id} - Expected: ${data.diagnostics.expectedMatches}, Total: ${data.diagnostics.totalMatches}, Completed: ${data.diagnostics.completedMatches}`);
+            
+            // Показываем незавершенные матчи
+            const incompleteMatches = data.diagnostics.matches.filter((m: any) => !m.isCompleted);
+            if (incompleteMatches.length > 0) {
+              console.log(`[checkGroupCompletions] Group ${group.id} - Incomplete matches:`, incompleteMatches);
+            }
+          }
+          
+          return { groupId: group.id, completed: data.completed, diagnostics: data.diagnostics };
         } else {
           const errorData = await response.json().catch(() => ({}));
           console.error(`[checkGroupCompletions] Failed to check group ${group.id}:`, errorData);
