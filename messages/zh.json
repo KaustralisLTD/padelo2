@@ -330,6 +330,10 @@
       "endDate": "结束日期",
       "registrationDeadline": "报名截止日期",
       "maxParticipants": "最大参与者",
+      "pricing": "价格",
+      "priceSingleCategory": "一个类别",
+      "priceDoubleCategory": "两个类别",
+      "perCategory": "每个类别",
       "prizes": "奖品",
       "prizesInfo": "奖品信息将很快公布。敬请关注！"
     },

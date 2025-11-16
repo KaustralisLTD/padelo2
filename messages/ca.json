@@ -343,6 +343,10 @@
           "endDate": "Data de Fi",
           "registrationDeadline": "Data Límit de Registre",
           "maxParticipants": "Màx. Participants",
+          "pricing": "Preus",
+          "priceSingleCategory": "Una Categoria",
+          "priceDoubleCategory": "Dues Categories",
+          "perCategory": "per categoria",
           "prizes": "Premis",
           "prizesInfo": "La informació sobre premis s'anunciarà aviat. Estigueu atents!"
         }

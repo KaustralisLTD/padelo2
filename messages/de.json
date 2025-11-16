@@ -330,6 +330,10 @@
       "endDate": "Enddatum",
       "registrationDeadline": "Anmeldeschluss",
       "maxParticipants": "Max. Teilnehmer",
+      "pricing": "Preise",
+      "priceSingleCategory": "Eine Kategorie",
+      "priceDoubleCategory": "Zwei Kategorien",
+      "perCategory": "pro Kategorie",
       "prizes": "Preise",
       "prizesInfo": "Preisinformationen werden in Kürze bekannt gegeben. Bleiben Sie dran!"
     },

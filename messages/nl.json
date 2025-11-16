@@ -330,6 +330,10 @@
       "endDate": "Einddatum",
       "registrationDeadline": "Inschrijvingsdeadline",
       "maxParticipants": "Max. Deelnemers",
+      "pricing": "Prijzen",
+      "priceSingleCategory": "Één Categorie",
+      "priceDoubleCategory": "Twee Categorieën",
+      "perCategory": "per categorie",
       "prizes": "Prijzen",
       "prizesInfo": "Prijsinformatie wordt binnenkort aangekondigd. Blijf op de hoogte!"
     },

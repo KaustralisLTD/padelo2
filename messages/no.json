@@ -330,6 +330,10 @@
       "endDate": "Sluttdato",
       "registrationDeadline": "Påmeldingsfrist",
       "maxParticipants": "Maks. Deltakere",
+      "pricing": "Priser",
+      "priceSingleCategory": "Én Kategori",
+      "priceDoubleCategory": "To Kategorier",
+      "perCategory": "per kategori",
       "prizes": "Premier",
       "prizesInfo": "Premieinformasjon vil bli kunngjort snart. Hold deg oppdatert!"
     },

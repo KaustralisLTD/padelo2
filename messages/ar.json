@@ -326,6 +326,10 @@
       "endDate": "تاريخ الانتهاء",
       "registrationDeadline": "موعد انتهاء التسجيل",
       "maxParticipants": "الحد الأقصى للمشاركين",
+      "pricing": "الأسعار",
+      "priceSingleCategory": "فئة واحدة",
+      "priceDoubleCategory": "فئتان",
+      "perCategory": "لكل فئة",
       "prizes": "الجوائز",
       "prizesInfo": "سيتم الإعلان عن معلومات الجوائز قريبًا. ترقبوا!"
     },

@@ -372,6 +372,10 @@
       "endDate": "Fecha de Fin",
       "registrationDeadline": "Fecha Límite de Registro",
       "maxParticipants": "Máx. Participantes",
+      "pricing": "Precios",
+      "priceSingleCategory": "Una Categoría",
+      "priceDoubleCategory": "Dos Categorías",
+      "perCategory": "por categoría",
       "prizes": "Premios",
       "prizesInfo": "La información sobre premios se anunciará pronto. ¡Estén atentos!"
     },
