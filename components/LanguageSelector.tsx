@@ -102,7 +102,7 @@ const LanguageSelector = () => {
                 locale === loc
                   ? `text-primary ${theme === 'light' ? 'bg-primary/10' : 'bg-background'}`
                   : theme === 'light'
-                    ? 'text-gray-800 hover:bg-gray-100'
+                    ? 'text-primary hover:bg-primary/10'
                     : 'text-text-secondary hover:bg-background'
               }`}
             >
