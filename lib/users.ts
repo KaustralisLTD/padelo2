@@ -2,7 +2,7 @@
 // Handles user CRUD operations with password hashing
 
 import { getDbPool } from './db';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { User, UserRole } from './auth';
 
