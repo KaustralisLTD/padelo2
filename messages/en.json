@@ -769,6 +769,8 @@
       "eventDescription": "Event Description",
       "eventDescriptionPlaceholder": "Event description (optional)",
       "coordinatesHint": "Coordinates can be found on Google Maps (right-click → \"What's here?\" → coordinates)",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
       "maxParticipants": "Max Participants",
       "priceSingleCategory": "Price (One Category)",
       "priceSingleCategoryDesc": "Price for participating in one category (e.g., 30 EUR)",

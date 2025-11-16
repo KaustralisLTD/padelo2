@@ -784,6 +784,8 @@
       "eventDescription": "Опис події",
       "eventDescriptionPlaceholder": "Опис події (необов'язково)",
       "coordinatesHint": "Координати можна знайти на Google Maps (правий клік → \"Що тут?\" → координати)",
+      "latitude": "Широта",
+      "longitude": "Довгота",
       "maxParticipants": "Макс. учасників",
       "priceSingleCategory": "Ціна (Одна категорія)",
       "priceSingleCategoryDesc": "Ціна за участь в одній категорії (наприклад, 30 EUR)",

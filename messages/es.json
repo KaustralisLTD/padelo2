@@ -711,6 +711,8 @@
       "eventDescription": "Descripción del evento",
       "eventDescriptionPlaceholder": "Descripción del evento (opcional)",
       "coordinatesHint": "Las coordenadas se pueden encontrar en Google Maps (clic derecho → \"¿Qué hay aquí?\" → coordenadas)",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
       "maxParticipants": "Máx. Participantes",
       "status": "Estado",
       "actions": "Acciones",
