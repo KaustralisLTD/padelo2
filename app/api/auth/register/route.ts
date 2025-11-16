@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createUser, createSession, initializeDefaultAdmin } from '@/lib/users';
 import { initDatabase } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 // Initialize database and default admin on first import
 let initialized = false;
 async function ensureInitialized() {
