@@ -557,7 +557,7 @@ export async function updateGroupPair(id: number, pair: Partial<Omit<TournamentG
   if (rows.length === 0) throw new Error('Pair not found');
   
   const row = rows[0];
-  return {
+  const updatedPair = {
     id: row.id,
     groupId: row.group_id,
     pairNumber: row.pair_number,
@@ -568,6 +568,23 @@ export async function updateGroupPair(id: number, pair: Partial<Omit<TournamentG
     createdAt: row.created_at.toISOString(),
     updatedAt: row.updated_at ? row.updated_at.toISOString() : undefined,
   };
+  
+  // Если пара была обновлена (добавлены игроки), пересоздаем матчи для группы
+  // Это нужно, если пара была пустой, а теперь в ней есть игроки
+  if ((pair.player1RegistrationId !== undefined || pair.player2RegistrationId !== undefined) && 
+      (row.player1_registration_id !== null || row.player2_registration_id !== null)) {
+    try {
+      const { createMissingMatchesForGroup } = await import('./matches');
+      const result = await createMissingMatchesForGroup(row.group_id);
+      if (result.created > 0) {
+        console.log(`[updateGroupPair] Created ${result.created} matches for group ${row.group_id} after updating pair ${id}`);
+      }
+    } catch (error) {
+      console.error(`[updateGroupPair] Error creating matches for group ${row.group_id}:`, error);
+    }
+  }
+  
+  return updatedPair;
 }
 
 // Staff Tournament Access
