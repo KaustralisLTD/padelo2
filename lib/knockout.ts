@@ -83,7 +83,17 @@ export async function isGroupCompleted(groupId: number): Promise<boolean> {
          )`,
         [groupId]
       ) as any[];
-      console.log(`[isGroupCompleted] Group ${groupId}: Incomplete matches:`, incompleteMatches);
+      console.log(`[isGroupCompleted] Group ${groupId}: Incomplete matches:`, JSON.stringify(incompleteMatches, null, 2));
+      
+      // Также проверим все матчи группы для полной диагностики
+      const [allMatches] = await pool.execute(
+        `SELECT id, pair1_id, pair2_id, pair1_games, pair2_games, 
+                pair1_set1, pair1_set2, pair2_set1, pair2_set2
+         FROM tournament_matches 
+         WHERE group_id = ?`,
+        [groupId]
+      ) as any[];
+      console.log(`[isGroupCompleted] Group ${groupId}: All matches in group:`, JSON.stringify(allMatches, null, 2));
       return false;
     }
     

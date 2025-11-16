@@ -44,7 +44,7 @@ export async function GET(
       // Создаем кошелек если его нет
       await pool.execute(
         'INSERT INTO user_wallets (user_id, balance, currency) VALUES (?, 0.00, ?)',
-        [user.id, 'UAH']
+        [user.id, 'EUR']
       );
       [wallets] = await pool.execute(
         'SELECT * FROM user_wallets WHERE user_id = ?',

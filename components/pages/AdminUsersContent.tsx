@@ -10,7 +10,7 @@ interface User {
   email: string;
   firstName: string;
   lastName: string;
-  role: 'superadmin' | 'staff' | 'participant';
+  role: 'superadmin' | 'staff' | 'participant' | 'manager' | 'coach' | 'tournament_admin';
   createdAt: string;
 }
 
@@ -29,7 +29,7 @@ export default function AdminUsersContent() {
     password: '',
     firstName: '',
     lastName: '',
-    role: 'participant' as 'superadmin' | 'staff' | 'participant',
+    role: 'participant' as 'superadmin' | 'staff' | 'participant' | 'manager' | 'coach' | 'tournament_admin',
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -811,6 +811,9 @@ export default function AdminUsersContent() {
                   >
                     <option value="participant">Participant</option>
                     <option value="staff">Staff</option>
+                    <option value="manager">Manager</option>
+                    <option value="coach">Coach</option>
+                    <option value="tournament_admin">Tournament Admin</option>
                     <option value="superadmin">Super Admin</option>
                   </select>
                 </div>
