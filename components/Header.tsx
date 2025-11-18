@@ -73,89 +73,122 @@ const Header = () => {
             : 'bg-transparent'
       }`}
     >
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href={`/${locale}`} className="flex items-center space-x-2">
-          {logoError ? (
-            <span className="text-4xl font-orbitron font-bold gradient-text">
-              PadelO<sub className="text-lg">₂</sub>
-            </span>
-          ) : (
-            <div className="relative w-64 h-16">
-              <Image
-                src="/logo-header.png"
-                alt="PadelO₂"
-                fill
-                className="object-contain"
-                priority
-                onError={() => setLogoError(true)}
-              />
-            </div>
-          )}
-        </Link>
-
+      <nav className="container mx-auto px-4 py-4">
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center space-x-8">
-          {authenticatedNavItems.map((item) => (
+        <div className="hidden lg:flex items-center justify-between">
+          <Link href={`/${locale}`} className="flex items-center space-x-2">
+            {logoError ? (
+              <span className="text-4xl font-orbitron font-bold gradient-text">
+                PadelO<sub className="text-lg">₂</sub>
+              </span>
+            ) : (
+              <div className="relative w-64 h-16">
+                <Image
+                  src="/logo-header.png"
+                  alt="PadelO₂"
+                  fill
+                  className="object-contain"
+                  priority
+                  onError={() => setLogoError(true)}
+                />
+              </div>
+            )}
+          </Link>
+
+          <div className="flex items-center space-x-8">
+            {authenticatedNavItems.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className={`text-sm font-poppins transition-colors hover:text-primary ${
+                  pathname === item.href 
+                    ? 'text-primary' 
+                    : theme === 'light'
+                      ? 'text-white/90'
+                      : 'text-text-secondary'
+                }`}
+              >
+                {t(item.key)}
+              </Link>
+            ))}
             <Link
-              key={item.key}
-              href={item.href}
+              href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
               className={`text-sm font-poppins transition-colors hover:text-primary ${
-                pathname === item.href 
-                  ? 'text-primary' 
-                  : theme === 'light'
-                    ? 'text-white/90'
-                    : 'text-text-secondary'
+                theme === 'light'
+                  ? 'text-white/90'
+                  : 'text-text-secondary'
               }`}
             >
-              {t(item.key)}
+              {isAuthenticated ? t('account') : t('login')}
             </Link>
-          ))}
-          <Link
-            href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
-            className={`text-sm font-poppins transition-colors hover:text-primary ${
-              theme === 'light'
-                ? 'text-white/90'
-                : 'text-text-secondary'
-            }`}
-          >
-            {isAuthenticated ? t('account') : t('login')}
-          </Link>
-          <LanguageSelector />
+            <LanguageSelector />
+          </div>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className={`lg:hidden transition-colors ${
-            theme === 'light'
-              ? 'text-white'
-              : 'text-text'
-          }`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Mobile Navigation */}
+        <div className="lg:hidden flex items-center justify-between">
+          {/* Mobile Menu Button (слева) */}
+          <button
+            className={`transition-colors ${
+              theme === 'light'
+                ? 'text-white'
+                : 'text-text'
+            }`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isMobileMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+
+          {/* Logo (по центру) */}
+          <Link href={`/${locale}`} className="flex flex-col items-center">
+            {logoError ? (
+              <span className="text-2xl font-orbitron font-bold gradient-text">
+                PadelO<sub className="text-sm">₂</sub>
+              </span>
             ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+              <div className="relative w-32 h-8">
+                <Image
+                  src="/logo-header.png"
+                  alt="PadelO₂"
+                  fill
+                  className="object-contain"
+                  priority
+                  onError={() => setLogoError(true)}
+                />
+              </div>
             )}
-          </svg>
-        </button>
+            <span className="text-xs font-poppins font-medium gradient-text mt-1">
+              Breathe and Live
+            </span>
+          </Link>
+
+          {/* Language Selector (справа) */}
+          <div className="flex items-center">
+            <LanguageSelector />
+          </div>
+        </div>
       </nav>
 
       {/* Mobile Menu */}
