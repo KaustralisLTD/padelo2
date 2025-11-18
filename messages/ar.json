@@ -428,6 +428,7 @@
       "allCategories": "All Categories",
       "allCourts": "All Courts",
       "allMatches": "جميع المباريات",
+      "noGroupsForStage": "لم يتم العثور على مجموعات لهذه المرحلة",
       "noMatches": "لم يتم العثور على مباريات",
       "refreshStatus": "تحديث الحالة",
       "editPlayer": "تعديل اللاعب",

@@ -470,6 +470,7 @@
       "category": "Категорія",
       "saving": "Збереження...",
       "allMatches": "Всі ігри",
+      "noGroupsForStage": "Групи для цього етапу не знайдено",
       "noMatches": "Ігри не знайдено",
       "refreshStatus": "Оновити статус",
       "editPlayer": "Редагувати гравця",

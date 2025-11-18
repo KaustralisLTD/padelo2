@@ -482,6 +482,7 @@
       "errorSavingResult": "Error saving result",
       "saving": "Saving...",
       "allMatches": "All Matches",
+      "noGroupsForStage": "No groups found for this stage",
       "noMatches": "No matches found",
       "refreshStatus": "Refresh Status",
       "editPlayer": "Edit Player",

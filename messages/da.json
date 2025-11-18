@@ -432,6 +432,7 @@
       "allCategories": "All Categories",
       "allCourts": "All Courts",
       "allMatches": "Alle Kampe",
+      "noGroupsForStage": "Ingen grupper fundet for denne fase",
       "noMatches": "Ingen kampe fundet",
       "refreshStatus": "Opdater Status",
       "editPlayer": "Rediger Spiller",

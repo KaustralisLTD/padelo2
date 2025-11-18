@@ -1229,44 +1229,44 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                   return true;
                 });
 
-                return filteredGroups.length > 0 ? (
+                return (
                   <>
-                    {/* Кнопка генерации расписания для финальной части - справа по центру */}
-                    {isAdmin && (
+                    {/* Кнопка генерации расписания для финальной части - показываем всегда, если есть группы плей-офф в категории */}
+                    {isAdmin && categoryKnockoutGroups.length > 0 && (
                       <div className="mb-6 flex justify-end">
                         <button
-                    onClick={async () => {
-                      if (!selectedCategory) return;
-                      
-                      try {
-                        const token = localStorage.getItem('auth_token');
-                        const response = await fetch(`/api/tournament/${tournamentId}/schedule/next-playoff`, {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                          },
-                          body: JSON.stringify({ category: selectedCategory }),
-                        });
-                        
-                        if (response.ok) {
-                          const data = await response.json();
-                          alert(t('scheduleGenerated', { count: data.matchesGenerated }) || `Расписание сгенерировано! Создано матчей: ${data.matchesGenerated}`);
-                          // Обновляем матчи и bracket
-                          fetchMatches();
-                          fetchBracket();
-                          // Переключаемся на вкладку расписания
-                          setShowSchedule(true);
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        } else {
-                          const error = await response.json();
-                          alert(`${t('error')}: ${error.error}`);
-                        }
-                      } catch (error) {
-                        console.error('Error generating next playoff schedule:', error);
-                        alert(t('error'));
-                      }
-                    }}
+                          onClick={async () => {
+                            if (!selectedCategory) return;
+                            
+                            try {
+                              const token = localStorage.getItem('auth_token');
+                              const response = await fetch(`/api/tournament/${tournamentId}/schedule/next-playoff`, {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Bearer ${token}`,
+                                },
+                                body: JSON.stringify({ category: selectedCategory }),
+                              });
+                              
+                              if (response.ok) {
+                                const data = await response.json();
+                                alert(t('scheduleGenerated', { count: data.matchesGenerated }) || `Расписание сгенерировано! Создано матчей: ${data.matchesGenerated}`);
+                                // Обновляем матчи и bracket
+                                fetchMatches();
+                                fetchBracket();
+                                // Переключаемся на вкладку расписания
+                                setShowSchedule(true);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                              } else {
+                                const error = await response.json();
+                                alert(`${t('error')}: ${error.error}`);
+                              }
+                            } catch (error) {
+                              console.error('Error generating next playoff schedule:', error);
+                              alert(t('error'));
+                            }
+                          }}
                           className="px-6 py-3 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity font-poppins font-semibold"
                         >
                           {t('generateSchedule')}
@@ -1275,7 +1275,8 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                     )}
 
                     {/* Группы финальной части */}
-                    {filteredGroups.map((group) => {
+                    {filteredGroups.length > 0 ? (
+                      filteredGroups.map((group) => {
                       const pairsCount = group.pairs.length;
                       const hasError = pairsCount !== group.maxPairs;
                       const isOverLimit = pairsCount > group.maxPairs;
@@ -1409,15 +1410,16 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                           </div>
                         </div>
                       );
-                    })}
+                    }))
+                    ) : (
+                      <div className="p-6 bg-background rounded-lg border border-border text-center">
+                        <p className="text-text-secondary font-poppins">
+                          {t('noGroupsForStage') || `Нет групп для этапа ${playoffStage === 'quarterfinals' ? 'Четвертьфинал' : playoffStage === 'semifinals' ? 'Полуфинал' : 'Финал'}`}
+                        </p>
+                      </div>
+                    )}
                   </>
-                ) : (
-                  <div className="p-6 bg-background rounded-lg border border-border text-center">
-                    <p className="text-text-secondary font-poppins">
-                      {t('noGroupsForStage') || `Нет групп для этапа ${playoffStage === 'quarterfinals' ? 'Четвертьфинал' : playoffStage === 'semifinals' ? 'Полуфинал' : 'Финал'}`}
-                    </p>
-                  </div>
-                )
+                );
               })()}
             </>
           ) : (

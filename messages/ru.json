@@ -460,6 +460,7 @@
       "category": "Категория",
       "saving": "Сохранение...",
       "allMatches": "Все игры",
+      "noGroupsForStage": "Группы для этого этапа не найдены",
       "noMatches": "Игры не найдены",
       "refreshStatus": "Обновить статус",
       "editPlayer": "Редактировать игрока",

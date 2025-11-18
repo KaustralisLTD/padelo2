@@ -476,6 +476,7 @@
       "allCategories": "All Categories",
       "allCourts": "All Courts",
       "allMatches": "Todos los Partidos",
+      "noGroupsForStage": "No se encontraron grupos para esta etapa",
       "noMatches": "No se encontraron partidos",
       "refreshStatus": "Actualizar Estado",
       "editPlayer": "Editar Jugador",

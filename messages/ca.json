@@ -619,6 +619,7 @@
       "allCategories": "All Categories",
       "allCourts": "All Courts",
       "allMatches": "Tots els Partits",
+      "noGroupsForStage": "No s'han trobat grups per a aquesta etapa",
       "noMatches": "No s'han trobat partits",
       "refreshStatus": "Actualitzar Estat",
       "editPlayer": "Editar Jugador",

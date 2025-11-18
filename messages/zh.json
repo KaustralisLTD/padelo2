@@ -432,6 +432,7 @@
       "allCategories": "All Categories",
       "allCourts": "All Courts",
       "allMatches": "所有比赛",
+      "noGroupsForStage": "未找到此阶段的组",
       "noMatches": "未找到比赛",
       "refreshStatus": "刷新状态",
       "editPlayer": "编辑玩家",
