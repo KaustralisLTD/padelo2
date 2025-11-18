@@ -1410,7 +1410,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                           </div>
                         </div>
                       );
-                    }))
+                    })
                     ) : (
                       <div className="p-6 bg-background rounded-lg border border-border text-center">
                         <p className="text-text-secondary font-poppins">
