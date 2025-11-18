@@ -177,8 +177,8 @@ export async function generateNextPlayoffStageSchedule(
         groupsToSchedule = semifinalGroups;
         nextStage = 'semifinals';
       } else if (scheduledSemifinals.length > 0) {
-        // Все полуфиналы запланированы - сначала проверяем, завершены ли они
-        // Если завершены, сразу переходим к финалам
+        // Все полуфиналы запланированы - сразу проверяем завершенность и переходим к финалам
+        // НЕ устанавливаем groupsToSchedule = semifinalGroups, чтобы избежать ошибки "Next stage already exists"
         let allSemifinalsCompleted = true;
         for (const group of semifinalGroups) {
           const winner = await getWinnerFromKnockoutMatch(group.id);
