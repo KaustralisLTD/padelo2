@@ -324,7 +324,8 @@ export async function generateNextPlayoffStageSchedule(
     console.log(`[generateNextPlayoffStageSchedule] Found ${matches.length} unscheduled matches (out of ${allMatchesInGroups.length} total):`, matches.map((m: any) => ({ id: m.id, groupId: m.group_id, pair1: m.pair1_id, pair2: m.pair2_id })));
     
     // Если все матчи уже запланированы, проверяем, не пытаемся ли мы создать расписание для уже запланированного этапа
-    if (matches.length === 0 && alreadyScheduledMatches.length > 0) {
+    // Но пропускаем эту проверку, если мы уже перешли к следующему этапу (например, от semifinals к finals)
+    if (matches.length === 0 && alreadyScheduledMatches.length > 0 && nextStage !== 'finals') {
       console.log(`[generateNextPlayoffStageSchedule] All matches are already scheduled. Checking if we should proceed to next stage...`);
       
       // Определяем название этапа из групп
