@@ -16,6 +16,7 @@ const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { theme } = useTheme();
   const t = useTranslations('Navigation');
+  const tFooter = useTranslations('Footer');
   const locale = useLocale();
   const pathname = usePathname();
 
@@ -164,11 +165,11 @@ const Header = () => {
           {/* Logo (по центру) */}
           <Link href={`/${locale}`} className="flex flex-col items-center">
             {logoError ? (
-              <span className="text-2xl font-orbitron font-bold gradient-text">
-                PadelO<sub className="text-sm">₂</sub>
+              <span className="text-3xl font-orbitron font-bold gradient-text">
+                PadelO<sub className="text-base">₂</sub>
               </span>
             ) : (
-              <div className="relative w-32 h-8">
+              <div className="relative w-48 h-12">
                 <Image
                   src="/logo-header.png"
                   alt="PadelO₂"
@@ -180,7 +181,7 @@ const Header = () => {
               </div>
             )}
             <span className="text-xs font-poppins font-medium gradient-text mt-1">
-              Breathe and Live
+              {tFooter('tagline')}
             </span>
           </Link>
 

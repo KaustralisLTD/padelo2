@@ -14,13 +14,13 @@ const Footer = () => {
     <footer className="bg-background-secondary border-t border-gray-800 mt-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             {logoError ? (
               <h3 className="text-xl font-orbitron font-bold gradient-text mb-4">
                 PadelO<sub className="text-sm">₂</sub>
               </h3>
             ) : (
-              <div className="relative w-40 h-12 mb-4">
+              <div className="relative w-40 h-12 mb-2">
                 <Image
                   src="/logo-footer.png"
                   alt="PadelO₂"
@@ -30,7 +30,7 @@ const Footer = () => {
                 />
               </div>
             )}
-            <p className="text-text-secondary text-sm font-poppins">
+            <p className="text-sm font-poppins gradient-text text-center md:text-left">
               {t('tagline')}
             </p>
           </div>
