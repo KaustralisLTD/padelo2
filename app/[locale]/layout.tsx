@@ -96,6 +96,8 @@ export default async function RootLayout({
         <meta name="theme-color" content="#00C4FF" />
         <meta name="msapplication-TileColor" content="#00C4FF" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body>
         <ClientProviders>
