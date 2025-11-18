@@ -42,6 +42,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'groups' | 'knockout'>('groups');
+  const [playoffStage, setPlayoffStage] = useState<'quarterfinals' | 'semifinals' | 'finals' | 'all'>('all');
   const [isAdmin, setIsAdmin] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
   const [draggedPair, setDraggedPair] = useState<{ pairId: number; groupId: number } | null>(null);
@@ -1165,10 +1166,75 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
         <div className="space-y-6">
           {knockoutGroups.length > 0 ? (
             <>
-              {/* Кнопка генерации расписания для финальной части - справа по центру */}
-              {isAdmin && (
-                <div className="mb-6 flex justify-end">
-                  <button
+              {/* Вкладки для навигации между этапами плей-офф */}
+              <div className="flex gap-2 border-b border-border pb-2">
+                <button
+                  onClick={() => setPlayoffStage('all')}
+                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                    playoffStage === 'all'
+                      ? 'bg-primary text-background'
+                      : 'bg-background-secondary text-text-secondary hover:bg-background'
+                  }`}
+                >
+                  {t('allStages') || 'Все этапы'}
+                </button>
+                <button
+                  onClick={() => setPlayoffStage('quarterfinals')}
+                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                    playoffStage === 'quarterfinals'
+                      ? 'bg-primary text-background'
+                      : 'bg-background-secondary text-text-secondary hover:bg-background'
+                  }`}
+                >
+                  {t('quarterfinals') || 'Четвертьфинал'}
+                </button>
+                <button
+                  onClick={() => setPlayoffStage('semifinals')}
+                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                    playoffStage === 'semifinals'
+                      ? 'bg-primary text-background'
+                      : 'bg-background-secondary text-text-secondary hover:bg-background'
+                  }`}
+                >
+                  {t('semifinals') || 'Полуфинал'}
+                </button>
+                <button
+                  onClick={() => setPlayoffStage('finals')}
+                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                    playoffStage === 'finals'
+                      ? 'bg-primary text-background'
+                      : 'bg-background-secondary text-text-secondary hover:bg-background'
+                  }`}
+                >
+                  {t('finals') || 'Финал'}
+                </button>
+              </div>
+
+              {/* Фильтруем группы по выбранному этапу */}
+              {(() => {
+                const categoryKnockoutGroups = knockoutGroups.filter(g => g.category === selectedCategory);
+                const filteredGroups = categoryKnockoutGroups.filter((group) => {
+                  if (playoffStage === 'all') return true;
+                  const groupName = group.groupName.toLowerCase();
+                  if (playoffStage === 'quarterfinals') {
+                    return groupName.includes('quarterfinal') || 
+                           (groupName.includes('match') && !groupName.includes('semifinal') && !groupName.includes('final'));
+                  }
+                  if (playoffStage === 'semifinals') {
+                    return groupName.includes('semifinal');
+                  }
+                  if (playoffStage === 'finals') {
+                    return groupName.includes('final') && !groupName.includes('semifinal');
+                  }
+                  return true;
+                });
+
+                return filteredGroups.length > 0 ? (
+                  <>
+                    {/* Кнопка генерации расписания для финальной части - справа по центру */}
+                    {isAdmin && (
+                      <div className="mb-6 flex justify-end">
+                        <button
                     onClick={async () => {
                       if (!selectedCategory) return;
                       
@@ -1201,24 +1267,24 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                         alert(t('error'));
                       }
                     }}
-                    className="px-6 py-3 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity font-poppins font-semibold"
-                  >
-                    {t('generateSchedule')}
-                  </button>
-                </div>
-              )}
+                          className="px-6 py-3 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity font-poppins font-semibold"
+                        >
+                          {t('generateSchedule')}
+                        </button>
+                      </div>
+                    )}
 
-              {/* Группы финальной части */}
-              {knockoutGroups.map((group) => {
-                const pairsCount = group.pairs.length;
-                const hasError = pairsCount !== group.maxPairs;
-                const isOverLimit = pairsCount > group.maxPairs;
-                const isUnderLimit = pairsCount < group.maxPairs;
-                
-                return (
-                  <div
-                    key={group.id}
-                    className={`bg-background rounded-lg border p-4 ${
+                    {/* Группы финальной части */}
+                    {filteredGroups.map((group) => {
+                      const pairsCount = group.pairs.length;
+                      const hasError = pairsCount !== group.maxPairs;
+                      const isOverLimit = pairsCount > group.maxPairs;
+                      const isUnderLimit = pairsCount < group.maxPairs;
+                      
+                      return (
+                        <div
+                          key={group.id}
+                          className={`bg-background rounded-lg border p-4 ${
                       hasError 
                         ? isOverLimit 
                           ? 'border-yellow-500 bg-yellow-500/10' 
@@ -1338,12 +1404,18 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                               </div>
                             )}
                           </div>
+                        </div>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <div className="p-6 bg-background rounded-lg border border-border text-center">
+                    <p className="text-text-secondary font-poppins">
+                      {t('noGroupsForStage') || `Нет групп для этапа ${playoffStage === 'quarterfinals' ? 'Четвертьфинал' : playoffStage === 'semifinals' ? 'Полуфинал' : 'Финал'}`}
+                    </p>
                   </div>
-                ))}
-              </div>
-            </div>
-            );
-          })}
+                );
+              })()}
             </>
           ) : (
             <div className="p-6 bg-background rounded-lg border border-border text-center">
