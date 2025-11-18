@@ -468,8 +468,11 @@ export async function generateNextPlayoffStageSchedule(
     let courtIndex = 0;
     let matchTime = new Date(currentTime);
     
+    // Определяем количество кортов для распределения
+    const courtsToUse = availableCourtNumbers.length > 0 ? availableCourtNumbers.length : availableCourts;
+    
     for (const match of matches) {
-      // Определяем корт
+      // Определяем корт - распределяем параллельно по всем доступным кортам
       const courtNumber = availableCourtNumbers.length > 0 
         ? availableCourtNumbers[courtIndex % availableCourtNumbers.length]
         : ((courtIndex % availableCourts) + 1);
@@ -488,8 +491,9 @@ export async function generateNextPlayoffStageSchedule(
       // Переходим к следующему корту
       courtIndex++;
       
-      // Если все корты использованы, переходим к следующему временному слоту
-      if (courtIndex % availableCourts === 0) {
+      // Если все корты в текущем временном слоте использованы, переходим к следующему временному слоту
+      // Это позволяет распределять матчи параллельно на одно время
+      if (courtIndex % courtsToUse === 0) {
         matchTime = new Date(matchTime.getTime() + (matchDurationMinutes + breakMinutes) * 60000);
       }
     }

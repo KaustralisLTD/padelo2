@@ -418,7 +418,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                 .then(res => res.json())
                 .then(result => {
                   if (result.success) {
-                    alert(t('scheduleGenerated') || `Расписание сгенерировано! Создано матчей: ${result.matchesGenerated}`);
+                    alert(t('scheduleGenerated', { count: result.matchesGenerated }) || `Расписание сгенерировано! Создано матчей: ${result.matchesGenerated}`);
                     fetchMatches();
                     fetchBracket();
                     setShowSchedule(true);
@@ -1185,7 +1185,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                         
                         if (response.ok) {
                           const data = await response.json();
-                          alert(t('scheduleGenerated') || `Расписание сгенерировано! Создано матчей: ${data.matchesGenerated}`);
+                          alert(t('scheduleGenerated', { count: data.matchesGenerated }) || `Расписание сгенерировано! Создано матчей: ${data.matchesGenerated}`);
                           // Обновляем матчи и bracket
                           fetchMatches();
                           fetchBracket();
