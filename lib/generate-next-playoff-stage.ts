@@ -158,7 +158,7 @@ export async function generateNextPlayoffStageSchedule(
       console.log(`[generateNextPlayoffStageSchedule] Found ${semifinalGroups.length} semifinal groups, no finals found.`);
       
       // Сначала проверяем, есть ли у полуфиналов уже расписание
-      const semifinalGroupIds = semifinalGroups.map(g => g.id);
+      const semifinalGroupIds = semifinalGroups.map((g: any) => g.id);
       const placeholders = semifinalGroupIds.map(() => '?').join(',');
       const [semifinalMatches] = await pool.execute(
         `SELECT id, group_id, match_date FROM tournament_matches 
@@ -285,7 +285,7 @@ export async function generateNextPlayoffStageSchedule(
     }
     
     // Получаем матчи для этих групп (только те, у которых match_date IS NULL)
-    const groupIds = groupsToSchedule.map(g => g.id);
+    const groupIds = groupsToSchedule.map((g: any) => g.id);
     console.log(`[generateNextPlayoffStageSchedule] Groups to schedule:`, groupsToSchedule.map((g: any) => ({ id: g.id, name: g.group_name })));
     console.log(`[generateNextPlayoffStageSchedule] Group IDs:`, groupIds);
     
