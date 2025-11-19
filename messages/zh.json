@@ -635,11 +635,12 @@
       "demoParticipantsGenerating": "正在生成...",
       "demoParticipantsGenerateSuccess": "演示参与者创建成功。",
       "demoParticipantsGenerateError": "创建演示参与者失败。",
-      "demoParticipantsInvalid": "请输入偶数的参与者数量（至少 2）。"
+      "demoParticipantsInvalid": "请输入偶数的参与者数量（至少 2）。",
       "deleteDemoParticipants": "删除演示参与者",
       "deleteDemoParticipantsConfirm": "您确定要删除所有演示参与者吗？这也会删除所有相关的组、对和比赛。",
       "deleteDemoParticipantsSuccess": "成功删除了 {count} 个演示参与者。",
-      "deleteDemoParticipantsError": "无法删除演示参与者。".    },
+      "deleteDemoParticipantsError": "无法删除演示参与者。"
+    },
     "staff": {
       "assignAccess": "分配访问权限",
       "editAccess": "编辑访问权限",

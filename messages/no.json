@@ -651,11 +651,12 @@
       "demoParticipantsGenerating": "Genererer...",
       "demoParticipantsGenerateSuccess": "Demo-deltakere opprettet.",
       "demoParticipantsGenerateError": "Kunne ikke opprette demo-deltakere.",
-      "demoParticipantsInvalid": "Skriv inn et partall deltakere (minst 2)."
+      "demoParticipantsInvalid": "Skriv inn et partall deltakere (minst 2).",
       "deleteDemoParticipants": "Slett demo-deltakere",
       "deleteDemoParticipantsConfirm": "Er du sikker på at du vil slette alle demo-deltakere? Dette vil også slette alle tilknyttede grupper, par og kamper.",
       "deleteDemoParticipantsSuccess": "{count} demo-deltakere slettet med hell.",
-      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltakere.".    },
+      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltakere."
+    },
     "staff": {
       "assignAccess": "Tildel Tilgang",
       "editAccess": "Rediger Tilgang",

@@ -828,11 +828,12 @@
       "demoParticipantsGenerating": "Generant...",
       "demoParticipantsGenerateSuccess": "Participants demo creats correctament.",
       "demoParticipantsGenerateError": "No s'han pogut crear els participants demo.",
-      "demoParticipantsInvalid": "Introduïu un nombre parell de participants (mínim 2)."
+      "demoParticipantsInvalid": "Introduïu un nombre parell de participants (mínim 2).",
       "deleteDemoParticipants": "Eliminar participants demo",
       "deleteDemoParticipantsConfirm": "Esteu segur que voleu eliminar tots els participants demo? Això també eliminarà tots els grups, parelles i partits associats.",
       "deleteDemoParticipantsSuccess": "S'han eliminat {count} participants demo amb èxit.",
-      "deleteDemoParticipantsError": "No s'han pogut eliminar els participants demo.".    },
+      "deleteDemoParticipantsError": "No s'han pogut eliminar els participants demo."
+    },
     "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",

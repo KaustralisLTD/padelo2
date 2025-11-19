@@ -651,11 +651,12 @@
       "demoParticipantsGenerating": "Skapar...",
       "demoParticipantsGenerateSuccess": "Demo-deltagare skapades.",
       "demoParticipantsGenerateError": "Det gick inte att skapa demodeltagare.",
-      "demoParticipantsInvalid": "Ange ett jämnt antal deltagare (minst 2)."
+      "demoParticipantsInvalid": "Ange ett jämnt antal deltagare (minst 2).",
       "deleteDemoParticipants": "Ta bort demo-deltagare",
       "deleteDemoParticipantsConfirm": "Är du säker på att du vill ta bort alla demo-deltagare? Detta tar också bort alla associerade grupper, par och matcher.",
       "deleteDemoParticipantsSuccess": "{count} demo-deltagare borttagna framgångsrikt.",
-      "deleteDemoParticipantsError": "Kunde inte ta bort demo-deltagare.".    },
+      "deleteDemoParticipantsError": "Kunde inte ta bort demo-deltagare."
+    },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",
       "editAccess": "Redigera Åtkomst",

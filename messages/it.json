@@ -647,11 +647,12 @@
       "demoParticipantsGenerating": "Generazione...",
       "demoParticipantsGenerateSuccess": "Partecipanti demo creati con successo.",
       "demoParticipantsGenerateError": "Impossibile creare i partecipanti demo.",
-      "demoParticipantsInvalid": "Inserisci un numero pari di partecipanti (minimo 2)."
+      "demoParticipantsInvalid": "Inserisci un numero pari di partecipanti (minimo 2).",
       "deleteDemoParticipants": "Elimina partecipanti demo",
       "deleteDemoParticipantsConfirm": "Sei sicuro di voler eliminare tutti i partecipanti demo? Questo eliminerà anche tutti i gruppi, coppie e partite associati.",
       "deleteDemoParticipantsSuccess": "{count} partecipanti demo eliminati con successo.",
-      "deleteDemoParticipantsError": "Impossibile eliminare i partecipanti demo.".    },
+      "deleteDemoParticipantsError": "Impossibile eliminare i partecipanti demo."
+    },
     "staff": {
       "assignAccess": "Assegna Accesso",
       "editAccess": "Modifica Accesso",

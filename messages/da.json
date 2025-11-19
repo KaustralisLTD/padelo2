@@ -651,11 +651,12 @@
       "demoParticipantsGenerating": "Opretter...",
       "demoParticipantsGenerateSuccess": "Demo-deltagere oprettet.",
       "demoParticipantsGenerateError": "Kunne ikke oprette demo-deltagere.",
-      "demoParticipantsInvalid": "Indtast et lige antal deltagere (minimum 2)."
+      "demoParticipantsInvalid": "Indtast et lige antal deltagere (minimum 2).",
       "deleteDemoParticipants": "Slet demo-deltagere",
       "deleteDemoParticipantsConfirm": "Er du sikker på, at du vil slette alle demo-deltagere? Dette vil også slette alle tilknyttede grupper, par og kampe.",
       "deleteDemoParticipantsSuccess": "{count} demo-deltagere slettet med succes.",
-      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltagere.".    },
+      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltagere."
+    },
     "staff": {
       "assignAccess": "Tildel Adgang",
       "editAccess": "Rediger Adgang",

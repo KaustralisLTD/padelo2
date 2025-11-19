@@ -656,11 +656,12 @@
       "demoParticipantsGenerating": "جارٍ الإنشاء...",
       "demoParticipantsGenerateSuccess": "تم إنشاء المشاركين التجريبيين بنجاح.",
       "demoParticipantsGenerateError": "فشل إنشاء المشاركين التجريبيين.",
-      "demoParticipantsInvalid": "أدخل عدداً زوجياً من المشاركين (بحد أدنى 2)."
+      "demoParticipantsInvalid": "أدخل عدداً زوجياً من المشاركين (بحد أدنى 2).",
       "deleteDemoParticipants": "حذف المشاركين التجريبيين",
       "deleteDemoParticipantsConfirm": "هل أنت متأكد أنك تريد حذف جميع المشاركين التجريبيين؟ سيؤدي هذا أيضًا إلى حذف جميع المجموعات والأزواج والمباريات المرتبطة.",
       "deleteDemoParticipantsSuccess": "تم حذف {count} مشارك تجريبي بنجاح.",
-      "deleteDemoParticipantsError": "فشل في حذف المشاركين التجريبيين.".    },
+      "deleteDemoParticipantsError": "فشل في حذف المشاركين التجريبيين."
+    },
     "staff": {
       "assignAccess": "تعيين الوصول",
       "editAccess": "تعديل الوصول",

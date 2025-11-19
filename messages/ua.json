@@ -842,11 +842,12 @@
       "demoParticipantsGenerating": "Створюємо...",
       "demoParticipantsGenerateSuccess": "Демо-учасників успішно створено.",
       "demoParticipantsGenerateError": "Не вдалося створити демо-учасників.",
-      "demoParticipantsInvalid": "Введіть парну кількість учасників (мінімум 2)."
+      "demoParticipantsInvalid": "Введіть парну кількість учасників (мінімум 2).",
       "deleteDemoParticipants": "Видалити демо-учасників",
       "deleteDemoParticipantsConfirm": "Ви впевнені, що хочете видалити всіх демо-учасників? Це також видалить усі пов'язані групи, пари та матчі.",
       "deleteDemoParticipantsSuccess": "Успішно видалено {count} демо-учасників.",
-      "deleteDemoParticipantsError": "Не вдалося видалити демо-учасників.".    },
+      "deleteDemoParticipantsError": "Не вдалося видалити демо-учасників."
+    },
     "staff": {
       "title": "Управління співробітниками",
       "description": "Призначення ролей та управління співробітниками",

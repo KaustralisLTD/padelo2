@@ -624,11 +624,12 @@
       "demoParticipantsGenerating": "Bezig met genereren...",
       "demoParticipantsGenerateSuccess": "Demo-deelnemers succesvol aangemaakt.",
       "demoParticipantsGenerateError": "Het is niet gelukt om demo-deelnemers aan te maken.",
-      "demoParticipantsInvalid": "Voer een even aantal deelnemers in (minimaal 2)."
+      "demoParticipantsInvalid": "Voer een even aantal deelnemers in (minimaal 2).",
       "deleteDemoParticipants": "Demo-deelnemers verwijderen",
       "deleteDemoParticipantsConfirm": "Weet u zeker dat u alle demo-deelnemers wilt verwijderen? Dit verwijdert ook alle bijbehorende groepen, paren en wedstrijden.",
       "deleteDemoParticipantsSuccess": "{count} demo-deelnemers succesvol verwijderd.",
-      "deleteDemoParticipantsError": "Kon demo-deelnemers niet verwijderen.".    },
+      "deleteDemoParticipantsError": "Kon demo-deelnemers niet verwijderen."
+    },
     "staff": {
       "assignAccess": "Toegang Toewijzen",
       "editAccess": "Toegang Bewerken",
