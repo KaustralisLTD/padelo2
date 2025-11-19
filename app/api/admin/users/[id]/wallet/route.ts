@@ -50,9 +50,27 @@ export async function GET(
         'SELECT * FROM user_wallets WHERE user_id = ?',
         [user.id]
       ) as any[];
+    } else {
+      // Обновляем валюту на EUR, если она UAH
+      if (wallets[0].currency === 'UAH') {
+        await pool.execute(
+          'UPDATE user_wallets SET currency = ? WHERE user_id = ?',
+          ['EUR', user.id]
+        );
+        [wallets] = await pool.execute(
+          'SELECT * FROM user_wallets WHERE user_id = ?',
+          [user.id]
+        ) as any[];
+      }
     }
 
     const wallet = wallets[0];
+
+    // Обновляем все транзакции пользователя с UAH на EUR
+    await pool.execute(
+      'UPDATE wallet_transactions SET currency = ? WHERE user_id = ? AND currency = ?',
+      ['EUR', user.id, 'UAH']
+    );
 
     // Получаем транзакции
     const [transactions] = await pool.execute(`
@@ -77,14 +95,14 @@ export async function GET(
         id: wallet.id,
         userId: wallet.user_id,
         balance: parseFloat(wallet.balance),
-        currency: wallet.currency,
+        currency: wallet.currency || 'EUR', // Всегда возвращаем EUR, если валюта не указана
         updatedAt: wallet.updated_at ? wallet.updated_at.toISOString() : wallet.created_at.toISOString(),
       },
       transactions: transactions.map((t: any) => ({
         id: t.id,
         type: t.type,
         amount: parseFloat(t.amount),
-        currency: t.currency,
+        currency: t.currency || 'EUR', // Всегда возвращаем EUR, если валюта не указана
         description: t.description,
         referenceType: t.reference_type,
         referenceId: t.reference_id,

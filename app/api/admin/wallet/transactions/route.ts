@@ -20,6 +20,12 @@ export async function GET(request: NextRequest) {
 
     const pool = getDbPool();
     
+    // Обновляем все транзакции с UAH на EUR
+    await pool.execute(
+      'UPDATE wallet_transactions SET currency = ? WHERE currency = ?',
+      ['EUR', 'UAH']
+    );
+    
     // Получаем все транзакции с информацией о пользователях
     const [transactions] = await pool.execute(`
       SELECT 
@@ -52,7 +58,7 @@ export async function GET(request: NextRequest) {
         userName: t.userName,
         type: t.type,
         amount: parseFloat(t.amount),
-        currency: t.currency,
+        currency: t.currency || 'EUR', // Всегда возвращаем EUR, если валюта не указана
         description: t.description,
         referenceType: t.referenceType,
         referenceId: t.referenceId,
