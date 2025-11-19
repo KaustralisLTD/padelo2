@@ -790,7 +790,10 @@
       "cancel": "Cancel·lar",
       "create": "Crear",
       "update": "Actualitzar",
-      "bracket": "Taula"
+      "bracket": "Taula",
+      "demoParticipantsCount": "Nombre de Participants Demo",
+      "demoParticipantsCountPlaceholder": "Introduïu un nombre parell (2 participants = 1 parella)",
+      "demoParticipantsCountHint": "Introduïu un nombre parell de participants. 2 participants = 1 parella. 2 parelles participen en un joc."
     },
     "staff": {
       "title": "Manage Staff",

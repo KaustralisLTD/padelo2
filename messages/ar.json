@@ -618,7 +618,10 @@
       "cancel": "إلغاء",
       "create": "إنشاء",
       "update": "تحديث",
-      "bracket": "الجدول"
+      "bracket": "الجدول",
+      "demoParticipantsCount": "عدد المشاركين التجريبيين",
+      "demoParticipantsCountPlaceholder": "أدخل رقماً زوجياً (2 مشارك = 1 زوج)",
+      "demoParticipantsCountHint": "أدخل عدداً زوجياً من المشاركين. 2 مشارك = 1 زوج. زوجان يشاركان في لعبة واحدة."
     },
     "staff": {
       "assignAccess": "تعيين الوصول",

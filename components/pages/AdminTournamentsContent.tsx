@@ -845,7 +845,7 @@ export default function AdminTournamentsContent() {
                   <div className="space-y-4 pt-4 border-t border-border">
                     <div>
                       <label className="block text-sm font-poppins text-text-secondary mb-2">
-                        Количество демо-участников
+                        {t('tournaments.demoParticipantsCount')}
                       </label>
                       <input
                         type="number"
@@ -853,11 +853,11 @@ export default function AdminTournamentsContent() {
                         step="2"
                         value={formData.demoParticipantsCount || ''}
                         onChange={(e) => setFormData({ ...formData, demoParticipantsCount: e.target.value })}
-                        placeholder="Введите четное число (2 участника = 1 пара)"
+                        placeholder={t('tournaments.demoParticipantsCountPlaceholder')}
                         className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
                       />
                       <p className="text-xs text-text-tertiary font-poppins mt-1">
-                        Введите четное количество участников. 2 участника = 1 пара. В одной игре участвуют 2 пары.
+                        {t('tournaments.demoParticipantsCountHint')}
                       </p>
                     </div>
                   </div>

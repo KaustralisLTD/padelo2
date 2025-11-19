@@ -586,7 +586,10 @@
       "cancel": "Annuleren",
       "create": "Aanmaken",
       "update": "Bijwerken",
-      "bracket": "Tabel"
+      "bracket": "Tabel",
+      "demoParticipantsCount": "Aantal Demo-deelnemers",
+      "demoParticipantsCountPlaceholder": "Voer een even getal in (2 deelnemers = 1 paar)",
+      "demoParticipantsCountHint": "Voer een even aantal deelnemers in. 2 deelnemers = 1 paar. 2 paren nemen deel aan één spel."
     },
     "staff": {
       "assignAccess": "Toegang Toewijzen",

@@ -613,7 +613,10 @@
       "cancel": "Avbryt",
       "create": "Opprett",
       "update": "Oppdater",
-      "bracket": "Tabell"
+      "bracket": "Tabell",
+      "demoParticipantsCount": "Antall Demo-deltakere",
+      "demoParticipantsCountPlaceholder": "Skriv inn et partall (2 deltakere = 1 par)",
+      "demoParticipantsCountHint": "Skriv inn et partall deltakere. 2 deltakere = 1 par. 2 par deltar i ett spill."
     },
     "staff": {
       "assignAccess": "Tildel Tilgang",

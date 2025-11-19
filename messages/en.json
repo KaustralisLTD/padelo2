@@ -790,7 +790,10 @@
       "cancel": "Cancel",
       "create": "Create",
       "update": "Update",
-      "bracket": "Bracket"
+      "bracket": "Bracket",
+      "demoParticipantsCount": "Number of Demo Participants",
+      "demoParticipantsCountPlaceholder": "Enter an even number (2 participants = 1 pair)",
+      "demoParticipantsCountHint": "Enter an even number of participants. 2 participants = 1 pair. 2 pairs participate in one game."
     },
     "staff": {
       "title": "Manage Staff",
