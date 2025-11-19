@@ -258,7 +258,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
 }
 
 export async function createTournament(
-  tournament: Omit<Tournament, 'id' | 'createdAt' | 'updatedAt'> & {
+  tournament: Omit<Tournament, 'id' | 'createdAt' | 'updatedAt' | 'registrationsTotal' | 'registrationsConfirmed'> & {
     registrationSettings?: TournamentRegistrationSettings;
   }
 ): Promise<Tournament> {
