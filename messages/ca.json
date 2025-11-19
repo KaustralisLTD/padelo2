@@ -1114,6 +1114,79 @@
       "description": "Completa el formulari a continuació per sol·licitar un pressupost personalitzat per al merchandising del teu torneig. Et respondrem en 24 hores."
     }
   },
+  "Profile": {
+    "title": "Perfil",
+    "description": "Gestiona la teva informació personal i configuració",
+    "loading": "Carregant perfil...",
+    "backToDashboard": "Tornar al Panell",
+    "goToParticipantDashboard": "Panell de Participant",
+    "logout": "Tancar Sessió",
+    "photo": "Foto",
+    "noPhoto": "Sense foto",
+    "photoHint": "Màxim 5MB. Formats JPG, PNG.",
+    "photoSizeError": "La mida de la foto ha de ser inferior a 5MB",
+    "basicInfo": "Informació Bàsica",
+    "contactInfo": "Informació de Contacte",
+    "additionalInfo": "Informació Addicional",
+    "email": "Correu electrònic",
+    "role": "Rol",
+    "firstName": "Nom",
+    "lastName": "Cognom",
+    "phone": "Telèfon",
+    "telegram": "Telegram",
+    "dateOfBirth": "Data de Naixement",
+    "tshirtSize": "Mida de Samarreta",
+    "selectSize": "Seleccionar mida",
+    "save": "Desar Canvis",
+    "saving": "Desant...",
+    "cancel": "Cancel·lar",
+    "updateSuccess": "Perfil actualitzat correctament!",
+    "updateError": "Error en actualitzar el perfil. Torna-ho a provar.",
+    "roles": {
+      "superadmin": "Super Admin",
+      "staff": "Personal",
+      "participant": "Participant"
+    }
+  },
+  "ParticipantDashboard": {
+    "title": "Panell de Participant",
+    "description": "Visualitza els teus tornejos, estadístiques i assoliments",
+    "loading": "Carregant...",
+    "backToProfile": "Tornar al Perfil",
+    "stats": {
+      "totalTournaments": "Total de Tornejos",
+      "confirmed": "Confirmats",
+      "upcoming": "Pròxims",
+      "completed": "Completats"
+    },
+    "myTournaments": "Els Meus Tornejos",
+    "noTournaments": "Encara no t'has registrat en cap torneig.",
+    "registerForTournament": "Registrar-se en Torneig",
+    "dates": "Dates",
+    "categories": {
+      "male1": "Homes 1",
+      "male2": "Homes 2",
+      "female1": "Dones 1",
+      "female2": "Dones 2",
+      "mixed1": "Mixt 1",
+      "mixed2": "Mixt 2"
+    },
+    "confirmedAt": "Confirmat",
+    "status": {
+      "pending": "Pendent",
+      "upcoming": "Pròxim",
+      "inProgress": "En Progrés",
+      "completed": "Completat"
+    },
+    "statistics": {
+      "title": "Estadístiques de Jocs",
+      "comingSoon": "Les estadístiques estaran disponibles aviat"
+    },
+    "prizes": {
+      "title": "Premis i Assoliments",
+      "comingSoon": "Els premis i assoliments es mostraran aquí"
+    }
+  },
   "Common": {
     "darkMode": "Mode fosc",
     "lightMode": "Mode clar"
