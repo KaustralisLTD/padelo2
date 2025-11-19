@@ -92,6 +92,11 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   const [groupWinners, setGroupWinners] = useState<Record<number, number[]>>({}); // groupId -> winner pair IDs
   const [demoParticipantsCount, setDemoParticipantsCount] = useState<number | null>(null);
   const [demoParticipantsInput, setDemoParticipantsInput] = useState('120');
+  const [demoCategoryDistribution, setDemoCategoryDistribution] = useState<Record<string, number>>({
+    male1: 40,
+    female1: 40,
+    mixed1: 40,
+  });
   const [creatingDemoParticipants, setCreatingDemoParticipants] = useState(false);
   const [demoParticipantsMessage, setDemoParticipantsMessage] = useState<string | null>(null);
   const [autoGenerationAttempted, setAutoGenerationAttempted] = useState(false);
@@ -426,8 +431,23 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       return;
     }
 
-    const count = parseInt(demoParticipantsInput, 10);
-    if (isNaN(count) || count < 2 || count % 2 !== 0) {
+    // Проверяем распределение по категориям
+    const distribution: Record<string, number> = {};
+    let totalCount = 0;
+    
+    for (const [category, count] of Object.entries(demoCategoryDistribution)) {
+      const numCount = parseInt(String(count || 0), 10);
+      if (numCount > 0) {
+        if (numCount % 2 !== 0) {
+          alert(t('demoParticipantsCategoryOdd', { category: tCategories(category) }));
+          return;
+        }
+        distribution[category] = numCount;
+        totalCount += numCount;
+      }
+    }
+
+    if (totalCount < 2) {
       alert(tAdmin('demoParticipantsCountPlaceholder'));
       return;
     }
@@ -440,14 +460,13 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ count }),
+        body: JSON.stringify({ categoryDistribution: distribution }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        const created = data.registrationsCreated ?? count;
-        setDemoParticipantsCount(count);
-        setDemoParticipantsInput(String(count));
+        const created = data.registrationsCreated ?? totalCount;
+        setDemoParticipantsCount(totalCount);
         setDemoParticipantsMessage(
           t('demoParticipantsSuccess', { count: created })
         );
@@ -1084,30 +1103,48 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {tAdmin('demoParticipantsCount')}
+                  {t('demoParticipantsCategoryDistribution')}
                 </label>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="number"
-                    min="2"
-                    step="2"
-                    value={demoParticipantsInput}
-                    onChange={(e) => setDemoParticipantsInput(e.target.value)}
-                    placeholder={tAdmin('demoParticipantsCountPlaceholder')}
-                    className="px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors w-full sm:max-w-xs"
-                  />
+                <div className="space-y-3">
+                  {['male1', 'male2', 'female1', 'female2', 'mixed1', 'mixed2'].map((category) => (
+                    <div key={category} className="flex items-center gap-3">
+                      <label className="text-sm font-poppins text-text w-32">
+                        {tCategories(category)}:
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="2"
+                        value={demoCategoryDistribution[category] || 0}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value, 10) || 0;
+                          setDemoCategoryDistribution({
+                            ...demoCategoryDistribution,
+                            [category]: value,
+                          });
+                        }}
+                        placeholder="0"
+                        className="px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors w-24"
+                      />
+                      <span className="text-xs text-text-tertiary font-poppins">
+                        ({Math.floor((demoCategoryDistribution[category] || 0) / 2)} {t('pairs')})
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-text-tertiary font-poppins mt-2">
+                  {t('demoParticipantsCategoryHint')}
+                </p>
+                <div className="mt-3">
                   <button
                     type="button"
                     onClick={createDemoParticipants}
                     disabled={creatingDemoParticipants}
-                    className="px-6 py-2 bg-background border border-border rounded-lg text-text font-poppins font-semibold hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-2 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {creatingDemoParticipants ? t('generating') : t('demoParticipantsCreate')}
                   </button>
                 </div>
-                <p className="text-xs text-text-tertiary font-poppins mt-1">
-                  {tAdmin('demoParticipantsCountHint')}
-                </p>
               </div>
               <button
                 onClick={() => generateBracketForDemo()}

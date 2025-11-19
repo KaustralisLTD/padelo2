@@ -28,11 +28,42 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { count } = body;
+    const { count, categoryDistribution } = body;
 
-    if (!count || typeof count !== 'number' || count < 2 || count % 2 !== 0) {
+    // Поддержка старого формата (только count) и нового (categoryDistribution)
+    let distribution: Record<string, number> = {};
+    
+    if (categoryDistribution && typeof categoryDistribution === 'object') {
+      // Новый формат: распределение по категориям
+      distribution = categoryDistribution;
+      const totalCount = Object.values(distribution).reduce((sum, val) => sum + (val || 0), 0);
+      if (totalCount < 2 || totalCount % 2 !== 0) {
+        return NextResponse.json(
+          { error: 'Total count must be an even number >= 2' },
+          { status: 400 }
+        );
+      }
+      // Проверяем, что каждая категория имеет четное количество участников
+      for (const [category, catCount] of Object.entries(distribution)) {
+        if (catCount && catCount % 2 !== 0) {
+          return NextResponse.json(
+            { error: `Category ${category} must have an even number of participants` },
+            { status: 400 }
+          );
+        }
+      }
+    } else if (count && typeof count === 'number') {
+      // Старый формат: все участники в male1
+      if (count < 2 || count % 2 !== 0) {
+        return NextResponse.json(
+          { error: 'Count must be an even number >= 2' },
+          { status: 400 }
+        );
+      }
+      distribution = { male1: count };
+    } else {
       return NextResponse.json(
-        { error: 'Count must be an even number >= 2' },
+        { error: 'Either count or categoryDistribution must be provided' },
         { status: 400 }
       );
     }
@@ -57,123 +88,145 @@ export async function POST(
       );
     }
 
-    // Создаем демо-регистрации
-    const registrations: number[] = [];
-    const pairsCount = count / 2; // Количество пар
+    // Создаем демо-регистрации по категориям
+    const registrationsByCategory: Record<string, number[]> = {};
+    let globalPlayerIndex = 1;
 
-    for (let i = 1; i <= count; i++) {
-      const pairNumber = Math.ceil(i / 2); // Номер пары (1, 1, 2, 2, 3, 3, ...)
-      const isFirstInPair = i % 2 === 1; // Первый или второй в паре
+    // Обрабатываем каждую категорию
+    for (const [category, catCount] of Object.entries(distribution)) {
+      if (!catCount || catCount === 0) continue;
 
-      const [result] = await pool.execute(
-        `INSERT INTO tournament_registrations 
-         (tournament_id, tournament_name, token, locale, first_name, last_name, email, phone, categories, tshirt_size, confirmed, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())`,
-        [
-          tournamentId,
-          tournament.name,
-          `demo-${tournamentId}-${i}`, // Уникальный токен
-          'en', // Локаль по умолчанию
-          `Demo`,
-          `Player ${i}`,
-          `demo.player${i}@example.com`,
-          `+38000000000${i}`, // Телефон по умолчанию
-          JSON.stringify(['male1']), // По умолчанию категория male1
-          'M', // Размер футболки по умолчанию
-        ]
-      ) as any[];
+      const registrations: number[] = [];
+      const pairsCount = catCount / 2;
 
-      registrations.push(result.insertId);
+      // Создаем участников для этой категории
+      for (let i = 1; i <= catCount; i++) {
+        const [result] = await pool.execute(
+          `INSERT INTO tournament_registrations 
+           (tournament_id, tournament_name, token, locale, first_name, last_name, email, phone, categories, tshirt_size, confirmed, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())`,
+          [
+            tournamentId,
+            tournament.name,
+            `demo-${tournamentId}-${globalPlayerIndex}`, // Уникальный токен
+            'en', // Локаль по умолчанию
+            `Demo`,
+            `Player ${globalPlayerIndex}`,
+            `demo.player${globalPlayerIndex}@example.com`,
+            `+38000000000${globalPlayerIndex}`, // Телефон по умолчанию
+            JSON.stringify([category]), // Категория из распределения
+            'M', // Размер футболки по умолчанию
+          ]
+        ) as any[];
+
+        registrations.push(result.insertId);
+        globalPlayerIndex++;
+      }
+
+      registrationsByCategory[category] = registrations;
+      console.log(`[demo-participants] Created ${registrations.length} registrations for category ${category}`);
+
+      // Группируем регистрации по парам для этой категории
+      for (let pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
+        const player1Id = registrations[pairIndex * 2];
+        const player2Id = registrations[pairIndex * 2 + 1];
+        const player1GlobalIndex = globalPlayerIndex - catCount + pairIndex * 2;
+        const player2GlobalIndex = globalPlayerIndex - catCount + pairIndex * 2 + 1;
+
+        // Обновляем первую регистрацию в паре - добавляем информацию о партнере
+        await pool.execute(
+          `UPDATE tournament_registrations 
+           SET partner_name = ?, partner_email = ?
+           WHERE id = ?`,
+          [`Demo Player ${player2GlobalIndex}`, `demo.player${player2GlobalIndex}@example.com`, player1Id]
+        );
+
+        // Обновляем вторую регистрацию в паре - добавляем информацию о партнере
+        await pool.execute(
+          `UPDATE tournament_registrations 
+           SET partner_name = ?, partner_email = ?
+           WHERE id = ?`,
+          [`Demo Player ${player1GlobalIndex}`, `demo.player${player1GlobalIndex}@example.com`, player2Id]
+        );
+      }
     }
 
-    console.log(`[demo-participants] Created ${registrations.length} demo registrations`);
+    const totalRegistrations = Object.values(registrationsByCategory).reduce((sum, regs) => sum + regs.length, 0);
+    console.log(`[demo-participants] Created ${totalRegistrations} total demo registrations`);
 
-    // Группируем регистрации по парам
-    // Для каждой пары: player1_registration_id и partner1_registration_id указывают на регистрации в паре
-    // Обновляем регистрации с информацией о партнере
-    for (let pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
-      const player1Id = registrations[pairIndex * 2];
-      const player2Id = registrations[pairIndex * 2 + 1];
-
-      // Обновляем первую регистрацию в паре - добавляем информацию о партнере
-      await pool.execute(
-        `UPDATE tournament_registrations 
-         SET partner_name = ?, partner_email = ?
-         WHERE id = ?`,
-        [`Demo Player ${pairIndex * 2 + 2}`, `demo.player${pairIndex * 2 + 2}@example.com`, player1Id]
-      );
-
-      // Обновляем вторую регистрацию в паре - добавляем информацию о партнере
-      await pool.execute(
-        `UPDATE tournament_registrations 
-         SET partner_name = ?, partner_email = ?
-         WHERE id = ?`,
-        [`Demo Player ${pairIndex * 2 + 1}`, `demo.player${pairIndex * 2 + 1}@example.com`, player2Id]
-      );
-    }
-
-    // Определяем количество групп (по 4 пары в группе)
+    // Создаем группы и распределяем пары для каждой категории
     const pairsPerGroup = 4;
-    const numberOfGroups = Math.ceil(pairsCount / pairsPerGroup);
-
-    console.log(`[demo-participants] Creating ${numberOfGroups} groups with ${pairsPerGroup} pairs per group`);
-
-    // Создаем группы для категории male1
-    const category = 'male1';
-    const groups = await autoCreateGroupsForCategory(
-      tournamentId,
-      category,
-      numberOfGroups,
-      pairsPerGroup
-    );
-
-    console.log(`[demo-participants] Created ${groups.length} groups`);
-
-    // Распределяем пары по группам
-    // Сначала создаем пары в таблице tournament_group_pairs
-    for (let pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
-      const groupIndex = Math.floor(pairIndex / pairsPerGroup);
-      const group = groups[groupIndex];
-      const pairNumberInGroup = (pairIndex % pairsPerGroup) + 1;
-
-      const player1Id = registrations[pairIndex * 2];
-      const player2Id = registrations[pairIndex * 2 + 1];
-
-      // Создаем пару в группе
-      await pool.execute(
-        `INSERT INTO tournament_group_pairs 
-         (group_id, pair_number, player1_registration_id, partner1_registration_id, updated_at)
-         VALUES (?, ?, ?, ?, NOW())
-         ON DUPLICATE KEY UPDATE 
-         player1_registration_id = VALUES(player1_registration_id),
-         partner1_registration_id = VALUES(partner1_registration_id),
-         updated_at = NOW()`,
-        [group.id, pairNumberInGroup, player1Id, player2Id]
-      );
-    }
-
-    console.log(`[demo-participants] Created ${pairsCount} pairs in groups`);
-
-    // Создаем матчи для всех групп
     const { createMissingMatchesForGroup } = await import('@/lib/matches');
     let totalMatchesCreated = 0;
+    const categoryStats: Record<string, { pairs: number; groups: number; matches: number }> = {};
 
-    for (const group of groups) {
-      try {
-        const result = await createMissingMatchesForGroup(group.id);
-        totalMatchesCreated += result.created;
-        console.log(`[demo-participants] Created ${result.created} matches for group ${group.groupName}`);
-      } catch (error) {
-        console.error(`[demo-participants] Error creating matches for group ${group.id}:`, error);
+    for (const [category, registrations] of Object.entries(registrationsByCategory)) {
+      const pairsCount = registrations.length / 2;
+      const numberOfGroups = Math.ceil(pairsCount / pairsPerGroup);
+
+      console.log(`[demo-participants] Creating ${numberOfGroups} groups for category ${category} with ${pairsPerGroup} pairs per group`);
+
+      // Создаем группы для категории
+      const groups = await autoCreateGroupsForCategory(
+        tournamentId,
+        category,
+        numberOfGroups,
+        pairsPerGroup
+      );
+
+      console.log(`[demo-participants] Created ${groups.length} groups for category ${category}`);
+
+      // Распределяем пары по группам
+      for (let pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
+        const groupIndex = Math.floor(pairIndex / pairsPerGroup);
+        const group = groups[groupIndex];
+        const pairNumberInGroup = (pairIndex % pairsPerGroup) + 1;
+
+        const player1Id = registrations[pairIndex * 2];
+        const player2Id = registrations[pairIndex * 2 + 1];
+
+        // Создаем пару в группе
+        await pool.execute(
+          `INSERT INTO tournament_group_pairs 
+           (group_id, pair_number, player1_registration_id, partner1_registration_id, updated_at)
+           VALUES (?, ?, ?, ?, NOW())
+           ON DUPLICATE KEY UPDATE 
+           player1_registration_id = VALUES(player1_registration_id),
+           partner1_registration_id = VALUES(partner1_registration_id),
+           updated_at = NOW()`,
+          [group.id, pairNumberInGroup, player1Id, player2Id]
+        );
       }
+
+      console.log(`[demo-participants] Created ${pairsCount} pairs in groups for category ${category}`);
+
+      // Создаем матчи для всех групп этой категории
+      let categoryMatches = 0;
+      for (const group of groups) {
+        try {
+          const result = await createMissingMatchesForGroup(group.id);
+          categoryMatches += result.created;
+          console.log(`[demo-participants] Created ${result.created} matches for group ${group.groupName}`);
+        } catch (error) {
+          console.error(`[demo-participants] Error creating matches for group ${group.id}:`, error);
+        }
+      }
+
+      totalMatchesCreated += categoryMatches;
+      categoryStats[category] = {
+        pairs: pairsCount,
+        groups: groups.length,
+        matches: categoryMatches,
+      };
     }
 
     return NextResponse.json({
       success: true,
-      registrationsCreated: registrations.length,
-      pairsCreated: pairsCount,
-      groupsCreated: groups.length,
-      matchesCreated: totalMatchesCreated,
+      registrationsCreated: totalRegistrations,
+      totalPairsCreated: Object.values(categoryStats).reduce((sum, stat) => sum + stat.pairs, 0),
+      totalGroupsCreated: Object.values(categoryStats).reduce((sum, stat) => sum + stat.groups, 0),
+      totalMatchesCreated,
+      categoryStats,
     });
   } catch (error: any) {
     console.error('[demo-participants] Error:', error);
