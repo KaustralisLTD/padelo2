@@ -208,39 +208,7 @@ export default function AdminTournamentsContent() {
       const data = await response.json();
 
       if (response.ok) {
-        const createdTournament = data.tournament;
-        
-        // Если это demo турнир и указано количество участников, создаем демо-участников
-        if (formData.status === 'demo' && isValidDemoCount(demoCountValue)) {
-          const participantsCount = demoCountValue!;
-          try {
-            const demoResponse = await fetch(`/api/tournament/${createdTournament.id}/demo-participants`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                count: participantsCount,
-              }),
-            });
-            
-            if (demoResponse.ok) {
-              setSuccess('Tournament created successfully with demo participants');
-              // Перенаправляем на страницу Bracket
-              router.push(`/${locale}/tournament/${createdTournament.id}/bracket`);
-            } else {
-              const demoError = await demoResponse.json();
-              setError(demoError.error || 'Failed to create demo participants');
-            }
-          } catch (demoErr) {
-            console.error('[AdminTournamentsContent] Error creating demo participants:', demoErr);
-            setError('Failed to create demo participants');
-          }
-        } else {
-          setSuccess('Tournament created successfully');
-        }
-        
+        setSuccess('Tournament created successfully');
         setShowCreateModal(false);
         resetForm();
         fetchTournaments();
