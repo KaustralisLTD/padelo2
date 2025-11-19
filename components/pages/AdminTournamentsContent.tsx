@@ -389,8 +389,18 @@ export default function AdminTournamentsContent() {
   };
 
   const getStatusLabel = (status: Tournament['status'] | string | undefined | null): string => {
+    // Детальное логирование входа в функцию
+    console.log('[getStatusLabel] Called with:', {
+      status,
+      type: typeof status,
+      isUndefined: status === undefined,
+      isNull: status === null,
+      isEmpty: status === '',
+      stringValue: String(status),
+    });
+    
     if (!status) {
-      console.warn('[getStatusLabel] Status is empty:', status);
+      console.warn('[getStatusLabel] Status is empty:', { status, type: typeof status });
       return 'Unknown';
     }
     
@@ -409,15 +419,14 @@ export default function AdminTournamentsContent() {
     
     const label = labels[normalizedStatus] || labels[status as string] || String(status);
     
-    // Отладочный вывод для проверки
-    if (normalizedStatus === 'demo' || status === 'demo') {
-      console.log('[getStatusLabel] Demo status found:', { 
-        originalStatus: status, 
-        normalizedStatus, 
-        label,
-        hasLabel: normalizedStatus in labels || status in labels
-      });
-    }
+    // Логирование результата
+    console.log('[getStatusLabel] Result:', {
+      originalStatus: status,
+      normalizedStatus,
+      label,
+      foundInLabels: normalizedStatus in labels,
+      allLabels: Object.keys(labels),
+    });
     
     return label;
   };
@@ -542,16 +551,30 @@ export default function AdminTournamentsContent() {
                           className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
                         >
                           {(() => {
+                            // Детальное логирование для всех турниров
+                            console.log('[Status Display] Tournament status:', { 
+                              tournamentId: tournament.id,
+                              tournamentName: tournament.name,
+                              status: tournament.status,
+                              statusType: typeof tournament.status,
+                              statusValue: JSON.stringify(tournament.status),
+                              isUndefined: tournament.status === undefined,
+                              isNull: tournament.status === null,
+                              isEmpty: tournament.status === '',
+                            });
+                            
                             const label = getStatusLabel(tournament.status);
-                            // Отладочный вывод для проверки
-                            if (tournament.status === 'demo') {
-                              console.log('[Status Display] Demo tournament:', { 
-                                status: tournament.status, 
-                                label, 
+                            
+                            // Дополнительное логирование если label = Unknown
+                            if (label === 'Unknown') {
+                              console.error('[Status Display] Unknown status detected!', {
                                 tournamentId: tournament.id,
-                                tournamentName: tournament.name 
+                                tournamentName: tournament.name,
+                                originalStatus: tournament.status,
+                                statusType: typeof tournament.status,
                               });
                             }
+                            
                             return label;
                           })()}
                         </span>
