@@ -39,6 +39,7 @@ interface Tournament {
   registrationsConfirmed?: number;
   registrationSettings?: TournamentRegistrationSettings;
   demoParticipantsCount?: number | null;
+  customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
 }
 
 export default function AdminTournamentsContent() {
@@ -64,6 +65,14 @@ export default function AdminTournamentsContent() {
     priceDoubleCategory: '',
     status: 'draft' as Tournament['status'],
     registrationSettings: getDefaultRegistrationSettings(),
+    customCategories: {
+      male1: 'Male 1',
+      male2: 'Male 2',
+      female1: 'Female 1',
+      female2: 'Female 2',
+      mixed1: 'Mixed 1',
+      mixed2: 'Mixed 2',
+    },
   });
 
   const parseDemoParticipantsInput = (value: string | number | null | undefined) => {
@@ -202,6 +211,7 @@ export default function AdminTournamentsContent() {
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
           registrationSettings: formData.registrationSettings,
+          customCategories: formData.customCategories,
         }),
       });
 
@@ -253,6 +263,7 @@ export default function AdminTournamentsContent() {
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
           registrationSettings: formData.registrationSettings,
+          customCategories: formData.customCategories,
         }),
       });
 
@@ -437,6 +448,26 @@ export default function AdminTournamentsContent() {
       setGeneratingDemoParticipants(false);
     }
   };
+
+  useEffect(() => {
+    if (showParticipantsModal && selectedTournamentForParticipants) {
+      fetchParticipants();
+      // Инициализируем demoCategoryDistribution на основе кастомных категорий
+      const categories = selectedTournamentForParticipants.customCategories || {
+        male1: 'Male 1',
+        male2: 'Male 2',
+        female1: 'Female 1',
+        female2: 'Female 2',
+        mixed1: 'Mixed 1',
+        mixed2: 'Mixed 2',
+      };
+      const initialDistribution: Record<string, string> = {};
+      Object.keys(categories).forEach((key) => {
+        initialDistribution[key] = '';
+      });
+      setDemoCategoryDistribution(initialDistribution);
+    }
+  }, [showParticipantsModal, selectedTournamentForParticipants]);
 
   const handleArchive = async (id: number) => {
     if (
@@ -688,6 +719,14 @@ export default function AdminTournamentsContent() {
       priceDoubleCategory: tournament.priceDoubleCategory?.toString() || '',
       status: tournament.status,
       registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
+      customCategories: tournament.customCategories || {
+        male1: 'Male 1',
+        male2: 'Male 2',
+        female1: 'Female 1',
+        female2: 'Female 2',
+        mixed1: 'Mixed 1',
+        mixed2: 'Mixed 2',
+      },
     });
     setShowCreateModal(true);
   };
@@ -1470,6 +1509,81 @@ export default function AdminTournamentsContent() {
                   </select>
                 </div>
 
+                {/* Categories Management */}
+                <div className="space-y-4 pt-4 border-t border-border">
+                  <div>
+                    <h4 className="text-lg font-poppins font-semibold text-text mb-2">
+                      {t('tournaments.categoriesManagement')}
+                    </h4>
+                    <p className="text-sm text-text-tertiary mb-4">
+                      {t('tournaments.categoriesDescription')}
+                    </p>
+                  </div>
+
+                  {/* Existing Categories */}
+                  <div className="space-y-3">
+                    {Object.entries(formData.customCategories || {}).map(([code, name]) => (
+                      <div key={code} className="flex items-center gap-3 p-3 bg-background border border-border rounded-lg">
+                        <div className="flex-1">
+                          <label className="block text-xs font-poppins text-text-tertiary mb-1">
+                            {code}
+                          </label>
+                          <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => {
+                              setFormData({
+                                ...formData,
+                                customCategories: {
+                                  ...formData.customCategories,
+                                  [code]: e.target.value,
+                                },
+                              });
+                            }}
+                            placeholder={t('tournaments.categoryNamePlaceholder')}
+                            className="w-full px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newCategories = { ...formData.customCategories };
+                            delete newCategories[code];
+                            setFormData({
+                              ...formData,
+                              customCategories: newCategories,
+                            });
+                          }}
+                          className="px-3 py-2 text-sm font-poppins font-semibold rounded-lg border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                          title={t('tournaments.removeCategory')}
+                        >
+                          {t('tournaments.removeCategory')}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add New Category */}
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newCode = `category${Date.now()}`;
+                        setFormData({
+                          ...formData,
+                          customCategories: {
+                            ...formData.customCategories,
+                            [newCode]: '',
+                          },
+                        });
+                      }}
+                      className="px-4 py-2 text-sm font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors"
+                    >
+                      {t('tournaments.addCategory')}
+                    </button>
+                  </div>
+                </div>
+
                 <div className="flex justify-end space-x-4 pt-4 border-t border-border">
                   <button
                     type="button"
@@ -1526,13 +1640,20 @@ export default function AdminTournamentsContent() {
                 {/* Demo Participants Section */}
                 <div className="border border-border rounded-lg p-4 space-y-4">
                   <h4 className="text-lg font-poppins font-semibold text-text">
-                    {t('tournaments.bracket.demoParticipantsCategoryDistribution')}
+                    {t('tournaments.demoParticipantsCategoryDistribution')}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {(['male1', 'male2', 'female1', 'female2', 'mixed1', 'mixed2'] as const).map((category) => (
+                    {Object.entries(selectedTournamentForParticipants.customCategories || {
+                      male1: 'Male 1',
+                      male2: 'Male 2',
+                      female1: 'Female 1',
+                      female2: 'Female 2',
+                      mixed1: 'Mixed 1',
+                      mixed2: 'Mixed 2',
+                    }).map(([category, name]) => (
                       <div key={category}>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {tTournaments(`categories.${category}`)}
+                          {name}
                         </label>
                         <input
                           type="number"
@@ -1552,7 +1673,7 @@ export default function AdminTournamentsContent() {
                     ))}
                   </div>
                   <p className="text-xs text-text-tertiary">
-                    {t('tournaments.bracket.demoParticipantsCategoryHint')}
+                    {t('tournaments.demoParticipantsCategoryHint')}
                   </p>
                   <div className="flex gap-3">
                     <button
@@ -1631,12 +1752,18 @@ export default function AdminTournamentsContent() {
                                   }}
                                   className="px-3 py-1 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
                                 >
-                                  <option value="male1">{tTournaments('categories.male1')}</option>
-                                  <option value="male2">{tTournaments('categories.male2')}</option>
-                                  <option value="female1">{tTournaments('categories.female1')}</option>
-                                  <option value="female2">{tTournaments('categories.female2')}</option>
-                                  <option value="mixed1">{tTournaments('categories.mixed1')}</option>
-                                  <option value="mixed2">{tTournaments('categories.mixed2')}</option>
+                                  {Object.entries(selectedTournamentForParticipants.customCategories || {
+                                    male1: 'Male 1',
+                                    male2: 'Male 2',
+                                    female1: 'Female 1',
+                                    female2: 'Female 2',
+                                    mixed1: 'Mixed 1',
+                                    mixed2: 'Mixed 2',
+                                  }).map(([code, name]) => (
+                                    <option key={code} value={code}>
+                                      {name}
+                                    </option>
+                                  ))}
                                 </select>
                               </td>
                               <td className="px-4 py-3 text-sm text-text">

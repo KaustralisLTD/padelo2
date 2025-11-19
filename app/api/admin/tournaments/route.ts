@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
       status = 'draft',
       demoParticipantsCount,
       registrationSettings,
+      customCategories,
     } = body;
 
     if (!name || !startDate || !endDate) {
@@ -106,6 +107,7 @@ export async function POST(request: NextRequest) {
       status,
       demoParticipantsCount: normalizedDemoCount,
       registrationSettings,
+      customCategories,
     });
 
     return NextResponse.json({ tournament }, { status: 201 });

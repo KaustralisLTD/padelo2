@@ -853,7 +853,19 @@
       "participantCategoryUpdated": "Категория участника успешно обновлена.",
       "participantCategoryUpdateError": "Не удалось обновить категорию участника.",
       "demoParticipantsNoCategory": "Укажите хотя бы одну категорию с участниками.",
-      "demoParticipantsCategoryOdd": "Категория {category} должна содержать четное количество участников."
+      "demoParticipantsCategoryOdd": "Категория {category} должна содержать четное количество участников.",
+      "demoParticipantsCategoryDistribution": "Распределение по категориям",
+      "demoParticipantsCategoryHint": "Введите четное количество участников для каждой категории. 2 участника = 1 пара.",
+      "categories": "Категории",
+      "categoriesManagement": "Управление категориями",
+      "categoriesDescription": "Управляйте категориями турнира. Вы можете добавлять, переименовывать или удалять категории.",
+      "addCategory": "Добавить категорию",
+      "categoryName": "Название категории",
+      "categoryNamePlaceholder": "например, Мужская 3, Женская А",
+      "removeCategory": "Удалить категорию",
+      "removeCategoryConfirm": "Вы уверены, что хотите удалить эту категорию? Это также удалит всех участников из этой категории.",
+      "defaultCategories": "Категории по умолчанию",
+      "customCategories": "Пользовательские категории"
     },
     "staff": {
       "title": "Управление сотрудниками",

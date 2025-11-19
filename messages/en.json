@@ -847,7 +847,19 @@
       "participantCategoryUpdated": "Participant category updated successfully.",
       "participantCategoryUpdateError": "Failed to update participant category.",
       "demoParticipantsNoCategory": "Please specify at least one category with participants.",
-      "demoParticipantsCategoryOdd": "Category {category} must have an even number of participants."
+      "demoParticipantsCategoryOdd": "Category {category} must have an even number of participants.",
+      "demoParticipantsCategoryDistribution": "Distribution by Categories",
+      "demoParticipantsCategoryHint": "Enter an even number of participants for each category. 2 participants = 1 pair.",
+      "categories": "Categories",
+      "categoriesManagement": "Categories Management",
+      "categoriesDescription": "Manage tournament categories. You can add, rename, or remove categories.",
+      "addCategory": "Add Category",
+      "categoryName": "Category Name",
+      "categoryNamePlaceholder": "e.g., Male 3, Female A",
+      "removeCategory": "Remove Category",
+      "removeCategoryConfirm": "Are you sure you want to remove this category? This will also remove all participants from this category.",
+      "defaultCategories": "Default Categories",
+      "customCategories": "Custom Categories"
     },
     "staff": {
       "title": "Manage Staff",

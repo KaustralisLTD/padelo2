@@ -400,6 +400,17 @@ export async function initDatabase() {
     }
   }
 
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      ADD COLUMN custom_categories JSON DEFAULT NULL COMMENT "Custom category names: {code: name}"
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
   // Обновляем статусы, которые могли сохраниться как пустые строки после невалидного значения
   await pool.execute(`
     UPDATE tournaments

@@ -34,6 +34,7 @@ export interface Tournament {
   registrationsTotal: number;
   registrationsConfirmed: number;
   demoParticipantsCount?: number | null;
+  customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
 }
 
 export interface TournamentGroup {
@@ -169,7 +170,8 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         registrationSettings: parseRegistrationSettings(row.registration_settings),
         registrationsTotal: counts.total,
         registrationsConfirmed: counts.confirmed,
-      demoParticipantsCount: row.demo_participants_count ?? null,
+        demoParticipantsCount: row.demo_participants_count ?? null,
+        customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
       };
     });
   } catch (error) {
@@ -249,6 +251,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       registrationsTotal: Number(statsRow.totalRegistrations) || 0,
       registrationsConfirmed: Number(statsRow.confirmedRegistrations) || 0,
       demoParticipantsCount: row.demo_participants_count ?? null,
+      customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
@@ -269,8 +272,8 @@ export async function createTournament(
   const pool = getDbPool();
   const registrationSettings = normalizeRegistrationSettings(tournament.registrationSettings);
   const [result] = await pool.execute(
-    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings, custom_categories)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       tournament.name,
       tournament.description || null,
@@ -287,6 +290,7 @@ export async function createTournament(
       tournament.status,
       tournament.demoParticipantsCount || null,
       JSON.stringify(registrationSettings),
+      tournament.customCategories ? JSON.stringify(tournament.customCategories) : null,
     ]
   ) as any;
   
@@ -363,6 +367,10 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if (tournament.registrationSettings !== undefined) {
     updates.push('registration_settings = ?');
     values.push(JSON.stringify(normalizeRegistrationSettings(tournament.registrationSettings)));
+  }
+  if (tournament.customCategories !== undefined) {
+    updates.push('custom_categories = ?');
+    values.push(tournament.customCategories ? JSON.stringify(tournament.customCategories) : null);
   }
   
   if (updates.length === 0) {
