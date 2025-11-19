@@ -33,6 +33,7 @@ export interface Tournament {
   registrationSettings: TournamentRegistrationSettings;
   registrationsTotal: number;
   registrationsConfirmed: number;
+  demoParticipantsCount?: number | null;
 }
 
 export interface TournamentGroup {
@@ -168,6 +169,7 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         registrationSettings: parseRegistrationSettings(row.registration_settings),
         registrationsTotal: counts.total,
         registrationsConfirmed: counts.confirmed,
+      demoParticipantsCount: row.demo_participants_count ?? null,
       };
     });
   } catch (error) {
@@ -246,6 +248,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       registrationSettings: parseRegistrationSettings(row.registration_settings),
       registrationsTotal: Number(statsRow.totalRegistrations) || 0,
       registrationsConfirmed: Number(statsRow.confirmedRegistrations) || 0,
+      demoParticipantsCount: row.demo_participants_count ?? null,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
@@ -266,8 +269,8 @@ export async function createTournament(
   const pool = getDbPool();
   const registrationSettings = normalizeRegistrationSettings(tournament.registrationSettings);
   const [result] = await pool.execute(
-    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, registration_settings)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       tournament.name,
       tournament.description || null,
@@ -282,6 +285,7 @@ export async function createTournament(
       tournament.priceSingleCategory || null,
       tournament.priceDoubleCategory || null,
       tournament.status,
+      tournament.demoParticipantsCount || null,
       JSON.stringify(registrationSettings),
     ]
   ) as any;
@@ -351,6 +355,10 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if (tournament.status !== undefined) {
     updates.push('status = ?');
     values.push(tournament.status);
+  }
+  if (tournament.demoParticipantsCount !== undefined) {
+    updates.push('demo_participants_count = ?');
+    values.push(tournament.demoParticipantsCount || null);
   }
   if (tournament.registrationSettings !== undefined) {
     updates.push('registration_settings = ?');

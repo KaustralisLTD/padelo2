@@ -10,6 +10,19 @@ import {
 
 export const dynamic = 'force-dynamic';
 
+const parseDemoParticipantsCount = (value: unknown): number | null => {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : null;
+  }
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (trimmed === '') return null;
+    const parsed = parseInt(trimmed, 10);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+};
+
 // GET - получить все турниры
 export async function GET(request: NextRequest) {
   try {
@@ -64,6 +77,7 @@ export async function POST(request: NextRequest) {
       priceSingleCategory,
       priceDoubleCategory,
       status = 'draft',
+      demoParticipantsCount,
       registrationSettings,
     } = body;
 
@@ -73,6 +87,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    const normalizedDemoCount = parseDemoParticipantsCount(demoParticipantsCount);
 
     const tournament = await createTournament({
       name,
@@ -88,6 +104,7 @@ export async function POST(request: NextRequest) {
       priceSingleCategory,
       priceDoubleCategory,
       status,
+      demoParticipantsCount: normalizedDemoCount,
       registrationSettings,
     });
 
@@ -114,13 +131,19 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, ...updates } = body;
+    const { id, demoParticipantsCount, ...updates } = body;
 
     if (!id) {
       return NextResponse.json({ error: 'Tournament ID is required' }, { status: 400 });
     }
 
-    const tournament = await updateTournament(id, updates);
+    const hasDemoCountField = Object.prototype.hasOwnProperty.call(body, 'demoParticipantsCount');
+    const normalizedDemoCount = hasDemoCountField ? parseDemoParticipantsCount(demoParticipantsCount) : undefined;
+
+    const tournament = await updateTournament(id, {
+      ...updates,
+      ...(hasDemoCountField ? { demoParticipantsCount: normalizedDemoCount ?? null } : {}),
+    });
     return NextResponse.json({ tournament });
   } catch (error: any) {
     console.error('Error updating tournament:', error);

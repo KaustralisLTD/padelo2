@@ -355,6 +355,7 @@ export async function initDatabase() {
       location VARCHAR(255) DEFAULT NULL,
       max_participants INT(11) DEFAULT NULL,
       status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived') NOT NULL DEFAULT 'draft',
+      demo_participants_count INT DEFAULT NULL,
       registration_settings JSON DEFAULT NULL,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -364,7 +365,7 @@ export async function initDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  // Ensure 'demo' status exists in tournaments.status ENUM
+  // Ensure 'demo' and 'archived' statuses exist in tournaments.status ENUM
   try {
     await pool.execute(`
       ALTER TABLE tournaments
@@ -373,6 +374,17 @@ export async function initDatabase() {
   } catch (e: any) {
     // MySQL returns errno 1265 if enum already updated; ignore in that case
     if (!e.message?.toLowerCase().includes('enum')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      ADD COLUMN demo_participants_count INT DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
       throw e;
     }
   }

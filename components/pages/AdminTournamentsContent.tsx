@@ -38,12 +38,14 @@ interface Tournament {
   registrationsTotal?: number;
   registrationsConfirmed?: number;
   registrationSettings?: TournamentRegistrationSettings;
+  demoParticipantsCount?: number | null;
 }
 
 export default function AdminTournamentsContent() {
   const t = useTranslations('Admin');
   const locale = useLocale();
   const router = useRouter();
+  const [generatingDemoParticipants, setGeneratingDemoParticipants] = useState(false);
 
   const createDefaultFormData = () => ({
     name: '',
@@ -63,6 +65,17 @@ export default function AdminTournamentsContent() {
     demoParticipantsCount: '',
     registrationSettings: getDefaultRegistrationSettings(),
   });
+
+  const parseDemoParticipantsInput = (value: string | number | null | undefined) => {
+    if (value === null || value === undefined) return null;
+    const numericValue =
+      typeof value === 'number' ? value : Number.parseInt(String(value).trim(), 10);
+    if (!Number.isFinite(numericValue)) return null;
+    return numericValue;
+  };
+
+  const isValidDemoCount = (count: number | null) =>
+    typeof count === 'number' && count >= 2 && count % 2 === 0;
 
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
@@ -138,12 +151,32 @@ export default function AdminTournamentsContent() {
     }
   };
 
+  const createDemoParticipantsOnServer = async (tournamentId: number, count: number, authToken: string) => {
+    const response = await fetch(`/api/tournament/${tournamentId}/demo-participants`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ count }),
+    });
+
+    if (!response.ok) {
+      const demoError = await response.json().catch(() => ({ error: 'Failed to create demo participants' }));
+      throw new Error(demoError.error || 'Failed to create demo participants');
+    }
+
+    return response.json();
+  };
+
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
 
     if (!token) return;
+
+    const demoCountValue = parseDemoParticipantsInput(formData.demoParticipantsCount);
 
     try {
       const response = await fetch('/api/admin/tournaments', {
@@ -168,6 +201,7 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: formData.priceSingleCategory ? parseFloat(formData.priceSingleCategory) : undefined,
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
+          demoParticipantsCount: demoCountValue,
           registrationSettings: formData.registrationSettings,
         }),
       });
@@ -178,33 +212,31 @@ export default function AdminTournamentsContent() {
         const createdTournament = data.tournament;
         
         // Если это demo турнир и указано количество участников, создаем демо-участников
-        if (formData.status === 'demo' && formData.demoParticipantsCount) {
-          const participantsCount = parseInt(formData.demoParticipantsCount);
-          if (participantsCount >= 2 && participantsCount % 2 === 0) {
-            try {
-              const demoResponse = await fetch(`/api/tournament/${createdTournament.id}/demo-participants`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  count: participantsCount,
-                }),
-              });
-              
-              if (demoResponse.ok) {
-                setSuccess('Tournament created successfully with demo participants');
-                // Перенаправляем на страницу Bracket
-                router.push(`/${locale}/tournament/${createdTournament.id}/bracket`);
-              } else {
-                const demoError = await demoResponse.json();
-                setError(demoError.error || 'Failed to create demo participants');
-              }
-            } catch (demoErr) {
-              console.error('[AdminTournamentsContent] Error creating demo participants:', demoErr);
-              setError('Failed to create demo participants');
+        if (formData.status === 'demo' && isValidDemoCount(demoCountValue)) {
+          const participantsCount = demoCountValue!;
+          try {
+            const demoResponse = await fetch(`/api/tournament/${createdTournament.id}/demo-participants`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                count: participantsCount,
+              }),
+            });
+            
+            if (demoResponse.ok) {
+              setSuccess('Tournament created successfully with demo participants');
+              // Перенаправляем на страницу Bracket
+              router.push(`/${locale}/tournament/${createdTournament.id}/bracket`);
+            } else {
+              const demoError = await demoResponse.json();
+              setError(demoError.error || 'Failed to create demo participants');
             }
+          } catch (demoErr) {
+            console.error('[AdminTournamentsContent] Error creating demo participants:', demoErr);
+            setError('Failed to create demo participants');
           }
         } else {
           setSuccess('Tournament created successfully');
@@ -228,6 +260,8 @@ export default function AdminTournamentsContent() {
     setSuccess(null);
 
     if (!token || !editingTournament) return;
+
+    const demoCountValue = parseDemoParticipantsInput(formData.demoParticipantsCount);
 
     try {
       const response = await fetch('/api/admin/tournaments', {
@@ -253,6 +287,7 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: formData.priceSingleCategory ? parseFloat(formData.priceSingleCategory) : undefined,
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
+          demoParticipantsCount: demoCountValue,
           registrationSettings: formData.registrationSettings,
         }),
       });
@@ -269,6 +304,45 @@ export default function AdminTournamentsContent() {
       }
     } catch (err) {
       setError('Failed to update tournament');
+    }
+  };
+
+  const handleGenerateDemoParticipants = async () => {
+    if (!token || !editingTournament) return;
+    const parsedCount = parseDemoParticipantsInput(formData.demoParticipantsCount);
+    if (!isValidDemoCount(parsedCount)) {
+      setError(t('tournaments.demoParticipantsInvalid'));
+      return;
+    }
+
+    try {
+      setError(null);
+      setSuccess(null);
+      setGeneratingDemoParticipants(true);
+
+      const response = await fetch(`/api/tournament/${editingTournament.id}/demo-participants`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          count: parsedCount,
+        }),
+      });
+
+      if (response.ok) {
+        setSuccess(t('tournaments.demoParticipantsGenerateSuccess'));
+        fetchTournaments();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        const data = await response.json().catch(() => ({}));
+        setError(data.error || t('tournaments.demoParticipantsGenerateError'));
+      }
+    } catch (err) {
+      setError(t('tournaments.demoParticipantsGenerateError'));
+    } finally {
+      setGeneratingDemoParticipants(false);
     }
   };
 
@@ -325,6 +399,7 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: tournament.priceSingleCategory || undefined,
           priceDoubleCategory: tournament.priceDoubleCategory || undefined,
           status: 'draft', // Всегда Draft для копии
+          demoParticipantsCount: tournament.demoParticipantsCount || null,
           registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
         }),
       });
@@ -513,7 +588,7 @@ export default function AdminTournamentsContent() {
       priceSingleCategory: tournament.priceSingleCategory?.toString() || '',
       priceDoubleCategory: tournament.priceDoubleCategory?.toString() || '',
       status: tournament.status,
-      demoParticipantsCount: '',
+      demoParticipantsCount: tournament.demoParticipantsCount?.toString() || '',
       registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
     });
     setShowCreateModal(true);
@@ -547,18 +622,7 @@ export default function AdminTournamentsContent() {
   };
 
   const getStatusLabel = (status: Tournament['status'] | string | undefined | null): string => {
-    // Детальное логирование входа в функцию
-    console.log('[getStatusLabel] Called with:', {
-      status,
-      type: typeof status,
-      isUndefined: status === undefined,
-      isNull: status === null,
-      isEmpty: status === '',
-      stringValue: String(status),
-    });
-    
     if (!status) {
-      console.warn('[getStatusLabel] Status is empty:', { status, type: typeof status });
       return 'Unknown';
     }
     
@@ -576,18 +640,7 @@ export default function AdminTournamentsContent() {
       archived: 'Archived',
     };
     
-    const label = labels[normalizedStatus] || labels[status as string] || String(status);
-    
-    // Логирование результата
-    console.log('[getStatusLabel] Result:', {
-      originalStatus: status,
-      normalizedStatus,
-      label,
-      foundInLabels: normalizedStatus in labels,
-      allLabels: Object.keys(labels),
-    });
-    
-    return label;
+    return labels[normalizedStatus] || labels[status as string] || String(status);
   };
 
   if (loading) {
@@ -721,30 +774,7 @@ export default function AdminTournamentsContent() {
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
                         >
-                          {(() => {
-                            // Детальное логирование для всех турниров
-                            console.log('[Status Display] Tournament status:', { 
-                              tournamentId: tournament.id,
-                              tournamentName: tournament.name,
-                              status: tournament.status,
-                              statusType: typeof tournament.status,
-                              statusValue: JSON.stringify(tournament.status),
-                            });
-                            
-                            const label = getStatusLabel(tournament.status);
-                            
-                            // Дополнительное логирование если label = Unknown
-                            if (label === 'Unknown') {
-                              console.error('[Status Display] Unknown status detected!', {
-                                tournamentId: tournament.id,
-                                tournamentName: tournament.name,
-                                originalStatus: tournament.status,
-                                statusType: typeof tournament.status,
-                              });
-                            }
-                            
-                            return label;
-                          })()}
+                          {getStatusLabel(tournament.status)}
                         </span>
                       </td>
                       <td className="px-6 py-4">
@@ -1353,6 +1383,23 @@ export default function AdminTournamentsContent() {
                       <p className="text-xs text-text-tertiary font-poppins mt-1">
                         {t('tournaments.demoParticipantsCountHint')}
                       </p>
+                      {editingTournament && editingTournament.status === 'demo' && (
+                        <div className="flex flex-wrap items-center gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={handleGenerateDemoParticipants}
+                            disabled={generatingDemoParticipants}
+                            className="px-4 py-2 text-xs font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                          >
+                            {generatingDemoParticipants
+                              ? t('tournaments.demoParticipantsGenerating')
+                              : t('tournaments.demoParticipantsGenerate')}
+                          </button>
+                          <p className="text-xs text-text-tertiary">
+                            {t('tournaments.demoParticipantsGenerateHint')}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

@@ -637,7 +637,13 @@
       "copy": "Copier",
       "demoParticipantsCount": "Nombre de Participants Démo",
       "demoParticipantsCountPlaceholder": "Entrez un nombre pair (2 participants = 1 paire)",
-      "demoParticipantsCountHint": "Entrez un nombre pair de participants. 2 participants = 1 paire. 2 paires participent à un jeu."
+      "demoParticipantsCountHint": "Entrez un nombre pair de participants. 2 participants = 1 paire. 2 paires participent à un jeu.",
+      "demoParticipantsGenerate": "Générer des participants démo",
+      "demoParticipantsGenerateHint": "Crée automatiquement des inscriptions de test.",
+      "demoParticipantsGenerating": "Génération...",
+      "demoParticipantsGenerateSuccess": "Participants démo créés avec succès.",
+      "demoParticipantsGenerateError": "Échec de la création des participants démo.",
+      "demoParticipantsInvalid": "Saisissez un nombre pair de participants (minimum 2)."
     },
     "staff": {
       "assignAccess": "Attribuer l'Accès",

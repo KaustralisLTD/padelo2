@@ -641,7 +641,13 @@
       "copy": "نسخ",
       "demoParticipantsCount": "عدد المشاركين التجريبيين",
       "demoParticipantsCountPlaceholder": "أدخل رقماً زوجياً (2 مشارك = 1 زوج)",
-      "demoParticipantsCountHint": "أدخل عدداً زوجياً من المشاركين. 2 مشارك = 1 زوج. زوجان يشاركان في لعبة واحدة."
+      "demoParticipantsCountHint": "أدخل عدداً زوجياً من المشاركين. 2 مشارك = 1 زوج. زوجان يشاركان في لعبة واحدة.",
+      "demoParticipantsGenerate": "إنشاء مشاركين تجريبيين",
+      "demoParticipantsGenerateHint": "يقوم بإنشاء تسجيلات اختبار تلقائياً.",
+      "demoParticipantsGenerating": "جارٍ الإنشاء...",
+      "demoParticipantsGenerateSuccess": "تم إنشاء المشاركين التجريبيين بنجاح.",
+      "demoParticipantsGenerateError": "فشل إنشاء المشاركين التجريبيين.",
+      "demoParticipantsInvalid": "أدخل عدداً زوجياً من المشاركين (بحد أدنى 2)."
     },
     "staff": {
       "assignAccess": "تعيين الوصول",

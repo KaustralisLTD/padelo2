@@ -636,7 +636,13 @@
       "copy": "Kopiera",
       "demoParticipantsCount": "Antal Demo-deltagare",
       "demoParticipantsCountPlaceholder": "Ange ett jämnt tal (2 deltagare = 1 par)",
-      "demoParticipantsCountHint": "Ange ett jämnt antal deltagare. 2 deltagare = 1 par. 2 par deltar i ett spel."
+      "demoParticipantsCountHint": "Ange ett jämnt antal deltagare. 2 deltagare = 1 par. 2 par deltar i ett spel.",
+      "demoParticipantsGenerate": "Skapa demodeltagare",
+      "demoParticipantsGenerateHint": "Skapar automatiskt testregistreringar.",
+      "demoParticipantsGenerating": "Skapar...",
+      "demoParticipantsGenerateSuccess": "Demo-deltagare skapades.",
+      "demoParticipantsGenerateError": "Det gick inte att skapa demodeltagare.",
+      "demoParticipantsInvalid": "Ange ett jämnt antal deltagare (minst 2)."
     },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",

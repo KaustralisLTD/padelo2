@@ -636,7 +636,13 @@
       "copy": "Kopier",
       "demoParticipantsCount": "Antal Demo-deltagere",
       "demoParticipantsCountPlaceholder": "Indtast et lige tal (2 deltagere = 1 par)",
-      "demoParticipantsCountHint": "Indtast et lige antal deltagere. 2 deltagere = 1 par. 2 par deltager i et spil."
+      "demoParticipantsCountHint": "Indtast et lige antal deltagere. 2 deltagere = 1 par. 2 par deltager i et spil.",
+      "demoParticipantsGenerate": "Opret demo-deltagere",
+      "demoParticipantsGenerateHint": "Opretter automatisk testtilmeldinger.",
+      "demoParticipantsGenerating": "Opretter...",
+      "demoParticipantsGenerateSuccess": "Demo-deltagere oprettet.",
+      "demoParticipantsGenerateError": "Kunne ikke oprette demo-deltagere.",
+      "demoParticipantsInvalid": "Indtast et lige antal deltagere (minimum 2)."
     },
     "staff": {
       "assignAccess": "Tildel Adgang",

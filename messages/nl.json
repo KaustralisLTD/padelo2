@@ -609,7 +609,13 @@
       "copy": "Kopiëren",
       "demoParticipantsCount": "Aantal Demo-deelnemers",
       "demoParticipantsCountPlaceholder": "Voer een even getal in (2 deelnemers = 1 paar)",
-      "demoParticipantsCountHint": "Voer een even aantal deelnemers in. 2 deelnemers = 1 paar. 2 paren nemen deel aan één spel."
+      "demoParticipantsCountHint": "Voer een even aantal deelnemers in. 2 deelnemers = 1 paar. 2 paren nemen deel aan één spel.",
+      "demoParticipantsGenerate": "Demo-deelnemers genereren",
+      "demoParticipantsGenerateHint": "Maakt automatisch testinschrijvingen aan.",
+      "demoParticipantsGenerating": "Bezig met genereren...",
+      "demoParticipantsGenerateSuccess": "Demo-deelnemers succesvol aangemaakt.",
+      "demoParticipantsGenerateError": "Het is niet gelukt om demo-deelnemers aan te maken.",
+      "demoParticipantsInvalid": "Voer een even aantal deelnemers in (minimaal 2)."
     },
     "staff": {
       "assignAccess": "Toegang Toewijzen",

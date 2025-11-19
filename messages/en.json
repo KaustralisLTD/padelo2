@@ -818,7 +818,13 @@
       "copy": "Copy",
       "demoParticipantsCount": "Number of Demo Participants",
       "demoParticipantsCountPlaceholder": "Enter an even number (2 participants = 1 pair)",
-      "demoParticipantsCountHint": "Enter an even number of participants. 2 participants = 1 pair. 2 pairs participate in one game."
+      "demoParticipantsCountHint": "Enter an even number of participants. 2 participants = 1 pair. 2 pairs participate in one game.",
+      "demoParticipantsGenerate": "Generate demo participants",
+      "demoParticipantsGenerateHint": "Creates placeholder registrations for quick testing.",
+      "demoParticipantsGenerating": "Generating...",
+      "demoParticipantsGenerateSuccess": "Demo participants created successfully.",
+      "demoParticipantsGenerateError": "Failed to create demo participants.",
+      "demoParticipantsInvalid": "Enter an even number of participants (minimum 2)."
     },
     "staff": {
       "title": "Manage Staff",

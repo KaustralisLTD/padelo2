@@ -813,7 +813,13 @@
       "copy": "Copiar",
       "demoParticipantsCount": "Nombre de Participants Demo",
       "demoParticipantsCountPlaceholder": "Introduïu un nombre parell (2 participants = 1 parella)",
-      "demoParticipantsCountHint": "Introduïu un nombre parell de participants. 2 participants = 1 parella. 2 parelles participen en un joc."
+      "demoParticipantsCountHint": "Introduïu un nombre parell de participants. 2 participants = 1 parella. 2 parelles participen en un joc.",
+      "demoParticipantsGenerate": "Generar participants demo",
+      "demoParticipantsGenerateHint": "Crea automàticament registres de prova.",
+      "demoParticipantsGenerating": "Generant...",
+      "demoParticipantsGenerateSuccess": "Participants demo creats correctament.",
+      "demoParticipantsGenerateError": "No s'han pogut crear els participants demo.",
+      "demoParticipantsInvalid": "Introduïu un nombre parell de participants (mínim 2)."
     },
     "staff": {
       "title": "Manage Staff",

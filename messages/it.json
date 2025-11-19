@@ -632,7 +632,13 @@
       "copy": "Copia",
       "demoParticipantsCount": "Numero di Partecipanti Demo",
       "demoParticipantsCountPlaceholder": "Inserisci un numero pari (2 partecipanti = 1 coppia)",
-      "demoParticipantsCountHint": "Inserisci un numero pari di partecipanti. 2 partecipanti = 1 coppia. 2 coppie partecipano a una partita."
+      "demoParticipantsCountHint": "Inserisci un numero pari di partecipanti. 2 partecipanti = 1 coppia. 2 coppie partecipano a una partita.",
+      "demoParticipantsGenerate": "Genera partecipanti demo",
+      "demoParticipantsGenerateHint": "Crea automaticamente registrazioni di prova.",
+      "demoParticipantsGenerating": "Generazione...",
+      "demoParticipantsGenerateSuccess": "Partecipanti demo creati con successo.",
+      "demoParticipantsGenerateError": "Impossibile creare i partecipanti demo.",
+      "demoParticipantsInvalid": "Inserisci un numero pari di partecipanti (minimo 2)."
     },
     "staff": {
       "assignAccess": "Assegna Accesso",

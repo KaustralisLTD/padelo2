@@ -620,7 +620,13 @@
       "copy": "复制",
       "demoParticipantsCount": "演示参与者数量",
       "demoParticipantsCountPlaceholder": "输入偶数（2个参与者 = 1对）",
-      "demoParticipantsCountHint": "输入偶数个参与者。2个参与者 = 1对。2对参与一场比赛。"
+      "demoParticipantsCountHint": "输入偶数个参与者。2个参与者 = 1对。2对参与一场比赛。",
+      "demoParticipantsGenerate": "生成演示参与者",
+      "demoParticipantsGenerateHint": "自动创建测试报名。",
+      "demoParticipantsGenerating": "正在生成...",
+      "demoParticipantsGenerateSuccess": "演示参与者创建成功。",
+      "demoParticipantsGenerateError": "创建演示参与者失败。",
+      "demoParticipantsInvalid": "请输入偶数的参与者数量（至少 2）。"
     },
     "staff": {
       "assignAccess": "分配访问权限",

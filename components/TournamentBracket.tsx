@@ -30,6 +30,8 @@ interface Group {
   isCompleted?: boolean;
 }
 
+const DEFAULT_DEMO_PARTICIPANTS_COUNT = 120;
+
 interface TournamentBracketProps {
   tournamentId: number;
 }
@@ -88,6 +90,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   const [savingResult, setSavingResult] = useState(false);
   const [isKnockoutMatch, setIsKnockoutMatch] = useState(false);
   const [groupWinners, setGroupWinners] = useState<Record<number, number[]>>({}); // groupId -> winner pair IDs
+  const [demoParticipantsCount, setDemoParticipantsCount] = useState<number | null>(null);
   const [demoParticipantsInput, setDemoParticipantsInput] = useState('120');
   const [creatingDemoParticipants, setCreatingDemoParticipants] = useState(false);
   const [demoParticipantsMessage, setDemoParticipantsMessage] = useState<string | null>(null);
@@ -98,6 +101,12 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
     fetchBracket();
   }, [tournamentId]);
 
+  useEffect(() => {
+    if (demoParticipantsCount && demoParticipantsCount > 0) {
+      setDemoParticipantsInput(String(demoParticipantsCount));
+    }
+  }, [demoParticipantsCount]);
+
   // Автоматическая генерация таблицы для demo турниров с участниками
   useEffect(() => {
     if (
@@ -105,6 +114,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       tournamentStatus !== 'demo' ||
       loading ||
       generatingBracket ||
+      creatingDemoParticipants ||
       autoGenerationAttempted
     ) {
       return;
@@ -113,10 +123,10 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
     if (Object.keys(bracket).length === 0) {
       setAutoGenerationAttempted(true);
       console.log('[TournamentBracket] Auto-generating bracket for demo tournament');
-      generateBracketForDemo(true);
+      generateBracketForDemo({ auto: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin, tournamentStatus, bracket, loading, generatingBracket, autoGenerationAttempted]);
+  }, [isAdmin, tournamentStatus, bracket, loading, generatingBracket, creatingDemoParticipants, autoGenerationAttempted]);
 
   useEffect(() => {
     if (selectedCategory && bracket[selectedCategory]) {
@@ -195,9 +205,9 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       const tournamentResponse = await fetch(`/api/tournament/${tournamentId}`);
       if (tournamentResponse.ok) {
         const tournamentData = await tournamentResponse.json();
-        const status = tournamentData.tournament?.status || null;
-        setTournamentStatus(status);
-        console.log('[TournamentBracket] Tournament status:', status);
+        const info = tournamentData.tournament;
+        setTournamentStatus(info?.status || null);
+        setDemoParticipantsCount(info?.demoParticipantsCount ?? null);
       }
 
       const response = await fetch(`/api/tournament/${tournamentId}/bracket`);
@@ -218,9 +228,11 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
     }
   };
 
-  const generateBracketForDemo = async (isAuto = false): Promise<boolean> => {
+  const generateBracketForDemo = async ({
+    auto = false,
+    allowEnsureParticipants = true,
+  }: { auto?: boolean; allowEnsureParticipants?: boolean } = {}): Promise<boolean> => {
     if (!isAdmin || !tournamentStatus || tournamentStatus !== 'demo') {
-      console.log('[generateBracketForDemo] Not allowed or not a demo tournament, skipping');
       return false;
     }
     
@@ -228,12 +240,12 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
     try {
       const token = localStorage.getItem('auth_token');
       if (!token) {
-        console.log('[generateBracketForDemo] No auth token');
-        setGeneratingBracket(false);
+        if (!auto) {
+          alert(t('demoOnlyAdminHint'));
+        }
         return false;
       }
       
-      console.log('[generateBracketForDemo] Calling generate-bracket API...');
       const response = await fetch(`/api/tournament/${tournamentId}/generate-bracket`, {
         method: 'POST',
         headers: {
@@ -250,17 +262,30 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
         return true;
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        console.log('[generateBracketForDemo] Failed to generate bracket:', errorData);
         const message = errorData.error || t('demoParticipantsMissing');
+        console.log('[generateBracketForDemo] Failed to generate bracket:', errorData);
         setDemoParticipantsMessage(message);
-        if (!isAuto) {
+
+        const shouldEnsure =
+          allowEnsureParticipants &&
+          typeof message === 'string' &&
+          message.toLowerCase().includes('no confirmed registrations');
+
+        if (shouldEnsure) {
+          const ensured = await ensureDemoParticipants();
+          if (ensured) {
+            return await generateBracketForDemo({ auto, allowEnsureParticipants: false });
+          }
+        }
+
+        if (!auto) {
           alert(message);
         }
         return false;
       }
     } catch (error) {
       console.error('[generateBracketForDemo] Error generating bracket:', error);
-      if (!isAuto) {
+      if (!auto) {
         alert(t('errorGenerating'));
       }
       setDemoParticipantsMessage(t('demoParticipantsError'));
@@ -421,6 +446,8 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       if (response.ok) {
         const data = await response.json();
         const created = data.registrationsCreated ?? count;
+        setDemoParticipantsCount(count);
+        setDemoParticipantsInput(String(count));
         setDemoParticipantsMessage(
           t('demoParticipantsSuccess', { count: created })
         );
@@ -436,6 +463,60 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       console.error('[createDemoParticipants] Error:', error);
       alert(t('demoParticipantsError'));
       setDemoParticipantsMessage(t('demoParticipantsError'));
+    } finally {
+      setCreatingDemoParticipants(false);
+    }
+  };
+
+  const ensureDemoParticipants = async (): Promise<boolean> => {
+    if (!isAdmin) {
+      return false;
+    }
+
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      return false;
+    }
+
+    let count =
+      (typeof demoParticipantsCount === 'number' && demoParticipantsCount >= 2
+        ? demoParticipantsCount
+        : Number.parseInt(demoParticipantsInput, 10)) || DEFAULT_DEMO_PARTICIPANTS_COUNT;
+
+    if (!Number.isFinite(count) || count < 2) {
+      count = DEFAULT_DEMO_PARTICIPANTS_COUNT;
+    }
+    if (count % 2 !== 0) {
+      count += 1;
+    }
+
+    setCreatingDemoParticipants(true);
+    try {
+      const response = await fetch(`/api/tournament/${tournamentId}/demo-participants`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ count }),
+      });
+
+      if (response.ok) {
+        setDemoParticipantsCount(count);
+        setDemoParticipantsInput(String(count));
+        setDemoParticipantsMessage(null);
+        setAutoGenerationAttempted(false);
+        return true;
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        const message = errorData.error || t('demoParticipantsError');
+        setDemoParticipantsMessage(message);
+        return false;
+      }
+    } catch (error) {
+      console.error('[ensureDemoParticipants] Error:', error);
+      setDemoParticipantsMessage(t('demoParticipantsError'));
+      return false;
     } finally {
       setCreatingDemoParticipants(false);
     }

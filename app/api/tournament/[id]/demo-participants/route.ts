@@ -16,7 +16,7 @@ export async function POST(
     }
 
     const session = await getSession(token);
-    if (session?.role !== 'superadmin') {
+    if (session?.role !== 'superadmin' && session?.role !== 'staff') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

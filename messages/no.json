@@ -636,7 +636,13 @@
       "copy": "Kopier",
       "demoParticipantsCount": "Antall Demo-deltakere",
       "demoParticipantsCountPlaceholder": "Skriv inn et partall (2 deltakere = 1 par)",
-      "demoParticipantsCountHint": "Skriv inn et partall deltakere. 2 deltakere = 1 par. 2 par deltar i ett spill."
+      "demoParticipantsCountHint": "Skriv inn et partall deltakere. 2 deltakere = 1 par. 2 par deltar i ett spill.",
+      "demoParticipantsGenerate": "Generer demo-deltakere",
+      "demoParticipantsGenerateHint": "Oppretter automatisk testregistreringer.",
+      "demoParticipantsGenerating": "Genererer...",
+      "demoParticipantsGenerateSuccess": "Demo-deltakere opprettet.",
+      "demoParticipantsGenerateError": "Kunne ikke opprette demo-deltakere.",
+      "demoParticipantsInvalid": "Skriv inn et partall deltakere (minst 2)."
     },
     "staff": {
       "assignAccess": "Tildel Tilgang",
