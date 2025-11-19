@@ -363,6 +363,26 @@ export async function initDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
+  // Ensure 'demo' status exists in tournaments.status ENUM
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      MODIFY status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo') NOT NULL DEFAULT 'draft'
+    `);
+  } catch (e: any) {
+    // MySQL returns errno 1265 if enum already updated; ignore in that case
+    if (!e.message?.toLowerCase().includes('enum')) {
+      throw e;
+    }
+  }
+
+  // Обновляем статусы, которые могли сохраниться как пустые строки после невалидного значения
+  await pool.execute(`
+    UPDATE tournaments
+    SET status = 'draft'
+    WHERE status IS NULL OR status = ''
+  `);
+
   // Create tournament_groups table (группы в турнирах)
   await pool.execute(`
     CREATE TABLE IF NOT EXISTS tournament_groups (
