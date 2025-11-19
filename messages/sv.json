@@ -609,6 +609,8 @@
       "priceDoubleCategory": "Pris (Två Kategorier)",
       "priceDoubleCategoryDesc": "Pris per kategori vid deltagande i två kategorier (t.ex. 25 EUR per kategori)",
       "status": "Status",
+      "registrationTotal": "Registrerade",
+      "registrationPaid": "Betalda",
       "registrationSettings": "Registreringsinställningar",
       "registrationTshirtEnabled": "Visa fält för T-shirtstorlek",
       "registrationTshirtRequired": "Gör T-shirtstorlek obligatorisk",

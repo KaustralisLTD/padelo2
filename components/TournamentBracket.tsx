@@ -37,6 +37,7 @@ interface TournamentBracketProps {
 export default function TournamentBracket({ tournamentId }: TournamentBracketProps) {
   const t = useTranslations('Tournaments.bracket');
   const tCategories = useTranslations('Tournaments.categories');
+  const tAdmin = useTranslations('Admin.tournaments');
   const locale = useLocale();
   const [bracket, setBracket] = useState<Record<string, Group[]>>({});
   const [loading, setLoading] = useState(true);
@@ -87,6 +88,10 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   const [savingResult, setSavingResult] = useState(false);
   const [isKnockoutMatch, setIsKnockoutMatch] = useState(false);
   const [groupWinners, setGroupWinners] = useState<Record<number, number[]>>({}); // groupId -> winner pair IDs
+  const [demoParticipantsInput, setDemoParticipantsInput] = useState('120');
+  const [creatingDemoParticipants, setCreatingDemoParticipants] = useState(false);
+  const [demoParticipantsMessage, setDemoParticipantsMessage] = useState<string | null>(null);
+  const [autoGenerationAttempted, setAutoGenerationAttempted] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -95,36 +100,23 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
 
   // Автоматическая генерация таблицы для demo турниров с участниками
   useEffect(() => {
-    const autoGenerateForDemo = async () => {
-      // Проверяем, что это demo турнир, нет групп, загрузка завершена, и мы не генерируем уже
-      if (tournamentStatus === 'demo' && Object.keys(bracket).length === 0 && !loading && !generatingBracket) {
-        console.log('[TournamentBracket] Auto-generating bracket for demo tournament');
-        
-        // Проверяем наличие токена
-        const token = localStorage.getItem('auth_token');
-        if (!token) {
-          console.log('[TournamentBracket] No auth token, skipping auto-generation');
-          return;
-        }
-        
-        // Пытаемся вызвать генерацию напрямую - endpoint сам проверит наличие участников
-        try {
-          console.log('[TournamentBracket] Attempting to auto-generate bracket...');
-          await generateBracketForDemo();
-        } catch (error) {
-          console.error('[TournamentBracket] Error auto-generating bracket:', error);
-          // Не показываем ошибку пользователю, просто логируем
-          // Если участников нет, endpoint вернет ошибку, но это нормально
-        }
-      }
-    };
+    if (
+      !isAdmin ||
+      tournamentStatus !== 'demo' ||
+      loading ||
+      generatingBracket ||
+      autoGenerationAttempted
+    ) {
+      return;
+    }
 
-    // Запускаем только если статус загружен и это demo
-    if (tournamentStatus === 'demo' && !loading) {
-      autoGenerateForDemo();
+    if (Object.keys(bracket).length === 0) {
+      setAutoGenerationAttempted(true);
+      console.log('[TournamentBracket] Auto-generating bracket for demo tournament');
+      generateBracketForDemo(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tournamentStatus, bracket, loading, generatingBracket, tournamentId]);
+  }, [isAdmin, tournamentStatus, bracket, loading, generatingBracket, autoGenerationAttempted]);
 
   useEffect(() => {
     if (selectedCategory && bracket[selectedCategory]) {
@@ -226,10 +218,10 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
     }
   };
 
-  const generateBracketForDemo = async () => {
-    if (!tournamentStatus || tournamentStatus !== 'demo') {
-      console.log('[generateBracketForDemo] Not a demo tournament, skipping');
-      return;
+  const generateBracketForDemo = async (isAuto = false): Promise<boolean> => {
+    if (!isAdmin || !tournamentStatus || tournamentStatus !== 'demo') {
+      console.log('[generateBracketForDemo] Not allowed or not a demo tournament, skipping');
+      return false;
     }
     
     setGeneratingBracket(true);
@@ -238,7 +230,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       if (!token) {
         console.log('[generateBracketForDemo] No auth token');
         setGeneratingBracket(false);
-        return;
+        return false;
       }
       
       console.log('[generateBracketForDemo] Calling generate-bracket API...');
@@ -253,17 +245,26 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       if (response.ok) {
         const data = await response.json();
         console.log('[generateBracketForDemo] Bracket generated successfully:', data);
-        // Обновляем bracket после генерации
+        setDemoParticipantsMessage(null);
         await fetchBracket();
+        return true;
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.log('[generateBracketForDemo] Failed to generate bracket:', errorData);
-        // Не показываем alert при автоматической генерации, только логируем
-        // Пользователь может нажать кнопку вручную, если нужно
+        const message = errorData.error || t('demoParticipantsMissing');
+        setDemoParticipantsMessage(message);
+        if (!isAuto) {
+          alert(message);
+        }
+        return false;
       }
     } catch (error) {
       console.error('[generateBracketForDemo] Error generating bracket:', error);
-      // Не показываем alert при автоматической генерации
+      if (!isAuto) {
+        alert(t('errorGenerating'));
+      }
+      setDemoParticipantsMessage(t('demoParticipantsError'));
+      return false;
     } finally {
       setGeneratingBracket(false);
     }
@@ -386,6 +387,58 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       // Это важно, так как состояние может быть устаревшим после сохранения результатов
       return updatedBracket;
     });
+  };
+
+  const createDemoParticipants = async () => {
+    if (!isAdmin) {
+      alert('Только администратор может создавать демо участников.');
+      return;
+    }
+
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      alert('Необходима авторизация для создания демо участников.');
+      return;
+    }
+
+    const count = parseInt(demoParticipantsInput, 10);
+    if (isNaN(count) || count < 2 || count % 2 !== 0) {
+      alert(tAdmin('demoParticipantsCountPlaceholder'));
+      return;
+    }
+
+    setCreatingDemoParticipants(true);
+    try {
+      const response = await fetch(`/api/tournament/${tournamentId}/demo-participants`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ count }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const created = data.registrationsCreated ?? count;
+        setDemoParticipantsMessage(
+          t('demoParticipantsSuccess', { count: created })
+        );
+        await fetchBracket();
+        setAutoGenerationAttempted(false);
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        const message = errorData.error || t('demoParticipantsError');
+        setDemoParticipantsMessage(message);
+        alert(message);
+      }
+    } catch (error) {
+      console.error('[createDemoParticipants] Error:', error);
+      alert(t('demoParticipantsError'));
+      setDemoParticipantsMessage(t('demoParticipantsError'));
+    } finally {
+      setCreatingDemoParticipants(false);
+    }
   };
 
   const fetchMatches = async () => {
@@ -946,13 +999,51 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           <p className="text-text-secondary font-poppins mb-4">
             {t('notCreated')}
           </p>
-          <button
-            onClick={generateBracketForDemo}
-            disabled={generatingBracket}
-            className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {generatingBracket ? t('generating') : t('generateBracket')}
-          </button>
+          {isAdmin ? (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {tAdmin('demoParticipantsCount')}
+                </label>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="number"
+                    min="2"
+                    step="2"
+                    value={demoParticipantsInput}
+                    onChange={(e) => setDemoParticipantsInput(e.target.value)}
+                    placeholder={tAdmin('demoParticipantsCountPlaceholder')}
+                    className="px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors w-full sm:max-w-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={createDemoParticipants}
+                    disabled={creatingDemoParticipants}
+                    className="px-6 py-2 bg-background border border-border rounded-lg text-text font-poppins font-semibold hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {creatingDemoParticipants ? t('generating') : t('demoParticipantsCreate')}
+                  </button>
+                </div>
+                <p className="text-xs text-text-tertiary font-poppins mt-1">
+                  {tAdmin('demoParticipantsCountHint')}
+                </p>
+              </div>
+              <button
+                onClick={() => generateBracketForDemo()}
+                disabled={generatingBracket}
+                className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {generatingBracket ? t('generating') : t('generateBracket')}
+              </button>
+              {demoParticipantsMessage && (
+                <p className="text-xs text-text-secondary font-poppins">{demoParticipantsMessage}</p>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-text-secondary font-poppins">
+              {t('demoOnlyAdminHint')}
+            </p>
+          )}
         </div>
       );
     }

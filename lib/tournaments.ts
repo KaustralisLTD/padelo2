@@ -27,10 +27,12 @@ export interface Tournament {
   maxParticipants?: number;
   priceSingleCategory?: number;
   priceDoubleCategory?: number;
-  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo';
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived';
   createdAt: string;
   updatedAt?: string;
   registrationSettings: TournamentRegistrationSettings;
+  registrationsTotal: number;
+  registrationsConfirmed: number;
 }
 
 export interface TournamentGroup {
@@ -102,6 +104,22 @@ export async function getAllTournaments(): Promise<Tournament[]> {
     const [rows] = await pool.execute(
       'SELECT * FROM tournaments ORDER BY start_date DESC'
     ) as any[];
+
+    const [registrationStats] = await pool.execute(
+      `SELECT tournament_id,
+              COUNT(*) AS totalRegistrations,
+              SUM(CASE WHEN confirmed = TRUE THEN 1 ELSE 0 END) AS confirmedRegistrations
+         FROM tournament_registrations
+         GROUP BY tournament_id`
+    ) as any[];
+
+    const registrationMap = new Map<number, { total: number; confirmed: number }>();
+    registrationStats.forEach((stat: any) => {
+      registrationMap.set(stat.tournament_id, {
+        total: Number(stat.totalRegistrations) || 0,
+        confirmed: Number(stat.confirmedRegistrations) || 0,
+      });
+    });
     
     console.log(`[getAllTournaments] Found ${rows.length} tournaments in database`);
     
@@ -129,6 +147,7 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         }
       }
       
+      const counts = registrationMap.get(row.id) || { total: 0, confirmed: 0 };
       return {
         id: row.id,
         name: row.name,
@@ -147,6 +166,8 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString()) : new Date().toISOString(),
         updatedAt: row.updated_at ? (row.updated_at instanceof Date ? row.updated_at.toISOString() : new Date(row.updated_at).toISOString()) : undefined,
         registrationSettings: parseRegistrationSettings(row.registration_settings),
+        registrationsTotal: counts.total,
+        registrationsConfirmed: counts.confirmed,
       };
     });
   } catch (error) {
@@ -195,6 +216,16 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       }
     }
     
+    const [registrationStats] = await pool.execute(
+      `SELECT 
+         COUNT(*) AS totalRegistrations,
+         SUM(CASE WHEN confirmed = TRUE THEN 1 ELSE 0 END) AS confirmedRegistrations
+       FROM tournament_registrations
+       WHERE tournament_id = ?`,
+      [row.id]
+    ) as any[];
+    const statsRow = registrationStats[0] || { totalRegistrations: 0, confirmedRegistrations: 0 };
+
     return {
       id: row.id,
       name: row.name,
@@ -213,6 +244,8 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString()) : new Date().toISOString(),
       updatedAt: row.updated_at ? (row.updated_at instanceof Date ? row.updated_at.toISOString() : new Date(row.updated_at).toISOString()) : undefined,
       registrationSettings: parseRegistrationSettings(row.registration_settings),
+      registrationsTotal: Number(statsRow.totalRegistrations) || 0,
+      registrationsConfirmed: Number(statsRow.confirmedRegistrations) || 0,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);

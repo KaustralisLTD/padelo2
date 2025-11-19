@@ -614,6 +614,8 @@
       "priceDoubleCategory": "السعر (فئتان)",
       "priceDoubleCategoryDesc": "السعر لكل فئة عند المشاركة في فئتين (على سبيل المثال، 25 EUR لكل فئة)",
       "status": "الحالة",
+      "registrationTotal": "المسجلون",
+      "registrationPaid": "المدفوع",
       "registrationSettings": "إعدادات التسجيل",
       "registrationTshirtEnabled": "عرض حقل مقاس القميص",
       "registrationTshirtRequired": "جعل مقاس القميص إلزامياً",

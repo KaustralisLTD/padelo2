@@ -5,7 +5,6 @@ import {
   getTournament,
   createTournament,
   updateTournament,
-  deleteTournament,
   type Tournament,
 } from '@/lib/tournaments';
 
@@ -155,12 +154,8 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Tournament ID is required' }, { status: 400 });
     }
 
-    const success = await deleteTournament(parseInt(id));
-    if (!success) {
-      return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true });
+    const archived = await updateTournament(parseInt(id, 10), { status: 'archived' });
+    return NextResponse.json({ success: true, tournament: archived });
   } catch (error: any) {
     console.error('Error deleting tournament:', error);
     return NextResponse.json({ error: 'Failed to delete tournament' }, { status: 500 });

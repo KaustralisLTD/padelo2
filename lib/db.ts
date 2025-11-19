@@ -354,7 +354,7 @@ export async function initDatabase() {
       registration_deadline DATETIME DEFAULT NULL,
       location VARCHAR(255) DEFAULT NULL,
       max_participants INT(11) DEFAULT NULL,
-      status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo') NOT NULL DEFAULT 'draft',
+      status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived') NOT NULL DEFAULT 'draft',
       registration_settings JSON DEFAULT NULL,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -368,7 +368,7 @@ export async function initDatabase() {
   try {
     await pool.execute(`
       ALTER TABLE tournaments
-      MODIFY status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo') NOT NULL DEFAULT 'draft'
+      MODIFY status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived') NOT NULL DEFAULT 'draft'
     `);
   } catch (e: any) {
     // MySQL returns errno 1265 if enum already updated; ignore in that case

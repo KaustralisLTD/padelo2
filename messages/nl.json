@@ -582,6 +582,8 @@
       "priceDoubleCategory": "Prijs (Twee Categorieën)",
       "priceDoubleCategoryDesc": "Prijs per categorie bij deelname aan twee categorieën (bijv. 25 EUR per categorie)",
       "status": "Status",
+      "registrationTotal": "Geregistreerd",
+      "registrationPaid": "Betaald",
       "registrationSettings": "Registratie-instellingen",
       "registrationTshirtEnabled": "Toon veld voor T-shirtmaat",
       "registrationTshirtRequired": "T-shirtmaat verplicht maken",

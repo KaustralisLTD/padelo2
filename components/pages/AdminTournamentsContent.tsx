@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent, type SVGProps } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -32,9 +32,11 @@ interface Tournament {
   maxParticipants?: number;
   priceSingleCategory?: number;
   priceDoubleCategory?: number;
-  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo';
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived';
   createdAt: string;
   updatedAt?: string;
+  registrationsTotal?: number;
+  registrationsConfirmed?: number;
   registrationSettings?: TournamentRegistrationSettings;
 }
 
@@ -270,8 +272,12 @@ export default function AdminTournamentsContent() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!token || !confirm('Are you sure you want to delete this tournament?')) return;
+  const handleArchive = async (id: number) => {
+    if (
+      !token ||
+      !confirm('Отправить турнир в архив? Его всегда можно будет снова открыть.')
+    )
+      return;
 
     try {
       const response = await fetch(`/api/admin/tournaments?id=${id}`, {
@@ -280,14 +286,14 @@ export default function AdminTournamentsContent() {
       });
 
       if (response.ok) {
-        setSuccess('Tournament deleted successfully');
+        setSuccess('Турнир перемещён в архив');
         fetchTournaments();
         setTimeout(() => setSuccess(null), 3000);
       } else {
-        setError('Failed to delete tournament');
+        setError('Не удалось переместить турнир в архив');
       }
     } catch (err) {
-      setError('Failed to delete tournament');
+      setError('Не удалось переместить турнир в архив');
     }
   };
 
@@ -395,6 +401,88 @@ export default function AdminTournamentsContent() {
     updateCustomField(id, () => null);
   };
 
+  const iconButtonBase =
+    'p-2 rounded-md border border-transparent text-text-secondary hover:text-primary hover:border-primary transition-colors';
+
+  const dangerButtonClasses = 'hover:text-red-300 hover:border-red-400';
+
+  const TableIcon = (props: SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} {...props}>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
+    </svg>
+  );
+
+  const CopyIcon = (props: SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} {...props}>
+      <rect x="8" y="8" width="13" height="13" rx="2" />
+      <path d="M4 16V5a2 2 0 0 1 2-2h11" />
+    </svg>
+  );
+
+  const EditIcon = (props: SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} {...props}>
+      <path d="M4 21h4l11-11a2.5 2.5 0 0 0-3.5-3.5L4.5 17.5V21" />
+      <path d="M13 6l5 5" />
+    </svg>
+  );
+
+  const TrashIcon = (props: SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} {...props}>
+      <path d="M3 6h18" />
+      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+      <path d="M19 6v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+      <path d="M10 11v6M14 11v6" />
+    </svg>
+  );
+
+  const ActionIconButton = ({
+    label,
+    onClick,
+    href,
+    Icon,
+    variant = 'default',
+  }: {
+    label: string;
+    onClick?: () => void;
+    href?: string;
+    Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+    variant?: 'default' | 'danger';
+  }) => {
+    const className =
+      iconButtonBase + (variant === 'danger' ? ` ${dangerButtonClasses}` : '');
+    const content = (
+      <span title={label} className="inline-flex">
+        <Icon className="w-4 h-4" aria-hidden="true" />
+      </span>
+    );
+
+    if (href) {
+      return (
+        <Link
+          href={href}
+          className={className}
+          aria-label={label}
+          title={label}
+        >
+          {content}
+        </Link>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className={className}
+        aria-label={label}
+        title={label}
+      >
+        {content}
+      </button>
+    );
+  };
+
   // Convert ISO date string to datetime-local format (YYYY-MM-DDTHH:mm)
   const formatDateForInput = (isoString: string): string => {
     if (!isoString) return '';
@@ -453,6 +541,7 @@ export default function AdminTournamentsContent() {
       in_progress: 'bg-blue-500',
       completed: 'bg-purple-500',
       demo: 'bg-yellow-500',
+      archived: 'bg-gray-600',
     };
     return colors[status] || 'bg-gray-500';
   };
@@ -484,6 +573,7 @@ export default function AdminTournamentsContent() {
       'in-progress': 'In Progress',
       completed: 'Completed',
       demo: 'Demo',
+      archived: 'Archived',
     };
     
     const label = labels[normalizedStatus] || labels[status as string] || String(status);
@@ -588,6 +678,12 @@ export default function AdminTournamentsContent() {
                       {t('tournaments.location')}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('tournaments.registrationTotal')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('tournaments.registrationPaid')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                       {t('tournaments.status')}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
@@ -615,6 +711,12 @@ export default function AdminTournamentsContent() {
                       <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
                         {tournament.location || '-'}
                       </td>
+                    <td className="px-6 py-4 text-text font-poppins text-sm">
+                      {tournament.registrationsTotal ?? 0}
+                    </td>
+                    <td className="px-6 py-4 text-text font-poppins text-sm">
+                      {tournament.registrationsConfirmed ?? 0}
+                    </td>
                       <td className="px-6 py-4">
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
@@ -646,32 +748,28 @@ export default function AdminTournamentsContent() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center space-x-3">
-                          <Link
+                        <div className="flex items-center space-x-2">
+                          <ActionIconButton
+                            label={t('tournaments.bracket')}
                             href={`/${locale}/tournament/${tournament.id}/bracket`}
-                            className="text-blue-400 hover:text-blue-300 font-poppins text-sm transition-colors"
-                          >
-                            {t('tournaments.bracket')}
-                          </Link>
-                          <button
+                            Icon={TableIcon}
+                          />
+                          <ActionIconButton
+                            label={t('tournaments.copy')}
                             onClick={() => handleCopyTournament(tournament)}
-                            className="text-green-400 hover:text-green-300 font-poppins text-sm transition-colors"
-                            title="Copy tournament"
-                          >
-                            {t('tournaments.copy')}
-                          </button>
-                          <button
+                            Icon={CopyIcon}
+                          />
+                          <ActionIconButton
+                            label={t('tournaments.edit')}
                             onClick={() => openEditModal(tournament)}
-                            className="text-primary hover:text-accent font-poppins text-sm transition-colors"
-                          >
-                            {t('tournaments.edit')}
-                          </button>
-                          <button
-                            onClick={() => handleDelete(tournament.id)}
-                            className="text-red-400 hover:text-red-300 font-poppins text-sm transition-colors"
-                          >
-                            {t('tournaments.delete')}
-                          </button>
+                            Icon={EditIcon}
+                          />
+                          <ActionIconButton
+                            label={t('tournaments.delete')}
+                            onClick={() => handleArchive(tournament.id)}
+                            Icon={TrashIcon}
+                            variant="danger"
+                          />
                         </div>
                       </td>
                     </tr>
@@ -1232,6 +1330,7 @@ export default function AdminTournamentsContent() {
                     <option value="in_progress">In Progress</option>
                     <option value="completed">Completed</option>
                     <option value="demo">Demo</option>
+                    <option value="archived">Archived</option>
                   </select>
                 </div>
 
