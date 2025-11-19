@@ -426,6 +426,7 @@
       "category": "Categorie",
       "saving": "Opslaan...",
       "notCreated": "Toernooibracket nog niet gemaakt. Verdeel deelnemers over groepen.",
+      "generateBracket": "Genereer Tabellen van Deelnemers per Groep",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

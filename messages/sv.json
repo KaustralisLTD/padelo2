@@ -426,6 +426,7 @@
       "category": "Kategori",
       "saving": "Sparar...",
       "notCreated": "Turneringsbracket inte skapad ännu. Fördela deltagare i grupper.",
+      "generateBracket": "Generera Deltagartabeller efter Grupper",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

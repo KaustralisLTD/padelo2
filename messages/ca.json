@@ -613,6 +613,7 @@
       "category": "Categoria",
       "saving": "Desant...",
       "notCreated": "La taula del torneig encara no s'ha creat. Distribueix els participants en grups.",
+      "generateBracket": "Generar Taules de Participants per Grups",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

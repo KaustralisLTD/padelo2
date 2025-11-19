@@ -424,6 +424,7 @@
       "category": "Catégorie",
       "saving": "Enregistrement...",
       "notCreated": "Tableau du tournoi pas encore créé. Distribuez les participants en groupes.",
+      "generateBracket": "Générer les Tableaux des Participants par Groupes",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

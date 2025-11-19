@@ -428,6 +428,7 @@
       "category": "Kategorie",
       "saving": "Speichern...",
       "notCreated": "Turniertabelle noch nicht erstellt. Teilnehmer in Gruppen verteilen.",
+      "generateBracket": "Teilnehmer-Tabellen nach Gruppen generieren",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

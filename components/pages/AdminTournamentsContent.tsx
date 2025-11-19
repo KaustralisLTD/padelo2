@@ -343,6 +343,18 @@ export default function AdminTournamentsContent() {
     return colors[status] || 'bg-gray-500';
   };
 
+  const getStatusLabel = (status: Tournament['status']) => {
+    const labels: Record<Tournament['status'], string> = {
+      draft: 'Draft',
+      open: 'Open',
+      closed: 'Closed',
+      in_progress: 'In Progress',
+      completed: 'Completed',
+      demo: 'Demo',
+    };
+    return labels[status] || status;
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-20 mt-20">
@@ -462,7 +474,7 @@ export default function AdminTournamentsContent() {
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
                         >
-                          {tournament.status}
+                          {getStatusLabel(tournament.status)}
                         </span>
                       </td>
                       <td className="px-6 py-4">

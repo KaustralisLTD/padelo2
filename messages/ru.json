@@ -466,6 +466,7 @@
       "editPlayer": "Редактировать игрока",
       "invalidResult": "Неверный результат. Пожалуйста, введите корректные числа.",
       "notCreated": "Турнирная таблица пока не создана. Распределите участников по группам.",
+      "generateBracket": "Генерация Таблиц участников по группам",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

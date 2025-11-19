@@ -422,6 +422,7 @@
       "category": "الفئة",
       "saving": "جاري الحفظ...",
       "notCreated": "لم يتم إنشاء جدول البطولة بعد. قم بتوزيع المشاركين على المجموعات.",
+      "generateBracket": "إنشاء جداول المشاركين حسب المجموعات",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

@@ -518,6 +518,7 @@
       "fillAllFields": "Please fill in all fields",
       "noCourts": "No courts",
       "notCreated": "Tournament bracket not created yet. Distribute participants to groups.",
+      "generateBracket": "Generate Participant Tables by Groups",
       "save": "Save",
       "knockoutStage": "Knockout Stage",
       "startKnockout": "Start Knockout Stage",

@@ -470,6 +470,7 @@
       "category": "Categoría",
       "saving": "Guardando...",
       "notCreated": "La tabla del torneo aún no se ha creado. Distribuya los participantes en grupos.",
+      "generateBracket": "Generar Tablas de Participantes por Grupos",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",

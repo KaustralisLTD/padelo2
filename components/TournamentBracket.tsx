@@ -40,6 +40,8 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   const locale = useLocale();
   const [bracket, setBracket] = useState<Record<string, Group[]>>({});
   const [loading, setLoading] = useState(true);
+  const [tournamentStatus, setTournamentStatus] = useState<string | null>(null);
+  const [generatingBracket, setGeneratingBracket] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'groups' | 'knockout'>('groups');
   const [playoffStage, setPlayoffStage] = useState<'quarterfinals' | 'semifinals' | 'finals' | 'all'>('all');
@@ -164,6 +166,13 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
 
   const fetchBracket = async () => {
     try {
+      // Получаем статус турнира
+      const tournamentResponse = await fetch(`/api/tournament/${tournamentId}`);
+      if (tournamentResponse.ok) {
+        const tournamentData = await tournamentResponse.json();
+        setTournamentStatus(tournamentData.tournament?.status || null);
+      }
+
       const response = await fetch(`/api/tournament/${tournamentId}/bracket`);
       if (response.ok) {
         const data = await response.json();
@@ -179,6 +188,35 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
       console.error('Error fetching bracket:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const generateBracketForDemo = async () => {
+    if (!tournamentStatus || tournamentStatus !== 'demo') return;
+    
+    setGeneratingBracket(true);
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`/api/tournament/${tournamentId}/generate-bracket`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Обновляем bracket после генерации
+        await fetchBracket();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || 'Failed to generate bracket');
+      }
+    } catch (error) {
+      console.error('Error generating bracket:', error);
+      alert('Failed to generate bracket');
+    } finally {
+      setGeneratingBracket(false);
     }
   };
 
@@ -852,6 +890,24 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
 
   const categories = Object.keys(bracket);
   if (categories.length === 0) {
+    // Если это demo турнир, показываем кнопку для генерации таблицы
+    if (tournamentStatus === 'demo') {
+      return (
+        <div className="p-6 bg-background-secondary rounded-lg border border-border">
+          <p className="text-text-secondary font-poppins mb-4">
+            {t('notCreated')}
+          </p>
+          <button
+            onClick={generateBracketForDemo}
+            disabled={generatingBracket}
+            className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {generatingBracket ? t('generating') : t('generateBracket')}
+          </button>
+        </div>
+      );
+    }
+    
     return (
       <div className="p-6 bg-background-secondary rounded-lg border border-border">
         <p className="text-text-secondary font-poppins">

@@ -426,6 +426,7 @@
       "category": "类别",
       "saving": "保存中...",
       "notCreated": "锦标赛表尚未创建。将参与者分配到组中。",
+      "generateBracket": "按组生成参与者表格",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",
