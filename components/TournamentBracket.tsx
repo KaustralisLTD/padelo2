@@ -1167,48 +1167,64 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
           {knockoutGroups.length > 0 ? (
             <>
               {/* Вкладки для навигации между этапами плей-офф */}
-              <div className="flex gap-2 border-b border-border pb-2">
-                <button
-                  onClick={() => setPlayoffStage('all')}
-                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
-                    playoffStage === 'all'
-                      ? 'bg-primary text-background'
-                      : 'bg-background-secondary text-text-secondary hover:bg-background'
-                  }`}
-                >
-                  {t('allStages') || 'Все этапы'}
-                </button>
-                <button
-                  onClick={() => setPlayoffStage('quarterfinals')}
-                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
-                    playoffStage === 'quarterfinals'
-                      ? 'bg-primary text-background'
-                      : 'bg-background-secondary text-text-secondary hover:bg-background'
-                  }`}
-                >
-                  {t('quarterfinals') || 'Четвертьфинал'}
-                </button>
-                <button
-                  onClick={() => setPlayoffStage('semifinals')}
-                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
-                    playoffStage === 'semifinals'
-                      ? 'bg-primary text-background'
-                      : 'bg-background-secondary text-text-secondary hover:bg-background'
-                  }`}
-                >
-                  {t('semifinals') || 'Полуфинал'}
-                </button>
-                <button
-                  onClick={() => setPlayoffStage('finals')}
-                  className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
-                    playoffStage === 'finals'
-                      ? 'bg-primary text-background'
-                      : 'bg-background-secondary text-text-secondary hover:bg-background'
-                  }`}
-                >
-                  {t('finals') || 'Финал'}
-                </button>
-              </div>
+              {(() => {
+                // Определяем группы категории для проверки наличия четвертьфиналов
+                const categoryKnockoutGroups = knockoutGroups.filter(g => g.category === selectedCategory);
+                
+                // Проверяем наличие четвертьфиналов в категории
+                const hasQuarterfinals = categoryKnockoutGroups.some((group: any) => {
+                  const groupName = group.groupName?.toLowerCase() || '';
+                  return groupName.includes('quarterfinal') || 
+                         (groupName.includes('match') && !groupName.includes('semifinal') && !groupName.includes('final'));
+                });
+                
+                return (
+                  <div className="flex gap-2 border-b border-border pb-2">
+                    <button
+                      onClick={() => setPlayoffStage('all')}
+                      className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                        playoffStage === 'all'
+                          ? 'bg-primary text-background'
+                          : 'bg-background-secondary text-text-secondary hover:bg-background'
+                      }`}
+                    >
+                      {t('allStages') || 'Все этапы'}
+                    </button>
+                    {hasQuarterfinals && (
+                      <button
+                        onClick={() => setPlayoffStage('quarterfinals')}
+                        className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                          playoffStage === 'quarterfinals'
+                            ? 'bg-primary text-background'
+                            : 'bg-background-secondary text-text-secondary hover:bg-background'
+                        }`}
+                      >
+                        {t('quarterfinals') || 'Четвертьфинал'}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setPlayoffStage('semifinals')}
+                      className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                        playoffStage === 'semifinals'
+                          ? 'bg-primary text-background'
+                          : 'bg-background-secondary text-text-secondary hover:bg-background'
+                      }`}
+                    >
+                      {t('semifinals') || 'Полуфинал'}
+                    </button>
+                    <button
+                      onClick={() => setPlayoffStage('finals')}
+                      className={`px-4 py-2 rounded-t-lg font-poppins font-semibold transition-colors ${
+                        playoffStage === 'finals'
+                          ? 'bg-primary text-background'
+                          : 'bg-background-secondary text-text-secondary hover:bg-background'
+                      }`}
+                    >
+                      {t('finals') || 'Финал'}
+                    </button>
+                  </div>
+                );
+              })()}
 
               {/* Фильтруем группы по выбранному этапу */}
               {(() => {

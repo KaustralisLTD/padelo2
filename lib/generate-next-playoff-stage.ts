@@ -347,9 +347,12 @@ export async function generateNextPlayoffStageSchedule(
     }
     
     // Получаем матчи для этих групп (только те, у которых match_date IS NULL)
+    // Если groupsToSchedule был обновлен внутри блока проверки (например, для финалов),
+    // нужно пересчитать groupIds
     const groupIds = groupsToSchedule.map((g: any) => g.id);
     console.log(`[generateNextPlayoffStageSchedule] Groups to schedule:`, groupsToSchedule.map((g: any) => ({ id: g.id, name: g.group_name })));
     console.log(`[generateNextPlayoffStageSchedule] Group IDs:`, groupIds);
+    console.log(`[generateNextPlayoffStageSchedule] Next stage:`, nextStage);
     
     if (groupIds.length === 0) {
       console.log(`[generateNextPlayoffStageSchedule] No groups to schedule`);
@@ -387,7 +390,13 @@ export async function generateNextPlayoffStageSchedule(
     
     // Если все матчи уже запланированы, проверяем, не пытаемся ли мы создать расписание для уже запланированного этапа
     // Но пропускаем эту проверку, если мы уже перешли к следующему этапу (например, от semifinals к finals)
-    if (matches.length === 0 && alreadyScheduledMatches.length > 0 && nextStage !== 'finals') {
+    // Также пропускаем, если groupsToSchedule содержит финалы
+    const hasFinals = groupsToSchedule.some((g: any) => {
+      const name = g.group_name?.toLowerCase() || '';
+      return name.includes('final') && !name.includes('semifinal');
+    });
+    
+    if (matches.length === 0 && alreadyScheduledMatches.length > 0 && nextStage !== 'finals' && !hasFinals) {
       console.log(`[generateNextPlayoffStageSchedule] All matches are already scheduled. Checking if we should proceed to next stage...`);
       
       // Определяем название этапа из групп
@@ -509,6 +518,10 @@ export async function generateNextPlayoffStageSchedule(
           
           // Продолжаем выполнение - создадим расписание для финалов
           console.log(`[generateNextPlayoffStageSchedule] Finals created, proceeding to schedule generation...`);
+          
+          // Выходим из этого блока проверки и продолжаем выполнение ниже
+          // groupsToSchedule уже установлен для финалов, nextStage = 'finals'
+          // Проверка на строке 396 пропустит этот случай, так как nextStage === 'finals'
         }
       } else if (isFinal) {
         return {
