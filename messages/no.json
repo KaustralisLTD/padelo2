@@ -338,51 +338,51 @@
       "prizesInfo": "Premieinformasjon vil bli kunngjort snart. Hold deg oppdatert!"
     },
     "rules": {
-      "title": "Tournament Rules",
-      "back": "Back to bracket",
-      "editRules": "Edit Rules",
-      "save": "Save",
-      "saving": "Saving...",
-      "cancel": "Cancel",
-      "rulesSaved": "Rules saved successfully!",
-      "errorSaving": "Error saving rules",
-      "loading": "Loading...",
+      "title": "Turneringsregler",
+      "back": "Tilbake til tabell",
+      "editRules": "Rediger Regler",
+      "save": "Lagre",
+      "saving": "Lagrer...",
+      "cancel": "Avbryt",
+      "rulesSaved": "Regler lagret vellykket!",
+      "errorSaving": "Feil ved lagring av regler",
+      "loading": "Laster...",
       "payment": {
-        "title": "Payment",
-        "text": "Payment will be made before playing the first match of each pair. It can be made with card or cash at the main tent of the event."
+        "title": "Betaling",
+        "text": "Betalingen vil bli gjort før det første spillet av hvert par spilles. Det kan gjøres med kort eller kontant ved hovedteltet ved arrangementet."
       },
       "gameRules": {
-        "title": "Game Rules",
-        "winner": "The winner of the match will be the one who reaches 9 games or has the highest game score during the 45 minutes of each match. With golden point. In case of a tie 8-8, a Tie-Break will be played to 7 points with a difference of 2.",
-        "tieBreak": "At 45 minutes, a 'horn' will sound (while the horn is sounding, if a point is being played, that point must be finished). In case of a tie in games, the game in progress must be finished, and if at that moment it is a tie in games without starting the next game, a golden point will be played to determine the winner.",
-        "timeLimit": "If the Tie-Break of 8-8 is being played when the 45 minutes are up, the Tie-Break must be finished normally.",
-        "semifinals": "Semifinals and finals will be best of 2 sets + super tie-break without time limit."
+        "title": "Spillregler",
+        "winner": "Vinneren av kampen vil være den som når 9 spill eller har den høyeste spillpoengen i løpet av de 45 minuttene av hver kamp. Med gullpoeng. Ved uavgjort 8-8 spilles en Tie-Break til 7 poeng med en forskjell på 2.",
+        "tieBreak": "Etter 45 minutter vil et 'horn' lyde (mens hornet lyder, hvis et poeng spilles, må det poenget fullføres). Ved uavgjort i spill må spillet som pågår fullføres, og hvis det på det tidspunktet er uavgjort i spill uten å starte neste spill, spilles et gullpoeng for å bestemme vinneren.",
+        "timeLimit": "Hvis Tie-Break på 8-8 spilles når de 45 minuttene er oppe, må Tie-Break fullføres normalt.",
+        "semifinals": "Semifinaler og finaler vil være best av 2 sett + super tie-break uten tidsbegrensning."
       },
       "warmup": {
-        "title": "Warm-up",
-        "text": "Try to warm up quickly as it is included in the 45 minutes. As you will know the courts in which you will participate in advance, you can warm up nearby and be prepared to play. Take advantage to warm up if the court where you play has finished early."
+        "title": "Oppvarming",
+        "text": "Prøv å varme opp raskt siden det er inkludert i de 45 minuttene. Siden du på forhånd vil vite hvilke baner du kommer til å delta på, kan du varme opp i nærheten og være klar til å spille. Dra nytte av å varme opp hvis banen der du spiller har sluttet tidlig."
       },
       "results": {
-        "title": "Results",
-        "text": "Once the match is finished, the winner must indicate the result at the tent immediately. If they do not do so, they will not score points."
+        "title": "Resultater",
+        "text": "Når kampen er ferdig, må vinneren umiddelbart angi resultatet ved teltet. Hvis de ikke gjør det, får de ikke poeng."
       },
       "points": {
-        "title": "Points System",
-        "win": "Each match won will score 2 points and lost will score 1 point.",
-        "loss": "In case of a tie in points for qualification to the next round, the average (games won - games lost) will be taken into account.",
-        "tiebreaker": "In case of a tie in points and average, the direct confrontation will be considered."
+        "title": "Poengsystem",
+        "win": "Hver vunnet kamp gir 2 poeng og tapt gir 1 poeng.",
+        "loss": "Ved uavgjort i poeng for kvalifisering til neste runde tas gjennomsnittet (vunne spill - tapte spill) i betraktning.",
+        "tiebreaker": "Ved uavgjort i poeng og gjennomsnitt tas den direkte konfrontasjonen i betraktning."
       },
       "qualification": {
-        "title": "Qualification",
-        "text": "The top 2 of each group qualify (except Women's B+ where the top 4 qualify). In Women's B, the 2 best first place teams qualify directly to the semifinals."
+        "title": "Kvalifisering",
+        "text": "De 2 beste fra hver gruppe kvalifiserer seg (unntatt Kvinner B+ hvor de 4 beste kvalifiserer seg). I Kvinner B kvalifiserer de 2 beste førsteplasslagene seg direkte til semifinalene."
       },
       "otherRules": {
-        "title": "Other Rules",
-        "exterior": "Exterior play is not allowed unless previously agreed by both pairs and they are in agreement.",
-        "disputed": "During matches, any point that is doubtful for both sides will be replayed.",
-        "balls": "Ball changes will be made to new balls every 4-5 matches per court. Finals with new balls.",
-        "partner": "You cannot change partners once the first match of the tournament has started.",
-        "media": "During the tournament, photos and videos will be taken. By participating, you accept the use of these images and videos for any purpose."
+        "title": "Andre Regler",
+        "exterior": "Utendørsspill er ikke tillatt med mindre det er avtalt på forhånd av begge par, og de er enige.",
+        "disputed": "Under kamper vil ethvert poeng som er tvilsomt for begge sider bli spilt på nytt.",
+        "balls": "Ballbytter vil bli gjort med nye baller hver 4-5 kamper per bane. Finaler med nye baller.",
+        "partner": "Du kan ikke bytte partnere når den første kampen i turneringen har startet.",
+        "media": "Under turneringen vil det bli tatt bilder og videoer. Ved å delta aksepterer du bruken av disse bildene og videoene til ethvert formål."
       }
     },
     "bracket": {

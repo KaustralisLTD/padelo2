@@ -338,51 +338,51 @@
       "prizesInfo": "Prijsinformatie wordt binnenkort aangekondigd. Blijf op de hoogte!"
     },
     "rules": {
-      "title": "Tournament Rules",
-      "back": "Back to bracket",
-      "editRules": "Edit Rules",
-      "save": "Save",
-      "saving": "Saving...",
-      "cancel": "Cancel",
-      "rulesSaved": "Rules saved successfully!",
-      "errorSaving": "Error saving rules",
-      "loading": "Loading...",
+      "title": "Toernooiregels",
+      "back": "Terug naar tabel",
+      "editRules": "Regels Bewerken",
+      "save": "Opslaan",
+      "saving": "Opslaan...",
+      "cancel": "Annuleren",
+      "rulesSaved": "Regels succesvol opgeslagen!",
+      "errorSaving": "Fout bij het opslaan van regels",
+      "loading": "Laden...",
       "payment": {
-        "title": "Payment",
-        "text": "Payment will be made before playing the first match of each pair. It can be made with card or cash at the main tent of the event."
+        "title": "Betaling",
+        "text": "De betaling wordt gedaan voordat het eerste spel van elk paar wordt gespeeld. Het kan worden gedaan met kaart of contant bij de hoofd tent van het evenement."
       },
       "gameRules": {
-        "title": "Game Rules",
-        "winner": "The winner of the match will be the one who reaches 9 games or has the highest game score during the 45 minutes of each match. With golden point. In case of a tie 8-8, a Tie-Break will be played to 7 points with a difference of 2.",
-        "tieBreak": "At 45 minutes, a 'horn' will sound (while the horn is sounding, if a point is being played, that point must be finished). In case of a tie in games, the game in progress must be finished, and if at that moment it is a tie in games without starting the next game, a golden point will be played to determine the winner.",
-        "timeLimit": "If the Tie-Break of 8-8 is being played when the 45 minutes are up, the Tie-Break must be finished normally.",
-        "semifinals": "Semifinals and finals will be best of 2 sets + super tie-break without time limit."
+        "title": "Spelregels",
+        "winner": "De winnaar van de wedstrijd is degene die 9 games bereikt of de hoogste game score heeft tijdens de 45 minuten van elke wedstrijd. Met gouden punt. Bij een gelijkspel 8-8 wordt een Tie-Break gespeeld tot 7 punten met een verschil van 2.",
+        "tieBreak": "Na 45 minuten klinkt er een 'hoorn' (terwijl de hoorn klinkt, als er een punt wordt gespeeld, moet dat punt worden afgemaakt). Bij een gelijkspel in games moet het spel in uitvoering worden afgemaakt, en als er op dat moment een gelijkspel is in games zonder het volgende spel te beginnen, wordt een gouden punt gespeeld om de winnaar te bepalen.",
+        "timeLimit": "Als de Tie-Break van 8-8 wordt gespeeld wanneer de 45 minuten voorbij zijn, moet de Tie-Break normaal worden afgemaakt.",
+        "semifinals": "Halve finales en finales worden gespeeld in best of 2 sets + super tie-break zonder tijdslimiet."
       },
       "warmup": {
-        "title": "Warm-up",
-        "text": "Try to warm up quickly as it is included in the 45 minutes. As you will know the courts in which you will participate in advance, you can warm up nearby and be prepared to play. Take advantage to warm up if the court where you play has finished early."
+        "title": "Opwarmen",
+        "text": "Probeer snel op te warmen omdat dit is opgenomen in de 45 minuten. Omdat je van tevoren weet op welke banen je zult deelnemen, kun je in de buurt opwarmen en klaar zijn om te spelen. Maak gebruik van de mogelijkheid om op te warmen als de baan waar je speelt vroeg klaar is."
       },
       "results": {
-        "title": "Results",
-        "text": "Once the match is finished, the winner must indicate the result at the tent immediately. If they do not do so, they will not score points."
+        "title": "Resultaten",
+        "text": "Zodra de wedstrijd is afgelopen, moet de winnaar onmiddellijk het resultaat bij de tent aangeven. Als ze dit niet doen, krijgen ze geen punten."
       },
       "points": {
-        "title": "Points System",
-        "win": "Each match won will score 2 points and lost will score 1 point.",
-        "loss": "In case of a tie in points for qualification to the next round, the average (games won - games lost) will be taken into account.",
-        "tiebreaker": "In case of a tie in points and average, the direct confrontation will be considered."
+        "title": "Puntensysteem",
+        "win": "Elke gewonnen wedstrijd levert 2 punten op en verloren levert 1 punt op.",
+        "loss": "Bij een gelijkspel in punten voor kwalificatie voor de volgende ronde wordt het gemiddelde (gewonnen games - verloren games) in aanmerking genomen.",
+        "tiebreaker": "Bij een gelijkspel in punten en gemiddelde wordt de directe confrontatie in aanmerking genomen."
       },
       "qualification": {
-        "title": "Qualification",
-        "text": "The top 2 of each group qualify (except Women's B+ where the top 4 qualify). In Women's B, the 2 best first place teams qualify directly to the semifinals."
+        "title": "Kwalificatie",
+        "text": "De top 2 van elke groep kwalificeert zich (behalve Vrouwen B+ waar de top 4 zich kwalificeert). In Vrouwen B kwalificeren de 2 beste eerste plaats teams zich direct voor de halve finales."
       },
       "otherRules": {
-        "title": "Other Rules",
-        "exterior": "Exterior play is not allowed unless previously agreed by both pairs and they are in agreement.",
-        "disputed": "During matches, any point that is doubtful for both sides will be replayed.",
-        "balls": "Ball changes will be made to new balls every 4-5 matches per court. Finals with new balls.",
-        "partner": "You cannot change partners once the first match of the tournament has started.",
-        "media": "During the tournament, photos and videos will be taken. By participating, you accept the use of these images and videos for any purpose."
+        "title": "Andere Regels",
+        "exterior": "Buitenspel is niet toegestaan tenzij dit vooraf is overeengekomen door beide paren en zij het eens zijn.",
+        "disputed": "Tijdens wedstrijden wordt elk punt dat voor beide kanten twijfelachtig is opnieuw gespeeld.",
+        "balls": "Balwisselingen worden gedaan met nieuwe ballen elke 4-5 wedstrijden per baan. Finales met nieuwe ballen.",
+        "partner": "Je kunt geen partners wisselen zodra het eerste spel van het toernooi is begonnen.",
+        "media": "Tijdens het toernooi worden foto's en video's gemaakt. Door deel te nemen accepteer je het gebruik van deze afbeeldingen en video's voor elk doel."
       }
     },
     "bracket": {

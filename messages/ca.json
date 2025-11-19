@@ -525,51 +525,51 @@
       "prizesInfo": "La informació sobre premis s'anunciarà aviat. Estigueu atents!"
     },
     "rules": {
-      "title": "Tournament Rules",
-      "back": "Back to bracket",
-      "editRules": "Edit Rules",
-      "save": "Save",
-      "saving": "Saving...",
-      "cancel": "Cancel",
-      "rulesSaved": "Rules saved successfully!",
-      "errorSaving": "Error saving rules",
-      "loading": "Loading...",
+      "title": "Regles del Torneig",
+      "back": "Tornar a la taula",
+      "editRules": "Editar Regles",
+      "save": "Desar",
+      "saving": "Desant...",
+      "cancel": "Cancel·lar",
+      "rulesSaved": "Regles desades correctament!",
+      "errorSaving": "Error en desar les regles",
+      "loading": "Carregant...",
       "payment": {
-        "title": "Payment",
-        "text": "Payment will be made before playing the first match of each pair. It can be made with card or cash at the main tent of the event."
+        "title": "Pagament",
+        "text": "El pagament es farà abans de jugar el primer partit de cada parella. Es pot fer amb targeta o en efectiu a la tenda principal de l'esdeveniment."
       },
       "gameRules": {
-        "title": "Game Rules",
-        "winner": "The winner of the match will be the one who reaches 9 games or has the highest game score during the 45 minutes of each match. With golden point. In case of a tie 8-8, a Tie-Break will be played to 7 points with a difference of 2.",
-        "tieBreak": "At 45 minutes, a 'horn' will sound (while the horn is sounding, if a point is being played, that point must be finished). In case of a tie in games, the game in progress must be finished, and if at that moment it is a tie in games without starting the next game, a golden point will be played to determine the winner.",
-        "timeLimit": "If the Tie-Break of 8-8 is being played when the 45 minutes are up, the Tie-Break must be finished normally.",
-        "semifinals": "Semifinals and finals will be best of 2 sets + super tie-break without time limit."
+        "title": "Regles del Joc",
+        "winner": "El guanyador del partit serà el que arribi a 9 jocs o tingui la puntuació de jocs més alta durant els 45 minuts de cada partit. Amb punt d'or. En cas d'empat 8-8, es jugarà un Tie-Break fins a 7 punts amb una diferència de 2.",
+        "tieBreak": "Als 45 minuts, sonarà una 'banya' (mentre la banya sona, si s'està jugant un punt, aquest punt s'ha d'acabar). En cas d'empat en jocs, el joc en curs s'ha d'acabar, i si en aquell moment hi ha un empat en jocs sense començar el joc següent, es jugarà un punt d'or per determinar el guanyador.",
+        "timeLimit": "Si el Tie-Break de 8-8 s'està jugant quan els 45 minuts s'han acabat, el Tie-Break s'ha d'acabar normalment.",
+        "semifinals": "Les semifinals i finals seran al millor de 2 sets + super tie-break sense límit de temps."
       },
       "warmup": {
-        "title": "Warm-up",
-        "text": "Try to warm up quickly as it is included in the 45 minutes. As you will know the courts in which you will participate in advance, you can warm up nearby and be prepared to play. Take advantage to warm up if the court where you play has finished early."
+        "title": "Escalfament",
+        "text": "Intenteu escalfar-vos ràpidament ja que està inclòs en els 45 minuts. Com que sabreu amb antelació les pistes en què participareu, podeu escalfar-vos a prop i estar preparats per jugar. Aprofiteu per escalfar-vos si la pista on jugueu ha acabat aviat."
       },
       "results": {
-        "title": "Results",
-        "text": "Once the match is finished, the winner must indicate the result at the tent immediately. If they do not do so, they will not score points."
+        "title": "Resultats",
+        "text": "Un cop acabat el partit, el guanyador ha d'indicar el resultat a la tenda immediatament. Si no ho fa, no marcarà punts."
       },
       "points": {
-        "title": "Points System",
-        "win": "Each match won will score 2 points and lost will score 1 point.",
-        "loss": "In case of a tie in points for qualification to the next round, the average (games won - games lost) will be taken into account.",
-        "tiebreaker": "In case of a tie in points and average, the direct confrontation will be considered."
+        "title": "Sistema de Punts",
+        "win": "Cada partit guanyat marcarà 2 punts i perdut marcarà 1 punt.",
+        "loss": "En cas d'empat en punts per a la qualificació a la següent ronda, es tindrà en compte la mitjana (jocs guanyats - jocs perduts).",
+        "tiebreaker": "En cas d'empat en punts i mitjana, es considerarà l'enfrontament directe."
       },
       "qualification": {
-        "title": "Qualification",
-        "text": "The top 2 of each group qualify (except Women's B+ where the top 4 qualify). In Women's B, the 2 best first place teams qualify directly to the semifinals."
+        "title": "Qualificació",
+        "text": "Els 2 primers de cada grup es qualifiquen (excepte Dones B+ on es qualifiquen els 4 primers). En Dones B, les 2 millors equips classificades en primer lloc es qualifiquen directament a les semifinals."
       },
       "otherRules": {
-        "title": "Other Rules",
-        "exterior": "Exterior play is not allowed unless previously agreed by both pairs and they are in agreement.",
-        "disputed": "During matches, any point that is doubtful for both sides will be replayed.",
-        "balls": "Ball changes will be made to new balls every 4-5 matches per court. Finals with new balls.",
-        "partner": "You cannot change partners once the first match of the tournament has started.",
-        "media": "During the tournament, photos and videos will be taken. By participating, you accept the use of these images and videos for any purpose."
+        "title": "Altres Regles",
+        "exterior": "El joc exterior no està permès tret que hagi estat acordat prèviament per ambdues parelles i estiguin d'acord.",
+        "disputed": "Durant els partits, qualsevol punt que sigui dubtós per ambdós costats es tornarà a jugar.",
+        "balls": "Els canvis de pilota es faran amb pilotes noves cada 4-5 partits per pista. Finals amb pilotes noves.",
+        "partner": "No podeu canviar de company un cop ha començat el primer partit del torneig.",
+        "media": "Durant el torneig es faran fotos i vídeos. En participar, accepteu l'ús d'aquestes imatges i vídeos per a qualsevol propòsit."
       }
     },
     "bracket": {

@@ -334,51 +334,51 @@
       "prizesInfo": "سيتم الإعلان عن معلومات الجوائز قريبًا. ترقبوا!"
     },
     "rules": {
-      "title": "Tournament Rules",
-      "back": "Back to bracket",
-      "editRules": "Edit Rules",
-      "save": "Save",
-      "saving": "Saving...",
-      "cancel": "Cancel",
-      "rulesSaved": "Rules saved successfully!",
-      "errorSaving": "Error saving rules",
-      "loading": "Loading...",
+      "title": "قواعد البطولة",
+      "back": "العودة إلى الجدول",
+      "editRules": "تعديل القواعد",
+      "save": "حفظ",
+      "saving": "جاري الحفظ...",
+      "cancel": "إلغاء",
+      "rulesSaved": "تم حفظ القواعد بنجاح!",
+      "errorSaving": "خطأ في حفظ القواعد",
+      "loading": "جاري التحميل...",
       "payment": {
-        "title": "Payment",
-        "text": "Payment will be made before playing the first match of each pair. It can be made with card or cash at the main tent of the event."
+        "title": "الدفع",
+        "text": "سيتم الدفع قبل لعب المباراة الأولى لكل زوج. يمكن الدفع بالبطاقة أو نقداً في الخيمة الرئيسية للحدث."
       },
       "gameRules": {
-        "title": "Game Rules",
-        "winner": "The winner of the match will be the one who reaches 9 games or has the highest game score during the 45 minutes of each match. With golden point. In case of a tie 8-8, a Tie-Break will be played to 7 points with a difference of 2.",
-        "tieBreak": "At 45 minutes, a 'horn' will sound (while the horn is sounding, if a point is being played, that point must be finished). In case of a tie in games, the game in progress must be finished, and if at that moment it is a tie in games without starting the next game, a golden point will be played to determine the winner.",
-        "timeLimit": "If the Tie-Break of 8-8 is being played when the 45 minutes are up, the Tie-Break must be finished normally.",
-        "semifinals": "Semifinals and finals will be best of 2 sets + super tie-break without time limit."
+        "title": "قواعد اللعبة",
+        "winner": "الفائز في المباراة سيكون من يصل إلى 9 ألعاب أو يحصل على أعلى نقاط خلال 45 دقيقة من كل مباراة. مع النقطة الذهبية. في حالة التعادل 8-8، سيتم لعب كسر التعادل حتى 7 نقاط بفارق نقطتين.",
+        "tieBreak": "عند 45 دقيقة، سيصدر صوت 'بوق' (بينما البوق يصدر صوتاً، إذا كانت هناك نقطة قيد اللعب، يجب إنهاء تلك النقطة). في حالة التعادل في الألعاب، يجب إنهاء اللعبة الجارية، وإذا كان هناك تعادل في الألعاب في تلك اللحظة دون بدء اللعبة التالية، سيتم لعب نقطة ذهبية لتحديد الفائز.",
+        "timeLimit": "إذا كان كسر التعادل 8-8 قيد اللعب عندما تنتهي الـ 45 دقيقة، يجب إنهاء كسر التعادل بشكل طبيعي.",
+        "semifinals": "نصف النهائي والنهائي سيكونان أفضل من مجموعتين + كسر تعادل فائق بدون حد زمني."
       },
       "warmup": {
-        "title": "Warm-up",
-        "text": "Try to warm up quickly as it is included in the 45 minutes. As you will know the courts in which you will participate in advance, you can warm up nearby and be prepared to play. Take advantage to warm up if the court where you play has finished early."
+        "title": "الإحماء",
+        "text": "حاول الإحماء بسرعة لأنه مدرج في الـ 45 دقيقة. بما أنك ستعرف مسبقاً الملاعب التي ستشارك فيها، يمكنك الإحماء في مكان قريب والاستعداد للعب. استفد من الإحماء إذا انتهى الملعب الذي تلعب فيه مبكراً."
       },
       "results": {
-        "title": "Results",
-        "text": "Once the match is finished, the winner must indicate the result at the tent immediately. If they do not do so, they will not score points."
+        "title": "النتائج",
+        "text": "بمجرد انتهاء المباراة، يجب على الفائز الإشارة إلى النتيجة في الخيمة فوراً. إذا لم يفعل ذلك، فلن يحصل على نقاط."
       },
       "points": {
-        "title": "Points System",
-        "win": "Each match won will score 2 points and lost will score 1 point.",
-        "loss": "In case of a tie in points for qualification to the next round, the average (games won - games lost) will be taken into account.",
-        "tiebreaker": "In case of a tie in points and average, the direct confrontation will be considered."
+        "title": "نظام النقاط",
+        "win": "كل مباراة فاز بها ستحصل على نقطتين وخسرت ستحصل على نقطة واحدة.",
+        "loss": "في حالة التعادل في النقاط للتأهل للجولة التالية، سيتم أخذ المتوسط (الألعاب الفائزة - الألعاب الخاسرة) في الاعتبار.",
+        "tiebreaker": "في حالة التعادل في النقاط والمتوسط، سيتم النظر في المواجهة المباشرة."
       },
       "qualification": {
-        "title": "Qualification",
-        "text": "The top 2 of each group qualify (except Women's B+ where the top 4 qualify). In Women's B, the 2 best first place teams qualify directly to the semifinals."
+        "title": "التأهل",
+        "text": "أفضل فريقين من كل مجموعة يتأهلان (باستثناء السيدات B+ حيث يتأهل أفضل 4). في السيدات B، أفضل فريقين في المركز الأول يتأهلان مباشرة إلى نصف النهائي."
       },
       "otherRules": {
-        "title": "Other Rules",
-        "exterior": "Exterior play is not allowed unless previously agreed by both pairs and they are in agreement.",
-        "disputed": "During matches, any point that is doubtful for both sides will be replayed.",
-        "balls": "Ball changes will be made to new balls every 4-5 matches per court. Finals with new balls.",
-        "partner": "You cannot change partners once the first match of the tournament has started.",
-        "media": "During the tournament, photos and videos will be taken. By participating, you accept the use of these images and videos for any purpose."
+        "title": "قواعد أخرى",
+        "exterior": "اللعب الخارجي غير مسموح إلا إذا تم الاتفاق عليه مسبقاً من قبل كلا الزوجين وكلاهما موافق.",
+        "disputed": "أثناء المباريات، أي نقطة مشكوك فيها لكلا الجانبين سيتم إعادة لعبها.",
+        "balls": "سيتم تغيير الكرات إلى كرات جديدة كل 4-5 مباريات لكل ملعب. النهائي مع كرات جديدة.",
+        "partner": "لا يمكنك تغيير الشركاء بمجرد بدء المباراة الأولى للبطولة.",
+        "media": "أثناء البطولة، سيتم التقاط الصور ومقاطع الفيديو. بالمشاركة، تقبل استخدام هذه الصور ومقاطع الفيديو لأي غرض."
       }
     },
     "bracket": {
