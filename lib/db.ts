@@ -220,6 +220,29 @@ export async function initDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
+  // Add payment_status and payment_date columns to tournament_registrations
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN payment_status ENUM('pending', 'paid', 'refunded') DEFAULT 'pending'
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN payment_date DATETIME DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
   // Create users table if it doesn't exist
   await pool.execute(`
     CREATE TABLE IF NOT EXISTS users (
