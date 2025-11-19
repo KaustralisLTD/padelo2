@@ -388,16 +388,38 @@ export default function AdminTournamentsContent() {
     return colors[status] || 'bg-gray-500';
   };
 
-  const getStatusLabel = (status: Tournament['status']) => {
-    const labels: Record<Tournament['status'], string> = {
+  const getStatusLabel = (status: Tournament['status'] | string | undefined | null): string => {
+    if (!status) {
+      console.warn('[getStatusLabel] Status is empty:', status);
+      return 'Unknown';
+    }
+    
+    // Нормализуем статус (убираем пробелы, приводим к нижнему регистру)
+    const normalizedStatus = String(status).trim().toLowerCase();
+    
+    const labels: Record<string, string> = {
       draft: 'Draft',
       open: 'Open',
       closed: 'Closed',
-      in_progress: 'In Progress',
+      'in_progress': 'In Progress',
+      'in-progress': 'In Progress',
       completed: 'Completed',
       demo: 'Demo',
     };
-    return labels[status] || status;
+    
+    const label = labels[normalizedStatus] || labels[status as string] || String(status);
+    
+    // Отладочный вывод для проверки
+    if (normalizedStatus === 'demo' || status === 'demo') {
+      console.log('[getStatusLabel] Demo status found:', { 
+        originalStatus: status, 
+        normalizedStatus, 
+        label,
+        hasLabel: normalizedStatus in labels || status in labels
+      });
+    }
+    
+    return label;
   };
 
   if (loading) {
@@ -519,7 +541,19 @@ export default function AdminTournamentsContent() {
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
                         >
-                          {getStatusLabel(tournament.status)}
+                          {(() => {
+                            const label = getStatusLabel(tournament.status);
+                            // Отладочный вывод для проверки
+                            if (tournament.status === 'demo') {
+                              console.log('[Status Display] Demo tournament:', { 
+                                status: tournament.status, 
+                                label, 
+                                tournamentId: tournament.id,
+                                tournamentName: tournament.name 
+                              });
+                            }
+                            return label;
+                          })()}
                         </span>
                       </td>
                       <td className="px-6 py-4">
