@@ -613,6 +613,7 @@
       "create": "Créer",
       "update": "Mettre à jour",
       "bracket": "Tableau",
+      "copy": "Copier",
       "demoParticipantsCount": "Nombre de Participants Démo",
       "demoParticipantsCountPlaceholder": "Entrez un nombre pair (2 participants = 1 paire)",
       "demoParticipantsCountHint": "Entrez un nombre pair de participants. 2 participants = 1 paire. 2 paires participent à un jeu."

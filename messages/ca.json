@@ -792,6 +792,7 @@
       "create": "Crear",
       "update": "Actualitzar",
       "bracket": "Taula",
+      "copy": "Copiar",
       "demoParticipantsCount": "Nombre de Participants Demo",
       "demoParticipantsCountPlaceholder": "Introduïu un nombre parell (2 participants = 1 parella)",
       "demoParticipantsCountHint": "Introduïu un nombre parell de participants. 2 participants = 1 parella. 2 parelles participen en un joc."

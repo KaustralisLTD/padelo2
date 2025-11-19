@@ -615,6 +615,7 @@
       "create": "Opret",
       "update": "Opdater",
       "bracket": "Tabel",
+      "copy": "Kopier",
       "demoParticipantsCount": "Antal Demo-deltagere",
       "demoParticipantsCountPlaceholder": "Indtast et lige tal (2 deltagere = 1 par)",
       "demoParticipantsCountHint": "Indtast et lige antal deltagere. 2 deltagere = 1 par. 2 par deltager i et spil."

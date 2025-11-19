@@ -615,6 +615,7 @@
       "create": "Skapa",
       "update": "Uppdatera",
       "bracket": "Tabell",
+      "copy": "Kopiera",
       "demoParticipantsCount": "Antal Demo-deltagare",
       "demoParticipantsCountPlaceholder": "Ange ett jämnt tal (2 deltagare = 1 par)",
       "demoParticipantsCountHint": "Ange ett jämnt antal deltagare. 2 deltagare = 1 par. 2 par deltar i ett spel."

@@ -798,6 +798,7 @@
       "create": "Создать",
       "update": "Обновить",
       "bracket": "Таблица",
+      "copy": "Копировать",
       "demoParticipantsCount": "Количество демо-участников",
       "demoParticipantsCountPlaceholder": "Введите четное число (2 участника = 1 пара)",
       "demoParticipantsCountHint": "Введите четное количество участников. 2 участника = 1 пара. В одной игре участвуют 2 пары."

@@ -166,11 +166,13 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
 
   const fetchBracket = async () => {
     try {
-      // Получаем статус турнира
+      // Получаем статус турнира отдельно, чтобы гарантировать его загрузку
       const tournamentResponse = await fetch(`/api/tournament/${tournamentId}`);
       if (tournamentResponse.ok) {
         const tournamentData = await tournamentResponse.json();
-        setTournamentStatus(tournamentData.tournament?.status || null);
+        const status = tournamentData.tournament?.status || null;
+        setTournamentStatus(status);
+        console.log('[TournamentBracket] Tournament status:', status);
       }
 
       const response = await fetch(`/api/tournament/${tournamentId}/bracket`);

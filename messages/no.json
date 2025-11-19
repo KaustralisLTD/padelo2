@@ -615,6 +615,7 @@
       "create": "Opprett",
       "update": "Oppdater",
       "bracket": "Tabell",
+      "copy": "Kopier",
       "demoParticipantsCount": "Antall Demo-deltakere",
       "demoParticipantsCountPlaceholder": "Skriv inn et partall (2 deltakere = 1 par)",
       "demoParticipantsCountHint": "Skriv inn et partall deltakere. 2 deltakere = 1 par. 2 par deltar i ett spill."

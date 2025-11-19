@@ -808,6 +808,7 @@
       "create": "Створити",
       "update": "Оновити",
       "bracket": "Таблиця",
+      "copy": "Копіювати",
       "demoParticipantsCount": "Кількість демо-учасників",
       "demoParticipantsCountPlaceholder": "Введіть парне число (2 учасники = 1 пара)",
       "demoParticipantsCountHint": "Введіть парну кількість учасників. 2 учасники = 1 пара. В одній грі беруть участь 2 пари."

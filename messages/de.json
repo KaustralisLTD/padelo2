@@ -594,6 +594,7 @@
       "create": "Erstellen",
       "update": "Aktualisieren",
       "bracket": "Tabelle",
+      "copy": "Kopieren",
       "demoParticipantsCount": "Anzahl der Demo-Teilnehmer",
       "demoParticipantsCountPlaceholder": "Geben Sie eine gerade Zahl ein (2 Teilnehmer = 1 Paar)",
       "demoParticipantsCountHint": "Geben Sie eine gerade Anzahl von Teilnehmern ein. 2 Teilnehmer = 1 Paar. 2 Paare nehmen an einem Spiel teil."

@@ -601,6 +601,7 @@
       "create": "创建",
       "update": "更新",
       "bracket": "表格",
+      "copy": "复制",
       "demoParticipantsCount": "演示参与者数量",
       "demoParticipantsCountPlaceholder": "输入偶数（2个参与者 = 1对）",
       "demoParticipantsCountHint": "输入偶数个参与者。2个参与者 = 1对。2对参与一场比赛。"

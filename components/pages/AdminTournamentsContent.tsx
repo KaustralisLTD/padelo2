@@ -262,6 +262,51 @@ export default function AdminTournamentsContent() {
     }
   };
 
+  const handleCopyTournament = async (tournament: Tournament) => {
+    if (!token) return;
+
+    try {
+      setError(null);
+      setSuccess(null);
+
+      // Копируем все данные турнира, но со статусом Draft
+      const response = await fetch('/api/admin/tournaments', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${tournament.name} (Copy)`,
+          description: tournament.description || undefined,
+          startDate: new Date(tournament.startDate).toISOString(),
+          endDate: new Date(tournament.endDate).toISOString(),
+          registrationDeadline: tournament.registrationDeadline ? new Date(tournament.registrationDeadline).toISOString() : undefined,
+          location: tournament.location || undefined,
+          locationAddress: tournament.locationAddress || undefined,
+          locationCoordinates: tournament.locationCoordinates || undefined,
+          eventSchedule: tournament.eventSchedule || undefined,
+          maxParticipants: tournament.maxParticipants || undefined,
+          priceSingleCategory: tournament.priceSingleCategory || undefined,
+          priceDoubleCategory: tournament.priceDoubleCategory || undefined,
+          status: 'draft', // Всегда Draft для копии
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess('Tournament copied successfully');
+        fetchTournaments();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        setError(data.error || 'Failed to copy tournament');
+      }
+    } catch (err) {
+      setError('Failed to copy tournament');
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -485,6 +530,13 @@ export default function AdminTournamentsContent() {
                           >
                             {t('tournaments.bracket')}
                           </Link>
+                          <button
+                            onClick={() => handleCopyTournament(tournament)}
+                            className="text-green-400 hover:text-green-300 font-poppins text-sm transition-colors"
+                            title="Copy tournament"
+                          >
+                            {t('tournaments.copy')}
+                          </button>
                           <button
                             onClick={() => openEditModal(tournament)}
                             className="text-primary hover:text-accent font-poppins text-sm transition-colors"
