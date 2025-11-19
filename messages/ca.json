@@ -917,8 +917,9 @@
       "participantUpdated": "Participant actualitzat correctament.",
       "participantUpdateError": "No s'ha pogut actualitzar el participant.",
       "paymentStatusUpdated": "Estat del pagament actualitzat correctament.",
-      "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament."
-      "totalParticipants": "Total: {count} participants",    },
+      "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament.",
+      "totalParticipants": "Total: {count} participants"
+    },
     "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",

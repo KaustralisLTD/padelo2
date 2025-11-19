@@ -745,8 +745,9 @@
       "participantUpdated": "تم تحديث المشارك بنجاح.",
       "participantUpdateError": "فشل تحديث المشارك.",
       "paymentStatusUpdated": "تم تحديث حالة الدفع بنجاح.",
-      "paymentStatusUpdateError": "فشل تحديث حالة الدفع."
-      "totalParticipants": "المجموع: {count} مشارك",    },
+      "paymentStatusUpdateError": "فشل تحديث حالة الدفع.",
+      "totalParticipants": "المجموع: {count} مشارك"
+    },
     "staff": {
       "assignAccess": "تعيين الوصول",
       "editAccess": "تعديل الوصول",
