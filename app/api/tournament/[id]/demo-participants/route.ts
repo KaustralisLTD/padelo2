@@ -49,7 +49,8 @@ export async function POST(
       return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
     }
 
-    if (tournaments[0].status !== 'demo') {
+    const tournament = tournaments[0];
+    if (tournament.status !== 'demo') {
       return NextResponse.json(
         { error: 'Tournament must have demo status' },
         { status: 400 }
@@ -66,15 +67,19 @@ export async function POST(
 
       const [result] = await pool.execute(
         `INSERT INTO tournament_registrations 
-         (tournament_id, token, first_name, last_name, email, categories, confirmed, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, TRUE, NOW(), NOW())`,
+         (tournament_id, tournament_name, token, locale, first_name, last_name, email, phone, categories, tshirt_size, confirmed, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())`,
         [
           tournamentId,
+          tournament.name,
           `demo-${tournamentId}-${i}`, // Уникальный токен
+          'en', // Локаль по умолчанию
           `Demo`,
           `Player ${i}`,
           `demo.player${i}@example.com`,
+          `+38000000000${i}`, // Телефон по умолчанию
           JSON.stringify(['male1']), // По умолчанию категория male1
+          'M', // Размер футболки по умолчанию
           true,
         ]
       ) as any[];
@@ -94,7 +99,7 @@ export async function POST(
       // Обновляем первую регистрацию в паре - добавляем информацию о партнере
       await pool.execute(
         `UPDATE tournament_registrations 
-         SET partner_name = ?, partner_email = ?, updated_at = NOW()
+         SET partner_name = ?, partner_email = ?
          WHERE id = ?`,
         [`Demo Player ${pairIndex * 2 + 2}`, `demo.player${pairIndex * 2 + 2}@example.com`, player1Id]
       );
@@ -102,7 +107,7 @@ export async function POST(
       // Обновляем вторую регистрацию в паре - добавляем информацию о партнере
       await pool.execute(
         `UPDATE tournament_registrations 
-         SET partner_name = ?, partner_email = ?, updated_at = NOW()
+         SET partner_name = ?, partner_email = ?
          WHERE id = ?`,
         [`Demo Player ${pairIndex * 2 + 1}`, `demo.player${pairIndex * 2 + 1}@example.com`, player2Id]
       );
