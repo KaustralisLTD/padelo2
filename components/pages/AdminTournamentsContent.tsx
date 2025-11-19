@@ -572,9 +572,6 @@ export default function AdminTournamentsContent() {
                               status: tournament.status,
                               statusType: typeof tournament.status,
                               statusValue: JSON.stringify(tournament.status),
-                              isUndefined: tournament.status === undefined,
-                              isNull: tournament.status === null,
-                              isEmpty: tournament.status === '',
                             });
                             
                             const label = getStatusLabel(tournament.status);
