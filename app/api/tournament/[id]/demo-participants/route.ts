@@ -3,6 +3,30 @@ import { getSession } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { autoCreateGroupsForCategory } from '@/lib/tournaments';
 
+// Списки реальных имен и фамилий для генерации демо-участников
+const firstNames = [
+  'Alex', 'David', 'Carlos', 'Miguel', 'Juan', 'Pablo', 'Sergio', 'Antonio', 'Javier', 'Luis',
+  'Maria', 'Ana', 'Laura', 'Carmen', 'Sofia', 'Isabel', 'Elena', 'Patricia', 'Monica', 'Andrea',
+  'James', 'Michael', 'Robert', 'William', 'Richard', 'Joseph', 'Thomas', 'Charles', 'Daniel', 'Matthew',
+  'Sarah', 'Jessica', 'Jennifer', 'Emily', 'Michelle', 'Amanda', 'Melissa', 'Nicole', 'Stephanie', 'Rachel',
+  'Marco', 'Luca', 'Giuseppe', 'Francesco', 'Alessandro', 'Matteo', 'Andrea', 'Giovanni', 'Stefano', 'Roberto',
+  'Emma', 'Giulia', 'Sofia', 'Alessia', 'Chiara', 'Francesca', 'Martina', 'Valentina', 'Giorgia', 'Elisa'
+];
+
+const lastNames = [
+  'Garcia', 'Rodriguez', 'Martinez', 'Lopez', 'Gonzalez', 'Perez', 'Sanchez', 'Ramirez', 'Torres', 'Flores',
+  'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
+  'Rossi', 'Russo', 'Ferrari', 'Esposito', 'Bianchi', 'Romano', 'Colombo', 'Ricci', 'Marino', 'Greco',
+  'Muller', 'Schmidt', 'Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker', 'Schulz', 'Hoffmann',
+  'Andersen', 'Johansen', 'Hansen', 'Pedersen', 'Larsen', 'Nielsen', 'Olsen', 'Christensen', 'Rasmussen', 'Jorgensen'
+];
+
+function generateRandomName(): { firstName: string; lastName: string } {
+  const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+  const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+  return { firstName, lastName };
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -101,6 +125,9 @@ export async function POST(
 
       // Создаем участников для этой категории
       for (let i = 1; i <= catCount; i++) {
+        const { firstName, lastName } = generateRandomName();
+        const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${globalPlayerIndex}@demo.example.com`;
+        
         const [result] = await pool.execute(
           `INSERT INTO tournament_registrations 
            (tournament_id, tournament_name, token, locale, first_name, last_name, email, phone, categories, tshirt_size, confirmed, created_at)
@@ -110,10 +137,10 @@ export async function POST(
             tournament.name,
             `demo-${tournamentId}-${globalPlayerIndex}`, // Уникальный токен
             'en', // Локаль по умолчанию
-            `Demo`,
-            `Player ${globalPlayerIndex}`,
-            `demo.player${globalPlayerIndex}@example.com`,
-            `+38000000000${globalPlayerIndex}`, // Телефон по умолчанию
+            firstName,
+            lastName,
+            email,
+            `+380${String(Math.floor(Math.random() * 1000000000)).padStart(9, '0')}`, // Случайный телефон
             JSON.stringify([category]), // Категория из распределения
             'M', // Размер футболки по умолчанию
           ]
@@ -130,15 +157,27 @@ export async function POST(
       for (let pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
         const player1Id = registrations[pairIndex * 2];
         const player2Id = registrations[pairIndex * 2 + 1];
-        const player1GlobalIndex = globalPlayerIndex - catCount + pairIndex * 2;
-        const player2GlobalIndex = globalPlayerIndex - catCount + pairIndex * 2 + 1;
+
+        // Получаем информацию об участниках из базы данных
+        const [player1Data] = await pool.execute(
+          'SELECT first_name, last_name, email FROM tournament_registrations WHERE id = ?',
+          [player1Id]
+        ) as any[];
+        
+        const [player2Data] = await pool.execute(
+          'SELECT first_name, last_name, email FROM tournament_registrations WHERE id = ?',
+          [player2Id]
+        ) as any[];
+
+        const player1Name = `${player1Data[0].first_name} ${player1Data[0].last_name}`;
+        const player2Name = `${player2Data[0].first_name} ${player2Data[0].last_name}`;
 
         // Обновляем первую регистрацию в паре - добавляем информацию о партнере
         await pool.execute(
           `UPDATE tournament_registrations 
            SET partner_name = ?, partner_email = ?
            WHERE id = ?`,
-          [`Demo Player ${player2GlobalIndex}`, `demo.player${player2GlobalIndex}@example.com`, player1Id]
+          [player2Name, player2Data[0].email, player1Id]
         );
 
         // Обновляем вторую регистрацию в паре - добавляем информацию о партнере
@@ -146,7 +185,7 @@ export async function POST(
           `UPDATE tournament_registrations 
            SET partner_name = ?, partner_email = ?
            WHERE id = ?`,
-          [`Demo Player ${player1GlobalIndex}`, `demo.player${player1GlobalIndex}@example.com`, player2Id]
+          [player1Name, player1Data[0].email, player2Id]
         );
       }
     }
@@ -237,3 +276,105 @@ export async function POST(
   }
 }
 
+// DELETE - удалить всех демо-участников турнира
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const session = await getSession(token);
+    if (session?.role !== 'superadmin' && session?.role !== 'staff') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const { id } = await params;
+    const tournamentId = parseInt(id);
+
+    if (isNaN(tournamentId)) {
+      return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
+    }
+
+    const pool = getDbPool();
+
+    // Проверяем, что турнир существует
+    const [tournaments] = await pool.execute(
+      'SELECT id, status FROM tournaments WHERE id = ?',
+      [tournamentId]
+    ) as any[];
+
+    if (tournaments.length === 0) {
+      return NextResponse.json({ error: 'Tournament not found' }, { status: 404 });
+    }
+
+    // Получаем все демо-регистрации для этого турнира (по токену demo-{tournamentId}-*)
+    const [demoRegistrations] = await pool.execute(
+      'SELECT id FROM tournament_registrations WHERE tournament_id = ? AND token LIKE ?',
+      [tournamentId, `demo-${tournamentId}-%`]
+    ) as any[];
+
+    if (demoRegistrations.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: 'No demo participants found',
+        deletedCount: 0,
+      });
+    }
+
+    const registrationIds = demoRegistrations.map((r: any) => r.id);
+
+    // Удаляем связанные данные в правильном порядке (из-за внешних ключей)
+    // 1. Удаляем матчи, связанные с группами, которые содержат эти регистрации
+    await pool.execute(
+      `DELETE tm FROM tournament_matches tm
+       INNER JOIN tournament_group_pairs tgp ON tm.group_id = tgp.group_id
+       WHERE tgp.player1_registration_id IN (${registrationIds.map(() => '?').join(',')})
+          OR tgp.partner1_registration_id IN (${registrationIds.map(() => '?').join(',')})`,
+      [...registrationIds, ...registrationIds]
+    );
+
+    // 2. Удаляем пары из групп
+    await pool.execute(
+      `DELETE FROM tournament_group_pairs 
+       WHERE player1_registration_id IN (${registrationIds.map(() => '?').join(',')})
+          OR partner1_registration_id IN (${registrationIds.map(() => '?').join(',')})`,
+      [...registrationIds, ...registrationIds]
+    );
+
+    // 3. Удаляем группы, которые были созданы только для демо-участников
+    // (удаляем группы, которые больше не имеют пар)
+    await pool.execute(
+      `DELETE FROM tournament_groups 
+       WHERE tournament_id = ? 
+       AND id NOT IN (SELECT DISTINCT group_id FROM tournament_group_pairs)`,
+      [tournamentId]
+    );
+
+    // 4. Удаляем регистрации
+    await pool.execute(
+      `DELETE FROM tournament_registrations 
+       WHERE id IN (${registrationIds.map(() => '?').join(',')})`,
+      registrationIds
+    );
+
+    console.log(`[demo-participants] Deleted ${demoRegistrations.length} demo participants for tournament ${tournamentId}`);
+
+    return NextResponse.json({
+      success: true,
+      deletedCount: demoRegistrations.length,
+      message: `Deleted ${demoRegistrations.length} demo participants`,
+    });
+  } catch (error: any) {
+    console.error('[demo-participants] Error deleting demo participants:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to delete demo participants' },
+      { status: 500 }
+    );
+  }
+}

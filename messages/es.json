@@ -765,13 +765,17 @@
       "copy": "Copiar",
       "demoParticipantsCount": "Número de Participantes Demo",
       "demoParticipantsCountPlaceholder": "Ingrese un número par (2 participantes = 1 pareja)",
-      "demoParticipantsCountHint": "Ingrese un número par de participantes. 2 participantes = 1 pareja. 2 parejas participan en un juego.",
+      "demoParticipantsCountHint": "Ingrese un número par de participantes. 1 pareja = 2 jugadores. 1 juego = 2 parejas (4 jugadores). 1 grupo = 4 parejas (8 jugadores).",
       "demoParticipantsGenerate": "Generar participantes demo",
       "demoParticipantsGenerateHint": "Crea registros de prueba de forma automática.",
       "demoParticipantsGenerating": "Generando...",
       "demoParticipantsGenerateSuccess": "Participantes demo creados correctamente.",
       "demoParticipantsGenerateError": "No se pudieron crear los participantes demo.",
-      "demoParticipantsInvalid": "Ingrese un número par de participantes (mínimo 2)."
+      "demoParticipantsInvalid": "Ingrese un número par de participantes (mínimo 2).",
+      "deleteDemoParticipants": "Eliminar participantes demo",
+      "deleteDemoParticipantsConfirm": "¿Está seguro de que desea eliminar todos los participantes demo? Esto también eliminará todos los grupos, parejas y partidos asociados.",
+      "deleteDemoParticipantsSuccess": "Se eliminaron {count} participantes demo exitosamente.",
+      "deleteDemoParticipantsError": "No se pudieron eliminar los participantes demo."
     },
     "staff": {
       "assignAccess": "Asignar Acceso",

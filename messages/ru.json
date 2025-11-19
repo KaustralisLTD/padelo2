@@ -828,13 +828,17 @@
       "copy": "Копировать",
       "demoParticipantsCount": "Количество демо-участников",
       "demoParticipantsCountPlaceholder": "Введите четное число (2 участника = 1 пара)",
-      "demoParticipantsCountHint": "Введите четное количество участников. 2 участника = 1 пара. В одной игре участвуют 2 пары.",
+      "demoParticipantsCountHint": "Введите четное количество участников. 1 пара = 2 игрока. 1 игра = 2 пары (4 игрока). 1 группа = 4 пары (8 игроков).",
       "demoParticipantsGenerate": "Создать демо-участников",
       "demoParticipantsGenerateHint": "Автоматически создаёт тестовые регистрации.",
       "demoParticipantsGenerating": "Создаём...",
       "demoParticipantsGenerateSuccess": "Демо-участники успешно созданы.",
       "demoParticipantsGenerateError": "Не удалось создать демо-участников.",
-      "demoParticipantsInvalid": "Введите чётное количество участников (минимум 2)."
+      "demoParticipantsInvalid": "Введите чётное количество участников (минимум 2).",
+      "deleteDemoParticipants": "Удалить демо-участников",
+      "deleteDemoParticipantsConfirm": "Вы уверены, что хотите удалить всех демо-участников? Это также удалит все связанные группы, пары и матчи.",
+      "deleteDemoParticipantsSuccess": "Успешно удалено {count} демо-участников.",
+      "deleteDemoParticipantsError": "Не удалось удалить демо-участников."
     },
     "staff": {
       "title": "Управление сотрудниками",

@@ -346,6 +346,38 @@ export default function AdminTournamentsContent() {
     }
   };
 
+  const handleDeleteDemoParticipants = async () => {
+    if (!token || !editingTournament) return;
+
+    if (!confirm(t('tournaments.deleteDemoParticipantsConfirm'))) {
+      return;
+    }
+
+    try {
+      setError(null);
+      setSuccess(null);
+
+      const response = await fetch(`/api/tournament/${editingTournament.id}/demo-participants`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSuccess(t('tournaments.deleteDemoParticipantsSuccess', { count: data.deletedCount || 0 }));
+        fetchTournaments();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.error || t('tournaments.deleteDemoParticipantsError'));
+      }
+    } catch (err) {
+      setError(t('tournaments.deleteDemoParticipantsError'));
+    }
+  };
+
   const handleArchive = async (id: number) => {
     if (
       !token ||
@@ -1384,17 +1416,26 @@ export default function AdminTournamentsContent() {
                         {t('tournaments.demoParticipantsCountHint')}
                       </p>
                       {editingTournament && editingTournament.status === 'demo' && (
-                        <div className="flex flex-wrap items-center gap-3 pt-2">
-                          <button
-                            type="button"
-                            onClick={handleGenerateDemoParticipants}
-                            disabled={generatingDemoParticipants}
-                            className="px-4 py-2 text-xs font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                          >
-                            {generatingDemoParticipants
-                              ? t('tournaments.demoParticipantsGenerating')
-                              : t('tournaments.demoParticipantsGenerate')}
-                          </button>
+                        <div className="space-y-2 pt-2">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <button
+                              type="button"
+                              onClick={handleGenerateDemoParticipants}
+                              disabled={generatingDemoParticipants}
+                              className="px-4 py-2 text-xs font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                              {generatingDemoParticipants
+                                ? t('tournaments.demoParticipantsGenerating')
+                                : t('tournaments.demoParticipantsGenerate')}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={handleDeleteDemoParticipants}
+                              className="px-4 py-2 text-xs font-poppins font-semibold rounded-lg border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                            >
+                              {t('tournaments.deleteDemoParticipants')}
+                            </button>
+                          </div>
                           <p className="text-xs text-text-tertiary">
                             {t('tournaments.demoParticipantsGenerateHint')}
                           </p>
