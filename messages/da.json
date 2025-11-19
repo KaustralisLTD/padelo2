@@ -740,8 +740,9 @@
       "participantUpdated": "Deltager opdateret med succes.",
       "participantUpdateError": "Kunne ikke opdatere deltager.",
       "paymentStatusUpdated": "Betalingsstatus opdateret med succes.",
-      "paymentStatusUpdateError": "Kunne ikke opdatere betalingsstatus."
-      "totalParticipants": "I alt: {count} deltagere",    },
+      "paymentStatusUpdateError": "Kunne ikke opdatere betalingsstatus.",
+      "totalParticipants": "I alt: {count} deltagere"
+    },
     "staff": {
       "assignAccess": "Tildel Adgang",
       "editAccess": "Rediger Adgang",
