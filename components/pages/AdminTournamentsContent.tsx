@@ -95,6 +95,20 @@ export default function AdminTournamentsContent() {
       if (response.ok) {
         const data = await response.json();
         console.log('[AdminTournamentsContent] Fetched tournaments:', data);
+        
+        // Детальное логирование статусов турниров
+        if (data.tournaments && Array.isArray(data.tournaments)) {
+          data.tournaments.forEach((tournament: any) => {
+            console.log('[AdminTournamentsContent] Tournament status check:', {
+              id: tournament.id,
+              name: tournament.name,
+              status: tournament.status,
+              statusType: typeof tournament.status,
+              statusValue: JSON.stringify(tournament.status),
+            });
+          });
+        }
+        
         setTournaments(data.tournaments || []);
       } else {
         const errorData = await response.json().catch(() => ({}));
