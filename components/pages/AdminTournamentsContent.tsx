@@ -312,6 +312,7 @@ export default function AdminTournamentsContent() {
       priceSingleCategory: tournament.priceSingleCategory?.toString() || '',
       priceDoubleCategory: tournament.priceDoubleCategory?.toString() || '',
       status: tournament.status,
+      demoParticipantsCount: '',
     });
     setShowCreateModal(true);
   };
