@@ -340,51 +340,51 @@
       "prizesInfo": "Preisinformationen werden in Kürze bekannt gegeben. Bleiben Sie dran!"
     },
     "rules": {
-      "title": "Tournament Rules",
-      "back": "Back to bracket",
-      "editRules": "Edit Rules",
-      "save": "Save",
-      "saving": "Saving...",
-      "cancel": "Cancel",
-      "rulesSaved": "Rules saved successfully!",
-      "errorSaving": "Error saving rules",
-      "loading": "Loading...",
+      "title": "Turnierregeln",
+      "back": "Zurück zur Tabelle",
+      "editRules": "Regeln bearbeiten",
+      "save": "Speichern",
+      "saving": "Speichern...",
+      "cancel": "Abbrechen",
+      "rulesSaved": "Regeln erfolgreich gespeichert!",
+      "errorSaving": "Fehler beim Speichern der Regeln",
+      "loading": "Laden...",
       "payment": {
-        "title": "Payment",
-        "text": "Payment will be made before playing the first match of each pair. It can be made with card or cash at the main tent of the event."
+        "title": "Zahlung",
+        "text": "Die Zahlung wird vor dem ersten Spiel jedes Paares geleistet. Sie kann mit Karte oder bar im Hauptzelt der Veranstaltung erfolgen."
       },
       "gameRules": {
-        "title": "Game Rules",
-        "winner": "The winner of the match will be the one who reaches 9 games or has the highest game score during the 45 minutes of each match. With golden point. In case of a tie 8-8, a Tie-Break will be played to 7 points with a difference of 2.",
-        "tieBreak": "At 45 minutes, a 'horn' will sound (while the horn is sounding, if a point is being played, that point must be finished). In case of a tie in games, the game in progress must be finished, and if at that moment it is a tie in games without starting the next game, a golden point will be played to determine the winner.",
-        "timeLimit": "If the Tie-Break of 8-8 is being played when the 45 minutes are up, the Tie-Break must be finished normally.",
-        "semifinals": "Semifinals and finals will be best of 2 sets + super tie-break without time limit."
+        "title": "Spielregeln",
+        "winner": "Der Gewinner des Spiels ist derjenige, der 9 Spiele erreicht oder während der 45 Minuten jedes Spiels die höchste Spielpunktzahl hat. Mit goldenem Punkt. Bei einem Unentschieden von 8-8 wird ein Tie-Break bis 7 Punkte mit einem Unterschied von 2 gespielt.",
+        "tieBreak": "Nach 45 Minuten ertönt ein 'Horn' (während das Horn ertönt, muss ein laufender Punkt beendet werden). Bei einem Unentschieden in den Spielen muss das laufende Spiel beendet werden, und wenn zu diesem Zeitpunkt ein Unentschieden in den Spielen ohne Beginn des nächsten Spiels besteht, wird ein goldener Punkt gespielt, um den Gewinner zu bestimmen.",
+        "timeLimit": "Wenn der Tie-Break von 8-8 gespielt wird, wenn die 45 Minuten abgelaufen sind, muss der Tie-Break normal beendet werden.",
+        "semifinals": "Halbfinale und Finale werden im Best-of-2-Sets + Super-Tie-Break ohne Zeitlimit gespielt."
       },
       "warmup": {
-        "title": "Warm-up",
-        "text": "Try to warm up quickly as it is included in the 45 minutes. As you will know the courts in which you will participate in advance, you can warm up nearby and be prepared to play. Take advantage to warm up if the court where you play has finished early."
+        "title": "Aufwärmen",
+        "text": "Versuchen Sie, sich schnell aufzuwärmen, da dies in die 45 Minuten einbezogen ist. Da Sie im Voraus wissen, auf welchen Plätzen Sie teilnehmen werden, können Sie sich in der Nähe aufwärmen und bereit zum Spielen sein. Nutzen Sie die Gelegenheit zum Aufwärmen, wenn der Platz, auf dem Sie spielen, früh fertig ist."
       },
       "results": {
-        "title": "Results",
-        "text": "Once the match is finished, the winner must indicate the result at the tent immediately. If they do not do so, they will not score points."
+        "title": "Ergebnisse",
+        "text": "Sobald das Spiel beendet ist, muss der Gewinner das Ergebnis sofort im Zelt angeben. Wenn er dies nicht tut, erhält er keine Punkte."
       },
       "points": {
-        "title": "Points System",
-        "win": "Each match won will score 2 points and lost will score 1 point.",
-        "loss": "In case of a tie in points for qualification to the next round, the average (games won - games lost) will be taken into account.",
-        "tiebreaker": "In case of a tie in points and average, the direct confrontation will be considered."
+        "title": "Punktesystem",
+        "win": "Jedes gewonnene Spiel bringt 2 Punkte und jedes verlorene Spiel 1 Punkt.",
+        "loss": "Bei einem Unentschieden in den Punkten für die Qualifikation zur nächsten Runde wird der Durchschnitt (gewonnene Spiele - verlorene Spiele) berücksichtigt.",
+        "tiebreaker": "Bei einem Unentschieden in Punkten und Durchschnitt wird die direkte Konfrontation berücksichtigt."
       },
       "qualification": {
-        "title": "Qualification",
-        "text": "The top 2 of each group qualify (except Women's B+ where the top 4 qualify). In Women's B, the 2 best first place teams qualify directly to the semifinals."
+        "title": "Qualifikation",
+        "text": "Die Top 2 jeder Gruppe qualifizieren sich (außer Frauen B+, wo sich die Top 4 qualifizieren). Bei Frauen B qualifizieren sich die 2 besten Erstplatzierten direkt für die Halbfinale."
       },
       "otherRules": {
-        "title": "Other Rules",
-        "exterior": "Exterior play is not allowed unless previously agreed by both pairs and they are in agreement.",
-        "disputed": "During matches, any point that is doubtful for both sides will be replayed.",
-        "balls": "Ball changes will be made to new balls every 4-5 matches per court. Finals with new balls.",
-        "partner": "You cannot change partners once the first match of the tournament has started.",
-        "media": "During the tournament, photos and videos will be taken. By participating, you accept the use of these images and videos for any purpose."
+        "title": "Weitere Regeln",
+        "exterior": "Außenspiel ist nicht erlaubt, es sei denn, beide Paare haben dies vorher vereinbart und sind sich einig.",
+        "disputed": "Während der Spiele wird jeder Punkt, der für beide Seiten zweifelhaft ist, wiederholt.",
+        "balls": "Ballwechsel werden alle 4-5 Spiele pro Platz mit neuen Bällen durchgeführt. Finale mit neuen Bällen.",
+        "partner": "Sie können den Partner nicht wechseln, sobald das erste Spiel des Turniers begonnen hat.",
+        "media": "Während des Turniers werden Fotos und Videos aufgenommen. Durch die Teilnahme akzeptieren Sie die Verwendung dieser Bilder und Videos für jeden Zweck."
       }
     },
     "bracket": {
