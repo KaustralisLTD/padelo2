@@ -332,12 +332,13 @@ export default function AdminTournamentsContent() {
   };
 
   const getStatusColor = (status: Tournament['status']) => {
-    const colors = {
+    const colors: Record<Tournament['status'], string> = {
       draft: 'bg-gray-500',
       open: 'bg-green-500',
       closed: 'bg-red-500',
       in_progress: 'bg-blue-500',
       completed: 'bg-purple-500',
+      demo: 'bg-yellow-500',
     };
     return colors[status] || 'bg-gray-500';
   };
