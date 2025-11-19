@@ -26,7 +26,7 @@ interface Tournament {
   maxParticipants?: number;
   priceSingleCategory?: number;
   priceDoubleCategory?: number;
-  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed';
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo';
   createdAt: string;
   updatedAt?: string;
 }
@@ -54,6 +54,7 @@ export default function AdminTournamentsContent() {
     priceSingleCategory: '',
     priceDoubleCategory: '',
     status: 'draft' as Tournament['status'],
+    demoParticipantsCount: '',
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -144,7 +145,41 @@ export default function AdminTournamentsContent() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess('Tournament created successfully');
+        const createdTournament = data.tournament;
+        
+        // Если это demo турнир и указано количество участников, создаем демо-участников
+        if (formData.status === 'demo' && formData.demoParticipantsCount) {
+          const participantsCount = parseInt(formData.demoParticipantsCount);
+          if (participantsCount >= 2 && participantsCount % 2 === 0) {
+            try {
+              const demoResponse = await fetch(`/api/tournament/${createdTournament.id}/demo-participants`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  count: participantsCount,
+                }),
+              });
+              
+              if (demoResponse.ok) {
+                setSuccess('Tournament created successfully with demo participants');
+                // Перенаправляем на страницу Bracket
+                router.push(`/${locale}/tournament/${createdTournament.id}/bracket`);
+              } else {
+                const demoError = await demoResponse.json();
+                setError(demoError.error || 'Failed to create demo participants');
+              }
+            } catch (demoErr) {
+              console.error('[AdminTournamentsContent] Error creating demo participants:', demoErr);
+              setError('Failed to create demo participants');
+            }
+          }
+        } else {
+          setSuccess('Tournament created successfully');
+        }
+        
         setShowCreateModal(false);
         resetForm();
         fetchTournaments();
@@ -243,6 +278,7 @@ export default function AdminTournamentsContent() {
       priceSingleCategory: '',
       priceDoubleCategory: '',
       status: 'draft',
+      demoParticipantsCount: '',
     });
   };
 
@@ -798,8 +834,32 @@ export default function AdminTournamentsContent() {
                     <option value="closed">Closed</option>
                     <option value="in_progress">In Progress</option>
                     <option value="completed">Completed</option>
+                    <option value="demo">Demo</option>
                   </select>
                 </div>
+
+                {/* Демо-участники - только для demo турниров */}
+                {formData.status === 'demo' && (
+                  <div className="space-y-4 pt-4 border-t border-border">
+                    <div>
+                      <label className="block text-sm font-poppins text-text-secondary mb-2">
+                        Количество демо-участников
+                      </label>
+                      <input
+                        type="number"
+                        min="2"
+                        step="2"
+                        value={formData.demoParticipantsCount || ''}
+                        onChange={(e) => setFormData({ ...formData, demoParticipantsCount: e.target.value })}
+                        placeholder="Введите четное число (2 участника = 1 пара)"
+                        className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      />
+                      <p className="text-xs text-text-tertiary font-poppins mt-1">
+                        Введите четное количество участников. 2 участника = 1 пара. В одной игре участвуют 2 пары.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex justify-end space-x-4 pt-4 border-t border-border">
                   <button

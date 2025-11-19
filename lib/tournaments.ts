@@ -22,7 +22,7 @@ export interface Tournament {
   maxParticipants?: number;
   priceSingleCategory?: number;
   priceDoubleCategory?: number;
-  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed';
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo';
   createdAt: string;
   updatedAt?: string;
 }
