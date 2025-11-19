@@ -448,7 +448,7 @@
       "participantUpdateError": "无法更新参与者。",
       "paymentStatusUpdated": "付款状态已成功更新。",
       "paymentStatusUpdateError": "无法更新付款状态。",
-      "pairs": "对",
+      "totalParticipants": "总计: {count} 名参与者",      "pairs": "对",
       "noSchedule": "赛程尚未创建。",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -725,7 +725,7 @@
       "participantUpdateError": "无法更新参与者。",
       "paymentStatusUpdated": "付款状态已成功更新。",
       "paymentStatusUpdateError": "无法更新付款状态。"
-    },
+      "totalParticipants": "总计: {count} 名参与者",    },
     "staff": {
       "assignAccess": "分配访问权限",
       "editAccess": "编辑访问权限",

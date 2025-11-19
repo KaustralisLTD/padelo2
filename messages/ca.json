@@ -637,7 +637,7 @@
       "participantUpdateError": "No s'ha pogut actualitzar el participant.",
       "paymentStatusUpdated": "Estat del pagament actualitzat correctament.",
       "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament.",
-      "pairs": "parelles",
+      "totalParticipants": "Total: {count} participants",      "pairs": "parelles",
       "noSchedule": "Encara no s'ha creat el calendari.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -918,7 +918,7 @@
       "participantUpdateError": "No s'ha pogut actualitzar el participant.",
       "paymentStatusUpdated": "Estat del pagament actualitzat correctament.",
       "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament."
-    },
+      "totalParticipants": "Total: {count} participants",    },
     "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",

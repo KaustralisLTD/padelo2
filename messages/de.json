@@ -472,7 +472,7 @@
       "participantUpdateError": "Teilnehmer konnte nicht aktualisiert werden.",
       "paymentStatusUpdated": "Zahlungsstatus erfolgreich aktualisiert.",
       "paymentStatusUpdateError": "Zahlungsstatus konnte nicht aktualisiert werden.",
-      "pairs": "Paare",
+      "totalParticipants": "Gesamt: {count} Teilnehmer",      "pairs": "Paare",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",
@@ -718,7 +718,7 @@
       "participantUpdateError": "Teilnehmer konnte nicht aktualisiert werden.",
       "paymentStatusUpdated": "Zahlungsstatus erfolgreich aktualisiert.",
       "paymentStatusUpdateError": "Zahlungsstatus konnte nicht aktualisiert werden."
-    },
+      "totalParticipants": "Gesamt: {count} Teilnehmer",    },
     "staff": {
       "assignAccess": "Zugriff Zuweisen",
       "editAccess": "Zugriff Bearbeiten",

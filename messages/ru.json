@@ -889,7 +889,7 @@
       "participantUpdateError": "Не удалось обновить участника.",
       "paymentStatusUpdated": "Статус оплаты успешно обновлен.",
       "paymentStatusUpdateError": "Не удалось обновить статус оплаты."
-    },
+      "totalParticipants": "Всего: {count} участников",    },
     "staff": {
       "title": "Управление сотрудниками",
       "description": "Назначение ролей и управление сотрудниками",

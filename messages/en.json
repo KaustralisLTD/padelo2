@@ -882,7 +882,8 @@
       "participantUpdated": "Participant updated successfully.",
       "participantUpdateError": "Failed to update participant.",
       "paymentStatusUpdated": "Payment status updated successfully.",
-      "paymentStatusUpdateError": "Failed to update payment status."
+      "paymentStatusUpdateError": "Failed to update payment status.",
+      "totalParticipants": "Total: {count} participants"
     },
     "staff": {
       "title": "Manage Staff",

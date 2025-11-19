@@ -450,7 +450,7 @@
       "participantUpdateError": "Kon deelnemer niet bijwerken.",
       "paymentStatusUpdated": "Betalingsstatus succesvol bijgewerkt.",
       "paymentStatusUpdateError": "Kon betalingsstatus niet bijwerken.",
-      "pairs": "paren",
+      "totalParticipants": "Totaal: {count} deelnemers",      "pairs": "paren",
       "noSchedule": "Het schema is nog niet aangemaakt.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -714,7 +714,7 @@
       "participantUpdateError": "Kon deelnemer niet bijwerken.",
       "paymentStatusUpdated": "Betalingsstatus succesvol bijgewerkt.",
       "paymentStatusUpdateError": "Kon betalingsstatus niet bijwerken."
-    },
+      "totalParticipants": "Totaal: {count} deelnemers",    },
     "staff": {
       "assignAccess": "Toegang Toewijzen",
       "editAccess": "Toegang Bewerken",

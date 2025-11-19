@@ -444,7 +444,7 @@
       "participantUpdateError": "Impossible de mettre à jour le participant.",
       "paymentStatusUpdated": "Statut de paiement mis à jour avec succès.",
       "paymentStatusUpdateError": "Impossible de mettre à jour le statut de paiement.",
-      "pairs": "paires",
+      "totalParticipants": "Total: {count} participants",      "pairs": "paires",
       "generateScheduleForAll": "Générer le calendrier pour toutes les catégories",
       "generateForAllCategories": "Générer le calendrier pour toutes les catégories.",
       "noSchedule": "Le calendrier n'a pas encore été créé.",
@@ -737,7 +737,7 @@
       "participantUpdateError": "Impossible de mettre à jour le participant.",
       "paymentStatusUpdated": "Statut de paiement mis à jour avec succès.",
       "paymentStatusUpdateError": "Impossible de mettre à jour le statut de paiement."
-    },
+      "totalParticipants": "Total: {count} participants",    },
     "staff": {
       "assignAccess": "Attribuer l'Accès",
       "editAccess": "Modifier l'Accès",

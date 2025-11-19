@@ -446,7 +446,7 @@
       "participantUpdateError": "Impossibile aggiornare il partecipante.",
       "paymentStatusUpdated": "Stato pagamento aggiornato con successo.",
       "paymentStatusUpdateError": "Impossibile aggiornare lo stato del pagamento.",
-      "pairs": "coppie",
+      "totalParticipants": "Totale: {count} partecipanti",      "pairs": "coppie",
       "noSchedule": "Il calendario non è ancora stato creato.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -737,7 +737,7 @@
       "participantUpdateError": "Impossibile aggiornare il partecipante.",
       "paymentStatusUpdated": "Stato pagamento aggiornato con successo.",
       "paymentStatusUpdateError": "Impossibile aggiornare lo stato del pagamento."
-    },
+      "totalParticipants": "Totale: {count} partecipanti",    },
     "staff": {
       "assignAccess": "Assegna Accesso",
       "editAccess": "Modifica Accesso",

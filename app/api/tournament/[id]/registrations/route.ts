@@ -57,27 +57,37 @@ export async function GET(
       [tournamentId]
     ) as any[];
 
-    const formatted = registrations.map((reg: any) => ({
-      id: reg.id,
-      firstName: reg.first_name,
-      lastName: reg.last_name,
-      email: reg.email,
-      phone: reg.phone,
-      telegram: reg.telegram,
-      tshirtSize: reg.tshirt_size,
-      message: reg.message,
-      partnerName: reg.partner_name,
-      partnerEmail: reg.partner_email,
-      partnerPhone: reg.partner_phone,
-      partnerTshirtSize: reg.partner_tshirt_size,
-      categories: JSON.parse(reg.categories || '[]'),
-      confirmed: !!reg.confirmed,
-      token: reg.token,
-      paymentStatus: reg.payment_status || 'pending',
-      paymentDate: reg.payment_date ? new Date(reg.payment_date).toISOString() : undefined,
-      createdAt: reg.created_at.toISOString(),
-      isDemo: reg.token?.startsWith(`demo-${tournamentId}-`) || false,
-    }));
+    const formatted = registrations.map((reg: any) => {
+      let categories = [];
+      try {
+        categories = reg.categories ? (typeof reg.categories === 'string' ? JSON.parse(reg.categories) : reg.categories) : [];
+      } catch (e) {
+        console.error('Error parsing categories for registration', reg.id, e);
+        categories = [];
+      }
+
+      return {
+        id: reg.id,
+        firstName: reg.first_name,
+        lastName: reg.last_name,
+        email: reg.email,
+        phone: reg.phone,
+        telegram: reg.telegram,
+        tshirtSize: reg.tshirt_size,
+        message: reg.message,
+        partnerName: reg.partner_name,
+        partnerEmail: reg.partner_email,
+        partnerPhone: reg.partner_phone,
+        partnerTshirtSize: reg.partner_tshirt_size,
+        categories,
+        confirmed: !!reg.confirmed,
+        token: reg.token,
+        paymentStatus: reg.payment_status || 'pending',
+        paymentDate: reg.payment_date ? new Date(reg.payment_date).toISOString() : undefined,
+        createdAt: reg.created_at.toISOString(),
+        isDemo: reg.token?.startsWith(`demo-${tournamentId}-`) || false,
+      };
+    });
 
     return NextResponse.json({ registrations: formatted });
   } catch (error: any) {

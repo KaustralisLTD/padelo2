@@ -490,7 +490,7 @@
       "participantUpdateError": "No se pudo actualizar el participante.",
       "paymentStatusUpdated": "Estado de pago actualizado correctamente.",
       "paymentStatusUpdateError": "No se pudo actualizar el estado de pago.",
-      "pairs": "parejas",
+      "totalParticipants": "Total: {count} participantes",      "pairs": "parejas",
       "generateScheduleForAll": "Generar calendario para todas las categorías",
       "generateForAllCategories": "Generar calendario para todas las categorías.",
       "noSchedule": "El calendario aún no se ha creado.",
@@ -861,7 +861,7 @@
       "participantUpdateError": "No se pudo actualizar el participante.",
       "paymentStatusUpdated": "Estado de pago actualizado correctamente.",
       "paymentStatusUpdateError": "No se pudo actualizar el estado de pago."
-    },
+      "totalParticipants": "Total: {count} participantes",    },
     "staff": {
       "assignAccess": "Asignar Acceso",
       "editAccess": "Editar Acceso",

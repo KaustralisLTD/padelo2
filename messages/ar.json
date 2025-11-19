@@ -446,7 +446,7 @@
       "participantUpdateError": "فشل تحديث المشارك.",
       "paymentStatusUpdated": "تم تحديث حالة الدفع بنجاح.",
       "paymentStatusUpdateError": "فشل تحديث حالة الدفع.",
-      "pairs": "أزواج",
+      "totalParticipants": "المجموع: {count} مشارك",      "pairs": "أزواج",
       "noSchedule": "لم يتم إنشاء الجدول بعد.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -746,7 +746,7 @@
       "participantUpdateError": "فشل تحديث المشارك.",
       "paymentStatusUpdated": "تم تحديث حالة الدفع بنجاح.",
       "paymentStatusUpdateError": "فشل تحديث حالة الدفع."
-    },
+      "totalParticipants": "المجموع: {count} مشارك",    },
     "staff": {
       "assignAccess": "تعيين الوصول",
       "editAccess": "تعديل الوصول",

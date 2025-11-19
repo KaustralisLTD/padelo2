@@ -52,8 +52,18 @@ export default function TournamentParticipantsPage() {
       return;
     }
 
-    fetchTournament();
-    fetchParticipants();
+    if (isNaN(tournamentId)) {
+      setError('Invalid tournament ID');
+      setLoading(false);
+      return;
+    }
+
+    const loadData = async () => {
+      await fetchTournament();
+      await fetchParticipants();
+    };
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId, token]);
 
   const fetchTournament = async () => {
@@ -100,11 +110,15 @@ export default function TournamentParticipantsPage() {
       if (response.ok) {
         const data = await response.json();
         setParticipants(data.registrations || []);
+        setError(null);
       } else {
-        setError(t('tournaments.participantsLoadError'));
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Error fetching participants:', errorData);
+        setError(errorData.error || tTournaments('participantsLoadError'));
       }
-    } catch (err) {
-      setError(t('tournaments.participantsLoadError'));
+    } catch (err: any) {
+      console.error('Error fetching participants:', err);
+      setError(err.message || tTournaments('participantsLoadError'));
     } finally {
       setLoading(false);
     }
@@ -144,16 +158,16 @@ export default function TournamentParticipantsPage() {
       });
 
       if (response.ok) {
-        setSuccess(t('tournaments.participantUpdated'));
+        setSuccess(tTournaments('participantUpdated'));
         fetchParticipants();
         setEditingParticipant(null);
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
-        setError(errorData.error || t('tournaments.participantUpdateError'));
+        setError(errorData.error || tTournaments('participantUpdateError'));
       }
     } catch (err) {
-      setError(t('tournaments.participantUpdateError'));
+      setError(tTournaments('participantUpdateError'));
     }
   };
 
@@ -175,15 +189,15 @@ export default function TournamentParticipantsPage() {
       });
 
       if (response.ok) {
-        setSuccess(t('tournaments.paymentStatusUpdated'));
+        setSuccess(tTournaments('paymentStatusUpdated'));
         fetchParticipants();
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
-        setError(errorData.error || t('tournaments.paymentStatusUpdateError'));
+        setError(errorData.error || tTournaments('paymentStatusUpdateError'));
       }
     } catch (err) {
-      setError(t('tournaments.paymentStatusUpdateError'));
+      setError(tTournaments('paymentStatusUpdateError'));
     }
   };
 
@@ -204,15 +218,15 @@ export default function TournamentParticipantsPage() {
       });
 
       if (response.ok) {
-        setSuccess(t('tournaments.participantCategoryUpdated'));
+        setSuccess(tTournaments('participantCategoryUpdated'));
         fetchParticipants();
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
-        setError(errorData.error || t('tournaments.participantCategoryUpdateError'));
+        setError(errorData.error || tTournaments('participantCategoryUpdateError'));
       }
     } catch (err) {
-      setError(t('tournaments.participantCategoryUpdateError'));
+      setError(tTournaments('participantCategoryUpdateError'));
     }
   };
 
@@ -220,27 +234,30 @@ export default function TournamentParticipantsPage() {
     return (
       <div className="min-h-screen bg-background p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center py-12 text-text-secondary">{t('tournaments.loading')}</div>
+          <div className="text-center py-12 text-text-secondary">{tTournaments('loading')}</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <Link
-              href={`/${locale}/admin/tournaments`}
-              className="text-text-secondary hover:text-primary transition-colors mb-2 inline-block"
-            >
-              ← {t('tournaments.backToTournaments')}
-            </Link>
-            <h1 className="text-3xl font-poppins font-bold gradient-text">
-              {t('tournaments.participants')} {tournamentName && `- ${tournamentName}`}
-            </h1>
-          </div>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
+        <div className="mb-6">
+          <Link
+            href={`/${locale}/admin/tournaments`}
+            className="text-text-secondary hover:text-primary transition-colors mb-4 inline-block"
+          >
+            ← {tTournaments('backToTournaments')}
+          </Link>
+          <h1 className="text-3xl font-poppins font-bold gradient-text">
+            {tTournaments('participants')} {tournamentName && `- ${tournamentName}`}
+          </h1>
+          {participants.length > 0 && (
+            <p className="text-text-tertiary mt-2">
+              {tTournaments('totalParticipants', { count: participants.length })}
+            </p>
+          )}
         </div>
 
         {error && (
@@ -257,32 +274,32 @@ export default function TournamentParticipantsPage() {
 
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
+            <table className="w-full border-collapse min-w-[1200px]">
               <thead>
                 <tr className="border-b border-border bg-background">
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.participantName')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[150px]">
+                    {tTournaments('participantName')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.participantEmail')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[180px]">
+                    {tTournaments('participantEmail')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.participantPhone')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[120px]">
+                    {tTournaments('participantPhone')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.participantCategory')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[140px]">
+                    {tTournaments('participantCategory')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.participantPartner')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[150px]">
+                    {tTournaments('participantPartner')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.tshirtSize')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[100px]">
+                    {tTournaments('tshirtSize')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.paymentStatus')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[130px]">
+                    {tTournaments('paymentStatus')}
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
-                    {t('tournaments.actions')}
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[100px]">
+                    {tTournaments('actions')}
                   </th>
                 </tr>
               </thead>
@@ -290,27 +307,29 @@ export default function TournamentParticipantsPage() {
                 {participants.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="px-4 py-8 text-center text-text-secondary">
-                      {t('tournaments.noParticipants')}
+                      {tTournaments('noParticipants')}
                     </td>
                   </tr>
                 ) : (
                   participants.map((participant) => (
                     <tr key={participant.id} className="border-b border-border hover:bg-background/50">
-                      <td className="px-4 py-3 text-sm text-text">
-                        {participant.firstName} {participant.lastName}
-                        {participant.isDemo && (
-                          <span className="ml-2 px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded text-xs">
-                            Demo
-                          </span>
-                        )}
+                      <td className="px-3 py-2 text-xs text-text">
+                        <div className="flex items-center gap-2">
+                          <span>{participant.firstName} {participant.lastName}</span>
+                          {participant.isDemo && (
+                            <span className="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-500 rounded text-xs whitespace-nowrap">
+                              Demo
+                            </span>
+                          )}
+                        </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-text">{participant.email}</td>
-                      <td className="px-4 py-3 text-sm text-text">{participant.phone || '-'}</td>
-                      <td className="px-4 py-3 text-sm">
+                      <td className="px-3 py-2 text-xs text-text break-all">{participant.email}</td>
+                      <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.phone || '-'}</td>
+                      <td className="px-3 py-2 text-xs">
                         <select
                           value={participant.categories?.[0] || ''}
                           onChange={(e) => handleCategoryChange(participant.id, e.target.value)}
-                          className="px-3 py-1 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                          className="w-full px-2 py-1 bg-background border border-border rounded text-text text-xs focus:outline-none focus:border-primary"
                         >
                           {Object.entries(customCategories).map(([code, name]) => (
                             <option key={code} value={code}>
@@ -319,13 +338,9 @@ export default function TournamentParticipantsPage() {
                           ))}
                         </select>
                       </td>
-                      <td className="px-4 py-3 text-sm text-text">
-                        {participant.partnerName || '-'}
-                      </td>
-                      <td className="px-4 py-3 text-sm text-text">
-                        {participant.tshirtSize || '-'}
-                      </td>
-                      <td className="px-4 py-3 text-sm">
+                      <td className="px-3 py-2 text-xs text-text">{participant.partnerName || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.tshirtSize || '-'}</td>
+                      <td className="px-3 py-2 text-xs">
                         <select
                           value={participant.paymentStatus || 'pending'}
                           onChange={(e) =>
@@ -334,19 +349,19 @@ export default function TournamentParticipantsPage() {
                               e.target.value as 'pending' | 'paid' | 'refunded'
                             )
                           }
-                          className="px-3 py-1 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                          className="w-full px-2 py-1 bg-background border border-border rounded text-text text-xs focus:outline-none focus:border-primary"
                         >
-                          <option value="pending">{t('tournaments.paymentPending')}</option>
-                          <option value="paid">{t('tournaments.paymentPaid')}</option>
-                          <option value="refunded">{t('tournaments.paymentRefunded')}</option>
+                          <option value="pending">{tTournaments('paymentPending')}</option>
+                          <option value="paid">{tTournaments('paymentPaid')}</option>
+                          <option value="refunded">{tTournaments('paymentRefunded')}</option>
                         </select>
                       </td>
-                      <td className="px-4 py-3 text-sm">
+                      <td className="px-3 py-2 text-xs">
                         <button
                           onClick={() => handleEdit(participant)}
-                          className="px-3 py-1 bg-primary text-background rounded hover:opacity-90 transition-opacity text-sm"
+                          className="px-2 py-1 bg-primary text-background rounded hover:opacity-90 transition-opacity text-xs whitespace-nowrap"
                         >
-                          {t('tournaments.edit')}
+                          {tTournaments('edit')}
                         </button>
                       </td>
                     </tr>
@@ -363,7 +378,7 @@ export default function TournamentParticipantsPage() {
             <div className="bg-background-secondary rounded-lg border border-border max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-border flex justify-between items-center">
                 <h3 className="text-2xl font-poppins font-bold gradient-text">
-                  {t('tournaments.editParticipant')}
+                  {tTournaments('editParticipant')}
                 </h3>
                 <button
                   type="button"
@@ -380,7 +395,7 @@ export default function TournamentParticipantsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('tournaments.firstName')} *
+                      {tTournaments('firstName')} *
                     </label>
                     <input
                       type="text"
@@ -391,7 +406,7 @@ export default function TournamentParticipantsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('tournaments.lastName')} *
+                      {tTournaments('lastName')} *
                     </label>
                     <input
                       type="text"
@@ -404,7 +419,7 @@ export default function TournamentParticipantsPage() {
 
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('tournaments.participantEmail')} *
+                    {tTournaments('participantEmail')} *
                   </label>
                   <input
                     type="email"
@@ -417,7 +432,7 @@ export default function TournamentParticipantsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('tournaments.participantPhone')}
+                      {tTournaments('participantPhone')}
                     </label>
                     <input
                       type="tel"
@@ -428,7 +443,7 @@ export default function TournamentParticipantsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('tournaments.telegram')}
+                      {tTournaments('telegram')}
                     </label>
                     <input
                       type="text"
@@ -441,7 +456,7 @@ export default function TournamentParticipantsPage() {
 
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('tournaments.tshirtSize')}
+                    {tTournaments('tshirtSize')}
                   </label>
                   <select
                     value={editFormData.tshirtSize || ''}
@@ -460,7 +475,7 @@ export default function TournamentParticipantsPage() {
 
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('tournaments.participantCategory')}
+                    {tTournaments('participantCategory')}
                   </label>
                   <select
                     value={editFormData.categories?.[0] || ''}
@@ -479,13 +494,13 @@ export default function TournamentParticipantsPage() {
                   <>
                     <div className="pt-4 border-t border-border">
                       <h4 className="text-lg font-poppins font-semibold text-text mb-4">
-                        {t('tournaments.partnerInfo')}
+                        {tTournaments('partnerInfo')}
                       </h4>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('tournaments.partnerName')}
+                          {tTournaments('partnerName')}
                         </label>
                         <input
                           type="text"
@@ -496,7 +511,7 @@ export default function TournamentParticipantsPage() {
                       </div>
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('tournaments.partnerEmail')}
+                          {tTournaments('partnerEmail')}
                         </label>
                         <input
                           type="email"
@@ -509,7 +524,7 @@ export default function TournamentParticipantsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('tournaments.partnerPhone')}
+                          {tTournaments('partnerPhone')}
                         </label>
                         <input
                           type="tel"
@@ -520,7 +535,7 @@ export default function TournamentParticipantsPage() {
                       </div>
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('tournaments.partnerTshirtSize')}
+                          {tTournaments('partnerTshirtSize')}
                         </label>
                         <select
                           value={editFormData.partnerTshirtSize || ''}
@@ -542,7 +557,7 @@ export default function TournamentParticipantsPage() {
 
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('tournaments.message')}
+                    {tTournaments('message')}
                   </label>
                   <textarea
                     value={editFormData.message || ''}
@@ -558,14 +573,14 @@ export default function TournamentParticipantsPage() {
                     onClick={() => setEditingParticipant(null)}
                     className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
                   >
-                    {t('tournaments.cancel')}
+                    {tTournaments('cancel')}
                   </button>
                   <button
                     type="button"
                     onClick={handleSave}
                     className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
                   >
-                    {t('tournaments.save')}
+                    {tTournaments('save')}
                   </button>
                 </div>
               </div>

@@ -450,7 +450,7 @@
       "participantUpdateError": "Kunne ikke opdatere deltager.",
       "paymentStatusUpdated": "Betalingsstatus opdateret med succes.",
       "paymentStatusUpdateError": "Kunne ikke opdatere betalingsstatus.",
-      "pairs": "par",
+      "totalParticipants": "I alt: {count} deltagere",      "pairs": "par",
       "noSchedule": "Tidsplanen er endnu ikke oprettet.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -741,7 +741,7 @@
       "participantUpdateError": "Kunne ikke opdatere deltager.",
       "paymentStatusUpdated": "Betalingsstatus opdateret med succes.",
       "paymentStatusUpdateError": "Kunne ikke opdatere betalingsstatus."
-    },
+      "totalParticipants": "I alt: {count} deltagere",    },
     "staff": {
       "assignAccess": "Tildel Adgang",
       "editAccess": "Rediger Adgang",

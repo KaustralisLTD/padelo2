@@ -450,7 +450,7 @@
       "participantUpdateError": "Kunde inte uppdatera deltagare.",
       "paymentStatusUpdated": "Betalningsstatus uppdaterad framgångsrikt.",
       "paymentStatusUpdateError": "Kunde inte uppdatera betalningsstatus.",
-      "pairs": "par",
+      "totalParticipants": "Totalt: {count} deltagare",      "pairs": "par",
       "noSchedule": "Schedule not created yet.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -741,7 +741,7 @@
       "participantUpdateError": "Kunde inte uppdatera deltagare.",
       "paymentStatusUpdated": "Betalningsstatus uppdaterad framgångsrikt.",
       "paymentStatusUpdateError": "Kunde inte uppdatera betalningsstatus."
-    },
+      "totalParticipants": "Totalt: {count} deltagare",    },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",
       "editAccess": "Redigera Åtkomst",

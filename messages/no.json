@@ -450,7 +450,7 @@
       "participantUpdateError": "Kunne ikke oppdatere deltaker.",
       "paymentStatusUpdated": "Betalingsstatus oppdatert med hell.",
       "paymentStatusUpdateError": "Kunne ikke oppdatere betalingsstatus.",
-      "pairs": "par",
+      "totalParticipants": "Totalt: {count} deltakere",      "pairs": "par",
       "noSchedule": "Timeplanen er ikke opprettet ennå.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -741,7 +741,7 @@
       "participantUpdateError": "Kunne ikke oppdatere deltaker.",
       "paymentStatusUpdated": "Betalingsstatus oppdatert med hell.",
       "paymentStatusUpdateError": "Kunne ikke oppdatere betalingsstatus."
-    },
+      "totalParticipants": "Totalt: {count} deltakere",    },
     "staff": {
       "assignAccess": "Tildel Tilgang",
       "editAccess": "Rediger Tilgang",
