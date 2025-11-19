@@ -58,8 +58,14 @@ export async function POST(request: NextRequest) {
       endDate,
       registrationDeadline,
       location,
+      locationAddress,
+      locationCoordinates,
+      eventSchedule,
       maxParticipants,
+      priceSingleCategory,
+      priceDoubleCategory,
       status = 'draft',
+      registrationSettings,
     } = body;
 
     if (!name || !startDate || !endDate) {
@@ -76,8 +82,14 @@ export async function POST(request: NextRequest) {
       endDate,
       registrationDeadline,
       location,
+      locationAddress,
+      locationCoordinates,
+      eventSchedule,
       maxParticipants,
+      priceSingleCategory,
+      priceDoubleCategory,
       status,
+      registrationSettings,
     });
 
     return NextResponse.json({ tournament }, { status: 201 });

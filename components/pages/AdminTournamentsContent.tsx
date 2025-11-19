@@ -4,6 +4,12 @@ import { useEffect, useState, FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import {
+  TournamentRegistrationSettings,
+  RegistrationCustomField,
+  getDefaultRegistrationSettings,
+  normalizeRegistrationSettings,
+} from '@/lib/registration-settings';
 
 interface EventScheduleItem {
   title: string;
@@ -29,17 +35,15 @@ interface Tournament {
   status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo';
   createdAt: string;
   updatedAt?: string;
+  registrationSettings?: TournamentRegistrationSettings;
 }
 
 export default function AdminTournamentsContent() {
   const t = useTranslations('Admin');
   const locale = useLocale();
   const router = useRouter();
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingTournament, setEditingTournament] = useState<Tournament | null>(null);
-  const [formData, setFormData] = useState({
+
+  const createDefaultFormData = () => ({
     name: '',
     description: '',
     startDate: '',
@@ -55,11 +59,20 @@ export default function AdminTournamentsContent() {
     priceDoubleCategory: '',
     status: 'draft' as Tournament['status'],
     demoParticipantsCount: '',
+    registrationSettings: getDefaultRegistrationSettings(),
   });
+
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingTournament, setEditingTournament] = useState<Tournament | null>(null);
+  const [formData, setFormData] = useState(createDefaultFormData);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  const registrationSettings = normalizeRegistrationSettings(formData.registrationSettings);
+  const customFields = registrationSettings.customFields;
 
   useEffect(() => {
     if (!token) {
@@ -153,6 +166,7 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: formData.priceSingleCategory ? parseFloat(formData.priceSingleCategory) : undefined,
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
+          registrationSettings: formData.registrationSettings,
         }),
       });
 
@@ -237,6 +251,7 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: formData.priceSingleCategory ? parseFloat(formData.priceSingleCategory) : undefined,
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
+          registrationSettings: formData.registrationSettings,
         }),
       });
 
@@ -304,6 +319,7 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: tournament.priceSingleCategory || undefined,
           priceDoubleCategory: tournament.priceDoubleCategory || undefined,
           status: 'draft', // Всегда Draft для копии
+          registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
         }),
       });
 
@@ -322,23 +338,61 @@ export default function AdminTournamentsContent() {
   };
 
   const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      startDate: '',
-      endDate: '',
-      registrationDeadline: '',
-      location: '',
-      locationAddress: '',
-      locationLat: '',
-      locationLng: '',
-      eventSchedule: [],
-      maxParticipants: '',
-      priceSingleCategory: '',
-      priceDoubleCategory: '',
-      status: 'draft',
-      demoParticipantsCount: '',
+    setFormData(createDefaultFormData());
+  };
+
+  const updateRegistrationSettingsState = (
+    updater: (current: TournamentRegistrationSettings) => TournamentRegistrationSettings
+  ) => {
+    setFormData((prev) => {
+      const current = normalizeRegistrationSettings(prev.registrationSettings);
+      const next = updater(current);
+      return {
+        ...prev,
+        registrationSettings: normalizeRegistrationSettings(next),
+      };
     });
+  };
+
+  const updateCustomField = (
+    id: string,
+    mutator: (field: RegistrationCustomField) => RegistrationCustomField | null
+  ) => {
+    updateRegistrationSettingsState((current) => {
+      const normalized = normalizeRegistrationSettings(current);
+      const nextFields = normalized.customFields
+        .map((field) => {
+          if (field.id !== id) return field;
+          const updated = mutator(field);
+          return updated ?? null;
+        })
+        .filter(Boolean) as RegistrationCustomField[];
+
+      return {
+        ...normalized,
+        customFields: nextFields,
+      };
+    });
+  };
+
+  const addCustomField = () => {
+    updateRegistrationSettingsState((current) => {
+      const normalized = normalizeRegistrationSettings(current);
+      const newField: RegistrationCustomField = {
+        id: `customField_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+        label: '',
+        enabled: true,
+        required: false,
+      };
+      return {
+        ...normalized,
+        customFields: [...normalized.customFields, newField],
+      };
+    });
+  };
+
+  const removeCustomField = (id: string) => {
+    updateCustomField(id, () => null);
   };
 
   // Convert ISO date string to datetime-local format (YYYY-MM-DDTHH:mm)
@@ -372,6 +426,7 @@ export default function AdminTournamentsContent() {
       priceDoubleCategory: tournament.priceDoubleCategory?.toString() || '',
       status: tournament.status,
       demoParticipantsCount: '',
+      registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
     });
     setShowCreateModal(true);
   };
@@ -952,6 +1007,214 @@ export default function AdminTournamentsContent() {
                       {t('tournaments.priceDoubleCategoryDesc')}
                     </p>
                   </div>
+                </div>
+
+                <div className="border-t border-border pt-4 space-y-4">
+                  <h4 className="text-lg font-poppins font-semibold text-text">
+                    {t('tournaments.registrationSettings')}
+                  </h4>
+
+                  <div className="space-y-3">
+                    <label className="flex items-start gap-3 p-3 bg-background border border-border rounded-lg cursor-pointer transition-colors hover:border-primary">
+                      <input
+                        type="checkbox"
+                        checked={registrationSettings.tshirtField.enabled}
+                        onChange={() =>
+                          updateRegistrationSettingsState((current) => ({
+                            ...current,
+                            tshirtField: {
+                              ...current.tshirtField,
+                              enabled: !current.tshirtField.enabled,
+                              // если выключаем, убираем обязательность
+                              required: current.tshirtField.enabled ? false : current.tshirtField.required,
+                            },
+                          }))
+                        }
+                        className="mt-1 w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                      />
+                      <div>
+                        <p className="text-sm font-poppins text-text">
+                          {t('tournaments.registrationTshirtEnabled')}
+                        </p>
+                        <p className="text-xs text-text-secondary">
+                          {t('tournaments.registrationTshirtLabel')}
+                        </p>
+                      </div>
+                    </label>
+
+                    {registrationSettings.tshirtField.enabled && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-6">
+                        <label className="flex items-center gap-2 text-sm font-poppins text-text">
+                          <input
+                            type="checkbox"
+                            checked={registrationSettings.tshirtField.required}
+                            onChange={() =>
+                              updateRegistrationSettingsState((current) => ({
+                                ...current,
+                                tshirtField: {
+                                  ...current.tshirtField,
+                                  required: !current.tshirtField.required,
+                                },
+                              }))
+                            }
+                            className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                          />
+                          {t('tournaments.registrationTshirtRequired')}
+                        </label>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('tournaments.registrationTshirtLabel')}
+                          </label>
+                          <input
+                            type="text"
+                            value={registrationSettings.tshirtField.label}
+                            onChange={(e) =>
+                              updateRegistrationSettingsState((current) => ({
+                                ...current,
+                                tshirtField: {
+                                  ...current.tshirtField,
+                                  label: e.target.value,
+                                },
+                              }))
+                            }
+                            placeholder={t('tournaments.registrationTshirtLabel')}
+                            className="w-full px-4 py-2 bg-background-secondary border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="p-4 bg-background border border-border rounded-lg space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-poppins font-semibold text-text">
+                          {t('tournaments.registrationCustomFieldTitle')}
+                        </p>
+                        <p className="text-xs text-text-tertiary">
+                          {t('tournaments.registrationCustomFieldHint')}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={addCustomField}
+                        className="px-3 py-1.5 text-xs font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors"
+                      >
+                        {t('tournaments.registrationCustomFieldAdd')}
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {customFields.length === 0 && (
+                        <p className="text-sm text-text-secondary font-poppins">
+                          {t('tournaments.registrationCustomFieldEmpty')}
+                        </p>
+                      )}
+
+                      {customFields.map((field, index) => (
+                        <div
+                          key={field.id}
+                          className="p-3 bg-background-secondary rounded-lg border border-border space-y-3"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                              <p className="text-sm font-poppins font-semibold text-text">
+                                {t('tournaments.registrationCustomFieldTitle')} #{index + 1}
+                              </p>
+                              <p className="text-xs text-text-tertiary">
+                                {t('tournaments.registrationCustomFieldHint')}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <label className="flex items-center gap-2 text-sm font-poppins text-text">
+                                <input
+                                  type="checkbox"
+                                  checked={field.enabled}
+                                  onChange={() =>
+                                    updateCustomField(field.id, (currentField) => ({
+                                      ...currentField,
+                                      enabled: !currentField.enabled,
+                                      required: currentField.enabled ? false : currentField.required,
+                                    }))
+                                  }
+                                  className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                                />
+                                {t('tournaments.registrationCustomFieldEnabled')}
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => removeCustomField(field.id)}
+                                className="text-xs text-red-400 hover:text-red-300 font-poppins"
+                              >
+                                {t('tournaments.registrationCustomFieldRemove')}
+                              </button>
+                            </div>
+                          </div>
+
+                          {field.enabled && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                                  {t('tournaments.registrationCustomFieldLabel')}
+                                </label>
+                                <input
+                                  type="text"
+                                  value={field.label}
+                                  onChange={(e) =>
+                                    updateCustomField(field.id, (currentField) => ({
+                                      ...currentField,
+                                      label: e.target.value,
+                                    }))
+                                  }
+                                  placeholder={t('tournaments.registrationCustomFieldLabel')}
+                                  className="w-full px-4 py-2 bg-background-secondary border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                                />
+                              </div>
+                              <label className="flex items-center gap-2 text-sm font-poppins text-text">
+                                <input
+                                  type="checkbox"
+                                  checked={field.required}
+                                  onChange={() =>
+                                    updateCustomField(field.id, (currentField) => ({
+                                      ...currentField,
+                                      required: !currentField.required,
+                                    }))
+                                  }
+                                  className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                                />
+                                {t('tournaments.registrationCustomFieldRequired')}
+                              </label>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <label className="flex items-start gap-3 p-3 bg-background border border-border rounded-lg cursor-pointer transition-colors hover:border-primary">
+                    <input
+                      type="checkbox"
+                      checked={registrationSettings.partner.required}
+                      onChange={() =>
+                        updateRegistrationSettingsState((current) => ({
+                          ...current,
+                          partner: {
+                            ...current.partner,
+                            required: !current.partner.required,
+                          },
+                        }))
+                      }
+                      className="mt-1 w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                    />
+                    <div>
+                      <p className="text-sm font-poppins text-text">
+                        {t('tournaments.registrationPartnerRequired')}
+                      </p>
+                      <p className="text-xs text-text-tertiary">
+                        {t('tournaments.registrationPartnerHint')}
+                      </p>
+                    </div>
+                  </label>
                 </div>
 
                 <div>

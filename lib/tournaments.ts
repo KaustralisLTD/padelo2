@@ -1,5 +1,10 @@
 // Tournament management utilities
 import { getDbPool } from './db';
+import {
+  TournamentRegistrationSettings,
+  getDefaultRegistrationSettings,
+  normalizeRegistrationSettings,
+} from './registration-settings';
 
 export interface EventScheduleItem {
   title: string;
@@ -25,6 +30,7 @@ export interface Tournament {
   status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo';
   createdAt: string;
   updatedAt?: string;
+  registrationSettings: TournamentRegistrationSettings;
 }
 
 export interface TournamentGroup {
@@ -72,6 +78,19 @@ const useDatabase = !!(
 );
 
 // Tournaments CRUD
+function parseRegistrationSettings(value: any): TournamentRegistrationSettings {
+  try {
+    if (!value) {
+      return getDefaultRegistrationSettings();
+    }
+    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
+    return normalizeRegistrationSettings(parsed);
+  } catch (error) {
+    console.error('[parseRegistrationSettings] Failed to parse registration settings:', error);
+    return getDefaultRegistrationSettings();
+  }
+}
+
 export async function getAllTournaments(): Promise<Tournament[]> {
   if (!useDatabase) {
     console.log('[getAllTournaments] Database not configured, returning empty array');
@@ -127,6 +146,7 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         status: row.status,
         createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString()) : new Date().toISOString(),
         updatedAt: row.updated_at ? (row.updated_at instanceof Date ? row.updated_at.toISOString() : new Date(row.updated_at).toISOString()) : undefined,
+        registrationSettings: parseRegistrationSettings(row.registration_settings),
       };
     });
   } catch (error) {
@@ -192,6 +212,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       status: row.status,
       createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : new Date(row.created_at).toISOString()) : new Date().toISOString(),
       updatedAt: row.updated_at ? (row.updated_at instanceof Date ? row.updated_at.toISOString() : new Date(row.updated_at).toISOString()) : undefined,
+      registrationSettings: parseRegistrationSettings(row.registration_settings),
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
@@ -200,15 +221,20 @@ export async function getTournament(id: number): Promise<Tournament | null> {
   }
 }
 
-export async function createTournament(tournament: Omit<Tournament, 'id' | 'createdAt' | 'updatedAt'>): Promise<Tournament> {
+export async function createTournament(
+  tournament: Omit<Tournament, 'id' | 'createdAt' | 'updatedAt'> & {
+    registrationSettings?: TournamentRegistrationSettings;
+  }
+): Promise<Tournament> {
   if (!useDatabase) {
     throw new Error('Database not configured');
   }
   
   const pool = getDbPool();
+  const registrationSettings = normalizeRegistrationSettings(tournament.registrationSettings);
   const [result] = await pool.execute(
-    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, registration_settings)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       tournament.name,
       tournament.description || null,
@@ -223,6 +249,7 @@ export async function createTournament(tournament: Omit<Tournament, 'id' | 'crea
       tournament.priceSingleCategory || null,
       tournament.priceDoubleCategory || null,
       tournament.status,
+      JSON.stringify(registrationSettings),
     ]
   ) as any;
   
@@ -291,6 +318,10 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if (tournament.status !== undefined) {
     updates.push('status = ?');
     values.push(tournament.status);
+  }
+  if (tournament.registrationSettings !== undefined) {
+    updates.push('registration_settings = ?');
+    values.push(JSON.stringify(normalizeRegistrationSettings(tournament.registrationSettings)));
   }
   
   if (updates.length === 0) {

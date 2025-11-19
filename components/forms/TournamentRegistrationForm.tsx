@@ -2,6 +2,11 @@
 
 import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import {
+  TournamentRegistrationSettings,
+  getDefaultRegistrationSettings,
+  normalizeRegistrationSettings,
+} from '@/lib/registration-settings';
 
 interface Partner {
   name: string;
@@ -30,6 +35,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     tshirtSize: '',
     message: '',
   });
+  const [registrationSettings, setRegistrationSettings] = useState<TournamentRegistrationSettings>(
+    () => getDefaultRegistrationSettings()
+  );
+  const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const [partner, setPartner] = useState<Partner | null>(null);
   const [showPartner, setShowPartner] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,6 +62,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   };
 
   const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  const enabledCustomFields = registrationSettings.customFields.filter((field) => field.enabled);
+  const partnerRequired = registrationSettings.partner.required;
+  const tshirtFieldConfig = registrationSettings.tshirtField;
+  const tshirtFieldLabel = tshirtFieldConfig.label?.trim() || t('form.tshirtSize');
 
   // Автозаполнение формы данными пользователя, если он залогинен
   useEffect(() => {
@@ -98,6 +111,49 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
 
     loadUserProfile();
   }, [profileLoaded]);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch(`/api/tournament/${tournamentId}`);
+        if (response.ok) {
+          const data = await response.json();
+          const settings = data.tournament?.registrationSettings;
+          setRegistrationSettings(normalizeRegistrationSettings(settings));
+        }
+      } catch (error) {
+        console.error('Error fetching tournament settings:', error);
+        setRegistrationSettings(getDefaultRegistrationSettings());
+      }
+    };
+
+    fetchSettings();
+  }, [tournamentId]);
+
+  useEffect(() => {
+    if (registrationSettings.partner.required) {
+      setShowPartner(true);
+      setPartner((prev) => prev ?? createEmptyPartner());
+    }
+  }, [registrationSettings.partner.required]);
+
+  useEffect(() => {
+    if (!registrationSettings.tshirtField.enabled && formData.tshirtSize) {
+      setFormData((prev) => ({ ...prev, tshirtSize: '' }));
+    }
+  }, [registrationSettings.tshirtField.enabled, formData.tshirtSize]);
+
+  useEffect(() => {
+    setCustomFieldValues((prev) => {
+      const next = { ...prev };
+      registrationSettings.customFields.forEach((field) => {
+        if (!field.enabled && next[field.id] !== undefined) {
+          delete next[field.id];
+        }
+      });
+      return next;
+    });
+  }, [registrationSettings]);
 
   const handleCategoryChange = (category: string) => {
     setFormData(prev => {
@@ -201,15 +257,47 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       return;
     }
 
-    if (showPartner && partner) {
-      if (!partner.tshirtSize) {
-        alert(t('form.partnerSelectSize'));
+    if (tshirtFieldConfig.enabled && tshirtFieldConfig.required && !formData.tshirtSize) {
+      alert(t('form.selectSize'));
+      return;
+    }
+
+    for (const field of enabledCustomFields) {
+      if (field.required && !(customFieldValues[field.id]?.trim())) {
+        alert(t('form.error'));
         return;
       }
     }
 
+    const partnerSectionVisible = partnerRequired || showPartner;
+
+    if (partnerSectionVisible && partner) {
+      if (!partner.tshirtSize) {
+        alert(t('form.partnerSelectSize'));
+        return;
+      }
+    } else if (partnerSectionVisible && !partner) {
+      alert(t('form.error'));
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
+
+    const enabledCustomFieldsPayload = enabledCustomFields.map((field) => ({
+      id: field.id,
+      label: field.label,
+      value: customFieldValues[field.id] || '',
+    }));
+
+    const partnerPayload =
+      partnerSectionVisible && partner
+        ? {
+            ...partner,
+            photoData: partner.photoData || null,
+            photoName: partner.photoName || null,
+          }
+        : null;
 
     try {
       const response = await fetch('/api/tournament/register', {
@@ -222,13 +310,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           tournamentName,
           locale,
           ...formData,
-          partner: partner
-            ? {
-                ...partner,
-                photoData: partner.photoData || null,
-                photoName: partner.photoName || null,
-              }
-            : null,
+          tshirtSize: tshirtFieldConfig.enabled ? formData.tshirtSize : '',
+          customFields: enabledCustomFieldsPayload,
+          partner: partnerPayload,
         }),
       });
 
@@ -414,48 +498,56 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       </div>
 
       {/* T-shirt Size */}
-      <div>
-        <label className="block text-sm font-poppins text-text-secondary mb-2">
-          {t('form.tshirtSize')} *
-        </label>
-        <select
-          required
-          value={formData.tshirtSize}
-          onChange={(e) => setFormData({ ...formData, tshirtSize: e.target.value })}
-          className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-        >
-          <option value="">{t('form.selectSize')}</option>
-          {tshirtSizes.map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
-      </div>
+      {tshirtFieldConfig.enabled && (
+        <div>
+          <label className="block text-sm font-poppins text-text-secondary mb-2">
+            {tshirtFieldLabel} {tshirtFieldConfig.required && <span className="text-red-400">*</span>}
+          </label>
+          <select
+            required={tshirtFieldConfig.required}
+            value={formData.tshirtSize}
+            onChange={(e) => setFormData({ ...formData, tshirtSize: e.target.value })}
+            className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+          >
+            <option value="">{t('form.selectSize')}</option>
+            {tshirtSizes.map((size) => (
+              <option key={size} value={size}>
+                {size}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Add Partner */}
       <div>
-        <button
-          type="button"
-          onClick={() => {
-            if (showPartner) {
-              setShowPartner(false);
-              setPartner(null);
-              setPartnerPhotoError(null);
-            } else {
-              setShowPartner(true);
-              setPartner(createEmptyPartner());
-            }
-          }}
-          className="flex items-center gap-2 px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors"
-        >
-          <span className="text-xl">{showPartner ? '−' : '+'}</span>
-          <span className="font-poppins">
-            {showPartner ? t('form.removePartner') : t('form.addPartner')}
-          </span>
-        </button>
+        {partnerRequired ? (
+          <p className="text-sm text-text-secondary font-poppins mb-3">
+            {t('form.partnerRequiredNotice')}
+          </p>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              if (showPartner) {
+                setShowPartner(false);
+                setPartner(null);
+                setPartnerPhotoError(null);
+              } else {
+                setShowPartner(true);
+                setPartner(createEmptyPartner());
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors"
+          >
+            <span className="text-xl">{showPartner ? '−' : '+'}</span>
+            <span className="font-poppins">
+              {showPartner ? t('form.removePartner') : t('form.addPartner')}
+            </span>
+          </button>
+        )}
 
-        {showPartner && (
+        {(partnerRequired || showPartner) && (
           <div className="mt-4 p-4 bg-background-secondary border border-gray-700 rounded-lg space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -464,7 +556,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 </label>
                 <input
                   type="text"
-                  required={showPartner}
+                  required={partnerRequired || showPartner}
                   value={partner?.name || ''}
                   onChange={(e) => updatePartnerField('name', e.target.value)}
                   className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -476,7 +568,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 </label>
                 <input
                   type="email"
-                  required={showPartner}
+                  required={partnerRequired || showPartner}
                   value={partner?.email || ''}
                   onChange={(e) => updatePartnerField('email', e.target.value)}
                   className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -489,7 +581,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </label>
               <input
                 type="tel"
-                required={showPartner}
+                required={partnerRequired || showPartner}
                 value={partner?.phone || ''}
                 onChange={(e) => updatePartnerField('phone', e.target.value)}
                 className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -500,7 +592,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 {t('form.partnerTshirtSize')} *
               </label>
               <select
-                required={showPartner}
+                required={partnerRequired || showPartner}
                 value={partner?.tshirtSize || ''}
                 onChange={(e) => updatePartnerField('tshirtSize', e.target.value)}
                 className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -535,20 +627,47 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 <p className="mt-2 text-xs text-red-400">{partnerPhotoError}</p>
               )}
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                setShowPartner(false);
-                setPartner(null);
-                setPartnerPhotoError(null);
-              }}
-              className="text-sm text-text-secondary hover:text-primary font-poppins"
-            >
-              {t('form.removePartner')}
-            </button>
+            {!partnerRequired && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowPartner(false);
+                  setPartner(null);
+                  setPartnerPhotoError(null);
+                }}
+                className="text-sm text-text-secondary hover:text-primary font-poppins"
+              >
+                {t('form.removePartner')}
+              </button>
+            )}
           </div>
         )}
       </div>
+
+      {enabledCustomFields.length > 0 && (
+        <div className="space-y-4">
+          {enabledCustomFields.map((field) => (
+            <div key={field.id}>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {field.label || t('form.customFieldFallback')}
+                {field.required && <span className="text-red-400"> *</span>}
+              </label>
+              <input
+                type="text"
+                required={field.required}
+                value={customFieldValues[field.id] || ''}
+                onChange={(e) =>
+                  setCustomFieldValues((prev) => ({
+                    ...prev,
+                    [field.id]: e.target.value,
+                  }))
+                }
+                className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Message */}
       <div>

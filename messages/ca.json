@@ -280,6 +280,8 @@
           "partnerSelectSize": "Selecciona la talla de la parella",
           "partnerPhoto": "Foto de la Parella",
           "partnerPhotoOptional": "Puja la foto de la parella (opcional)",
+          "partnerRequiredNotice": "Per a aquest torneig és obligatori indicar la parella.",
+          "customFieldFallback": "Camp personalitzat",
           "message": "Missatge",
           "messagePlaceholder": "M'agradaria deixar preferències addicionals sobre l'horari dels meus partits",
           "optional": "Opcional",
