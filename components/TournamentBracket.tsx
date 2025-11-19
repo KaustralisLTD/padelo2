@@ -93,6 +93,51 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
     fetchBracket();
   }, [tournamentId]);
 
+  // Автоматическая генерация таблицы для demo турниров с участниками
+  useEffect(() => {
+    const autoGenerateForDemo = async () => {
+      // Проверяем, что это demo турнир, нет групп, но есть участники
+      if (tournamentStatus === 'demo' && Object.keys(bracket).length === 0 && !loading && !generatingBracket) {
+        console.log('[TournamentBracket] Auto-generating bracket for demo tournament');
+        
+        // Проверяем, есть ли участники через API players (который возвращает регистрации)
+        try {
+          const token = localStorage.getItem('auth_token');
+          if (!token) {
+            console.log('[TournamentBracket] No auth token, skipping auto-generation');
+            return;
+          }
+          
+          const participantsResponse = await fetch(`/api/tournament/${tournamentId}/players`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          
+          if (participantsResponse.ok) {
+            const participantsData = await participantsResponse.json();
+            const players = participantsData.players || [];
+            
+            if (players.length > 0) {
+              console.log(`[TournamentBracket] Found ${players.length} players, auto-generating bracket`);
+              await generateBracketForDemo();
+            } else {
+              console.log('[TournamentBracket] No players found, skipping auto-generation');
+            }
+          } else {
+            console.log('[TournamentBracket] Failed to fetch players, status:', participantsResponse.status);
+          }
+        } catch (error) {
+          console.error('[TournamentBracket] Error checking participants:', error);
+        }
+      }
+    };
+
+    // Запускаем только если статус загружен и это demo
+    if (tournamentStatus === 'demo') {
+      autoGenerateForDemo();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tournamentStatus, bracket, loading, generatingBracket, tournamentId]);
+
   useEffect(() => {
     if (selectedCategory && bracket[selectedCategory]) {
       // Проверяем завершенность групп при смене категории
