@@ -80,7 +80,6 @@ export async function POST(
           `+38000000000${i}`, // Телефон по умолчанию
           JSON.stringify(['male1']), // По умолчанию категория male1
           'M', // Размер футболки по умолчанию
-          true,
         ]
       ) as any[];
 
