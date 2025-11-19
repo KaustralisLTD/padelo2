@@ -72,7 +72,7 @@ export default function AdminTournamentsContent() {
       female2: 'Female 2',
       mixed1: 'Mixed 1',
       mixed2: 'Mixed 2',
-    },
+    } as Record<string, string>,
   });
 
   const parseDemoParticipantsInput = (value: string | number | null | undefined) => {
@@ -531,14 +531,14 @@ export default function AdminTournamentsContent() {
       priceDoubleCategory: tournament.priceDoubleCategory?.toString() || '',
       status: tournament.status,
       registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
-      customCategories: tournament.customCategories || {
+      customCategories: (tournament.customCategories || {
         male1: 'Male 1',
         male2: 'Male 2',
         female1: 'Female 1',
         female2: 'Female 2',
         mixed1: 'Mixed 1',
         mixed2: 'Mixed 2',
-      },
+      }) as Record<string, string>,
     });
     setShowCreateModal(true);
   };
