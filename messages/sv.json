@@ -655,7 +655,22 @@
       "deleteDemoParticipants": "Ta bort demo-deltagare",
       "deleteDemoParticipantsConfirm": "Är du säker på att du vill ta bort alla demo-deltagare? Detta tar också bort alla associerade grupper, par och matcher.",
       "deleteDemoParticipantsSuccess": "{count} demo-deltagare borttagna framgångsrikt.",
-      "deleteDemoParticipantsError": "Kunde inte ta bort demo-deltagare."
+      "deleteDemoParticipantsError": "Kunde inte ta bort demo-deltagare.",
+      "participants": "Deltagare",
+      "participantsList": "Deltagarlista",
+      "noParticipants": "Inga deltagare registrerade ännu.",
+      "loading": "Laddar...",
+      "participantName": "Namn",
+      "participantEmail": "E-post",
+      "participantPartner": "Partner",
+      "participantCategory": "Kategori",
+      "participantType": "Typ",
+      "real": "Riktig",
+      "participantsLoadError": "Kunde inte ladda deltagare.",
+      "participantCategoryUpdated": "Deltagarkategori uppdaterad framgångsrikt.",
+      "participantCategoryUpdateError": "Kunde inte uppdatera deltagarkategori.",
+      "demoParticipantsNoCategory": "Ange minst en kategori med deltagare.",
+      "demoParticipantsCategoryOdd": "Kategorin {category} måste ha ett jämnt antal deltagare."
     },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",

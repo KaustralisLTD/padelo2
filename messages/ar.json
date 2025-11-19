@@ -660,7 +660,22 @@
       "deleteDemoParticipants": "حذف المشاركين التجريبيين",
       "deleteDemoParticipantsConfirm": "هل أنت متأكد أنك تريد حذف جميع المشاركين التجريبيين؟ سيؤدي هذا أيضًا إلى حذف جميع المجموعات والأزواج والمباريات المرتبطة.",
       "deleteDemoParticipantsSuccess": "تم حذف {count} مشارك تجريبي بنجاح.",
-      "deleteDemoParticipantsError": "فشل في حذف المشاركين التجريبيين."
+      "deleteDemoParticipantsError": "فشل في حذف المشاركين التجريبيين.",
+      "participants": "المشاركون",
+      "participantsList": "قائمة المشاركين",
+      "noParticipants": "لا يوجد مشاركون مسجلون بعد.",
+      "loading": "جاري التحميل...",
+      "participantName": "الاسم",
+      "participantEmail": "البريد الإلكتروني",
+      "participantPartner": "الشريك",
+      "participantCategory": "الفئة",
+      "participantType": "النوع",
+      "real": "حقيقي",
+      "participantsLoadError": "فشل تحميل المشاركين.",
+      "participantCategoryUpdated": "تم تحديث فئة المشارك بنجاح.",
+      "participantCategoryUpdateError": "فشل تحديث فئة المشارك.",
+      "demoParticipantsNoCategory": "يرجى تحديد فئة واحدة على الأقل مع المشاركين.",
+      "demoParticipantsCategoryOdd": "يجب أن تحتوي الفئة {category} على عدد زوجي من المشاركين."
     },
     "staff": {
       "assignAccess": "تعيين الوصول",

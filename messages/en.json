@@ -832,7 +832,22 @@
       "deleteDemoParticipants": "Delete Demo Participants",
       "deleteDemoParticipantsConfirm": "Are you sure you want to delete all demo participants? This will also delete all associated groups, pairs, and matches.",
       "deleteDemoParticipantsSuccess": "Successfully deleted {count} demo participants.",
-      "deleteDemoParticipantsError": "Failed to delete demo participants."
+      "deleteDemoParticipantsError": "Failed to delete demo participants.",
+      "participants": "Participants",
+      "participantsList": "Participants List",
+      "noParticipants": "No participants registered yet.",
+      "loading": "Loading...",
+      "participantName": "Name",
+      "participantEmail": "Email",
+      "participantPartner": "Partner",
+      "participantCategory": "Category",
+      "participantType": "Type",
+      "real": "Real",
+      "participantsLoadError": "Failed to load participants.",
+      "participantCategoryUpdated": "Participant category updated successfully.",
+      "participantCategoryUpdateError": "Failed to update participant category.",
+      "demoParticipantsNoCategory": "Please specify at least one category with participants.",
+      "demoParticipantsCategoryOdd": "Category {category} must have an even number of participants."
     },
     "staff": {
       "title": "Manage Staff",

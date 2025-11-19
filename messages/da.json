@@ -655,7 +655,22 @@
       "deleteDemoParticipants": "Slet demo-deltagere",
       "deleteDemoParticipantsConfirm": "Er du sikker på, at du vil slette alle demo-deltagere? Dette vil også slette alle tilknyttede grupper, par og kampe.",
       "deleteDemoParticipantsSuccess": "{count} demo-deltagere slettet med succes.",
-      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltagere."
+      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltagere.",
+      "participants": "Deltagere",
+      "participantsList": "Deltagerliste",
+      "noParticipants": "Ingen deltagere registreret endnu.",
+      "loading": "Indlæser...",
+      "participantName": "Navn",
+      "participantEmail": "E-mail",
+      "participantPartner": "Partner",
+      "participantCategory": "Kategori",
+      "participantType": "Type",
+      "real": "Rigtig",
+      "participantsLoadError": "Kunne ikke indlæse deltagere.",
+      "participantCategoryUpdated": "Deltagerkategori opdateret med succes.",
+      "participantCategoryUpdateError": "Kunne ikke opdatere deltagerkategori.",
+      "demoParticipantsNoCategory": "Angiv mindst én kategori med deltagere.",
+      "demoParticipantsCategoryOdd": "Kategorien {category} skal have et lige antal deltagere."
     },
     "staff": {
       "assignAccess": "Tildel Adgang",

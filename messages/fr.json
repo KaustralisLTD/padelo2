@@ -651,7 +651,22 @@
       "deleteDemoParticipants": "Supprimer les participants démo",
       "deleteDemoParticipantsConfirm": "Êtes-vous sûr de vouloir supprimer tous les participants démo ? Cela supprimera également tous les groupes, paires et matchs associés.",
       "deleteDemoParticipantsSuccess": "{count} participants démo supprimés avec succès.",
-      "deleteDemoParticipantsError": "Impossible de supprimer les participants démo."
+      "deleteDemoParticipantsError": "Impossible de supprimer les participants démo.",
+      "participants": "Participants",
+      "participantsList": "Liste des Participants",
+      "noParticipants": "Aucun participant inscrit pour le moment.",
+      "loading": "Chargement...",
+      "participantName": "Nom",
+      "participantEmail": "Email",
+      "participantPartner": "Partenaire",
+      "participantCategory": "Catégorie",
+      "participantType": "Type",
+      "real": "Réel",
+      "participantsLoadError": "Impossible de charger les participants.",
+      "participantCategoryUpdated": "Catégorie du participant mise à jour avec succès.",
+      "participantCategoryUpdateError": "Impossible de mettre à jour la catégorie du participant.",
+      "demoParticipantsNoCategory": "Veuillez spécifier au moins une catégorie avec des participants.",
+      "demoParticipantsCategoryOdd": "La catégorie {category} doit avoir un nombre pair de participants."
     },
     "staff": {
       "assignAccess": "Attribuer l'Accès",

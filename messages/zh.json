@@ -639,7 +639,22 @@
       "deleteDemoParticipants": "删除演示参与者",
       "deleteDemoParticipantsConfirm": "您确定要删除所有演示参与者吗？这也会删除所有相关的组、对和比赛。",
       "deleteDemoParticipantsSuccess": "成功删除了 {count} 个演示参与者。",
-      "deleteDemoParticipantsError": "无法删除演示参与者。"
+      "deleteDemoParticipantsError": "无法删除演示参与者。",
+      "participants": "参与者",
+      "participantsList": "参与者列表",
+      "noParticipants": "还没有注册的参与者。",
+      "loading": "加载中...",
+      "participantName": "姓名",
+      "participantEmail": "电子邮件",
+      "participantPartner": "搭档",
+      "participantCategory": "类别",
+      "participantType": "类型",
+      "real": "真实",
+      "participantsLoadError": "无法加载参与者。",
+      "participantCategoryUpdated": "参与者类别已成功更新。",
+      "participantCategoryUpdateError": "无法更新参与者类别。",
+      "demoParticipantsNoCategory": "请至少指定一个包含参与者的类别。",
+      "demoParticipantsCategoryOdd": "类别 {category} 必须有偶数个参与者。"
     },
     "staff": {
       "assignAccess": "分配访问权限",

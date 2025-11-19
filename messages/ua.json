@@ -846,7 +846,22 @@
       "deleteDemoParticipants": "Видалити демо-учасників",
       "deleteDemoParticipantsConfirm": "Ви впевнені, що хочете видалити всіх демо-учасників? Це також видалить усі пов'язані групи, пари та матчі.",
       "deleteDemoParticipantsSuccess": "Успішно видалено {count} демо-учасників.",
-      "deleteDemoParticipantsError": "Не вдалося видалити демо-учасників."
+      "deleteDemoParticipantsError": "Не вдалося видалити демо-учасників.",
+      "participants": "Учасники",
+      "participantsList": "Список учасників",
+      "noParticipants": "Поки немає зареєстрованих учасників.",
+      "loading": "Завантаження...",
+      "participantName": "Ім'я",
+      "participantEmail": "Email",
+      "participantPartner": "Партнер",
+      "participantCategory": "Категорія",
+      "participantType": "Тип",
+      "real": "Реальний",
+      "participantsLoadError": "Не вдалося завантажити учасників.",
+      "participantCategoryUpdated": "Категорію учасника успішно оновлено.",
+      "participantCategoryUpdateError": "Не вдалося оновити категорію учасника.",
+      "demoParticipantsNoCategory": "Вкажіть принаймні одну категорію з учасниками.",
+      "demoParticipantsCategoryOdd": "Категорія {category} повинна містити парну кількість учасників."
     },
     "staff": {
       "title": "Управління співробітниками",

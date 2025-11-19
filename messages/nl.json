@@ -628,7 +628,22 @@
       "deleteDemoParticipants": "Demo-deelnemers verwijderen",
       "deleteDemoParticipantsConfirm": "Weet u zeker dat u alle demo-deelnemers wilt verwijderen? Dit verwijdert ook alle bijbehorende groepen, paren en wedstrijden.",
       "deleteDemoParticipantsSuccess": "{count} demo-deelnemers succesvol verwijderd.",
-      "deleteDemoParticipantsError": "Kon demo-deelnemers niet verwijderen."
+      "deleteDemoParticipantsError": "Kon demo-deelnemers niet verwijderen.",
+      "participants": "Deelnemers",
+      "participantsList": "Deelnemerslijst",
+      "noParticipants": "Nog geen deelnemers geregistreerd.",
+      "loading": "Laden...",
+      "participantName": "Naam",
+      "participantEmail": "E-mail",
+      "participantPartner": "Partner",
+      "participantCategory": "Categorie",
+      "participantType": "Type",
+      "real": "Echt",
+      "participantsLoadError": "Deelnemers konden niet worden geladen.",
+      "participantCategoryUpdated": "Deelnemerscategorie succesvol bijgewerkt.",
+      "participantCategoryUpdateError": "Deelnemerscategorie kon niet worden bijgewerkt.",
+      "demoParticipantsNoCategory": "Geef ten minste één categorie met deelnemers op.",
+      "demoParticipantsCategoryOdd": "De categorie {category} moet een even aantal deelnemers hebben."
     },
     "staff": {
       "assignAccess": "Toegang Toewijzen",

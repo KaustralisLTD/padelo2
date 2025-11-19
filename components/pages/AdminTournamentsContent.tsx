@@ -43,6 +43,7 @@ interface Tournament {
 
 export default function AdminTournamentsContent() {
   const t = useTranslations('Admin');
+  const tTournaments = useTranslations('Tournaments');
   const locale = useLocale();
   const router = useRouter();
   const [generatingDemoParticipants, setGeneratingDemoParticipants] = useState(false);
@@ -62,7 +63,6 @@ export default function AdminTournamentsContent() {
     priceSingleCategory: '',
     priceDoubleCategory: '',
     status: 'draft' as Tournament['status'],
-    demoParticipantsCount: '',
     registrationSettings: getDefaultRegistrationSettings(),
   });
 
@@ -84,6 +84,8 @@ export default function AdminTournamentsContent() {
   const [formData, setFormData] = useState(createDefaultFormData);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [showParticipantsModal, setShowParticipantsModal] = useState(false);
+  const [selectedTournamentForParticipants, setSelectedTournamentForParticipants] = useState<Tournament | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
   const registrationSettings = normalizeRegistrationSettings(formData.registrationSettings);
@@ -176,8 +178,6 @@ export default function AdminTournamentsContent() {
 
     if (!token) return;
 
-    const demoCountValue = parseDemoParticipantsInput(formData.demoParticipantsCount);
-
     try {
       const response = await fetch('/api/admin/tournaments', {
         method: 'POST',
@@ -201,7 +201,6 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: formData.priceSingleCategory ? parseFloat(formData.priceSingleCategory) : undefined,
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
-          demoParticipantsCount: demoCountValue,
           registrationSettings: formData.registrationSettings,
         }),
       });
@@ -261,8 +260,6 @@ export default function AdminTournamentsContent() {
 
     if (!token || !editingTournament) return;
 
-    const demoCountValue = parseDemoParticipantsInput(formData.demoParticipantsCount);
-
     try {
       const response = await fetch('/api/admin/tournaments', {
         method: 'PUT',
@@ -287,7 +284,6 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: formData.priceSingleCategory ? parseFloat(formData.priceSingleCategory) : undefined,
           priceDoubleCategory: formData.priceDoubleCategory ? parseFloat(formData.priceDoubleCategory) : undefined,
           status: formData.status,
-          demoParticipantsCount: demoCountValue,
           registrationSettings: formData.registrationSettings,
         }),
       });
@@ -307,47 +303,8 @@ export default function AdminTournamentsContent() {
     }
   };
 
-  const handleGenerateDemoParticipants = async () => {
-    if (!token || !editingTournament) return;
-    const parsedCount = parseDemoParticipantsInput(formData.demoParticipantsCount);
-    if (!isValidDemoCount(parsedCount)) {
-      setError(t('tournaments.demoParticipantsInvalid'));
-      return;
-    }
-
-    try {
-      setError(null);
-      setSuccess(null);
-      setGeneratingDemoParticipants(true);
-
-      const response = await fetch(`/api/tournament/${editingTournament.id}/demo-participants`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          count: parsedCount,
-        }),
-      });
-
-      if (response.ok) {
-        setSuccess(t('tournaments.demoParticipantsGenerateSuccess'));
-        fetchTournaments();
-        setTimeout(() => setSuccess(null), 3000);
-      } else {
-        const data = await response.json().catch(() => ({}));
-        setError(data.error || t('tournaments.demoParticipantsGenerateError'));
-      }
-    } catch (err) {
-      setError(t('tournaments.demoParticipantsGenerateError'));
-    } finally {
-      setGeneratingDemoParticipants(false);
-    }
-  };
-
   const handleDeleteDemoParticipants = async () => {
-    if (!token || !editingTournament) return;
+    if (!token || !selectedTournamentForParticipants) return;
 
     if (!confirm(t('tournaments.deleteDemoParticipantsConfirm'))) {
       return;
@@ -357,7 +314,7 @@ export default function AdminTournamentsContent() {
       setError(null);
       setSuccess(null);
 
-      const response = await fetch(`/api/tournament/${editingTournament.id}/demo-participants`, {
+      const response = await fetch(`/api/tournament/${selectedTournamentForParticipants.id}/demo-participants`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -368,6 +325,10 @@ export default function AdminTournamentsContent() {
         const data = await response.json();
         setSuccess(t('tournaments.deleteDemoParticipantsSuccess', { count: data.deletedCount || 0 }));
         fetchTournaments();
+        if (showParticipantsModal) {
+          // Перезагрузим участников если модальное окно открыто
+          fetchParticipants();
+        }
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -375,6 +336,137 @@ export default function AdminTournamentsContent() {
       }
     } catch (err) {
       setError(t('tournaments.deleteDemoParticipantsError'));
+    }
+  };
+
+  // Состояние для управления участниками
+  const [participants, setParticipants] = useState<any[]>([]);
+  const [loadingParticipants, setLoadingParticipants] = useState(false);
+  const [demoCategoryDistribution, setDemoCategoryDistribution] = useState<Record<string, string>>({
+    male1: '',
+    male2: '',
+    female1: '',
+    female2: '',
+    mixed1: '',
+    mixed2: '',
+  });
+
+  const fetchParticipants = async () => {
+    if (!token || !selectedTournamentForParticipants) return;
+
+    try {
+      setLoadingParticipants(true);
+      const response = await fetch(`/api/tournament/${selectedTournamentForParticipants.id}/registrations`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setParticipants(data.registrations || []);
+      } else {
+        setError(t('tournaments.participantsLoadError'));
+      }
+    } catch (err) {
+      setError(t('tournaments.participantsLoadError'));
+    } finally {
+      setLoadingParticipants(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showParticipantsModal && selectedTournamentForParticipants) {
+      fetchParticipants();
+    }
+  }, [showParticipantsModal, selectedTournamentForParticipants]);
+
+  const handleUpdateParticipantCategory = async (registrationId: number, newCategories: string[]) => {
+    if (!token || !selectedTournamentForParticipants) return;
+
+    try {
+      const response = await fetch(`/api/tournament/${selectedTournamentForParticipants.id}/registrations`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          registrationId,
+          categories: newCategories,
+        }),
+      });
+
+      if (response.ok) {
+        setSuccess(t('tournaments.participantCategoryUpdated'));
+        fetchParticipants();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.error || t('tournaments.participantCategoryUpdateError'));
+      }
+    } catch (err) {
+      setError(t('tournaments.participantCategoryUpdateError'));
+    }
+  };
+
+  const handleGenerateDemoParticipantsFromModal = async () => {
+    if (!token || !selectedTournamentForParticipants) return;
+
+    const distribution: Record<string, number> = {};
+    let totalCount = 0;
+
+    for (const [category, countStr] of Object.entries(demoCategoryDistribution)) {
+      const count = parseDemoParticipantsInput(countStr);
+      if (count && count > 0) {
+        if (count % 2 !== 0) {
+          setError(t('tournaments.demoParticipantsCategoryOdd', { category }));
+          return;
+        }
+        distribution[category] = count;
+        totalCount += count;
+      }
+    }
+
+    if (totalCount === 0) {
+      setError(t('tournaments.demoParticipantsNoCategory'));
+      return;
+    }
+
+    if (totalCount % 2 !== 0) {
+      setError(t('tournaments.demoParticipantsInvalid'));
+      return;
+    }
+
+    try {
+      setError(null);
+      setSuccess(null);
+      setGeneratingDemoParticipants(true);
+
+      const response = await fetch(`/api/tournament/${selectedTournamentForParticipants.id}/demo-participants`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          categoryDistribution: distribution,
+        }),
+      });
+
+      if (response.ok) {
+        setSuccess(t('tournaments.demoParticipantsGenerateSuccess'));
+        fetchTournaments();
+        fetchParticipants();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        const data = await response.json().catch(() => ({}));
+        setError(data.error || t('tournaments.demoParticipantsGenerateError'));
+      }
+    } catch (err) {
+      setError(t('tournaments.demoParticipantsGenerateError'));
+    } finally {
+      setGeneratingDemoParticipants(false);
     }
   };
 
@@ -431,7 +523,6 @@ export default function AdminTournamentsContent() {
           priceSingleCategory: tournament.priceSingleCategory || undefined,
           priceDoubleCategory: tournament.priceDoubleCategory || undefined,
           status: 'draft', // Всегда Draft для копии
-          demoParticipantsCount: tournament.demoParticipantsCount || null,
           registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
         }),
       });
@@ -543,6 +634,14 @@ export default function AdminTournamentsContent() {
     </svg>
   );
 
+  const UsersIcon = (props: SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} {...props}>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+
   const ActionIconButton = ({
     label,
     onClick,
@@ -620,7 +719,6 @@ export default function AdminTournamentsContent() {
       priceSingleCategory: tournament.priceSingleCategory?.toString() || '',
       priceDoubleCategory: tournament.priceDoubleCategory?.toString() || '',
       status: tournament.status,
-      demoParticipantsCount: tournament.demoParticipantsCount?.toString() || '',
       registrationSettings: normalizeRegistrationSettings(tournament.registrationSettings),
     });
     setShowCreateModal(true);
@@ -815,6 +913,14 @@ export default function AdminTournamentsContent() {
                             label={t('tournaments.bracket')}
                             href={`/${locale}/tournament/${tournament.id}/bracket`}
                             Icon={TableIcon}
+                          />
+                          <ActionIconButton
+                            label={t('tournaments.participants')}
+                            onClick={() => {
+                              setSelectedTournamentForParticipants(tournament);
+                              setShowParticipantsModal(true);
+                            }}
+                            Icon={UsersIcon}
                           />
                           <ActionIconButton
                             label={t('tournaments.copy')}
@@ -1396,55 +1502,6 @@ export default function AdminTournamentsContent() {
                   </select>
                 </div>
 
-                {/* Демо-участники - только для demo турниров */}
-                {formData.status === 'demo' && (
-                  <div className="space-y-4 pt-4 border-t border-border">
-                    <div>
-                      <label className="block text-sm font-poppins text-text-secondary mb-2">
-                        {t('tournaments.demoParticipantsCount')}
-                      </label>
-                      <input
-                        type="number"
-                        min="2"
-                        step="2"
-                        value={formData.demoParticipantsCount || ''}
-                        onChange={(e) => setFormData({ ...formData, demoParticipantsCount: e.target.value })}
-                        placeholder={t('tournaments.demoParticipantsCountPlaceholder')}
-                        className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
-                      />
-                      <p className="text-xs text-text-tertiary font-poppins mt-1">
-                        {t('tournaments.demoParticipantsCountHint')}
-                      </p>
-                      {editingTournament && editingTournament.status === 'demo' && (
-                        <div className="space-y-2 pt-2">
-                          <div className="flex flex-wrap items-center gap-3">
-                            <button
-                              type="button"
-                              onClick={handleGenerateDemoParticipants}
-                              disabled={generatingDemoParticipants}
-                              className="px-4 py-2 text-xs font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                            >
-                              {generatingDemoParticipants
-                                ? t('tournaments.demoParticipantsGenerating')
-                                : t('tournaments.demoParticipantsGenerate')}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={handleDeleteDemoParticipants}
-                              className="px-4 py-2 text-xs font-poppins font-semibold rounded-lg border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
-                            >
-                              {t('tournaments.deleteDemoParticipants')}
-                            </button>
-                          </div>
-                          <p className="text-xs text-text-tertiary">
-                            {t('tournaments.demoParticipantsGenerateHint')}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
                 <div className="flex justify-end space-x-4 pt-4 border-t border-border">
                   <button
                     type="button"
@@ -1461,6 +1518,178 @@ export default function AdminTournamentsContent() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Participants Management Modal */}
+        {showParticipantsModal && selectedTournamentForParticipants && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-background-secondary rounded-lg border border-border max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-border flex justify-between items-center">
+                <h3 className="text-2xl font-poppins font-bold gradient-text">
+                  {t('tournaments.participants')} - {selectedTournamentForParticipants.name}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowParticipantsModal(false);
+                    setSelectedTournamentForParticipants(null);
+                    setParticipants([]);
+                    setDemoCategoryDistribution({
+                      male1: '',
+                      male2: '',
+                      female1: '',
+                      female2: '',
+                      mixed1: '',
+                      mixed2: '',
+                    });
+                  }}
+                  className="text-text-secondary hover:text-text transition-colors p-2 rounded-lg hover:bg-background"
+                  aria-label="Close"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Demo Participants Section */}
+                <div className="border border-border rounded-lg p-4 space-y-4">
+                  <h4 className="text-lg font-poppins font-semibold text-text">
+                    {t('tournaments.bracket.demoParticipantsCategoryDistribution')}
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {(['male1', 'male2', 'female1', 'female2', 'mixed1', 'mixed2'] as const).map((category) => (
+                      <div key={category}>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {tTournaments(`categories.${category}`)}
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="2"
+                          value={demoCategoryDistribution[category] || ''}
+                          onChange={(e) =>
+                            setDemoCategoryDistribution({
+                              ...demoCategoryDistribution,
+                              [category]: e.target.value,
+                            })
+                          }
+                          placeholder="0"
+                          className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-text-tertiary">
+                    {t('tournaments.bracket.demoParticipantsCategoryHint')}
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={handleGenerateDemoParticipantsFromModal}
+                      disabled={generatingDemoParticipants}
+                      className="px-4 py-2 text-sm font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {generatingDemoParticipants
+                        ? t('tournaments.demoParticipantsGenerating')
+                        : t('tournaments.demoParticipantsGenerate')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleDeleteDemoParticipants}
+                      className="px-4 py-2 text-sm font-poppins font-semibold rounded-lg border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                    >
+                      {t('tournaments.deleteDemoParticipants')}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Participants List */}
+                <div>
+                  <h4 className="text-lg font-poppins font-semibold text-text mb-4">
+                    {t('tournaments.participantsList')} ({participants.length})
+                  </h4>
+                  {loadingParticipants ? (
+                    <div className="text-center py-8 text-text-secondary">
+                      {t('tournaments.loading')}
+                    </div>
+                  ) : participants.length === 0 ? (
+                    <div className="text-center py-8 text-text-secondary">
+                      {t('tournaments.noParticipants')}
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b border-border">
+                            <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
+                              {t('tournaments.participantName')}
+                            </th>
+                            <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
+                              {t('tournaments.participantEmail')}
+                            </th>
+                            <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
+                              {t('tournaments.participantPartner')}
+                            </th>
+                            <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
+                              {t('tournaments.participantCategory')}
+                            </th>
+                            <th className="px-4 py-3 text-left text-sm font-poppins font-semibold text-text-secondary">
+                              {t('tournaments.participantType')}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {participants.map((participant) => (
+                            <tr key={participant.id} className="border-b border-border hover:bg-background/50">
+                              <td className="px-4 py-3 text-sm text-text">
+                                {participant.firstName} {participant.lastName}
+                              </td>
+                              <td className="px-4 py-3 text-sm text-text">{participant.email}</td>
+                              <td className="px-4 py-3 text-sm text-text">
+                                {participant.partnerName || '-'}
+                              </td>
+                              <td className="px-4 py-3 text-sm">
+                                <select
+                                  value={participant.categories?.[0] || ''}
+                                  onChange={(e) => {
+                                    const newCategory = e.target.value;
+                                    if (newCategory) {
+                                      handleUpdateParticipantCategory(participant.id, [newCategory]);
+                                    }
+                                  }}
+                                  className="px-3 py-1 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                                >
+                                  <option value="male1">{tTournaments('categories.male1')}</option>
+                                  <option value="male2">{tTournaments('categories.male2')}</option>
+                                  <option value="female1">{tTournaments('categories.female1')}</option>
+                                  <option value="female2">{tTournaments('categories.female2')}</option>
+                                  <option value="mixed1">{tTournaments('categories.mixed1')}</option>
+                                  <option value="mixed2">{tTournaments('categories.mixed2')}</option>
+                                </select>
+                              </td>
+                              <td className="px-4 py-3 text-sm text-text">
+                                {participant.isDemo ? (
+                                  <span className="px-2 py-1 bg-yellow-500/20 text-yellow-500 rounded text-xs">
+                                    Demo
+                                  </span>
+                                ) : (
+                                  <span className="px-2 py-1 bg-green-500/20 text-green-500 rounded text-xs">
+                                    {t('tournaments.real')}
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}

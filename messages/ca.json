@@ -832,7 +832,22 @@
       "deleteDemoParticipants": "Eliminar participants demo",
       "deleteDemoParticipantsConfirm": "Esteu segur que voleu eliminar tots els participants demo? Això també eliminarà tots els grups, parelles i partits associats.",
       "deleteDemoParticipantsSuccess": "S'han eliminat {count} participants demo amb èxit.",
-      "deleteDemoParticipantsError": "No s'han pogut eliminar els participants demo."
+      "deleteDemoParticipantsError": "No s'han pogut eliminar els participants demo.",
+      "participants": "Participants",
+      "participantsList": "Llista de Participants",
+      "noParticipants": "Encara no hi ha participants registrats.",
+      "loading": "Carregant...",
+      "participantName": "Nom",
+      "participantEmail": "Correu",
+      "participantPartner": "Parella",
+      "participantCategory": "Categoria",
+      "participantType": "Tipus",
+      "real": "Real",
+      "participantsLoadError": "No s'han pogut carregar els participants.",
+      "participantCategoryUpdated": "Categoria del participant actualitzada correctament.",
+      "participantCategoryUpdateError": "No s'ha pogut actualitzar la categoria del participant.",
+      "demoParticipantsNoCategory": "Especifiqueu almenys una categoria amb participants.",
+      "demoParticipantsCategoryOdd": "La categoria {category} ha de tenir un nombre parell de participants."
     },
     "staff": {
       "title": "Manage Staff",

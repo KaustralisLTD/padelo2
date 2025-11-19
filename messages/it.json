@@ -651,7 +651,22 @@
       "deleteDemoParticipants": "Elimina partecipanti demo",
       "deleteDemoParticipantsConfirm": "Sei sicuro di voler eliminare tutti i partecipanti demo? Questo eliminerà anche tutti i gruppi, coppie e partite associati.",
       "deleteDemoParticipantsSuccess": "{count} partecipanti demo eliminati con successo.",
-      "deleteDemoParticipantsError": "Impossibile eliminare i partecipanti demo."
+      "deleteDemoParticipantsError": "Impossibile eliminare i partecipanti demo.",
+      "participants": "Partecipanti",
+      "participantsList": "Elenco Partecipanti",
+      "noParticipants": "Nessun partecipante registrato ancora.",
+      "loading": "Caricamento...",
+      "participantName": "Nome",
+      "participantEmail": "Email",
+      "participantPartner": "Partner",
+      "participantCategory": "Categoria",
+      "participantType": "Tipo",
+      "real": "Reale",
+      "participantsLoadError": "Impossibile caricare i partecipanti.",
+      "participantCategoryUpdated": "Categoria del partecipante aggiornata con successo.",
+      "participantCategoryUpdateError": "Impossibile aggiornare la categoria del partecipante.",
+      "demoParticipantsNoCategory": "Specificare almeno una categoria con partecipanti.",
+      "demoParticipantsCategoryOdd": "La categoria {category} deve avere un numero pari di partecipanti."
     },
     "staff": {
       "assignAccess": "Assegna Accesso",

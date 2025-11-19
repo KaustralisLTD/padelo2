@@ -632,7 +632,22 @@
       "deleteDemoParticipants": "Demo-Teilnehmer löschen",
       "deleteDemoParticipantsConfirm": "Sind Sie sicher, dass Sie alle Demo-Teilnehmer löschen möchten? Dies löscht auch alle zugehörigen Gruppen, Paare und Spiele.",
       "deleteDemoParticipantsSuccess": "{count} Demo-Teilnehmer erfolgreich gelöscht.",
-      "deleteDemoParticipantsError": "Demo-Teilnehmer konnten nicht gelöscht werden."
+      "deleteDemoParticipantsError": "Demo-Teilnehmer konnten nicht gelöscht werden.",
+      "participants": "Teilnehmer",
+      "participantsList": "Teilnehmerliste",
+      "noParticipants": "Noch keine Teilnehmer registriert.",
+      "loading": "Laden...",
+      "participantName": "Name",
+      "participantEmail": "E-Mail",
+      "participantPartner": "Partner",
+      "participantCategory": "Kategorie",
+      "participantType": "Typ",
+      "real": "Echt",
+      "participantsLoadError": "Teilnehmer konnten nicht geladen werden.",
+      "participantCategoryUpdated": "Teilnehmerkategorie erfolgreich aktualisiert.",
+      "participantCategoryUpdateError": "Teilnehmerkategorie konnte nicht aktualisiert werden.",
+      "demoParticipantsNoCategory": "Bitte geben Sie mindestens eine Kategorie mit Teilnehmern an.",
+      "demoParticipantsCategoryOdd": "Die Kategorie {category} muss eine gerade Anzahl von Teilnehmern haben."
     },
     "staff": {
       "assignAccess": "Zugriff Zuweisen",

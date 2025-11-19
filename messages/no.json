@@ -655,7 +655,22 @@
       "deleteDemoParticipants": "Slett demo-deltakere",
       "deleteDemoParticipantsConfirm": "Er du sikker på at du vil slette alle demo-deltakere? Dette vil også slette alle tilknyttede grupper, par og kamper.",
       "deleteDemoParticipantsSuccess": "{count} demo-deltakere slettet med hell.",
-      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltakere."
+      "deleteDemoParticipantsError": "Kunne ikke slette demo-deltakere.",
+      "participants": "Deltakere",
+      "participantsList": "Deltakerliste",
+      "noParticipants": "Ingen deltakere registrert ennå.",
+      "loading": "Laster...",
+      "participantName": "Navn",
+      "participantEmail": "E-post",
+      "participantPartner": "Partner",
+      "participantCategory": "Kategori",
+      "participantType": "Type",
+      "real": "Ekte",
+      "participantsLoadError": "Kunne ikke laste deltakere.",
+      "participantCategoryUpdated": "Deltakerkategori oppdatert med hell.",
+      "participantCategoryUpdateError": "Kunne ikke oppdatere deltakerkategori.",
+      "demoParticipantsNoCategory": "Angi minst én kategori med deltakere.",
+      "demoParticipantsCategoryOdd": "Kategorien {category} må ha et partall deltakere."
     },
     "staff": {
       "assignAccess": "Tildel Tilgang",
