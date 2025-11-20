@@ -43,6 +43,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [showPartner, setShowPartner] = useState(false);
   // Партнеры для каждой категории (для mixed категорий)
   const [categoryPartners, setCategoryPartners] = useState<Record<string, Partner>>({});
+  // Состояние для свернутых/развернутых блоков партнеров для mixed категорий
+  const [expandedCategoryPartners, setExpandedCategoryPartners] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [partnerPhotoError, setPartnerPhotoError] = useState<string | null>(null);
@@ -211,12 +213,25 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       // Добавляем новую категорию
       const newCategories = [...filteredCategories, category];
       
-      // Если добавляется mixed категория, создаем пустого партнера для неё
-      if (category.startsWith('mixed') && !categoryPartners[category]) {
-        setCategoryPartners(prev => ({
-          ...prev,
-          [category]: createEmptyPartner(),
-        }));
+      // Если добавляется mixed категория и партнер обязателен, создаем пустого партнера и разворачиваем блок
+      if (category.startsWith('mixed')) {
+        if (partnerRequired) {
+          // Если партнер обязателен, создаем пустого партнера и разворачиваем блок
+          setCategoryPartners(prev => ({
+            ...prev,
+            [category]: createEmptyPartner(),
+          }));
+          setExpandedCategoryPartners(prev => ({
+            ...prev,
+            [category]: true,
+          }));
+        } else {
+          // Если партнер не обязателен, блок остается свернутым
+          setExpandedCategoryPartners(prev => ({
+            ...prev,
+            [category]: false,
+          }));
+        }
       }
       
       return {
@@ -824,11 +839,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </div>
               <div>
                 <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerEmail')} *
+                  {t('form.partnerEmail')} {isRequired && <span className="text-red-400">*</span>}
                 </label>
                 <input
                   type="email"
-                  required
+                  required={isRequired}
                   name={`partnerEmail-${category}`}
                   value={categoryPartner.email || ''}
                   onChange={(e) => updateCategoryPartnerField(category, 'email', e.target.value)}
@@ -838,11 +853,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             </div>
             <div>
               <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerPhone')} *
+                {t('form.partnerPhone')} {isRequired && <span className="text-red-400">*</span>}
               </label>
               <input
                 type="tel"
-                required
+                required={isRequired}
                 name={`partnerPhone-${category}`}
                 value={categoryPartner.phone || ''}
                 onChange={(e) => updateCategoryPartnerField(category, 'phone', e.target.value)}
@@ -851,10 +866,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             </div>
             <div>
               <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerTshirtSize')} *
+                {t('form.partnerTshirtSize')} {isRequired && <span className="text-red-400">*</span>}
               </label>
               <select
-                required
+                required={isRequired}
                 name={`partnerTshirtSize-${category}`}
                 value={categoryPartner.tshirtSize || ''}
                 onChange={(e) => updateCategoryPartnerField(category, 'tshirtSize', e.target.value)}
