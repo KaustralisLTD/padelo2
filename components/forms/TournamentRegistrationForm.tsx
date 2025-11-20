@@ -264,7 +264,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     
     // Валидация категорий
     if (formData.categories.length === 0) {
-      const errorMsg = t('form.validation.selectCategory') || t('validation.selectCategory') || 'Please select at least one category';
+      const errorMsg = t('form.validation.selectCategory') || 'Please select at least one category';
       alert(errorMsg);
       scrollToElement('categories-section');
       return;
