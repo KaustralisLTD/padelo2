@@ -1184,7 +1184,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
       )}
 
-      {submitStatus === 'error' && (
+      {submitStatus === 'error' && error && (
+        <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm font-poppins">
+          {error}
+        </div>
+      )}
+      {submitStatus === 'error' && !error && (
         <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm font-poppins">
           {t('form.error')}
         </div>
