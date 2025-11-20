@@ -818,103 +818,138 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       {formData.categories.filter(c => c.startsWith('mixed')).map((category) => {
         const categoryPartner = categoryPartners[category] || createEmptyPartner();
         const categoryName = t(`categories.${category}`);
+        const isExpanded = expandedCategoryPartners[category] || false;
+        const isRequired = partnerRequired;
+        
         return (
-          <div key={category} id={`partner-section-${category}`} className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
-            <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
-              {t('form.partnerForCategory')} {categoryName}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerName')} *
-                </label>
-                <input
-                  type="text"
-                  required
-                  name={`partnerName-${category}`}
-                  value={categoryPartner.name || ''}
-                  onChange={(e) => updateCategoryPartnerField(category, 'name', e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerEmail')} {isRequired && <span className="text-red-400">*</span>}
-                </label>
-                <input
-                  type="email"
-                  required={isRequired}
-                  name={`partnerEmail-${category}`}
-                  value={categoryPartner.email || ''}
-                  onChange={(e) => updateCategoryPartnerField(category, 'email', e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerPhone')} {isRequired && <span className="text-red-400">*</span>}
-              </label>
-              <input
-                type="tel"
-                required={isRequired}
-                name={`partnerPhone-${category}`}
-                value={categoryPartner.phone || ''}
-                onChange={(e) => updateCategoryPartnerField(category, 'phone', e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerTshirtSize')} {isRequired && <span className="text-red-400">*</span>}
-              </label>
-              <select
-                required={isRequired}
-                name={`partnerTshirtSize-${category}`}
-                value={categoryPartner.tshirtSize || ''}
-                onChange={(e) => updateCategoryPartnerField(category, 'tshirtSize', e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+          <div key={category} id={`partner-section-${category}`} className="mt-4">
+            {isRequired ? (
+              <p className="text-sm text-text-secondary font-poppins mb-3">
+                {t('form.partnerRequiredNotice')}
+              </p>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setExpandedCategoryPartners(prev => ({
+                    ...prev,
+                    [category]: !isExpanded,
+                  }));
+                  if (!isExpanded && !categoryPartners[category]) {
+                    setCategoryPartners(prev => ({
+                      ...prev,
+                      [category]: createEmptyPartner(),
+                    }));
+                  }
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors w-full"
               >
-                <option value="">{t('form.partnerSelectSize')}</option>
-                {tshirtSizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
-              </label>
-              <div className="flex items-center gap-4">
-                {categoryPartner.photoData ? (
-                  <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
-                    <img
-                      src={categoryPartner.photoData}
-                      alt={categoryPartner.name || 'Partner photo'}
-                      className="w-full h-full object-cover"
+                <span className="text-xl">{isExpanded ? '−' : '+'}</span>
+                <span className="font-poppins">
+                  {isExpanded ? t('form.removePartner') : `${t('form.partnerForCategory')} ${categoryName}`}
+                </span>
+              </button>
+            )}
+
+            {(isRequired || isExpanded) && (
+              <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
+                <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
+                  {t('form.partnerForCategory')} {categoryName}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {t('form.partnerName')} {isRequired && <span className="text-red-400">*</span>}
+                    </label>
+                    <input
+                      type="text"
+                      required={isRequired}
+                      name={`partnerName-${category}`}
+                      value={categoryPartner.name || ''}
+                      onChange={(e) => updateCategoryPartnerField(category, 'name', e.target.value)}
+                      className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                     />
                   </div>
-                ) : null}
-                <div className="flex-1">
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {t('form.partnerEmail')} {isRequired && <span className="text-red-400">*</span>}
+                    </label>
+                    <input
+                      type="email"
+                      required={isRequired}
+                      name={`partnerEmail-${category}`}
+                      value={categoryPartner.email || ''}
+                      onChange={(e) => updateCategoryPartnerField(category, 'email', e.target.value)}
+                      className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.partnerPhone')} {isRequired && <span className="text-red-400">*</span>}
+                  </label>
                   <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleCategoryPartnerPhotoChange(category, e)}
-                    className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
+                    type="tel"
+                    required={isRequired}
+                    name={`partnerPhone-${category}`}
+                    value={categoryPartner.phone || ''}
+                    onChange={(e) => updateCategoryPartnerField(category, 'phone', e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                   />
-                  <p className="mt-2 text-xs text-text-secondary">
-                    {t('form.partnerPhotoOptional')}
-                  </p>
-                  {categoryPartner.photoName && (
-                    <p className="mt-2 text-xs text-text-secondary">
-                      {categoryPartner.photoName}
-                    </p>
-                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.partnerTshirtSize')} {isRequired && <span className="text-red-400">*</span>}
+                  </label>
+                  <select
+                    required={isRequired}
+                    name={`partnerTshirtSize-${category}`}
+                    value={categoryPartner.tshirtSize || ''}
+                    onChange={(e) => updateCategoryPartnerField(category, 'tshirtSize', e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                  >
+                    <option value="">{t('form.partnerSelectSize')}</option>
+                    {tshirtSizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.partnerPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
+                  </label>
+                  <div className="flex items-center gap-4">
+                    {categoryPartner.photoData ? (
+                      <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+                        <img
+                          src={categoryPartner.photoData}
+                          alt={categoryPartner.name || 'Partner photo'}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : null}
+                    <div className="flex-1">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleCategoryPartnerPhotoChange(category, e)}
+                        className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
+                      />
+                      <p className="mt-2 text-xs text-text-secondary">
+                        {t('form.partnerPhotoOptional')}
+                      </p>
+                      {categoryPartner.photoName && (
+                        <p className="mt-2 text-xs text-text-secondary">
+                          {categoryPartner.photoName}
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         );
       })}
