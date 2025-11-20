@@ -235,10 +235,10 @@ async function addTestParticipants() {
       
       await connection.execute(
         `INSERT INTO tournament_registrations (
-          token, tournament_id, tournament_name, locale,
+          token, tournament_id, user_id, tournament_name, locale,
           first_name, last_name, email, phone,
           categories, tshirt_size, confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+        ) VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
         [
           token,
           tournamentId,

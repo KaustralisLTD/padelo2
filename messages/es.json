@@ -815,6 +815,8 @@
       "participantsList": "Lista de Participantes",
       "noParticipants": "Aún no hay participantes registrados.",
       "loading": "Cargando...",
+      "participantOrder": "N.º",
+      "participantUserId": "ID de usuario",
       "participantName": "Nombre",
       "participantEmail": "Correo",
       "participantPartner": "Pareja",

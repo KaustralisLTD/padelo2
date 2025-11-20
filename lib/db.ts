@@ -193,6 +193,7 @@ export async function initDatabase() {
       id INT(11) NOT NULL AUTO_INCREMENT,
       token VARCHAR(64) NOT NULL UNIQUE,
       tournament_id INT(11) NOT NULL,
+      user_id VARCHAR(36) DEFAULT NULL,
       tournament_name VARCHAR(255) NOT NULL,
       locale VARCHAR(10) NOT NULL DEFAULT 'en',
       first_name VARCHAR(100) NOT NULL,
@@ -216,7 +217,9 @@ export async function initDatabase() {
       INDEX idx_token (token),
       INDEX idx_email (email),
       INDEX idx_tournament (tournament_id),
-      INDEX idx_confirmed (confirmed)
+      INDEX idx_tr_user_id (user_id),
+      INDEX idx_confirmed (confirmed),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
@@ -228,6 +231,39 @@ export async function initDatabase() {
     `);
   } catch (e: any) {
     if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  // Ensure user_id column exists for tournament_registrations
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN user_id VARCHAR(36) DEFAULT NULL AFTER tournament_id
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute('CREATE INDEX idx_tr_user_id ON tournament_registrations(user_id)');
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate key name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD CONSTRAINT fk_tournament_registrations_user
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    `);
+  } catch (e: any) {
+    const message = e.message?.toLowerCase() || '';
+    if (!message.includes('duplicate') && !message.includes('already exists')) {
       throw e;
     }
   }
@@ -248,7 +284,7 @@ export async function initDatabase() {
     CREATE TABLE IF NOT EXISTS users (
       id VARCHAR(36) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
-      password_hash VARCHAR(255) NOT NULL,
+      password_hash VARCHAR(255) DEFAULT NULL,
       first_name VARCHAR(100) NOT NULL,
       last_name VARCHAR(100) NOT NULL,
       role ENUM('superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant') NOT NULL DEFAULT 'participant',
@@ -258,11 +294,15 @@ export async function initDatabase() {
       tshirt_size VARCHAR(10) DEFAULT NULL,
       photo_name VARCHAR(255) DEFAULT NULL,
       photo_data LONGTEXT DEFAULT NULL,
+      google_id VARCHAR(255) DEFAULT NULL,
+      apple_id VARCHAR(255) DEFAULT NULL,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       INDEX idx_email (email),
-      INDEX idx_role (role)
+      INDEX idx_role (role),
+      INDEX idx_google_id (google_id),
+      INDEX idx_apple_id (apple_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
@@ -311,6 +351,31 @@ export async function initDatabase() {
     await pool.execute('ALTER TABLE users ADD COLUMN email_verified_at DATETIME DEFAULT NULL');
   } catch (e: any) {
     if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN google_id VARCHAR(255) DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN apple_id VARCHAR(255) DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
+    await pool.execute('ALTER TABLE users MODIFY password_hash VARCHAR(255) DEFAULT NULL');
+  } catch (e: any) {
+    // Ignore if already modified
+  }
+  try {
+    await pool.execute('CREATE INDEX idx_google_id ON users(google_id)');
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate key name')) throw e;
+  }
+  try {
+    await pool.execute('CREATE INDEX idx_apple_id ON users(apple_id)');
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate key name')) throw e;
   }
 
   // Add rules and available_courts to tournaments table

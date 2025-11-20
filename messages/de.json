@@ -672,6 +672,8 @@
       "participantsList": "Teilnehmerliste",
       "noParticipants": "Noch keine Teilnehmer registriert.",
       "loading": "Laden...",
+      "participantOrder": "Nr.",
+      "participantUserId": "Benutzer-ID",
       "participantName": "Name",
       "participantEmail": "E-Mail",
       "participantPartner": "Partner",

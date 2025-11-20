@@ -33,27 +33,29 @@ export async function GET(
 
     const [registrations] = await pool.execute(
       `SELECT 
-        id,
-        first_name,
-        last_name,
-        email,
-        phone,
-        telegram,
-        tshirt_size,
-        message,
-        partner_name,
-        partner_email,
-        partner_phone,
-        partner_tshirt_size,
-        categories,
-        confirmed,
-        token,
-        payment_status,
-        payment_date,
-        created_at
-      FROM tournament_registrations
-      WHERE tournament_id = ?
-      ORDER BY created_at DESC`,
+        tr.id,
+        tr.user_id,
+        tr.first_name,
+        tr.last_name,
+        tr.email,
+        tr.phone,
+        tr.telegram,
+        tr.tshirt_size,
+        tr.message,
+        tr.partner_name,
+        tr.partner_email,
+        tr.partner_phone,
+        tr.partner_tshirt_size,
+        tr.categories,
+        tr.confirmed,
+        tr.token,
+        tr.payment_status,
+        tr.payment_date,
+        tr.created_at,
+        ROW_NUMBER() OVER (ORDER BY tr.created_at ASC) AS order_number
+      FROM tournament_registrations tr
+      WHERE tr.tournament_id = ?
+      ORDER BY tr.created_at ASC`,
       [tournamentId]
     ) as any[];
 
@@ -68,6 +70,7 @@ export async function GET(
 
       return {
         id: reg.id,
+        userId: reg.user_id,
         firstName: reg.first_name,
         lastName: reg.last_name,
         email: reg.email,
@@ -85,6 +88,7 @@ export async function GET(
         paymentStatus: reg.payment_status || 'pending',
         paymentDate: reg.payment_date ? new Date(reg.payment_date).toISOString() : undefined,
         createdAt: reg.created_at.toISOString(),
+        orderNumber: reg.order_number,
         isDemo: reg.token?.startsWith(`demo-${tournamentId}-`) || false,
       };
     });

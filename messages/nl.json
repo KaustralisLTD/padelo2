@@ -669,6 +669,8 @@
       "participantsList": "Deelnemerslijst",
       "noParticipants": "Nog geen deelnemers geregistreerd.",
       "loading": "Laden...",
+      "participantOrder": "Nr.",
+      "participantUserId": "Gebruikers-ID",
       "participantName": "Naam",
       "participantEmail": "E-mail",
       "participantPartner": "Partner",

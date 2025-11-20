@@ -872,6 +872,8 @@
       "participantsList": "Llista de Participants",
       "noParticipants": "Encara no hi ha participants registrats.",
       "loading": "Carregant...",
+            "participantOrder": "Núm.",
+            "participantUserId": "ID d'usuari",
       "participantName": "Nom",
       "participantEmail": "Correu",
       "participantPartner": "Parella",

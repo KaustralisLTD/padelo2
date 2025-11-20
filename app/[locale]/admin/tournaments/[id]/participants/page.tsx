@@ -7,6 +7,8 @@ import Link from 'next/link';
 
 interface Participant {
   id: number;
+  userId: string | null;
+  orderNumber?: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -35,14 +37,54 @@ export default function TournamentParticipantsPage() {
   const params = useParams();
   const tournamentId = parseInt(params.id as string, 10);
 
+  const getLocalizedDefaultCategories = () => ({
+    male1: tTournaments('categories.male1'),
+    male2: tTournaments('categories.male2'),
+    female1: tTournaments('categories.female1'),
+    female2: tTournaments('categories.female2'),
+    mixed1: tTournaments('categories.mixed1'),
+    mixed2: tTournaments('categories.mixed2'),
+  });
+
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [tournamentName, setTournamentName] = useState<string>('');
-  const [customCategories, setCustomCategories] = useState<Record<string, string>>({});
+  const [customCategories, setCustomCategories] = useState<Record<string, string>>(() => getLocalizedDefaultCategories());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [editingParticipant, setEditingParticipant] = useState<Participant | null>(null);
   const [editFormData, setEditFormData] = useState<Partial<Participant>>({});
+
+  const categoryEntries = Object.entries(customCategories);
+
+  const renderCategoryCheckboxes = (
+    selectedCategories: string[],
+    onToggle: (category: string) => void,
+    size: 'sm' | 'md' = 'md'
+  ) => {
+    if (categoryEntries.length === 0) {
+      return <span className="text-xs text-text-secondary">-</span>;
+    }
+
+    const labelClasses = size === 'sm' ? 'text-xs' : 'text-sm';
+    const checkboxClasses = size === 'sm' ? 'h-3 w-3' : 'h-3.5 w-3.5';
+
+    return (
+      <div className="flex flex-col gap-1">
+        {categoryEntries.map(([code, name]) => (
+          <label key={code} className={`flex items-center gap-2 ${labelClasses}`}>
+            <input
+              type="checkbox"
+              className={`${checkboxClasses} rounded border-border bg-background text-primary focus:ring-primary`}
+              checked={selectedCategories.includes(code)}
+              onChange={() => onToggle(code)}
+            />
+            <span className="text-text">{name}</span>
+          </label>
+        ))}
+      </div>
+    );
+  };
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
@@ -81,14 +123,7 @@ export default function TournamentParticipantsPage() {
         const tournament = data.tournaments?.find((t: any) => t.id === tournamentId);
         if (tournament) {
           setTournamentName(tournament.name);
-          setCustomCategories(tournament.customCategories || {
-            male1: 'Male 1',
-            male2: 'Male 2',
-            female1: 'Female 1',
-            female2: 'Female 2',
-            mixed1: 'Mixed 1',
-            mixed2: 'Mixed 2',
-          });
+          setCustomCategories(tournament.customCategories || getLocalizedDefaultCategories());
         }
       }
     } catch (err) {
@@ -109,7 +144,13 @@ export default function TournamentParticipantsPage() {
 
       if (response.ok) {
         const data = await response.json();
-        setParticipants(data.registrations || []);
+        const formattedParticipants: Participant[] = (data.registrations || []).map((participant: any, index: number) => ({
+          ...participant,
+          userId: participant.userId ?? participant.user_id ?? null,
+          orderNumber: participant.orderNumber ?? participant.order_number ?? index + 1,
+          categories: participant.categories || [],
+        }));
+        setParticipants(formattedParticipants);
         setError(null);
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -139,7 +180,8 @@ export default function TournamentParticipantsPage() {
       partnerTshirtSize: participant.partnerTshirtSize || '',
       partnerPhone: participant.partnerPhone || '',
       paymentStatus: participant.paymentStatus || 'pending',
-      categories: participant.categories,
+      categories: participant.categories || [],
+      userId: participant.userId || null,
     });
   };
 
@@ -148,19 +190,25 @@ export default function TournamentParticipantsPage() {
 
     try {
       setError(null);
+      const payload = {
+        ...editFormData,
+        categories: editFormData.categories || [],
+      };
+
       const response = await fetch(`/api/tournament/${tournamentId}/registrations/${editingParticipant.id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editFormData),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         setSuccess(tTournaments('participantUpdated'));
         fetchParticipants();
         setEditingParticipant(null);
+        setEditFormData({});
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -201,8 +249,17 @@ export default function TournamentParticipantsPage() {
     }
   };
 
-  const handleCategoryChange = async (participantId: number, newCategory: string) => {
-    if (!token || !newCategory) return;
+  const handleCategoryToggle = async (participantId: number, category: string) => {
+    if (!token) return;
+
+    const participant = participants.find((p) => p.id === participantId);
+    if (!participant) return;
+
+    const currentCategories = participant.categories || [];
+    const isSelected = currentCategories.includes(category);
+    const updatedCategories = isSelected
+      ? currentCategories.filter((c) => c !== category)
+      : [...currentCategories, category];
 
     try {
       setError(null);
@@ -213,13 +270,17 @@ export default function TournamentParticipantsPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          categories: [newCategory],
+          categories: updatedCategories,
         }),
       });
 
       if (response.ok) {
         setSuccess(tTournaments('participantCategoryUpdated'));
-        fetchParticipants();
+        setParticipants((prev) =>
+          prev.map((p) =>
+            p.id === participantId ? { ...p, categories: updatedCategories } : p
+          )
+        );
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -228,6 +289,16 @@ export default function TournamentParticipantsPage() {
     } catch (err) {
       setError(tTournaments('participantCategoryUpdateError'));
     }
+  };
+
+  const handleEditCategoryToggle = (category: string) => {
+    setEditFormData((prev) => {
+      const current = prev.categories || [];
+      const next = current.includes(category)
+        ? current.filter((c) => c !== category)
+        : [...current, category];
+      return { ...prev, categories: next };
+    });
   };
 
   if (loading) {
@@ -241,8 +312,8 @@ export default function TournamentParticipantsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="min-h-screen bg-background pt-24 md:pt-28">
+      <div className="container mx-auto px-4 pb-12 max-w-7xl">
         <div className="mb-6">
           <Link
             href={`/${locale}/admin/tournaments`}
@@ -274,9 +345,15 @@ export default function TournamentParticipantsPage() {
 
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse min-w-[1200px]">
+            <table className="w-full border-collapse min-w-[1400px]">
               <thead>
                 <tr className="border-b border-border bg-background">
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[60px]">
+                    {tTournaments('participantOrder')}
+                  </th>
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[160px]">
+                    {tTournaments('participantUserId')}
+                  </th>
                   <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[150px]">
                     {tTournaments('participantName')}
                   </th>
@@ -286,7 +363,7 @@ export default function TournamentParticipantsPage() {
                   <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[120px]">
                     {tTournaments('participantPhone')}
                   </th>
-                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[140px]">
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[180px]">
                     {tTournaments('participantCategory')}
                   </th>
                   <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[150px]">
@@ -306,13 +383,19 @@ export default function TournamentParticipantsPage() {
               <tbody>
                 {participants.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="px-4 py-8 text-center text-text-secondary">
+                    <td colSpan={10} className="px-4 py-8 text-center text-text-secondary">
                       {tTournaments('noParticipants')}
                     </td>
                   </tr>
                 ) : (
                   participants.map((participant) => (
                     <tr key={participant.id} className="border-b border-border hover:bg-background/50">
+                      <td className="px-3 py-2 text-xs text-text text-center">
+                        {participant.orderNumber ?? '—'}
+                      </td>
+                      <td className="px-3 py-2 text-xs font-mono text-text break-all">
+                        {participant.userId || '—'}
+                      </td>
                       <td className="px-3 py-2 text-xs text-text">
                         <div className="flex items-center gap-2">
                           <span>{participant.firstName} {participant.lastName}</span>
@@ -325,18 +408,10 @@ export default function TournamentParticipantsPage() {
                       </td>
                       <td className="px-3 py-2 text-xs text-text break-all">{participant.email}</td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.phone || '-'}</td>
-                      <td className="px-3 py-2 text-xs">
-                        <select
-                          value={participant.categories?.[0] || ''}
-                          onChange={(e) => handleCategoryChange(participant.id, e.target.value)}
-                          className="w-full px-2 py-1 bg-background border border-border rounded text-text text-xs focus:outline-none focus:border-primary"
-                        >
-                          {Object.entries(customCategories).map(([code, name]) => (
-                            <option key={code} value={code}>
-                              {name}
-                            </option>
-                          ))}
-                        </select>
+                      <td className="px-3 py-2 text-xs text-text">
+                        {renderCategoryCheckboxes(participant.categories || [], (category) =>
+                          handleCategoryToggle(participant.id, category)
+                        )}
                       </td>
                       <td className="px-3 py-2 text-xs text-text">{participant.partnerName || '-'}</td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.tshirtSize || '-'}</td>
@@ -382,7 +457,10 @@ export default function TournamentParticipantsPage() {
                 </h3>
                 <button
                   type="button"
-                  onClick={() => setEditingParticipant(null)}
+                  onClick={() => {
+                    setEditingParticipant(null);
+                    setEditFormData({});
+                  }}
                   className="text-text-secondary hover:text-text transition-colors p-2 rounded-lg hover:bg-background"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -392,6 +470,24 @@ export default function TournamentParticipantsPage() {
               </div>
 
               <div className="p-6 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {tTournaments('participantUserId')}
+                    </label>
+                    <div className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-mono">
+                      {editingParticipant.userId || '—'}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {tTournaments('participantOrder')}
+                    </label>
+                    <div className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text">
+                      {editingParticipant.orderNumber ?? '—'}
+                    </div>
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -477,17 +573,7 @@ export default function TournamentParticipantsPage() {
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
                     {tTournaments('participantCategory')}
                   </label>
-                  <select
-                    value={editFormData.categories?.[0] || ''}
-                    onChange={(e) => setEditFormData({ ...editFormData, categories: e.target.value ? [e.target.value] : [] })}
-                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
-                  >
-                    {Object.entries(customCategories).map(([code, name]) => (
-                      <option key={code} value={code}>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
+                  {renderCategoryCheckboxes(editFormData.categories || [], handleEditCategoryToggle, 'sm')}
                 </div>
 
                 {editFormData.partnerName && (

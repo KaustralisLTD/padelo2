@@ -3,6 +3,7 @@
 
 interface TournamentRegistration {
   tournamentId: number;
+  userId?: string | null;
   tournamentName: string;
   locale: string;
   firstName: string;
@@ -46,16 +47,17 @@ export async function saveRegistration(token: string, registration: TournamentRe
       
       await pool.execute(
         `INSERT INTO tournament_registrations (
-          token, tournament_id, tournament_name, locale,
+          token, tournament_id, user_id, tournament_name, locale,
           first_name, last_name, email, telegram, phone,
           categories, tshirt_size, message,
           partner_name, partner_email, partner_phone,
           partner_tshirt_size, partner_photo_name, partner_photo_data,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           token,
           registration.tournamentId,
+          registration.userId || null,
           registration.tournamentName,
           registration.locale,
           registration.firstName,
@@ -105,6 +107,7 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
       return {
         tournamentId: row.tournament_id,
         tournamentName: row.tournament_name,
+        userId: row.user_id,
         locale: row.locale,
         firstName: row.first_name,
         lastName: row.last_name,
@@ -188,6 +191,7 @@ export async function getAllRegistrations(): Promise<TournamentRegistration[]> {
       return rows.map((row: any) => ({
         tournamentId: row.tournament_id,
         tournamentName: row.tournament_name,
+        userId: row.user_id,
         locale: row.locale,
         firstName: row.first_name,
         lastName: row.last_name,

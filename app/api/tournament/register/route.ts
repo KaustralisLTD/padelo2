@@ -1,6 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { saveRegistration } from '@/lib/tournament-storage';
+import { getSession } from '@/lib/users';
+import { getDbPool } from '@/lib/db';
+
+// Helper function to get or create user by email
+async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string): Promise<string | null> {
+  try {
+    const pool = getDbPool();
+    
+    // Ищем существующего пользователя по email
+    const [existingUsers] = await pool.execute(
+      'SELECT id FROM users WHERE email = ?',
+      [email]
+    ) as any[];
+    
+    if (existingUsers.length > 0) {
+      return existingUsers[0].id;
+    }
+    
+    // Создаем нового пользователя с ролью 'participant'
+    const userId = crypto.randomUUID();
+    const defaultPassword = crypto.randomBytes(32).toString('hex'); // Временный пароль, пользователь сможет установить свой через восстановление
+    
+    // Хешируем пароль (используем простой хеш для демо, в продакшене используйте bcrypt)
+    const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
+    
+    await pool.execute(
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, created_at)
+       VALUES (?, ?, ?, ?, ?, 'participant', NOW())`,
+      [userId, email, passwordHash, firstName, lastName]
+    );
+    
+    return userId;
+  } catch (error) {
+    console.error('Error getting or creating user by email:', error);
+    return null;
+  }
+}
 
 // Helper function to send confirmation email
 async function sendConfirmationEmail(email: string, confirmationUrl: string, tournamentName: string, locale: string = 'en') {
@@ -93,6 +130,21 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const authHeader = request.headers.get('authorization');
+    const tokenHeader = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
+    let userId: string | null = null;
+
+    if (tokenHeader) {
+      const session = await getSession(tokenHeader);
+      if (session?.userId) {
+        userId = session.userId;
+      }
+    }
+    
+    // Если пользователь не залогинен, получаем или создаем user_id по email
+    if (!userId && body.email) {
+      userId = await getOrCreateUserByEmail(body.email, body.firstName || '', body.lastName || '');
+    }
     
     // Generate a unique token for confirmation
     const token = crypto.randomBytes(32).toString('hex');
@@ -100,6 +152,7 @@ export async function POST(request: NextRequest) {
     // Store registration data
     const registrationData = {
       ...body,
+      userId,
       token,
       createdAt: new Date().toISOString(),
       confirmed: false,

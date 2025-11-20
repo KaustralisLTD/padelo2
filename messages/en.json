@@ -612,11 +612,22 @@
     "loginButton": "Sign In",
     "registerButton": "Create Account",
     "submitting": "Processing...",
+    "orContinueWith": "Or continue with",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
     "errors": {
       "invalidCredentials": "Invalid email or password",
       "passwordMismatch": "Passwords do not match",
       "registrationFailed": "Registration failed. Please try again.",
-      "generic": "An error occurred. Please try again."
+      "generic": "An error occurred. Please try again.",
+      "oauthFailed": "OAuth authentication failed. Please try again.",
+      "oauth_cancelled": "Authentication cancelled",
+      "invalid_state": "Invalid authentication state. Please try again.",
+      "no_code": "Authentication code not received. Please try again.",
+      "oauth_not_configured": "OAuth not configured. Please contact support.",
+      "token_exchange_failed": "Token exchange failed. Please try again.",
+      "user_info_failed": "Failed to fetch user information. Please try again.",
+      "no_email": "Email not provided. Please try again."
     }
   },
   "Dashboard": {
@@ -837,6 +848,8 @@
       "participantsList": "Participants List",
       "noParticipants": "No participants registered yet.",
       "loading": "Loading...",
+      "participantOrder": "No.",
+      "participantUserId": "User ID",
       "participantName": "Name",
       "participantEmail": "Email",
       "participantPartner": "Partner",

@@ -89,93 +89,93 @@ export async function generateNextPlayoffStageSchedule(
         // Все quarterfinals запланированы - проверяем завершенность и переходим к semifinals
         console.log(`[generateNextPlayoffStageSchedule] All quarterfinals are scheduled. Checking if they are completed...`);
         
-        let allQuarterfinalsCompleted = true;
-        const winners: number[] = [];
-        
-        for (const group of quarterfinalGroups) {
-          const winner = await getWinnerFromKnockoutMatch(group.id);
-          console.log(`[generateNextPlayoffStageSchedule] Quarterfinal group ${group.id} (${group.group_name}): winner = ${winner}`);
-          if (winner) {
-            winners.push(winner);
-          } else {
-            allQuarterfinalsCompleted = false;
-            console.log(`[generateNextPlayoffStageSchedule] Quarterfinal group ${group.id} (${group.group_name}) is not completed`);
-            break;
-          }
+      let allQuarterfinalsCompleted = true;
+      const winners: number[] = [];
+      
+      for (const group of quarterfinalGroups) {
+        const winner = await getWinnerFromKnockoutMatch(group.id);
+        console.log(`[generateNextPlayoffStageSchedule] Quarterfinal group ${group.id} (${group.group_name}): winner = ${winner}`);
+        if (winner) {
+          winners.push(winner);
+        } else {
+          allQuarterfinalsCompleted = false;
+          console.log(`[generateNextPlayoffStageSchedule] Quarterfinal group ${group.id} (${group.group_name}) is not completed`);
+          break;
         }
-        
-        if (!allQuarterfinalsCompleted) {
-          console.log(`[generateNextPlayoffStageSchedule] Not all quarterfinals are completed`);
-          return { 
-            success: false, 
-            matchesGenerated: 0, 
+      }
+      
+      if (!allQuarterfinalsCompleted) {
+        console.log(`[generateNextPlayoffStageSchedule] Not all quarterfinals are completed`);
+        return { 
+          success: false, 
+          matchesGenerated: 0, 
             error: 'Not all quarterfinals are completed. Please wait for quarterfinals to finish before generating semifinals schedule.' 
-          };
-        }
-        
-        console.log(`[generateNextPlayoffStageSchedule] All quarterfinals completed. Winners:`, winners);
-        
-        // Проверяем, существуют ли уже semifinals
-        const [existingSemifinals] = await pool.execute(
-          `SELECT id FROM tournament_groups 
+        };
+      }
+      
+      console.log(`[generateNextPlayoffStageSchedule] All quarterfinals completed. Winners:`, winners);
+      
+      // Проверяем, существуют ли уже semifinals
+      const [existingSemifinals] = await pool.execute(
+        `SELECT id FROM tournament_groups 
+         WHERE tournament_id = ? AND category = ? 
+         AND group_name LIKE '%Semifinal%'`,
+        [tournamentId, category]
+      ) as any[];
+      
+      if (existingSemifinals.length > 0) {
+        // Semifinals уже существуют, генерируем расписание для них
+        const [semifinalGroupsData] = await pool.execute(
+          `SELECT id, group_name FROM tournament_groups 
            WHERE tournament_id = ? AND category = ? 
            AND group_name LIKE '%Semifinal%'`,
           [tournamentId, category]
         ) as any[];
         
-        if (existingSemifinals.length > 0) {
-          // Semifinals уже существуют, генерируем расписание для них
-          const [semifinalGroupsData] = await pool.execute(
-            `SELECT id, group_name FROM tournament_groups 
-             WHERE tournament_id = ? AND category = ? 
-             AND group_name LIKE '%Semifinal%'`,
-            [tournamentId, category]
-          ) as any[];
-          
-          groupsToSchedule = semifinalGroupsData;
-          nextStage = 'semifinals';
-        } else {
-          // Semifinals не существуют - создаем их автоматически
-          console.log('[generateNextPlayoffStageSchedule] Semifinals not found, creating them automatically...');
-          const advancement = await checkAndAdvanceWinners(tournamentId, category);
-          
-          if (!advancement.advanced) {
-            return { 
-              success: false, 
-              matchesGenerated: 0, 
-              error: advancement.reason || 'Failed to create semifinals stage' 
-            };
-          }
-          
-          if (advancement.nextStage !== 'semifinals') {
-            return { 
-              success: false, 
-              matchesGenerated: 0, 
-              error: `Expected semifinals stage, but got ${advancement.nextStage}` 
-            };
-          }
-          
-          // Получаем созданные группы semifinals
-          const [semifinalGroupsData] = await pool.execute(
-            `SELECT id, group_name FROM tournament_groups 
-             WHERE tournament_id = ? AND category = ? 
-             AND group_name LIKE '%Semifinal%'`,
-            [tournamentId, category]
-          ) as any[];
-          
-          if (semifinalGroupsData.length === 0) {
-            return { 
-              success: false, 
-              matchesGenerated: 0, 
-              error: 'Semifinals stage was created but no groups found' 
-            };
-          }
-          
-          groupsToSchedule = semifinalGroupsData;
-          nextStage = 'semifinals';
-          console.log('[generateNextPlayoffStageSchedule] Semifinals stage created successfully, groups:', semifinalGroupsData.map((g: any) => g.group_name));
-        }
+        groupsToSchedule = semifinalGroupsData;
+        nextStage = 'semifinals';
       } else {
+        // Semifinals не существуют - создаем их автоматически
+        console.log('[generateNextPlayoffStageSchedule] Semifinals not found, creating them automatically...');
+        const advancement = await checkAndAdvanceWinners(tournamentId, category);
+        
+        if (!advancement.advanced) {
+          return { 
+            success: false, 
+            matchesGenerated: 0, 
+            error: advancement.reason || 'Failed to create semifinals stage' 
+          };
+        }
+        
+        if (advancement.nextStage !== 'semifinals') {
+          return { 
+            success: false, 
+            matchesGenerated: 0, 
+            error: `Expected semifinals stage, but got ${advancement.nextStage}` 
+          };
+        }
+        
+        // Получаем созданные группы semifinals
+        const [semifinalGroupsData] = await pool.execute(
+          `SELECT id, group_name FROM tournament_groups 
+           WHERE tournament_id = ? AND category = ? 
+           AND group_name LIKE '%Semifinal%'`,
+          [tournamentId, category]
+        ) as any[];
+        
+        if (semifinalGroupsData.length === 0) {
+          return { 
+            success: false, 
+            matchesGenerated: 0, 
+            error: 'Semifinals stage was created but no groups found' 
+          };
+        }
+        
+        groupsToSchedule = semifinalGroupsData;
+        nextStage = 'semifinals';
+        console.log('[generateNextPlayoffStageSchedule] Semifinals stage created successfully, groups:', semifinalGroupsData.map((g: any) => g.group_name));
+      }
+        } else {
         // Нет матчей в quarterfinals вообще
         return { 
           success: false, 
@@ -221,69 +221,69 @@ export async function generateNextPlayoffStageSchedule(
         if (allSemifinalsCompleted) {
           // Полуфиналы завершены - переходим к финалам
           console.log(`[generateNextPlayoffStageSchedule] All semifinals are completed. Proceeding to finals...`);
-          
-          // Проверяем, существуют ли уже финалы
-          const [existingFinals] = await pool.execute(
-            `SELECT id FROM tournament_groups 
-             WHERE tournament_id = ? AND category = ? 
-             AND group_name LIKE '%Final%' 
-             AND group_name NOT LIKE '%Semifinal%'`,
-            [tournamentId, category]
-          ) as any[];
-          
-          if (existingFinals.length > 0) {
-            // Финалы уже существуют, генерируем расписание для них
-            const [finalGroupsData] = await pool.execute(
-              `SELECT id, group_name FROM tournament_groups 
-               WHERE tournament_id = ? AND category = ? 
-               AND group_name LIKE '%Final%' 
-               AND group_name NOT LIKE '%Semifinal%'`,
-              [tournamentId, category]
-            ) as any[];
-            
-            groupsToSchedule = finalGroupsData;
-            nextStage = 'finals';
-          } else {
-            // Финалы не существуют - создаем их автоматически
-            console.log('[generateNextPlayoffStageSchedule] Finals not found, creating them automatically...');
-            const advancement = await checkAndAdvanceWinners(tournamentId, category);
-            
-            if (!advancement.advanced) {
-              return { 
-                success: false, 
-                matchesGenerated: 0, 
-                error: advancement.reason || 'Failed to create finals stage' 
-              };
-            }
-            
-            if (advancement.nextStage !== 'finals') {
-              return { 
-                success: false, 
-                matchesGenerated: 0, 
-                error: `Expected finals stage, but got ${advancement.nextStage}` 
-              };
-            }
-            
-            // Получаем созданные группы финалов
-            const [finalGroupsData] = await pool.execute(
-              `SELECT id, group_name FROM tournament_groups 
-               WHERE tournament_id = ? AND category = ? 
-               AND group_name LIKE '%Final%' 
-               AND group_name NOT LIKE '%Semifinal%'`,
-              [tournamentId, category]
-            ) as any[];
-            
-            if (finalGroupsData.length === 0) {
-              return { 
-                success: false, 
-                matchesGenerated: 0, 
-                error: 'Finals stage was created but no groups found' 
-              };
-            }
-            
-            groupsToSchedule = finalGroupsData;
-            nextStage = 'finals';
-            console.log('[generateNextPlayoffStageSchedule] Finals stage created successfully, groups:', finalGroupsData.map((g: any) => g.group_name));
+      
+      // Проверяем, существуют ли уже финалы
+      const [existingFinals] = await pool.execute(
+        `SELECT id FROM tournament_groups 
+         WHERE tournament_id = ? AND category = ? 
+         AND group_name LIKE '%Final%' 
+         AND group_name NOT LIKE '%Semifinal%'`,
+        [tournamentId, category]
+      ) as any[];
+      
+      if (existingFinals.length > 0) {
+        // Финалы уже существуют, генерируем расписание для них
+        const [finalGroupsData] = await pool.execute(
+          `SELECT id, group_name FROM tournament_groups 
+           WHERE tournament_id = ? AND category = ? 
+           AND group_name LIKE '%Final%' 
+           AND group_name NOT LIKE '%Semifinal%'`,
+          [tournamentId, category]
+        ) as any[];
+        
+        groupsToSchedule = finalGroupsData;
+        nextStage = 'finals';
+      } else {
+        // Финалы не существуют - создаем их автоматически
+        console.log('[generateNextPlayoffStageSchedule] Finals not found, creating them automatically...');
+        const advancement = await checkAndAdvanceWinners(tournamentId, category);
+        
+        if (!advancement.advanced) {
+          return { 
+            success: false, 
+            matchesGenerated: 0, 
+            error: advancement.reason || 'Failed to create finals stage' 
+          };
+        }
+        
+        if (advancement.nextStage !== 'finals') {
+          return { 
+            success: false, 
+            matchesGenerated: 0, 
+            error: `Expected finals stage, but got ${advancement.nextStage}` 
+          };
+        }
+        
+        // Получаем созданные группы финалов
+        const [finalGroupsData] = await pool.execute(
+          `SELECT id, group_name FROM tournament_groups 
+           WHERE tournament_id = ? AND category = ? 
+           AND group_name LIKE '%Final%' 
+           AND group_name NOT LIKE '%Semifinal%'`,
+          [tournamentId, category]
+        ) as any[];
+        
+        if (finalGroupsData.length === 0) {
+          return { 
+            success: false, 
+            matchesGenerated: 0, 
+            error: 'Finals stage was created but no groups found' 
+          };
+        }
+        
+        groupsToSchedule = finalGroupsData;
+        nextStage = 'finals';
+        console.log('[generateNextPlayoffStageSchedule] Finals stage created successfully, groups:', finalGroupsData.map((g: any) => g.group_name));
           }
         } else {
           // Полуфиналы запланированы, но не завершены
@@ -321,8 +321,8 @@ export async function generateNextPlayoffStageSchedule(
       if (unscheduledFinals.length > 0) {
         // Есть незапланированные финалы - создаем расписание для них
         console.log(`[generateNextPlayoffStageSchedule] Found ${unscheduledFinals.length} unscheduled final matches. Scheduling them...`);
-        groupsToSchedule = finalGroups;
-        nextStage = 'finals';
+      groupsToSchedule = finalGroups;
+      nextStage = 'finals';
       } else if (scheduledFinals.length > 0) {
         // Все финалы уже запланированы
         return {

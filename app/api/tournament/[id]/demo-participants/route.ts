@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { autoCreateGroupsForCategory } from '@/lib/tournaments';
+import crypto from 'crypto';
 
 // Списки реальных имен и фамилий для генерации демо-участников
 const firstNames = [
@@ -25,6 +26,39 @@ function generateRandomName(): { firstName: string; lastName: string } {
   const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
   const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
   return { firstName, lastName };
+}
+
+// Helper function to get or create user by email for demo participants
+async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string): Promise<string | null> {
+  try {
+    const pool = getDbPool();
+    
+    // Ищем существующего пользователя по email
+    const [existingUsers] = await pool.execute(
+      'SELECT id FROM users WHERE email = ?',
+      [email]
+    ) as any[];
+    
+    if (existingUsers.length > 0) {
+      return existingUsers[0].id;
+    }
+    
+    // Создаем нового пользователя с ролью 'participant'
+    const userId = crypto.randomUUID();
+    const defaultPassword = crypto.randomBytes(32).toString('hex');
+    const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
+    
+    await pool.execute(
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, created_at)
+       VALUES (?, ?, ?, ?, ?, 'participant', NOW())`,
+      [userId, email, passwordHash, firstName, lastName]
+    );
+    
+    return userId;
+  } catch (error) {
+    console.error('Error getting or creating user by email:', error);
+    return null;
+  }
 }
 
 export async function POST(
@@ -128,12 +162,16 @@ export async function POST(
         const { firstName, lastName } = generateRandomName();
         const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}${globalPlayerIndex}@demo.example.com`;
         
+        // Получаем или создаем user_id по email
+        const userId = await getOrCreateUserByEmail(email, firstName, lastName);
+        
         const [result] = await pool.execute(
           `INSERT INTO tournament_registrations 
-           (tournament_id, tournament_name, token, locale, first_name, last_name, email, phone, categories, tshirt_size, confirmed, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())`,
+           (tournament_id, user_id, tournament_name, token, locale, first_name, last_name, email, phone, categories, tshirt_size, confirmed, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, NOW())`,
           [
             tournamentId,
+            userId,
             tournament.name,
             `demo-${tournamentId}-${globalPlayerIndex}`, // Уникальный токен
             'en', // Локаль по умолчанию

@@ -45,6 +45,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [partnerPhotoError, setPartnerPhotoError] = useState<string | null>(null);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const categoryGroups = {
     male: [
@@ -89,6 +90,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           const profile = data.profile;
 
           if (profile) {
+            setUserId(profile.id || null);
             // Автозаполняем только пустые поля
             setFormData(prev => ({
               firstName: prev.firstName || profile.firstName || '',
@@ -300,15 +302,23 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         : null;
 
     try {
+      const authToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      };
+
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+
       const response = await fetch('/api/tournament/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           tournamentId,
           tournamentName,
           locale,
+          userId,
           ...formData,
           tshirtSize: tshirtFieldConfig.enabled ? formData.tshirtSize : '',
           customFields: enabledCustomFieldsPayload,

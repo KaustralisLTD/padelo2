@@ -700,6 +700,8 @@
       "participantsList": "قائمة المشاركين",
       "noParticipants": "لا يوجد مشاركون مسجلون بعد.",
       "loading": "جاري التحميل...",
+      "participantOrder": "الرقم",
+      "participantUserId": "معرّف المستخدم",
       "participantName": "الاسم",
       "participantEmail": "البريد الإلكتروني",
       "participantPartner": "الشريك",

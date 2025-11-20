@@ -1563,183 +1563,183 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
                   <>
                     {/* Кнопка генерации расписания для финальной части - показываем всегда, если есть группы плей-офф в категории */}
                     {isAdmin && categoryKnockoutGroups.length > 0 && (
-                      <div className="mb-6 flex justify-end">
-                        <button
-                          onClick={async () => {
-                            if (!selectedCategory) return;
-                            
-                            try {
-                              const token = localStorage.getItem('auth_token');
-                              const response = await fetch(`/api/tournament/${tournamentId}/schedule/next-playoff`, {
-                                method: 'POST',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                  'Authorization': `Bearer ${token}`,
-                                },
-                                body: JSON.stringify({ category: selectedCategory }),
-                              });
-                              
-                              if (response.ok) {
-                                const data = await response.json();
+                <div className="mb-6 flex justify-end">
+                  <button
+                    onClick={async () => {
+                      if (!selectedCategory) return;
+                      
+                      try {
+                        const token = localStorage.getItem('auth_token');
+                        const response = await fetch(`/api/tournament/${tournamentId}/schedule/next-playoff`, {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                          },
+                          body: JSON.stringify({ category: selectedCategory }),
+                        });
+                        
+                        if (response.ok) {
+                          const data = await response.json();
                                 alert(t('scheduleGenerated', { count: data.matchesGenerated }) || `Расписание сгенерировано! Создано матчей: ${data.matchesGenerated}`);
-                                // Обновляем матчи и bracket
-                                fetchMatches();
-                                fetchBracket();
-                                // Переключаемся на вкладку расписания
-                                setShowSchedule(true);
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                              } else {
-                                const error = await response.json();
-                                alert(`${t('error')}: ${error.error}`);
-                              }
-                            } catch (error) {
-                              console.error('Error generating next playoff schedule:', error);
-                              alert(t('error'));
-                            }
-                          }}
-                          className="px-6 py-3 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity font-poppins font-semibold"
-                        >
-                          {t('generateSchedule')}
-                        </button>
-                      </div>
-                    )}
+                          // Обновляем матчи и bracket
+                          fetchMatches();
+                          fetchBracket();
+                          // Переключаемся на вкладку расписания
+                          setShowSchedule(true);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        } else {
+                          const error = await response.json();
+                          alert(`${t('error')}: ${error.error}`);
+                        }
+                      } catch (error) {
+                        console.error('Error generating next playoff schedule:', error);
+                        alert(t('error'));
+                      }
+                    }}
+                    className="px-6 py-3 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity font-poppins font-semibold"
+                  >
+                    {t('generateSchedule')}
+                  </button>
+                </div>
+              )}
 
-                    {/* Группы финальной части */}
+              {/* Группы финальной части */}
                     {filteredGroups.length > 0 ? (
                       filteredGroups.map((group) => {
-                      const pairsCount = group.pairs.length;
-                      const hasError = pairsCount !== group.maxPairs;
-                      const isOverLimit = pairsCount > group.maxPairs;
-                      const isUnderLimit = pairsCount < group.maxPairs;
-                      
-                      return (
-                        <div
-                          key={group.id}
-                          className={`bg-background rounded-lg border p-4 ${
-                            hasError 
-                              ? isOverLimit 
-                                ? 'border-yellow-500 bg-yellow-500/10' 
-                                : 'border-orange-500 bg-orange-500/10'
-                              : 'border-border'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-4">
-                            <div>
-                              <h3 className="text-xl font-poppins font-bold text-text">
-                                {group.groupName} ({group.category})
-                              </h3>
-                              {hasError && (
-                                <p className="text-sm font-poppins mt-1">
-                                  {isOverLimit ? (
-                                    <span className="text-yellow-500">
-                                      ⚠️ {t('groupOverLimit', { current: pairsCount, max: group.maxPairs })}
-                                    </span>
-                                  ) : (
-                                    <span className="text-orange-500">
-                                      ⚠️ {t('groupUnderLimit', { current: pairsCount, max: group.maxPairs })}
-                                    </span>
-                                  )}
-                                </p>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-4">
-                              {group.isCompleted && (
-                                <span className="text-sm text-green-400 font-poppins font-semibold">
-                                  ✓ {t('completed')}
-                                </span>
-                              )}
-                              {group.startTime && (
-                                <span className="text-sm text-text-secondary font-poppins">
-                                  {t('startTime')}: {formatTime(group.startTime)}
-                                </span>
-                              )}
-                            </div>
-                          </div>
+                const pairsCount = group.pairs.length;
+                const hasError = pairsCount !== group.maxPairs;
+                const isOverLimit = pairsCount > group.maxPairs;
+                const isUnderLimit = pairsCount < group.maxPairs;
+                
+                return (
+                  <div
+                    key={group.id}
+                    className={`bg-background rounded-lg border p-4 ${
+                      hasError 
+                        ? isOverLimit 
+                          ? 'border-yellow-500 bg-yellow-500/10' 
+                          : 'border-orange-500 bg-orange-500/10'
+                        : 'border-border'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-xl font-poppins font-bold text-text">
+                          {group.groupName} ({group.category})
+                        </h3>
+                        {hasError && (
+                          <p className="text-sm font-poppins mt-1">
+                            {isOverLimit ? (
+                              <span className="text-yellow-500">
+                                ⚠️ {t('groupOverLimit', { current: pairsCount, max: group.maxPairs })}
+                              </span>
+                            ) : (
+                              <span className="text-orange-500">
+                                ⚠️ {t('groupUnderLimit', { current: pairsCount, max: group.maxPairs })}
+                              </span>
+                            )}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4">
+                        {group.isCompleted && (
+                          <span className="text-sm text-green-400 font-poppins font-semibold">
+                            ✓ {t('completed')}
+                          </span>
+                        )}
+                        {group.startTime && (
+                          <span className="text-sm text-text-secondary font-poppins">
+                            {t('startTime')}: {formatTime(group.startTime)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {group.pairs.map((pair) => (
-                              <div
-                                key={pair.id}
-                                className="bg-background-secondary rounded-lg border border-border p-3"
-                              >
-                                <div className="flex items-center justify-between mb-2">
-                                  <div className="flex items-center gap-2">
-                                    <div className="text-sm font-poppins font-semibold text-primary">
-                                      {t('pair')} {pair.pairNumber}
-                                      <span className="text-xs text-text-secondary ml-1">(ID: {pair.id})</span>
-                                    </div>
-                                    {groupWinners[group.id]?.includes(pair.id) && (
-                                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-poppins font-semibold bg-yellow-500/20 text-yellow-500 border border-yellow-500/30">
-                                        🏆 {t('winner')}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {isAdmin && (
-                                    <button
-                                      onClick={() => handleEditPair(pair.id, group.id, pair.players, group.category)}
-                                      className="text-xs text-text-secondary hover:text-primary transition-colors"
-                                      title={t('editPair')}
-                                    >
-                                      ✏️
-                                    </button>
-                                  )}
-                                </div>
-                                <div className="space-y-1.5">
-                                  {(() => {
-                                    const mainPlayers = pair.players.filter(p => !p.isPartner);
-                                    if (mainPlayers.length >= 2) {
-                                      // Показываем пару в формате "Имя1 Фамилия1 & Имя2 Фамилия2"
-                                      const player1 = `${mainPlayers[0].firstName} ${mainPlayers[0].lastName}`.trim();
-                                      const player2 = `${mainPlayers[1].firstName} ${mainPlayers[1].lastName}`.trim();
-                                      return (
-                                        <div className="text-sm font-poppins text-text font-semibold">
-                                          {player1} & {player2}
-                                        </div>
-                                      );
-                                    } else if (mainPlayers.length === 1) {
-                                      // Если только один игрок
-                                      return (
-                                        <div className="text-sm font-poppins text-text font-semibold">
-                                          {mainPlayers[0].firstName} {mainPlayers[0].lastName}
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div className="text-sm text-text-secondary font-poppins italic">
-                                          {t('empty')}
-                                        </div>
-                                      );
-                                    }
-                                  })()}
-                                  {isAdmin && pair.players.filter(p => !p.isPartner).length > 0 && (
-                                    <div className="flex gap-2 mt-2">
-                                      {pair.players
-                                        .filter(p => !p.isPartner)
-                                        .map((player, idx) => (
-                                          <button
-                                            key={idx}
-                                            onClick={() => {
-                                              setEditingPlayer({ pairId: pair.id, playerIndex: idx, player });
-                                              setPlayerEditForm({
-                                                firstName: player.firstName || '',
-                                                lastName: player.lastName || '',
-                                                email: player.email || '',
-                                              });
-                                            }}
-                                            className="text-xs text-text-secondary hover:text-primary transition-colors"
-                                            title={t('editPlayer') || 'Редактировать игрока'}
-                                          >
-                                            ✏️ {player.firstName}
-                                          </button>
-                                        ))}
-                                    </div>
-                                  )}
-                                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {group.pairs.map((pair) => (
+                        <div
+                          key={pair.id}
+                          className="bg-background-secondary rounded-lg border border-border p-3"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <div className="text-sm font-poppins font-semibold text-primary">
+                                {t('pair')} {pair.pairNumber}
+                                <span className="text-xs text-text-secondary ml-1">(ID: {pair.id})</span>
                               </div>
-                            ))}
+                              {groupWinners[group.id]?.includes(pair.id) && (
+                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-poppins font-semibold bg-yellow-500/20 text-yellow-500 border border-yellow-500/30">
+                                  🏆 {t('winner')}
+                                </span>
+                              )}
+                            </div>
+                            {isAdmin && (
+                              <button
+                                onClick={() => handleEditPair(pair.id, group.id, pair.players, group.category)}
+                                className="text-xs text-text-secondary hover:text-primary transition-colors"
+                                title={t('editPair')}
+                              >
+                                ✏️
+                              </button>
+                            )}
                           </div>
-                        </div>
-                      );
+                          <div className="space-y-1.5">
+                            {(() => {
+                              const mainPlayers = pair.players.filter(p => !p.isPartner);
+                              if (mainPlayers.length >= 2) {
+                                // Показываем пару в формате "Имя1 Фамилия1 & Имя2 Фамилия2"
+                                const player1 = `${mainPlayers[0].firstName} ${mainPlayers[0].lastName}`.trim();
+                                const player2 = `${mainPlayers[1].firstName} ${mainPlayers[1].lastName}`.trim();
+                                return (
+                                  <div className="text-sm font-poppins text-text font-semibold">
+                                    {player1} & {player2}
+                                  </div>
+                                );
+                              } else if (mainPlayers.length === 1) {
+                                // Если только один игрок
+                                return (
+                                  <div className="text-sm font-poppins text-text font-semibold">
+                                    {mainPlayers[0].firstName} {mainPlayers[0].lastName}
+                                  </div>
+                                );
+                              } else {
+                                return (
+                                  <div className="text-sm text-text-secondary font-poppins italic">
+                                    {t('empty')}
+                                  </div>
+                                );
+                              }
+                            })()}
+                            {isAdmin && pair.players.filter(p => !p.isPartner).length > 0 && (
+                              <div className="flex gap-2 mt-2">
+                                {pair.players
+                                  .filter(p => !p.isPartner)
+                                  .map((player, idx) => (
+                                    <button
+                                      key={idx}
+                                      onClick={() => {
+                                        setEditingPlayer({ pairId: pair.id, playerIndex: idx, player });
+                                        setPlayerEditForm({
+                                          firstName: player.firstName || '',
+                                          lastName: player.lastName || '',
+                                          email: player.email || '',
+                                        });
+                                      }}
+                                      className="text-xs text-text-secondary hover:text-primary transition-colors"
+                                      title={t('editPlayer') || 'Редактировать игрока'}
+                                    >
+                                      ✏️ {player.firstName}
+                                    </button>
+                                  ))}
+                              </div>
+                            )}
+                          </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            );
                     })
                     ) : (
                       <div className="p-6 bg-background rounded-lg border border-border text-center">

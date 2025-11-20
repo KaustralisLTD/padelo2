@@ -618,11 +618,22 @@
     "loginButton": "Войти",
     "registerButton": "Создать аккаунт",
     "submitting": "Обработка...",
+    "orContinueWith": "Или продолжить с",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
     "errors": {
       "invalidCredentials": "Неверный email или пароль",
       "passwordMismatch": "Пароли не совпадают",
       "registrationFailed": "Регистрация не удалась. Попробуйте еще раз.",
-      "generic": "Произошла ошибка. Попробуйте еще раз."
+      "generic": "Произошла ошибка. Попробуйте еще раз.",
+      "oauthFailed": "OAuth авторизация не удалась. Попробуйте еще раз.",
+      "oauth_cancelled": "Авторизация отменена",
+      "invalid_state": "Неверное состояние авторизации. Попробуйте еще раз.",
+      "no_code": "Код авторизации не получен. Попробуйте еще раз.",
+      "oauth_not_configured": "OAuth не настроен. Обратитесь в поддержку.",
+      "token_exchange_failed": "Обмен токена не удался. Попробуйте еще раз.",
+      "user_info_failed": "Не удалось получить информацию о пользователе. Попробуйте еще раз.",
+      "no_email": "Email не предоставлен. Попробуйте еще раз."
     }
   },
   "Dashboard": {
@@ -843,6 +854,8 @@
       "participantsList": "Список участников",
       "noParticipants": "Пока нет зарегистрированных участников.",
       "loading": "Загрузка...",
+      "participantOrder": "№",
+      "participantUserId": "ID пользователя",
       "participantName": "Имя",
       "participantEmail": "Email",
       "participantPartner": "Партнер",
