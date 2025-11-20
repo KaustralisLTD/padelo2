@@ -647,7 +647,9 @@
     "paymentStatusUpdated": "Betalingsstatus oppdatert med hell.",
     "paymentStatusUpdateError": "Kunne ikke oppdatere betalingsstatus.",
     "participantCategoryUpdated": "Deltakerkategori oppdatert med suksess.",
-    "participantCategoryUpdateError": "Feil ved oppdatering av deltakerkategori."
+    "participantCategoryUpdateError": "Feil ved oppdatering av deltakerkategori.",
+    "copy": "Kopier",
+    "copied": "Kopiert!"
   },
   "Contact": {
     "title": "Kontakt Oss",

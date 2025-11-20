@@ -650,7 +650,9 @@
     "paymentStatusUpdated": "Статус оплаты успешно обновлен.",
     "paymentStatusUpdateError": "Не удалось обновить статус оплаты.",
     "participantCategoryUpdated": "Категория участника успешно обновлена.",
-    "participantCategoryUpdateError": "Не удалось обновить категорию участника."
+    "participantCategoryUpdateError": "Не удалось обновить категорию участника.",
+    "copy": "Копировать",
+    "copied": "Скопировано!"
   },
   "Contact": {
     "title": "Свяжитесь с нами",

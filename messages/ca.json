@@ -917,7 +917,9 @@
     "paymentStatusUpdated": "Estat del pagament actualitzat correctament.",
     "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament.",
     "participantCategoryUpdated": "Categoria de participant actualitzada amb èxit.",
-    "participantCategoryUpdateError": "Error en actualitzar categoria de participant."
+    "participantCategoryUpdateError": "Error en actualitzar categoria de participant.",
+    "copy": "Copiar",
+    "copied": "Copiat!"
   },
   "Dashboard": {
     "title": "Dashboard",

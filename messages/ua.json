@@ -669,7 +669,9 @@
     "paymentStatusUpdated": "Статус оплати успішно оновлено.",
     "paymentStatusUpdateError": "Не вдалося оновити статус оплати.",
     "participantCategoryUpdated": "Категорію учасника успішно оновлено.",
-    "participantCategoryUpdateError": "Не вдалося оновити категорію учасника."
+    "participantCategoryUpdateError": "Не вдалося оновити категорію учасника.",
+    "copy": "Копіювати",
+    "copied": "Скопійовано!"
   },
   "Contact": {
     "title": "Зв'яжіться з нами",

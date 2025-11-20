@@ -647,7 +647,9 @@
     "paymentStatusUpdated": "Zahlungsstatus erfolgreich aktualisiert.",
     "paymentStatusUpdateError": "Zahlungsstatus konnte nicht aktualisiert werden.",
     "participantCategoryUpdated": "Teilnehmerkategorie erfolgreich aktualisiert.",
-    "participantCategoryUpdateError": "Fehler beim Aktualisieren der Teilnehmerkategorie."
+    "participantCategoryUpdateError": "Fehler beim Aktualisieren der Teilnehmerkategorie.",
+    "copy": "Kopieren",
+    "copied": "Kopiert!"
   },
   "Contact": {
     "title": "Kontaktieren Sie Uns",

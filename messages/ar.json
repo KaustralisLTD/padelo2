@@ -647,7 +647,9 @@
     "paymentStatusUpdated": "تم تحديث حالة الدفع بنجاح.",
     "paymentStatusUpdateError": "فشل تحديث حالة الدفع.",
     "participantCategoryUpdated": "تم تحديث فئة المشارك بنجاح.",
-    "participantCategoryUpdateError": "فشل تحديث فئة المشارك."
+    "participantCategoryUpdateError": "فشل تحديث فئة المشارك.",
+    "copy": "نسخ",
+    "copied": "تم النسخ!"
   },
   "Contact": {
     "title": "اتصل بنا",

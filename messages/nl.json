@@ -647,7 +647,9 @@
     "paymentStatusUpdated": "Betalingsstatus succesvol bijgewerkt.",
     "paymentStatusUpdateError": "Kon betalingsstatus niet bijwerken.",
     "participantCategoryUpdated": "Deelnemercategorie succesvol bijgewerkt.",
-    "participantCategoryUpdateError": "Fout bij het bijwerken van deelnemercategorie."
+    "participantCategoryUpdateError": "Fout bij het bijwerken van deelnemercategorie.",
+    "copy": "Kopiëren",
+    "copied": "Gekopieerd!"
   },
   "Contact": {
     "title": "Neem Contact Op",

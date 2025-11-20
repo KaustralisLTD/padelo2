@@ -647,7 +647,9 @@
     "paymentStatusUpdated": "Betalningsstatus uppdaterad framgångsrikt.",
     "paymentStatusUpdateError": "Kunde inte uppdatera betalningsstatus.",
     "participantCategoryUpdated": "Deltagarkategori uppdaterad framgångsrikt.",
-    "participantCategoryUpdateError": "Fel vid uppdatering av deltagarkategori."
+    "participantCategoryUpdateError": "Fel vid uppdatering av deltagarkategori.",
+    "copy": "Kopiera",
+    "copied": "Kopierat!"
   },
   "Contact": {
     "title": "Kontakta Oss",

@@ -62,10 +62,73 @@ export default function TournamentParticipantsPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [editingParticipant, setEditingParticipant] = useState<Participant | null>(null);
   const [editFormData, setEditFormData] = useState<Partial<Participant>>({});
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const categoryEntries = Object.entries(customCategories);
 
   const [openCategoryDropdown, setOpenCategoryDropdown] = useState<number | null>(null);
+
+  // Функция для копирования в буфер обмена
+  const copyToClipboard = async (text: string, fieldId: string) => {
+    if (!text || text === '—' || text === '-') return;
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(fieldId);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Компонент для отображения поля с иконкой копирования
+  const CopyableField = ({ 
+    value, 
+    fieldId, 
+    children, 
+    className = '' 
+  }: { 
+    value: string | null | undefined; 
+    fieldId: string; 
+    children?: React.ReactNode;
+    className?: string;
+  }) => {
+    const displayValue = value || '—';
+    const isCopied = copiedField === fieldId;
+    const canCopy = value && value !== '—' && value !== '-';
+
+    return (
+      <div className={`flex items-center gap-1.5 group ${className}`}>
+        <span 
+          className={canCopy ? 'cursor-pointer hover:text-primary transition-colors' : ''}
+          onClick={() => canCopy && copyToClipboard(value!, fieldId)}
+        >
+          {children || displayValue}
+        </span>
+        {canCopy && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              copyToClipboard(value!, fieldId);
+            }}
+            className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-primary/20 rounded"
+            title={isCopied ? tTournaments('copied') || 'Скопировано' : tTournaments('copy') || 'Копировать'}
+          >
+            {isCopied ? (
+              <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg className="w-3.5 h-3.5 text-text-secondary hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            )}
+          </button>
+        )}
+      </div>
+    );
+  };
 
   const renderCategorySelector = (
     participant: Participant,
@@ -496,26 +559,46 @@ export default function TournamentParticipantsPage() {
                         {participant.orderNumber ?? '—'}
                       </td>
                       <td className="px-2 py-2 text-xs font-mono text-text">
-                        {participant.userId ? (
-                          <span className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px] font-semibold truncate block max-w-[80px]">
-                            {participant.userId.substring(0, 6)}...
-                          </span>
-                        ) : (
-                          <span className="text-text-secondary text-[10px]">—</span>
-                        )}
+                        <CopyableField 
+                          value={participant.userId} 
+                          fieldId={`userId-${participant.id}`}
+                        >
+                          {participant.userId ? (
+                            <span className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px] font-semibold truncate block max-w-[80px]">
+                              {participant.userId.substring(0, 6)}...
+                            </span>
+                          ) : (
+                            <span className="text-text-secondary text-[10px]">—</span>
+                          )}
+                        </CopyableField>
                       </td>
                       <td className="px-3 py-2 text-xs text-text">
-                        <div className="flex items-center gap-2">
-                          <span>{participant.firstName} {participant.lastName}</span>
-                          {participant.isDemo && (
-                            <span className="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-500 rounded text-xs whitespace-nowrap">
-                              Demo
-                            </span>
-                          )}
-                        </div>
+                        <CopyableField 
+                          value={`${participant.firstName} ${participant.lastName}`} 
+                          fieldId={`name-${participant.id}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span>{participant.firstName} {participant.lastName}</span>
+                            {participant.isDemo && (
+                              <span className="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-500 rounded text-xs whitespace-nowrap">
+                                Demo
+                              </span>
+                            )}
+                          </div>
+                        </CopyableField>
                       </td>
-                      <td className="px-3 py-2 text-xs text-text break-all">{participant.email}</td>
-                      <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.phone || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-text break-all">
+                        <CopyableField 
+                          value={participant.email} 
+                          fieldId={`email-${participant.id}`}
+                        />
+                      </td>
+                      <td className="px-3 py-2 text-xs text-text whitespace-nowrap">
+                        <CopyableField 
+                          value={participant.phone} 
+                          fieldId={`phone-${participant.id}`}
+                        />
+                      </td>
                       <td className="px-3 py-2 text-xs text-text">
                         {renderCategorySelector(participant, (category) =>
                           handleCategoryToggle(participant.id, category)

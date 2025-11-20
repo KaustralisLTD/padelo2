@@ -347,6 +347,8 @@
     "paymentStatusUpdateError": "Failed to update payment status.",
     "participantCategoryUpdated": "Participant category updated successfully.",
     "participantCategoryUpdateError": "Failed to update participant category.",
+    "copy": "Copy",
+    "copied": "Copied!",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",

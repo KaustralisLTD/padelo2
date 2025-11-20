@@ -647,7 +647,9 @@
     "paymentStatusUpdated": "Stato pagamento aggiornato con successo.",
     "paymentStatusUpdateError": "Impossibile aggiornare lo stato del pagamento.",
     "participantCategoryUpdated": "Categoria partecipante aggiornata con successo.",
-    "participantCategoryUpdateError": "Errore nell'aggiornamento della categoria partecipante."
+    "participantCategoryUpdateError": "Errore nell'aggiornamento della categoria partecipante.",
+    "copy": "Copia",
+    "copied": "Copiato!"
   },
   "Contact": {
     "title": "Contattaci",
