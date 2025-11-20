@@ -251,35 +251,102 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     reader.readAsDataURL(file);
   };
 
+  const scrollToElement = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.focus();
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
+    // Валидация категорий
     if (formData.categories.length === 0) {
-      alert(t('validation.selectCategory'));
+      const errorMsg = t('form.validation.selectCategory') || t('validation.selectCategory') || 'Please select at least one category';
+      alert(errorMsg);
+      scrollToElement('categories-section');
       return;
     }
 
+    // Валидация размера футболки
     if (tshirtFieldConfig.enabled && tshirtFieldConfig.required && !formData.tshirtSize) {
-      alert(t('form.selectSize'));
+      const errorMsg = t('form.selectSize') || 'Please select T-shirt size';
+      alert(errorMsg);
+      const tshirtField = document.querySelector('[name="tshirtSize"]') as HTMLElement;
+      if (tshirtField) {
+        tshirtField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        tshirtField.focus();
+      }
       return;
     }
 
+    // Валидация кастомных полей
     for (const field of enabledCustomFields) {
       if (field.required && !(customFieldValues[field.id]?.trim())) {
-        alert(t('form.error'));
+        const errorMsg = t('form.error') || 'Please fill in all required fields';
+        alert(errorMsg);
+        const customField = document.querySelector(`[data-custom-field="${field.id}"]`) as HTMLElement;
+        if (customField) {
+          customField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          customField.focus();
+        }
         return;
       }
     }
 
+    // Валидация партнера
     const partnerSectionVisible = partnerRequired || showPartner;
 
     if (partnerSectionVisible && partner) {
+      if (!partner.name?.trim()) {
+        const errorMsg = t('form.partnerName') + ' is required' || 'Partner name is required';
+        alert(errorMsg);
+        const partnerNameField = document.querySelector('[name="partnerName"]') as HTMLElement;
+        if (partnerNameField) {
+          partnerNameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerNameField.focus();
+        }
+        return;
+      }
+      if (!partner.email?.trim()) {
+        const errorMsg = t('form.partnerEmail') + ' is required' || 'Partner email is required';
+        alert(errorMsg);
+        const partnerEmailField = document.querySelector('[name="partnerEmail"]') as HTMLElement;
+        if (partnerEmailField) {
+          partnerEmailField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerEmailField.focus();
+        }
+        return;
+      }
+      if (!partner.phone?.trim()) {
+        const errorMsg = t('form.partnerPhone') + ' is required' || 'Partner phone is required';
+        alert(errorMsg);
+        const partnerPhoneField = document.querySelector('[name="partnerPhone"]') as HTMLElement;
+        if (partnerPhoneField) {
+          partnerPhoneField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerPhoneField.focus();
+        }
+        return;
+      }
       if (!partner.tshirtSize) {
-        alert(t('form.partnerSelectSize'));
+        const errorMsg = t('form.partnerSelectSize') || 'Please select partner T-shirt size';
+        alert(errorMsg);
+        const partnerTshirtField = document.querySelector('[name="partnerTshirtSize"]') as HTMLElement;
+        if (partnerTshirtField) {
+          partnerTshirtField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerTshirtField.focus();
+        }
         return;
       }
     } else if (partnerSectionVisible && !partner) {
-      alert(t('form.error'));
+      const errorMsg = t('form.error') || 'Partner information is required';
+      alert(errorMsg);
+      const partnerSection = document.getElementById('partner-section');
+      if (partnerSection) {
+        partnerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
 
@@ -418,7 +485,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       </div>
 
       {/* Categories */}
-      <div>
+      <div id="categories-section">
         <label className="block text-sm font-poppins text-text-secondary mb-2">
           {t('form.categories')} * ({t('form.selectMultiple')})
         </label>
@@ -513,7 +580,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           <label className="block text-sm font-poppins text-text-secondary mb-2">
             {tshirtFieldLabel} {tshirtFieldConfig.required && <span className="text-red-400">*</span>}
           </label>
-          <select
+            <select
+            name="tshirtSize"
             required={tshirtFieldConfig.required}
             value={formData.tshirtSize}
             onChange={(e) => setFormData({ ...formData, tshirtSize: e.target.value })}
@@ -530,7 +598,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       )}
 
       {/* Add Partner */}
-      <div>
+      <div id="partner-section">
         {partnerRequired ? (
           <p className="text-sm text-text-secondary font-poppins mb-3">
             {t('form.partnerRequiredNotice')}
@@ -567,6 +635,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 <input
                   type="text"
                   required={partnerRequired || showPartner}
+                  name="partnerName"
                   value={partner?.name || ''}
                   onChange={(e) => updatePartnerField('name', e.target.value)}
                   className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -579,6 +648,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 <input
                   type="email"
                   required={partnerRequired || showPartner}
+                  name="partnerEmail"
                   value={partner?.email || ''}
                   onChange={(e) => updatePartnerField('email', e.target.value)}
                   className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -592,6 +662,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               <input
                 type="tel"
                 required={partnerRequired || showPartner}
+                name="partnerPhone"
                 value={partner?.phone || ''}
                 onChange={(e) => updatePartnerField('phone', e.target.value)}
                 className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -603,6 +674,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </label>
               <select
                 required={partnerRequired || showPartner}
+                name="partnerTshirtSize"
                 value={partner?.tshirtSize || ''}
                 onChange={(e) => updatePartnerField('tshirtSize', e.target.value)}
                 className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -672,6 +744,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     [field.id]: e.target.value,
                   }))
                 }
+                data-custom-field={field.id}
                 className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
               />
             </div>
