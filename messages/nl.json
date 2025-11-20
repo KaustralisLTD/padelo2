@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "Deelnemercategorie succesvol bijgewerkt.",
     "participantCategoryUpdateError": "Fout bij het bijwerken van deelnemercategorie.",
     "copy": "Kopiëren",
-    "copied": "Gekopieerd!"
+    "copied": "Gekopieerd!",
+    "search": "Zoeken",
+    "searchPlaceholder": "Naam van deelnemer of partner...",
+    "filterPartner": "Partner",
+    "filterAll": "Alle",
+    "filterHasPartner": "Met partner",
+    "filterNoPartner": "Zonder partner",
+    "filterCategory": "Categorie",
+    "clearFilters": "Filters wissen",
+    "samePartnerError": "Dezelfde partner kan niet in verschillende categorieën zijn"
   },
   "Contact": {
     "title": "Neem Contact Op",

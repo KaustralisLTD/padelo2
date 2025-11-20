@@ -671,7 +671,16 @@
     "participantCategoryUpdated": "Categoría de participante actualizada exitosamente.",
     "participantCategoryUpdateError": "Error al actualizar categoría de participante.",
     "copy": "Copiar",
-    "copied": "¡Copiado!"
+    "copied": "¡Copiado!",
+    "search": "Buscar",
+    "searchPlaceholder": "Nombre del participante o pareja...",
+    "filterPartner": "Pareja",
+    "filterAll": "Todos",
+    "filterHasPartner": "Con pareja",
+    "filterNoPartner": "Sin pareja",
+    "filterCategory": "Categoría",
+    "clearFilters": "Limpiar filtros",
+    "samePartnerError": "El mismo pareja no puede estar en diferentes categorías"
   },
   "Contact": {
     "title": "Contáctanos",

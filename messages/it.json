@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "Categoria partecipante aggiornata con successo.",
     "participantCategoryUpdateError": "Errore nell'aggiornamento della categoria partecipante.",
     "copy": "Copia",
-    "copied": "Copiato!"
+    "copied": "Copiato!",
+    "search": "Cerca",
+    "searchPlaceholder": "Nome del partecipante o partner...",
+    "filterPartner": "Partner",
+    "filterAll": "Tutti",
+    "filterHasPartner": "Con partner",
+    "filterNoPartner": "Senza partner",
+    "filterCategory": "Categoria",
+    "clearFilters": "Cancella filtri",
+    "samePartnerError": "Lo stesso partner non può essere in diverse categorie"
   },
   "Contact": {
     "title": "Contattaci",

@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "参与者类别更新成功。",
     "participantCategoryUpdateError": "更新参与者类别失败。",
     "copy": "复制",
-    "copied": "已复制!"
+    "copied": "已复制!",
+    "search": "搜索",
+    "searchPlaceholder": "参与者或合作伙伴姓名...",
+    "filterPartner": "合作伙伴",
+    "filterAll": "全部",
+    "filterHasPartner": "有合作伙伴",
+    "filterNoPartner": "无合作伙伴",
+    "filterCategory": "类别",
+    "clearFilters": "清除筛选",
+    "samePartnerError": "同一合作伙伴不能出现在不同类别中"
   },
   "Contact": {
     "title": "联系我们",

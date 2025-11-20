@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "Catégorie du participant mise à jour avec succès.",
     "participantCategoryUpdateError": "Échec de la mise à jour de la catégorie du participant.",
     "copy": "Copier",
-    "copied": "Copié!"
+    "copied": "Copié!",
+    "search": "Rechercher",
+    "searchPlaceholder": "Nom du participant ou partenaire...",
+    "filterPartner": "Partenaire",
+    "filterAll": "Tous",
+    "filterHasPartner": "Avec partenaire",
+    "filterNoPartner": "Sans partenaire",
+    "filterCategory": "Catégorie",
+    "clearFilters": "Effacer les filtres",
+    "samePartnerError": "Le même partenaire ne peut pas être dans différentes catégories"
   },
   "Contact": {
     "title": "Contactez-Nous",

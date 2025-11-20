@@ -63,6 +63,12 @@ export default function TournamentParticipantsPage() {
   const [editingParticipant, setEditingParticipant] = useState<Participant | null>(null);
   const [editFormData, setEditFormData] = useState<Partial<Participant>>({});
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  
+  // Фильтры и поиск
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filterHasPartner, setFilterHasPartner] = useState<'all' | 'yes' | 'no'>('all');
+  const [filterPaymentStatus, setFilterPaymentStatus] = useState<'all' | 'pending' | 'paid' | 'refunded'>('all');
+  const [filterCategories, setFilterCategories] = useState<string[]>([]);
 
   const categoryEntries = Object.entries(customCategories);
 
@@ -508,6 +514,96 @@ export default function TournamentParticipantsPage() {
           </div>
         )}
 
+        {/* Фильтры и поиск */}
+        <div className="mb-6 bg-background-secondary rounded-lg border border-border p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Поиск по имени */}
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {tTournaments('search')}
+              </label>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={tTournaments('searchPlaceholder')}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text text-sm focus:outline-none focus:border-primary"
+              />
+            </div>
+
+            {/* Фильтр по наличию партнера */}
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {tTournaments('filterPartner')}
+              </label>
+              <select
+                value={filterHasPartner}
+                onChange={(e) => setFilterHasPartner(e.target.value as 'all' | 'yes' | 'no')}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text text-sm focus:outline-none focus:border-primary"
+              >
+                <option value="all">{tTournaments('filterAll')}</option>
+                <option value="yes">{tTournaments('filterHasPartner')}</option>
+                <option value="no">{tTournaments('filterNoPartner')}</option>
+              </select>
+            </div>
+
+            {/* Фильтр по статусу оплаты */}
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {tTournaments('paymentStatus')}
+              </label>
+              <select
+                value={filterPaymentStatus}
+                onChange={(e) => setFilterPaymentStatus(e.target.value as 'all' | 'pending' | 'paid' | 'refunded')}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text text-sm focus:outline-none focus:border-primary"
+              >
+                <option value="all">{tTournaments('filterAll')}</option>
+                <option value="pending">{tTournaments('paymentPending')}</option>
+                <option value="paid">{tTournaments('paymentPaid')}</option>
+                <option value="refunded">{tTournaments('paymentRefunded')}</option>
+              </select>
+            </div>
+
+            {/* Фильтр по категориям */}
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {tTournaments('filterCategory')}
+              </label>
+              <select
+                multiple
+                value={filterCategories}
+                onChange={(e) => {
+                  const selected = Array.from(e.target.selectedOptions, option => option.value);
+                  setFilterCategories(selected);
+                }}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text text-sm focus:outline-none focus:border-primary min-h-[42px]"
+                size={Math.min(categoryEntries.length, 3)}
+              >
+                {categoryEntries.map(([code, name]) => (
+                  <option key={code} value={code}>{name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Кнопка сброса фильтров */}
+          {(searchQuery || filterHasPartner !== 'all' || filterPaymentStatus !== 'all' || filterCategories.length > 0) && (
+            <div className="mt-4">
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilterHasPartner('all');
+                  setFilterPaymentStatus('all');
+                  setFilterCategories([]);
+                }}
+                className="px-4 py-2 bg-background border border-border rounded-lg text-text text-sm hover:bg-background-hover transition-colors"
+              >
+                {tTournaments('clearFilters')}
+              </button>
+            </div>
+          )}
+        </div>
+
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse min-w-[1400px]">
@@ -553,8 +649,65 @@ export default function TournamentParticipantsPage() {
                     </td>
                   </tr>
                 ) : (
-                  participants.map((participant) => (
-                    <tr key={participant.id} className="border-b border-border hover:bg-background/50">
+                  (() => {
+                    // Фильтрация участников
+                    let filtered = participants;
+                    
+                    // Поиск по имени участника и партнера
+                    if (searchQuery) {
+                      const query = searchQuery.toLowerCase();
+                      filtered = filtered.filter(p => {
+                        const fullName = `${p.firstName} ${p.lastName}`.toLowerCase();
+                        const partnerName = (p.partnerName || '').toLowerCase();
+                        const categoryPartners = Object.values(p.categoryPartners || {}).map(cp => cp.name.toLowerCase()).join(' ');
+                        return fullName.includes(query) || partnerName.includes(query) || categoryPartners.includes(query);
+                      });
+                    }
+                    
+                    // Фильтр по наличию партнера
+                    if (filterHasPartner === 'yes') {
+                      filtered = filtered.filter(p => 
+                        p.partnerName || 
+                        (p.categoryPartners && Object.keys(p.categoryPartners).length > 0)
+                      );
+                    } else if (filterHasPartner === 'no') {
+                      filtered = filtered.filter(p => 
+                        !p.partnerName && 
+                        (!p.categoryPartners || Object.keys(p.categoryPartners).length === 0)
+                      );
+                    }
+                    
+                    // Фильтр по статусу оплаты
+                    if (filterPaymentStatus !== 'all') {
+                      filtered = filtered.filter(p => p.paymentStatus === filterPaymentStatus);
+                    }
+                    
+                    // Фильтр по категориям
+                    if (filterCategories.length > 0) {
+                      filtered = filtered.filter(p => 
+                        p.categories && p.categories.some(cat => filterCategories.includes(cat))
+                      );
+                    }
+                    
+                    // Проверка на дубликаты
+                    const duplicateCheck = (p: Participant) => {
+                      const duplicates = participants.filter(other => 
+                        other.id !== p.id && (
+                          (other.firstName === p.firstName && other.lastName === p.lastName && other.email === p.email) ||
+                          (other.phone && p.phone && other.phone === p.phone) ||
+                          (other.email === p.email)
+                        )
+                      );
+                      return duplicates.length > 0;
+                    };
+                    
+                    return filtered.map((participant) => {
+                      const isDuplicate = duplicateCheck(participant);
+                      return (
+                    <tr 
+                      key={participant.id} 
+                      className={`border-b border-border hover:bg-background/50 ${isDuplicate ? 'bg-red-500/10 border-red-500/50' : ''}`}
+                    >
                       <td className="px-3 py-2 text-xs text-text text-center">
                         {participant.orderNumber ?? '—'}
                       </td>
@@ -609,21 +762,39 @@ export default function TournamentParticipantsPage() {
                           <div className="space-y-1">
                             {participant.categories.map((cat) => {
                               const partner = participant.categoryPartners?.[cat];
+                              const partnerName = partner?.name || participant.partnerName || '—';
                               const categoryName = customCategories[cat] || cat;
+                              // Проверка на одинакового партнера в разных категориях
+                              const samePartnerInOtherCategories = participant.categories.filter(
+                                otherCat => otherCat !== cat && 
+                                (participant.categoryPartners?.[otherCat]?.name === partnerName || 
+                                 (otherCat === participant.categories[0] && participant.partnerName === partnerName))
+                              ).length > 0;
+                              
                               return (
-                                <div key={cat} className="flex items-center gap-2">
+                                <div key={cat} className={`flex items-center gap-2 ${samePartnerInOtherCategories && partnerName !== '—' ? 'bg-red-500/20 border border-red-500 rounded px-2 py-1' : ''}`}>
                                   <span className="text-[10px] font-semibold text-primary/70 uppercase">
                                     {categoryName}:
                                   </span>
-                                  <span className="text-text">
-                                    {partner?.name || participant.partnerName || '—'}
-                                  </span>
+                                  <CopyableField 
+                                    value={partnerName} 
+                                    fieldId={`partner-${participant.id}-${cat}`}
+                                    className="flex-1"
+                                  />
+                                  {samePartnerInOtherCategories && partnerName !== '—' && (
+                                    <span className="text-[9px] text-red-500 font-semibold" title={tTournaments('samePartnerError') || 'Один партнер не может быть в разных категориях'}>
+                                      ⚠
+                                    </span>
+                                  )}
                                 </div>
                               );
                             })}
                           </div>
                         ) : (
-                          participant.partnerName || '—'
+                          <CopyableField 
+                            value={participant.partnerName} 
+                            fieldId={`partner-${participant.id}`}
+                          />
                         )}
                       </td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.tshirtSize || '-'}</td>
@@ -652,7 +823,9 @@ export default function TournamentParticipantsPage() {
                         </button>
                       </td>
                     </tr>
-                  ))
+                      );
+                    });
+                  })()
                 )}
               </tbody>
             </table>

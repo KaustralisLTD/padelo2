@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "Teilnehmerkategorie erfolgreich aktualisiert.",
     "participantCategoryUpdateError": "Fehler beim Aktualisieren der Teilnehmerkategorie.",
     "copy": "Kopieren",
-    "copied": "Kopiert!"
+    "copied": "Kopiert!",
+    "search": "Suchen",
+    "searchPlaceholder": "Name des Teilnehmers oder Partners...",
+    "filterPartner": "Partner",
+    "filterAll": "Alle",
+    "filterHasPartner": "Mit Partner",
+    "filterNoPartner": "Ohne Partner",
+    "filterCategory": "Kategorie",
+    "clearFilters": "Filter zurücksetzen",
+    "samePartnerError": "Derselbe Partner kann nicht in verschiedenen Kategorien sein"
   },
   "Contact": {
     "title": "Kontaktieren Sie Uns",

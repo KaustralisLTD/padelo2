@@ -671,7 +671,16 @@
     "participantCategoryUpdated": "Категорію учасника успішно оновлено.",
     "participantCategoryUpdateError": "Не вдалося оновити категорію учасника.",
     "copy": "Копіювати",
-    "copied": "Скопійовано!"
+    "copied": "Скопійовано!",
+    "search": "Пошук",
+    "searchPlaceholder": "Ім'я учасника або партнера...",
+    "filterPartner": "Партнер",
+    "filterAll": "Всі",
+    "filterHasPartner": "З партнером",
+    "filterNoPartner": "Без партнера",
+    "filterCategory": "Категорія",
+    "clearFilters": "Скинути фільтри",
+    "samePartnerError": "Один партнер не може бути в різних категоріях"
   },
   "Contact": {
     "title": "Зв'яжіться з нами",

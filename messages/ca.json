@@ -919,7 +919,16 @@
     "participantCategoryUpdated": "Categoria de participant actualitzada amb èxit.",
     "participantCategoryUpdateError": "Error en actualitzar categoria de participant.",
     "copy": "Copiar",
-    "copied": "Copiat!"
+    "copied": "Copiat!",
+    "search": "Cercar",
+    "searchPlaceholder": "Nom del participant o parella...",
+    "filterPartner": "Parella",
+    "filterAll": "Tots",
+    "filterHasPartner": "Amb parella",
+    "filterNoPartner": "Sense parella",
+    "filterCategory": "Categoria",
+    "clearFilters": "Esborrar filtres",
+    "samePartnerError": "La mateixa parella no pot estar en diferents categories"
   },
   "Dashboard": {
     "title": "Dashboard",

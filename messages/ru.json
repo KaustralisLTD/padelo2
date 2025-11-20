@@ -652,7 +652,16 @@
     "participantCategoryUpdated": "Категория участника успешно обновлена.",
     "participantCategoryUpdateError": "Не удалось обновить категорию участника.",
     "copy": "Копировать",
-    "copied": "Скопировано!"
+    "copied": "Скопировано!",
+    "search": "Поиск",
+    "searchPlaceholder": "Имя участника или партнера...",
+    "filterPartner": "Партнер",
+    "filterAll": "Все",
+    "filterHasPartner": "С партнером",
+    "filterNoPartner": "Без партнера",
+    "filterCategory": "Категория",
+    "clearFilters": "Сбросить фильтры",
+    "samePartnerError": "Один партнер не может быть в разных категориях"
   },
   "Contact": {
     "title": "Свяжитесь с нами",

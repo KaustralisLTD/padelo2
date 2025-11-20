@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "تم تحديث فئة المشارك بنجاح.",
     "participantCategoryUpdateError": "فشل تحديث فئة المشارك.",
     "copy": "نسخ",
-    "copied": "تم النسخ!"
+    "copied": "تم النسخ!",
+    "search": "بحث",
+    "searchPlaceholder": "اسم المشارك أو الشريك...",
+    "filterPartner": "الشريك",
+    "filterAll": "الكل",
+    "filterHasPartner": "مع شريك",
+    "filterNoPartner": "بدون شريك",
+    "filterCategory": "الفئة",
+    "clearFilters": "مسح المرشحات",
+    "samePartnerError": "لا يمكن أن يكون نفس الشريك في فئات مختلفة"
   },
   "Contact": {
     "title": "اتصل بنا",

@@ -649,7 +649,16 @@
     "participantCategoryUpdated": "Deltagarkategori uppdaterad framgångsrikt.",
     "participantCategoryUpdateError": "Fel vid uppdatering av deltagarkategori.",
     "copy": "Kopiera",
-    "copied": "Kopierat!"
+    "copied": "Kopierat!",
+    "search": "Sök",
+    "searchPlaceholder": "Deltagare eller partner namn...",
+    "filterPartner": "Partner",
+    "filterAll": "Alla",
+    "filterHasPartner": "Med partner",
+    "filterNoPartner": "Utan partner",
+    "filterCategory": "Kategori",
+    "clearFilters": "Rensa filter",
+    "samePartnerError": "Samma partner kan inte vara i olika kategorier"
   },
   "Contact": {
     "title": "Kontakta Oss",
