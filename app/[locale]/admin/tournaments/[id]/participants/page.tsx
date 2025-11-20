@@ -384,7 +384,22 @@ export default function TournamentParticipantsPage() {
       const next = current.includes(category)
         ? current.filter((c) => c !== category)
         : [...current, category];
-      return { ...prev, categories: next };
+      
+      // При удалении категории удаляем и партнера для этой категории
+      const updatedPartners = { ...(prev.categoryPartners as Record<string, CategoryPartner> || {}) };
+      if (!next.includes(category)) {
+        delete updatedPartners[category];
+      } else if (!updatedPartners[category]) {
+        // При добавлении категории создаем пустого партнера, если его нет
+        updatedPartners[category] = {
+          name: '',
+          email: '',
+          phone: '',
+          tshirtSize: '',
+        };
+      }
+      
+      return { ...prev, categories: next, categoryPartners: updatedPartners };
     });
   };
 
@@ -438,7 +453,7 @@ export default function TournamentParticipantsPage() {
                   <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[60px]">
                     {tTournaments('participantOrder')}
                   </th>
-                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[160px]">
+                  <th className="px-2 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-24">
                     {tTournaments('participantUserId')}
                   </th>
                   <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[150px]">
@@ -480,13 +495,13 @@ export default function TournamentParticipantsPage() {
                       <td className="px-3 py-2 text-xs text-text text-center">
                         {participant.orderNumber ?? '—'}
                       </td>
-                      <td className="px-3 py-2 text-xs font-mono text-text break-all">
+                      <td className="px-2 py-2 text-xs font-mono text-text">
                         {participant.userId ? (
-                          <span className="px-2 py-1 bg-primary/10 text-primary rounded font-semibold">
-                            {participant.userId.substring(0, 8)}...
+                          <span className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px] font-semibold truncate block max-w-[80px]">
+                            {participant.userId.substring(0, 6)}...
                           </span>
                         ) : (
-                          <span className="text-text-secondary">—</span>
+                          <span className="text-text-secondary text-[10px]">—</span>
                         )}
                       </td>
                       <td className="px-3 py-2 text-xs text-text">

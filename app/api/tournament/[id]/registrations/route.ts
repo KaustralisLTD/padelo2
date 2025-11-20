@@ -31,6 +31,23 @@ export async function GET(
 
     const pool = getDbPool();
 
+    // Проверяем наличие колонки category_partners
+    let hasCategoryPartners = false;
+    try {
+      const [columns] = await pool.execute(
+        `SELECT COLUMN_NAME 
+         FROM INFORMATION_SCHEMA.COLUMNS 
+         WHERE TABLE_SCHEMA = DATABASE() 
+         AND TABLE_NAME = 'tournament_registrations' 
+         AND COLUMN_NAME = 'category_partners'`
+      ) as any[];
+      hasCategoryPartners = columns.length > 0;
+    } catch (e) {
+      console.warn('Could not check for category_partners column:', e);
+    }
+
+    const categoryPartnersSelect = hasCategoryPartners ? 'tr.category_partners,' : 'NULL as category_partners,';
+    
     const [registrations] = await pool.execute(
       `SELECT 
         tr.id,
@@ -46,7 +63,7 @@ export async function GET(
         tr.partner_email,
         tr.partner_phone,
         tr.partner_tshirt_size,
-        tr.category_partners,
+        ${categoryPartnersSelect}
         tr.categories,
         tr.confirmed,
         tr.token,
