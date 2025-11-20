@@ -57,7 +57,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
       const { getDbPool } = await import('./db');
       const pool = getDbPool();
       
-      await pool.execute(
+      const [result] = await pool.execute(
         `INSERT INTO tournament_registrations (
           token, tournament_id, user_id, tournament_name, locale,
           first_name, last_name, email, telegram, phone,
@@ -79,7 +79,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.telegram || null,
           registration.phone,
           JSON.stringify(registration.categories),
-          registration.tshirtSize,
+          registration.tshirtSize || null,
           registration.message || null,
           registration.partner?.name || null,
           registration.partner?.email || null,
@@ -93,11 +93,18 @@ export async function saveRegistration(token: string, registration: TournamentRe
           false,
           new Date(),
         ]
-      );
-    } catch (error) {
-      console.error('Database save error:', error);
-      // Fallback to in-memory storage
-      registrations.set(token, registration);
+      ) as any;
+      
+      console.log(`[saveRegistration] Registration saved to database with ID: ${result.insertId}, token: ${token.substring(0, 8)}...`);
+    } catch (error: any) {
+      console.error('[saveRegistration] Database save error:', error);
+      console.error('[saveRegistration] Error details:', {
+        message: error.message,
+        code: error.code,
+        sqlState: error.sqlState,
+        sqlMessage: error.sqlMessage,
+      });
+      throw error; // Пробрасываем ошибку дальше, чтобы обработать её в route
     }
   } else {
     registrations.set(token, registration);

@@ -158,22 +158,35 @@ export async function POST(request: NextRequest) {
       confirmed: false,
     };
     
-    await saveRegistration(token, registrationData);
+    // Сохраняем регистрацию в БД
+    try {
+      await saveRegistration(token, registrationData);
+      console.log(`[POST /api/tournament/register] Registration saved successfully for token: ${token.substring(0, 8)}...`);
+    } catch (saveError: any) {
+      console.error('[POST /api/tournament/register] Error saving registration:', saveError);
+      return NextResponse.json(
+        { success: false, error: 'Failed to save registration. Please try again.' },
+        { status: 500 }
+      );
+    }
     
-    // In production, you would:
-    // 1. Save to database
-    // 2. Send confirmation email with link
-    // 3. Use email service (SendGrid, Resend, etc.)
-    
+    // Генерируем URL для подтверждения
     const confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/tournament/confirmation?token=${token}`;
     
-    // Send confirmation email
-    await sendConfirmationEmail(body.email, confirmationUrl, body.tournamentName, body.locale || 'en');
+    // Отправляем email подтверждения
+    try {
+      await sendConfirmationEmail(body.email, confirmationUrl, body.tournamentName, body.locale || 'en');
+      console.log(`[POST /api/tournament/register] Confirmation email sent to: ${body.email}`);
+    } catch (emailError: any) {
+      console.error('[POST /api/tournament/register] Error sending email:', emailError);
+      // Не прерываем регистрацию, если email не отправился - пользователь все равно зарегистрирован
+    }
     
     return NextResponse.json({
       success: true,
       token,
       message: 'Registration submitted successfully. Please check your email for confirmation.',
+      confirmationUrl, // Возвращаем URL для отладки
     });
   } catch (error) {
     console.error('Registration error:', error);

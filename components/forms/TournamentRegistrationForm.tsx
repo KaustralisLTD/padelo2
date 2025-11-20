@@ -584,6 +584,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
 
       if (response.ok) {
         const data = await response.json();
+        console.log('[TournamentRegistrationForm] Registration successful:', data);
         setSubmitStatus('success');
         // Store token in localStorage for dashboard access
         localStorage.setItem('tournament_token', data.token);
@@ -592,10 +593,18 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           window.location.href = `/${locale}/tournament/confirmation?token=${data.token}`;
         }, 1000);
       } else {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('[TournamentRegistrationForm] Registration failed:', errorData);
         setSubmitStatus('error');
+        setError(errorData.error || 'Failed to submit registration. Please try again.');
+        alert(errorData.error || 'Failed to submit registration. Please try again.');
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('[TournamentRegistrationForm] Registration error:', error);
       setSubmitStatus('error');
+      const errorMessage = error.message || 'Failed to submit registration. Please check your connection and try again.';
+      setError(errorMessage);
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -814,6 +823,142 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </p>
       </div>
 
+      {/* Add Partner - для основных категорий (male/female) */}
+      {formData.categories.some(c => c.startsWith('male') || c.startsWith('female')) && (
+        <div id="partner-section" className="mt-4">
+          {partnerRequired ? (
+            <p className="text-sm text-text-secondary font-poppins mb-3">
+              {t('form.partnerRequiredNotice')}
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                if (showPartner) {
+                  setShowPartner(false);
+                  setPartner(null);
+                  setPartnerPhotoError(null);
+                } else {
+                  setShowPartner(true);
+                  setPartner(createEmptyPartner());
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors w-full"
+            >
+              <span className="text-xl">{showPartner ? '−' : '+'}</span>
+              <span className="font-poppins">
+                {showPartner ? t('form.removePartner') : t('form.addPartner')}
+              </span>
+            </button>
+          )}
+
+          {(partnerRequired || showPartner) && (
+            <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
+              <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
+                {t('form.addPartner')}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.partnerName')} {partnerRequired && <span className="text-red-400">*</span>}
+                  </label>
+                  <input
+                    type="text"
+                    required={partnerRequired}
+                    name="partnerName"
+                    value={partner?.name || ''}
+                    onChange={(e) => setPartner({ ...partner!, name: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.partnerEmail')} {partnerRequired && <span className="text-red-400">*</span>}
+                  </label>
+                  <input
+                    type="email"
+                    required={partnerRequired}
+                    name="partnerEmail"
+                    value={partner?.email || ''}
+                    onChange={(e) => setPartner({ ...partner!, email: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.partnerPhone')} {partnerRequired && <span className="text-red-400">*</span>}
+                </label>
+                <input
+                  type="tel"
+                  required={partnerRequired}
+                  name="partnerPhone"
+                  value={partner?.phone || ''}
+                  onChange={(e) => setPartner({ ...partner!, phone: e.target.value })}
+                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.partnerTshirtSize')} {partnerRequired && <span className="text-red-400">*</span>}
+                </label>
+                <select
+                  required={partnerRequired}
+                  name="partnerTshirtSize"
+                  value={partner?.tshirtSize || ''}
+                  onChange={(e) => setPartner({ ...partner!, tshirtSize: e.target.value })}
+                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                >
+                  <option value="">{t('form.partnerSelectSize')}</option>
+                  {tshirtSizes.map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.partnerPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
+                </label>
+                <div className="flex items-center gap-4">
+                  {partner?.photoData ? (
+                    <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+                      <img
+                        src={partner.photoData}
+                        alt={partner.name || 'Partner photo'}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : null}
+                  <div className="flex-1">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePartnerPhotoChange}
+                      className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
+                    />
+                    <p className="mt-2 text-xs text-text-secondary">
+                      {t('form.partnerPhotoOptional')}
+                    </p>
+                    {partner?.photoName && (
+                      <p className="mt-2 text-xs text-text-secondary">
+                        {partner.photoName}
+                      </p>
+                    )}
+                    {partnerPhotoError && (
+                      <p className="mt-2 text-xs text-red-400">
+                        {partnerPhotoError}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Partners for Mixed Categories */}
       {formData.categories.filter(c => c.startsWith('mixed')).map((category) => {
         const categoryPartner = categoryPartners[category] || createEmptyPartner();
@@ -976,135 +1121,6 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           </select>
         </div>
       )}
-
-      {/* Add Partner */}
-      <div id="partner-section">
-        {partnerRequired ? (
-          <p className="text-sm text-text-secondary font-poppins mb-3">
-            {t('form.partnerRequiredNotice')}
-          </p>
-        ) : (
-          <button
-            type="button"
-            onClick={() => {
-              if (showPartner) {
-                setShowPartner(false);
-                setPartner(null);
-                setPartnerPhotoError(null);
-              } else {
-                setShowPartner(true);
-                setPartner(createEmptyPartner());
-              }
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors"
-          >
-            <span className="text-xl">{showPartner ? '−' : '+'}</span>
-            <span className="font-poppins">
-              {showPartner ? t('form.removePartner') : t('form.addPartner')}
-            </span>
-          </button>
-        )}
-
-        {(partnerRequired || showPartner) && (
-          <div className="mt-4 p-4 bg-background-secondary border border-gray-700 rounded-lg space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerName')} *
-                </label>
-                <input
-                  type="text"
-                  required={partnerRequired || showPartner}
-                  name="partnerName"
-                  value={partner?.name || ''}
-                  onChange={(e) => updatePartnerField('name', e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerEmail')} *
-                </label>
-                <input
-                  type="email"
-                  required={partnerRequired || showPartner}
-                  name="partnerEmail"
-                  value={partner?.email || ''}
-                  onChange={(e) => updatePartnerField('email', e.target.value)}
-                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerPhone')} *
-              </label>
-              <input
-                type="tel"
-                required={partnerRequired || showPartner}
-                name="partnerPhone"
-                value={partner?.phone || ''}
-                onChange={(e) => updatePartnerField('phone', e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerTshirtSize')} *
-              </label>
-              <select
-                required={partnerRequired || showPartner}
-                name="partnerTshirtSize"
-                value={partner?.tshirtSize || ''}
-                onChange={(e) => updatePartnerField('tshirtSize', e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-              >
-                <option value="">{t('form.partnerSelectSize')}</option>
-                {tshirtSizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.partnerPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handlePartnerPhotoChange}
-                className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
-              />
-              <p className="mt-2 text-xs text-text-secondary">
-                {t('form.partnerPhotoOptional')}
-              </p>
-              {partner?.photoName && (
-                <p className="mt-2 text-xs text-text-secondary">
-                  {partner.photoName}
-                </p>
-              )}
-              {partnerPhotoError && (
-                <p className="mt-2 text-xs text-red-400">{partnerPhotoError}</p>
-              )}
-            </div>
-            {!partnerRequired && (
-              <button
-                type="button"
-                onClick={() => {
-                  setShowPartner(false);
-                  setPartner(null);
-                  setPartnerPhotoError(null);
-                }}
-                className="text-sm text-text-secondary hover:text-primary font-poppins"
-              >
-                {t('form.removePartner')}
-              </button>
-            )}
-          </div>
-        )}
-      </div>
 
       {enabledCustomFields.length > 0 && (
         <div className="space-y-4">
