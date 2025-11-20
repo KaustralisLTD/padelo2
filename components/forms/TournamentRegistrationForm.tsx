@@ -527,6 +527,19 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           }
         : null;
 
+    // Формируем объект партнеров для категорий
+    const mixedCategories = formData.categories.filter(c => c.startsWith('mixed'));
+    const categoryPartnersPayload: Record<string, Partner> = {};
+    for (const category of mixedCategories) {
+      if (categoryPartners[category]) {
+        categoryPartnersPayload[category] = {
+          ...categoryPartners[category],
+          photoData: categoryPartners[category].photoData || null,
+          photoName: categoryPartners[category].photoName || null,
+        };
+      }
+    }
+
     try {
       const authToken = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
       const headers: HeadersInit = {
