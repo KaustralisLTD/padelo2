@@ -662,7 +662,10 @@
     "filterNoPartner": "Zonder partner",
     "filterCategory": "Categorie",
     "clearFilters": "Filters wissen",
-    "samePartnerError": "Dezelfde partner kan niet in verschillende categorieën zijn"
+    "samePartnerError": "Dezelfde partner kan niet in verschillende categorieën zijn",
+    "selectFromParticipants": "Selecteren uit deelnemers",
+    "selectPartner": "Partner selecteren",
+    "enterManually": "Handmatig invoeren"
   },
   "Contact": {
     "title": "Neem Contact Op",

@@ -665,7 +665,10 @@
     "filterNoPartner": "Без партнера",
     "filterCategory": "Категория",
     "clearFilters": "Сбросить фильтры",
-    "samePartnerError": "Один партнер не может быть в разных категориях"
+    "samePartnerError": "Один партнер не может быть в разных категориях",
+    "selectFromParticipants": "Выбрать из участников",
+    "selectPartner": "Выбрать партнера",
+    "enterManually": "Ввести вручную"
   },
   "Contact": {
     "title": "Свяжитесь с нами",

@@ -932,7 +932,10 @@
     "filterNoPartner": "Sense parella",
     "filterCategory": "Categoria",
     "clearFilters": "Esborrar filtres",
-    "samePartnerError": "La mateixa parella no pot estar en diferents categories"
+    "samePartnerError": "La mateixa parella no pot estar en diferents categories",
+    "selectFromParticipants": "Seleccionar de participants",
+    "selectPartner": "Seleccionar parella",
+    "enterManually": "Introduir manualment"
   },
   "Dashboard": {
     "title": "Dashboard",

@@ -662,7 +662,10 @@
     "filterNoPartner": "بدون شريك",
     "filterCategory": "الفئة",
     "clearFilters": "مسح المرشحات",
-    "samePartnerError": "لا يمكن أن يكون نفس الشريك في فئات مختلفة"
+    "samePartnerError": "لا يمكن أن يكون نفس الشريك في فئات مختلفة",
+    "selectFromParticipants": "اختر من المشاركين",
+    "selectPartner": "اختر الشريك",
+    "enterManually": "أدخل يدوياً"
   },
   "Contact": {
     "title": "اتصل بنا",

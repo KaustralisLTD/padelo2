@@ -73,6 +73,10 @@ export default function TournamentParticipantsPage() {
   const categoryEntries = Object.entries(customCategories);
 
   const [openCategoryDropdown, setOpenCategoryDropdown] = useState<number | null>(null);
+  
+  // Состояния для выбора партнера (из списка или вручную) для каждой категории
+  const [partnerManualMode, setPartnerManualMode] = useState<Record<string, boolean>>({});
+  const [selectedPartnerRegistrationId, setSelectedPartnerRegistrationId] = useState<Record<string, string>>({});
 
   // Функция для копирования в буфер обмена
   const copyToClipboard = async (text: string, fieldId: string) => {
@@ -860,7 +864,7 @@ export default function TournamentParticipantsPage() {
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
                       {tTournaments('participantUserId')}
                     </label>
-                    <div className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-mono">
+                    <div className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-mono text-xs break-all overflow-wrap-anywhere">
                       {editingParticipant.userId || '—'}
                     </div>
                   </div>

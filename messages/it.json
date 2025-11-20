@@ -662,7 +662,10 @@
     "filterNoPartner": "Senza partner",
     "filterCategory": "Categoria",
     "clearFilters": "Cancella filtri",
-    "samePartnerError": "Lo stesso partner non può essere in diverse categorie"
+    "samePartnerError": "Lo stesso partner non può essere in diverse categorie",
+    "selectFromParticipants": "Seleziona dai partecipanti",
+    "selectPartner": "Seleziona partner",
+    "enterManually": "Inserisci manualmente"
   },
   "Contact": {
     "title": "Contattaci",

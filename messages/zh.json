@@ -662,7 +662,10 @@
     "filterNoPartner": "无合作伙伴",
     "filterCategory": "类别",
     "clearFilters": "清除筛选",
-    "samePartnerError": "同一合作伙伴不能出现在不同类别中"
+    "samePartnerError": "同一合作伙伴不能出现在不同类别中",
+    "selectFromParticipants": "从参与者中选择",
+    "selectPartner": "选择合作伙伴",
+    "enterManually": "手动输入"
   },
   "Contact": {
     "title": "联系我们",

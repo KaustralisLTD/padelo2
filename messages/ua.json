@@ -684,7 +684,10 @@
     "filterNoPartner": "Без партнера",
     "filterCategory": "Категорія",
     "clearFilters": "Скинути фільтри",
-    "samePartnerError": "Один партнер не може бути в різних категоріях"
+    "samePartnerError": "Один партнер не може бути в різних категоріях",
+    "selectFromParticipants": "Обрати з учасників",
+    "selectPartner": "Обрати партнера",
+    "enterManually": "Ввести вручну"
   },
   "Contact": {
     "title": "Зв'яжіться з нами",

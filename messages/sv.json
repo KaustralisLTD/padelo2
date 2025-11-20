@@ -662,7 +662,10 @@
     "filterNoPartner": "Utan partner",
     "filterCategory": "Kategori",
     "clearFilters": "Rensa filter",
-    "samePartnerError": "Samma partner kan inte vara i olika kategorier"
+    "samePartnerError": "Samma partner kan inte vara i olika kategorier",
+    "selectFromParticipants": "Välj från deltagare",
+    "selectPartner": "Välj partner",
+    "enterManually": "Ange manuellt"
   },
   "Contact": {
     "title": "Kontakta Oss",

@@ -662,7 +662,10 @@
     "filterNoPartner": "Uden partner",
     "filterCategory": "Kategori",
     "clearFilters": "Ryd filtre",
-    "samePartnerError": "Den samme partner kan ikke være i forskellige kategorier"
+    "samePartnerError": "Den samme partner kan ikke være i forskellige kategorier",
+    "selectFromParticipants": "Vælg fra deltagere",
+    "selectPartner": "Vælg partner",
+    "enterManually": "Indtast manuelt"
   },
   "Contact": {
     "title": "Kontakt Os",
