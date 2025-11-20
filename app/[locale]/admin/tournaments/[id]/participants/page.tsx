@@ -1006,88 +1006,185 @@ export default function TournamentParticipantsPage() {
                           tshirtSize: editFormData.partnerTshirtSize || '',
                         };
                         
+                        const isManualMode = partnerManualMode[category] || false;
+                        const selectedId = selectedPartnerRegistrationId[category] || '';
+                        
                         return (
                           <div key={category} className="p-4 bg-background rounded-lg border border-border">
                             <h5 className="text-sm font-poppins font-semibold text-primary mb-3 uppercase">
                               {categoryName}
                             </h5>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div>
+                            
+                            {/* Переключатель режима выбора партнера */}
+                            <div className="mb-3 flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPartnerManualMode({ ...partnerManualMode, [category]: false });
+                                  setSelectedPartnerRegistrationId({ ...selectedPartnerRegistrationId, [category]: '' });
+                                  // Очищаем данные партнера при переключении
+                                  const updatedPartners = {
+                                    ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                    [category]: { name: '', email: '', phone: '', tshirtSize: '' },
+                                  };
+                                  setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                }}
+                                className={`px-3 py-1.5 text-xs font-poppins rounded-lg transition-colors ${
+                                  !isManualMode
+                                    ? 'bg-primary text-background'
+                                    : 'bg-background-secondary text-text border border-border'
+                                }`}
+                              >
+                                {tTournaments('selectFromParticipants') || 'Выбрать из участников'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPartnerManualMode({ ...partnerManualMode, [category]: true });
+                                  setSelectedPartnerRegistrationId({ ...selectedPartnerRegistrationId, [category]: '' });
+                                  // Очищаем данные партнера при переключении
+                                  const updatedPartners = {
+                                    ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                    [category]: { name: '', email: '', phone: '', tshirtSize: '' },
+                                  };
+                                  setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                }}
+                                className={`px-3 py-1.5 text-xs font-poppins rounded-lg transition-colors ${
+                                  isManualMode
+                                    ? 'bg-primary text-background'
+                                    : 'bg-background-secondary text-text border border-border'
+                                }`}
+                              >
+                                {tTournaments('enterManually') || 'Ввести вручную'}
+                              </button>
+                            </div>
+
+                            {!isManualMode ? (
+                              // Выбор из списка участников
+                              <div className="mb-4">
                                 <label className="block text-xs font-poppins text-text-secondary mb-1">
-                                  {tTournaments('partnerName')}
-                                </label>
-                                <input
-                                  type="text"
-                                  value={partner.name || ''}
-                                  onChange={(e) => {
-                                    const updatedPartners = {
-                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
-                                      [category]: { ...partner, name: e.target.value },
-                                    };
-                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
-                                  }}
-                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-xs font-poppins text-text-secondary mb-1">
-                                  {tTournaments('partnerEmail')}
-                                </label>
-                                <input
-                                  type="email"
-                                  value={partner.email || ''}
-                                  onChange={(e) => {
-                                    const updatedPartners = {
-                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
-                                      [category]: { ...partner, email: e.target.value },
-                                    };
-                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
-                                  }}
-                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-xs font-poppins text-text-secondary mb-1">
-                                  {tTournaments('partnerPhone')}
-                                </label>
-                                <input
-                                  type="tel"
-                                  value={partner.phone || ''}
-                                  onChange={(e) => {
-                                    const updatedPartners = {
-                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
-                                      [category]: { ...partner, phone: e.target.value },
-                                    };
-                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
-                                  }}
-                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
-                                />
-                              </div>
-                              <div>
-                                <label className="block text-xs font-poppins text-text-secondary mb-1">
-                                  {tTournaments('partnerTshirtSize')}
+                                  {tTournaments('selectPartner') || 'Выбрать партнера'}
                                 </label>
                                 <select
-                                  value={partner.tshirtSize || ''}
+                                  value={selectedId}
                                   onChange={(e) => {
-                                    const updatedPartners = {
-                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
-                                      [category]: { ...partner, tshirtSize: e.target.value },
-                                    };
-                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                    const selectedParticipantId = e.target.value;
+                                    setSelectedPartnerRegistrationId({ ...selectedPartnerRegistrationId, [category]: selectedParticipantId });
+                                    
+                                    if (selectedParticipantId) {
+                                      const selectedParticipant = participants.find(p => p.id.toString() === selectedParticipantId);
+                                      if (selectedParticipant) {
+                                        const updatedPartners = {
+                                          ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                          [category]: {
+                                            name: `${selectedParticipant.firstName} ${selectedParticipant.lastName}`,
+                                            email: selectedParticipant.email,
+                                            phone: selectedParticipant.phone || '',
+                                            tshirtSize: selectedParticipant.tshirtSize || '',
+                                          },
+                                        };
+                                        setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                      }
+                                    } else {
+                                      const updatedPartners = {
+                                        ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                        [category]: { name: '', email: '', phone: '', tshirtSize: '' },
+                                      };
+                                      setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                    }
                                   }}
                                   className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
                                 >
-                                  <option value="">-</option>
-                                  <option value="XS">XS</option>
-                                  <option value="S">S</option>
-                                  <option value="M">M</option>
-                                  <option value="L">L</option>
-                                  <option value="XL">XL</option>
-                                  <option value="XXL">XXL</option>
+                                  <option value="">{tTournaments('selectPartner') || 'Выбрать партнера'}</option>
+                                  {participants
+                                    .filter(p => p.id !== editingParticipant?.id)
+                                    .map((p) => (
+                                      <option key={p.id} value={p.id.toString()}>
+                                        {p.firstName} {p.lastName} ({p.email})
+                                      </option>
+                                    ))}
                                 </select>
                               </div>
-                            </div>
+                            ) : (
+                              // Ручной ввод
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                    {tTournaments('partnerName')}
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={partner.name || ''}
+                                    onChange={(e) => {
+                                      const updatedPartners = {
+                                        ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                        [category]: { ...partner, name: e.target.value },
+                                      };
+                                      setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                    }}
+                                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                    {tTournaments('partnerEmail')}
+                                  </label>
+                                  <input
+                                    type="email"
+                                    value={partner.email || ''}
+                                    onChange={(e) => {
+                                      const updatedPartners = {
+                                        ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                        [category]: { ...partner, email: e.target.value },
+                                      };
+                                      setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                    }}
+                                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                    {tTournaments('partnerPhone')}
+                                  </label>
+                                  <input
+                                    type="tel"
+                                    value={partner.phone || ''}
+                                    onChange={(e) => {
+                                      const updatedPartners = {
+                                        ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                        [category]: { ...partner, phone: e.target.value },
+                                      };
+                                      setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                    }}
+                                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                    {tTournaments('partnerTshirtSize')}
+                                  </label>
+                                  <select
+                                    value={partner.tshirtSize || ''}
+                                    onChange={(e) => {
+                                      const updatedPartners = {
+                                        ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                        [category]: { ...partner, tshirtSize: e.target.value },
+                                      };
+                                      setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                    }}
+                                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                  >
+                                    <option value="">-</option>
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="XXL">XXL</option>
+                                  </select>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
