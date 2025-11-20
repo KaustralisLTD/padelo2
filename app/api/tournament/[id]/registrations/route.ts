@@ -51,15 +51,14 @@ export async function GET(
         tr.token,
         tr.payment_status,
         tr.payment_date,
-        tr.created_at,
-        ROW_NUMBER() OVER (ORDER BY tr.created_at ASC) AS order_number
+        tr.created_at
       FROM tournament_registrations tr
       WHERE tr.tournament_id = ?
       ORDER BY tr.created_at ASC`,
       [tournamentId]
     ) as any[];
 
-    const formatted = registrations.map((reg: any) => {
+    const formatted = registrations.map((reg: any, index: number) => {
       let categories = [];
       try {
         categories = reg.categories ? (typeof reg.categories === 'string' ? JSON.parse(reg.categories) : reg.categories) : [];
@@ -88,7 +87,7 @@ export async function GET(
         paymentStatus: reg.payment_status || 'pending',
         paymentDate: reg.payment_date ? new Date(reg.payment_date).toISOString() : undefined,
         createdAt: reg.created_at.toISOString(),
-        orderNumber: reg.order_number,
+        orderNumber: index + 1,
         isDemo: reg.token?.startsWith(`demo-${tournamentId}-`) || false,
       };
     });
