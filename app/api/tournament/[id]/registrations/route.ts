@@ -1,6 +1,40 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
+import crypto from 'crypto';
+
+// Helper function to get or create user by email
+async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string): Promise<string | null> {
+  try {
+    const pool = getDbPool();
+    
+    // Ищем существующего пользователя по email
+    const [existingUsers] = await pool.execute(
+      'SELECT id FROM users WHERE email = ?',
+      [email]
+    ) as any[];
+    
+    if (existingUsers.length > 0) {
+      return existingUsers[0].id;
+    }
+    
+    // Создаем нового пользователя с ролью 'participant'
+    const userId = crypto.randomBytes(16).toString('hex');
+    const defaultPassword = crypto.randomBytes(32).toString('hex');
+    const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
+    
+    await pool.execute(
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, created_at)
+       VALUES (?, ?, ?, ?, ?, 'participant', NOW())`,
+      [userId, email, passwordHash, firstName, lastName]
+    );
+    
+    return userId;
+  } catch (error) {
+    console.error('Error getting or creating user by email:', error);
+    return null;
+  }
+}
 
 /**
  * GET - получить все регистрации турнира
@@ -75,6 +109,31 @@ export async function GET(
       ORDER BY tr.created_at ASC`,
       [tournamentId]
     ) as any[];
+
+    // Создаем user_id для регистраций без него
+    const pool = getDbPool();
+    for (const reg of registrations) {
+      if (!reg.user_id && reg.email) {
+        try {
+          const userId = await getOrCreateUserByEmail(
+            reg.email,
+            reg.first_name || '',
+            reg.last_name || ''
+          );
+          if (userId) {
+            // Обновляем регистрацию с новым user_id
+            await pool.execute(
+              'UPDATE tournament_registrations SET user_id = ? WHERE id = ?',
+              [userId, reg.id]
+            );
+            reg.user_id = userId;
+            console.log(`[registrations] Created user_id ${userId} for registration ${reg.id}`);
+          }
+        } catch (error) {
+          console.error(`[registrations] Error creating user_id for registration ${reg.id}:`, error);
+        }
+      }
+    }
 
     const formatted = registrations.map((reg: any, index: number) => {
       let categories = [];
