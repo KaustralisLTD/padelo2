@@ -5,6 +5,13 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 
+interface CategoryPartner {
+  name: string;
+  email: string;
+  phone?: string;
+  tshirtSize?: string;
+}
+
 interface Participant {
   id: number;
   userId: string | null;
@@ -16,6 +23,7 @@ interface Participant {
   partnerName: string | null;
   partnerEmail: string | null;
   categories: string[];
+  categoryPartners?: Record<string, CategoryPartner>; // Партнеры для каждой категории
   confirmed: boolean;
   token: string;
   createdAt: string;
@@ -57,41 +65,108 @@ export default function TournamentParticipantsPage() {
 
   const categoryEntries = Object.entries(customCategories);
 
-  const renderCategoryDropdown = (
-    selectedCategories: string[],
-    onToggle: (category: string) => void,
-    size: 'sm' | 'md' = 'md'
+  const [openCategoryDropdown, setOpenCategoryDropdown] = useState<number | null>(null);
+
+  const renderCategorySelector = (
+    participant: Participant,
+    onToggle: (category: string) => void
   ) => {
     if (categoryEntries.length === 0) {
       return <span className="text-xs text-text-secondary">-</span>;
     }
 
-    const selectClasses = size === 'sm' ? 'text-xs' : 'text-sm';
+    const selectedCategories = participant.categories || [];
+    const isOpen = openCategoryDropdown === participant.id;
 
     return (
-      <select
-        multiple
-        value={selectedCategories}
-        onChange={(e) => {
-          const selected = Array.from(e.target.selectedOptions, option => option.value);
-          // Находим категорию, которая была добавлена или удалена
-          const added = selected.find(cat => !selectedCategories.includes(cat));
-          const removed = selectedCategories.find(cat => !selected.includes(cat));
-          if (added) {
-            onToggle(added);
-          } else if (removed) {
-            onToggle(removed);
-          }
-        }}
-        className={`w-full px-2 py-1 bg-background border border-border rounded text-text ${selectClasses} focus:outline-none focus:border-primary min-h-[60px]`}
-        size={Math.min(categoryEntries.length, 4)}
-      >
-        {categoryEntries.map(([code, name]) => (
-          <option key={code} value={code} className="text-text">
-            {name}
-          </option>
-        ))}
-      </select>
+      <div className="relative">
+        {/* Кликабельный элемент с выбранными категориями */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpenCategoryDropdown(isOpen ? null : participant.id);
+          }}
+          className="w-full px-3 py-2 bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 rounded-lg text-text text-xs font-medium hover:from-primary/30 hover:to-primary/20 transition-all duration-200 flex items-center justify-between gap-2 group"
+        >
+          <div className="flex flex-wrap gap-1.5 flex-1">
+            {selectedCategories.length > 0 ? (
+              selectedCategories.map((cat) => {
+                const categoryName = customCategories[cat] || cat;
+                return (
+                  <span
+                    key={cat}
+                    className="px-2 py-0.5 bg-primary/40 text-primary rounded-md font-semibold text-[10px] uppercase tracking-wide"
+                  >
+                    {categoryName}
+                  </span>
+                );
+              })
+            ) : (
+              <span className="text-text-secondary italic">Выберите категории</span>
+            )}
+          </div>
+          <svg
+            className={`w-4 h-4 text-primary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        {/* Выпадающее меню с галочками */}
+        {isOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-10"
+              onClick={() => setOpenCategoryDropdown(null)}
+            />
+            <div className="absolute z-20 mt-1 w-64 bg-background-secondary border border-border rounded-lg shadow-xl p-2 max-h-64 overflow-y-auto">
+              <div className="space-y-1">
+                {categoryEntries.map(([code, name]) => {
+                  const isSelected = selectedCategories.includes(code);
+                  return (
+                    <label
+                      key={code}
+                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-background cursor-pointer transition-colors group"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="relative flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => {
+                            onToggle(code);
+                          }}
+                          className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                          style={{
+                            backgroundImage: isSelected
+                              ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
+                              : 'none',
+                            backgroundSize: 'contain',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                          }}
+                        />
+                      </div>
+                      <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-primary' : 'text-text'}`}>
+                        {name}
+                      </span>
+                      {isSelected && (
+                        <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     );
   };
 
@@ -158,6 +233,7 @@ export default function TournamentParticipantsPage() {
           userId: participant.userId ?? participant.user_id ?? null,
           orderNumber: participant.orderNumber ?? participant.order_number ?? index + 1,
           categories: participant.categories || [],
+          categoryPartners: participant.categoryPartners || participant.category_partners || {},
         }));
         setParticipants(formattedParticipants);
         setError(null);
@@ -190,6 +266,7 @@ export default function TournamentParticipantsPage() {
       partnerPhone: participant.partnerPhone || '',
       paymentStatus: participant.paymentStatus || 'pending',
       categories: participant.categories || [],
+      categoryPartners: participant.categoryPartners || {},
       userId: participant.userId || null,
     });
   };
@@ -202,6 +279,7 @@ export default function TournamentParticipantsPage() {
       const payload = {
         ...editFormData,
         categories: editFormData.categories || [],
+        categoryPartners: editFormData.categoryPartners || {},
       };
 
       const response = await fetch(`/api/tournament/${tournamentId}/registrations/${editingParticipant.id}`, {
@@ -403,7 +481,13 @@ export default function TournamentParticipantsPage() {
                         {participant.orderNumber ?? '—'}
                       </td>
                       <td className="px-3 py-2 text-xs font-mono text-text break-all">
-                        {participant.userId ? participant.userId.substring(0, 8) + '...' : '—'}
+                        {participant.userId ? (
+                          <span className="px-2 py-1 bg-primary/10 text-primary rounded font-semibold">
+                            {participant.userId.substring(0, 8)}...
+                          </span>
+                        ) : (
+                          <span className="text-text-secondary">—</span>
+                        )}
                       </td>
                       <td className="px-3 py-2 text-xs text-text">
                         <div className="flex items-center gap-2">
@@ -418,11 +502,32 @@ export default function TournamentParticipantsPage() {
                       <td className="px-3 py-2 text-xs text-text break-all">{participant.email}</td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.phone || '-'}</td>
                       <td className="px-3 py-2 text-xs text-text">
-                        {renderCategoryDropdown(participant.categories || [], (category) =>
+                        {renderCategorySelector(participant, (category) =>
                           handleCategoryToggle(participant.id, category)
                         )}
                       </td>
-                      <td className="px-3 py-2 text-xs text-text">{participant.partnerName || '-'}</td>
+                      <td className="px-3 py-2 text-xs text-text">
+                        {participant.categories && participant.categories.length > 0 ? (
+                          <div className="space-y-1">
+                            {participant.categories.map((cat) => {
+                              const partner = participant.categoryPartners?.[cat];
+                              const categoryName = customCategories[cat] || cat;
+                              return (
+                                <div key={cat} className="flex items-center gap-2">
+                                  <span className="text-[10px] font-semibold text-primary/70 uppercase">
+                                    {categoryName}:
+                                  </span>
+                                  <span className="text-text">
+                                    {partner?.name || participant.partnerName || '—'}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          participant.partnerName || '—'
+                        )}
+                      </td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.tshirtSize || '-'}</td>
                       <td className="px-3 py-2 text-xs">
                         <select
@@ -582,72 +687,115 @@ export default function TournamentParticipantsPage() {
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
                     {tTournaments('participantCategory')}
                   </label>
-                  {renderCategoryDropdown(editFormData.categories || [], handleEditCategoryToggle, 'sm')}
+                  {editingParticipant && renderCategorySelector(
+                    { ...editingParticipant, categories: editFormData.categories || [] } as Participant,
+                    handleEditCategoryToggle
+                  )}
                 </div>
 
-                {editFormData.partnerName && (
-                  <>
-                    <div className="pt-4 border-t border-border">
-                      <h4 className="text-lg font-poppins font-semibold text-text mb-4">
-                        {tTournaments('partnerInfo')}
-                      </h4>
+                {/* Партнеры для каждой категории */}
+                {(editFormData.categories || []).length > 0 && (
+                  <div className="pt-4 border-t border-border">
+                    <h4 className="text-lg font-poppins font-semibold text-text mb-4">
+                      {tTournaments('partnerInfo')} по категориям
+                    </h4>
+                    <div className="space-y-4">
+                      {(editFormData.categories || []).map((category) => {
+                        const categoryName = customCategories[category] || category;
+                        const partner = (editFormData.categoryPartners as Record<string, CategoryPartner>)?.[category] || {
+                          name: editFormData.partnerName || '',
+                          email: editFormData.partnerEmail || '',
+                          phone: editFormData.partnerPhone || '',
+                          tshirtSize: editFormData.partnerTshirtSize || '',
+                        };
+                        
+                        return (
+                          <div key={category} className="p-4 bg-background rounded-lg border border-border">
+                            <h5 className="text-sm font-poppins font-semibold text-primary mb-3 uppercase">
+                              {categoryName}
+                            </h5>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                  {tTournaments('partnerName')}
+                                </label>
+                                <input
+                                  type="text"
+                                  value={partner.name || ''}
+                                  onChange={(e) => {
+                                    const updatedPartners = {
+                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                      [category]: { ...partner, name: e.target.value },
+                                    };
+                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                  }}
+                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                  {tTournaments('partnerEmail')}
+                                </label>
+                                <input
+                                  type="email"
+                                  value={partner.email || ''}
+                                  onChange={(e) => {
+                                    const updatedPartners = {
+                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                      [category]: { ...partner, email: e.target.value },
+                                    };
+                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                  }}
+                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                  {tTournaments('partnerPhone')}
+                                </label>
+                                <input
+                                  type="tel"
+                                  value={partner.phone || ''}
+                                  onChange={(e) => {
+                                    const updatedPartners = {
+                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                      [category]: { ...partner, phone: e.target.value },
+                                    };
+                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                  }}
+                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                  {tTournaments('partnerTshirtSize')}
+                                </label>
+                                <select
+                                  value={partner.tshirtSize || ''}
+                                  onChange={(e) => {
+                                    const updatedPartners = {
+                                      ...(editFormData.categoryPartners as Record<string, CategoryPartner> || {}),
+                                      [category]: { ...partner, tshirtSize: e.target.value },
+                                    };
+                                    setEditFormData({ ...editFormData, categoryPartners: updatedPartners });
+                                  }}
+                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                >
+                                  <option value="">-</option>
+                                  <option value="XS">XS</option>
+                                  <option value="S">S</option>
+                                  <option value="M">M</option>
+                                  <option value="L">L</option>
+                                  <option value="XL">XL</option>
+                                  <option value="XXL">XXL</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {tTournaments('partnerName')}
-                        </label>
-                        <input
-                          type="text"
-                          value={editFormData.partnerName || ''}
-                          onChange={(e) => setEditFormData({ ...editFormData, partnerName: e.target.value })}
-                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {tTournaments('partnerEmail')}
-                        </label>
-                        <input
-                          type="email"
-                          value={editFormData.partnerEmail || ''}
-                          onChange={(e) => setEditFormData({ ...editFormData, partnerEmail: e.target.value })}
-                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {tTournaments('partnerPhone')}
-                        </label>
-                        <input
-                          type="tel"
-                          value={editFormData.partnerPhone || ''}
-                          onChange={(e) => setEditFormData({ ...editFormData, partnerPhone: e.target.value })}
-                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {tTournaments('partnerTshirtSize')}
-                        </label>
-                        <select
-                          value={editFormData.partnerTshirtSize || ''}
-                          onChange={(e) => setEditFormData({ ...editFormData, partnerTshirtSize: e.target.value })}
-                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
-                        >
-                          <option value="">-</option>
-                          <option value="XS">XS</option>
-                          <option value="S">S</option>
-                          <option value="M">M</option>
-                          <option value="L">L</option>
-                          <option value="XL">XL</option>
-                          <option value="XXL">XXL</option>
-                        </select>
-                      </div>
-                    </div>
-                  </>
+                  </div>
                 )}
 
                 <div>

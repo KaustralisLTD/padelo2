@@ -46,6 +46,7 @@ export async function GET(
         tr.partner_email,
         tr.partner_phone,
         tr.partner_tshirt_size,
+        tr.category_partners,
         tr.categories,
         tr.confirmed,
         tr.token,
@@ -67,9 +68,17 @@ export async function GET(
         categories = [];
       }
 
+      let categoryPartners = {};
+      try {
+        categoryPartners = reg.category_partners ? (typeof reg.category_partners === 'string' ? JSON.parse(reg.category_partners) : reg.category_partners) : {};
+      } catch (e) {
+        console.error('Error parsing category_partners for registration', reg.id, e);
+        categoryPartners = {};
+      }
+
       return {
         id: reg.id,
-        userId: reg.user_id,
+        userId: reg.user_id || null,
         firstName: reg.first_name,
         lastName: reg.last_name,
         email: reg.email,
@@ -81,6 +90,7 @@ export async function GET(
         partnerEmail: reg.partner_email,
         partnerPhone: reg.partner_phone,
         partnerTshirtSize: reg.partner_tshirt_size,
+        categoryPartners,
         categories,
         confirmed: !!reg.confirmed,
         token: reg.token,

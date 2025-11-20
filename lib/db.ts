@@ -210,6 +210,7 @@ export async function initDatabase() {
       partner_tshirt_size VARCHAR(10) DEFAULT NULL,
       partner_photo_name VARCHAR(255) DEFAULT NULL,
       partner_photo_data LONGTEXT DEFAULT NULL,
+      category_partners JSON DEFAULT NULL,
       confirmed BOOLEAN DEFAULT FALSE,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       confirmed_at DATETIME DEFAULT NULL,
@@ -272,6 +273,18 @@ export async function initDatabase() {
     await pool.execute(`
       ALTER TABLE tournament_registrations
       ADD COLUMN payment_date DATETIME DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  // Add category_partners column for storing partners per category
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN category_partners JSON DEFAULT NULL
     `);
   } catch (e: any) {
     if (!e.message?.toLowerCase().includes('duplicate column name')) {

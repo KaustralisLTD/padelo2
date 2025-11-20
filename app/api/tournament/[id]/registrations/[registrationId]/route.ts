@@ -43,6 +43,7 @@ export async function PATCH(
       partnerEmail,
       partnerPhone,
       partnerTshirtSize,
+      categoryPartners,
       categories,
       paymentStatus,
       paymentDate,
@@ -107,6 +108,10 @@ export async function PATCH(
     if (partnerTshirtSize !== undefined) {
       updates.push('partner_tshirt_size = ?');
       values.push(partnerTshirtSize);
+    }
+    if (categoryPartners !== undefined) {
+      updates.push('category_partners = ?');
+      values.push(JSON.stringify(categoryPartners));
     }
     if (categories !== undefined) {
       updates.push('categories = ?');
