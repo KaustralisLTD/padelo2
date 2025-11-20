@@ -111,7 +111,6 @@ export async function GET(
     ) as any[];
 
     // Создаем user_id для регистраций без него
-    const pool = getDbPool();
     for (const reg of registrations) {
       if (!reg.user_id && reg.email) {
         try {
