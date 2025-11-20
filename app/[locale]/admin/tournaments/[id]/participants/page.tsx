@@ -342,6 +342,28 @@ export default function TournamentParticipantsPage() {
       categoryPartners: participant.categoryPartners || {},
       userId: participant.userId || null,
     });
+    
+    // Инициализируем режимы выбора партнера для каждой категории
+    const initialManualMode: Record<string, boolean> = {};
+    const initialSelectedIds: Record<string, string> = {};
+    (participant.categories || []).forEach(category => {
+      // Если партнер уже есть, проверяем есть ли он в списке участников
+      const partner = (participant.categoryPartners || {})[category];
+      if (partner && partner.email) {
+        // Проверяем, есть ли участник с таким email
+        const foundParticipant = participants.find(p => p.email === partner.email && p.id !== participant.id);
+        if (foundParticipant) {
+          initialManualMode[category] = false;
+          initialSelectedIds[category] = foundParticipant.id.toString();
+        } else {
+          initialManualMode[category] = true;
+        }
+      } else {
+        initialManualMode[category] = false;
+      }
+    });
+    setPartnerManualMode(initialManualMode);
+    setSelectedPartnerRegistrationId(initialSelectedIds);
   };
 
   const handleSave = async () => {
