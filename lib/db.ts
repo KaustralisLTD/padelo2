@@ -211,6 +211,8 @@ export async function initDatabase() {
       partner_photo_name VARCHAR(255) DEFAULT NULL,
       partner_photo_data LONGTEXT DEFAULT NULL,
       category_partners JSON DEFAULT NULL,
+      user_photo_name VARCHAR(255) DEFAULT NULL,
+      user_photo_data LONGTEXT DEFAULT NULL,
       confirmed BOOLEAN DEFAULT FALSE,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       confirmed_at DATETIME DEFAULT NULL,
@@ -285,6 +287,29 @@ export async function initDatabase() {
     await pool.execute(`
       ALTER TABLE tournament_registrations
       ADD COLUMN category_partners JSON DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  // Add user_photo columns for storing user photo
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN user_photo_name VARCHAR(255) DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN user_photo_data LONGTEXT DEFAULT NULL
     `);
   } catch (e: any) {
     if (!e.message?.toLowerCase().includes('duplicate column name')) {

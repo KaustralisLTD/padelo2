@@ -305,7 +305,11 @@
         "text": "Upload uw foto voor het toernooi. De foto wordt gebruikt voor uw spelerprofiel en toernooimateriaal.",
         "filename": "Bestandsnaam formaat",
         "filenameExample": "Voornaam_Achternaam.jpg (bijv: Jan_Jansen.jpg)"
-      }
+      },
+      "partnerForCategory": "Partner voor",
+      "userPhoto": "Uw foto",
+      "photoSizeError": "De foto moet kleiner zijn dan 5 MB",
+      "partnerRequiredForCategory": "Partner vereist voor {category}"
     },
     "confirmation": {
       "title": "Registratie Bevestigd",

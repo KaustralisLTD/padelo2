@@ -327,7 +327,11 @@
         "filenameExample": "Ім'я_Прізвище.jpg (наприклад, Іван_Іванов.jpg)"
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
-      "customFieldFallback": "Custom Field"
+      "customFieldFallback": "Custom Field",
+      "partnerForCategory": "Партнер для",
+      "userPhoto": "Ваше фото",
+      "photoSizeError": "Розмір фото має бути менше 5МБ",
+      "partnerRequiredForCategory": "Партнер обов'язковий для {category}"
     },
     "confirmation": {
       "title": "Реєстрація Підтверджена",

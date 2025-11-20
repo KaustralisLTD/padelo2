@@ -305,7 +305,11 @@
         "filenameExample": "名_姓.jpg（例如：张三.jpg）"
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
-      "customFieldFallback": "Custom Field"
+      "customFieldFallback": "Custom Field",
+      "partnerForCategory": "合作伙伴",
+      "userPhoto": "您的照片",
+      "photoSizeError": "照片大小必须小于 5MB",
+      "partnerRequiredForCategory": "{category} 需要合作伙伴"
     },
     "confirmation": {
       "title": "注册已确认",

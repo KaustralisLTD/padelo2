@@ -305,7 +305,11 @@
         "filenameExample": "Vorname_Nachname.jpg (z.B: Max_Müller.jpg)"
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
-      "customFieldFallback": "Custom Field"
+      "customFieldFallback": "Custom Field",
+      "partnerForCategory": "Partner für",
+      "userPhoto": "Ihr Foto",
+      "photoSizeError": "Die Foto-Größe muss weniger als 5 MB betragen",
+      "partnerRequiredForCategory": "Partner erforderlich für {category}"
     },
     "confirmation": {
       "title": "Registrierung Bestätigt",

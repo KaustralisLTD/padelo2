@@ -851,7 +851,11 @@
         "text": "Please upload your photo for the tournament. The photo will be used for your player profile and tournament materials.",
         "filename": "File name format",
         "filenameExample": "FirstName_LastName.jpg (e.g., John_Doe.jpg)"
-      }
+      },
+      "partnerForCategory": "Parella per",
+      "userPhoto": "La teva foto",
+      "photoSizeError": "La mida de la foto ha de ser inferior a 5 MB",
+      "partnerRequiredForCategory": "Parella requerida per {category}"
     },
     "confirmation": {
       "title": "Registration Confirmed",

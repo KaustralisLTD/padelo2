@@ -305,7 +305,11 @@
         "text": "Ladda upp din foto för turneringen. Foton kommer att användas för din spelarprofil och turneringsmaterial.",
         "filename": "Filnamn format",
         "filenameExample": "Förnamn_Efternamn.jpg (t.ex: Erik_Andersson.jpg)"
-      }
+      },
+      "partnerForCategory": "Partner för",
+      "userPhoto": "Ditt foto",
+      "photoSizeError": "Fotots storlek måste vara mindre än 5 MB",
+      "partnerRequiredForCategory": "Partner krävs för {category}"
     },
     "confirmation": {
       "title": "Registrering Bekräftad",

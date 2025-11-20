@@ -46,6 +46,9 @@ export default function ConfirmationContent({ token }: ConfirmationContentProps)
             setStatus('success');
           }
         } else {
+          // Если регистрация не найдена, проверяем детали ошибки
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Registration not found:', errorData);
           setStatus('error');
         }
       } catch (error) {
@@ -54,7 +57,11 @@ export default function ConfirmationContent({ token }: ConfirmationContentProps)
       }
     };
 
-    confirmRegistration();
+    if (token) {
+      confirmRegistration();
+    } else {
+      setStatus('error');
+    }
   }, [token]);
 
   if (status === 'loading') {

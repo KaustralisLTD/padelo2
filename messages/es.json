@@ -327,7 +327,11 @@
         "filenameExample": "Nombre_Apellido.jpg (ej: Juan_Perez.jpg)"
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
-      "customFieldFallback": "Custom Field"
+      "customFieldFallback": "Custom Field",
+      "partnerForCategory": "Pareja para",
+      "userPhoto": "Tu foto",
+      "photoSizeError": "El tamaño de la foto debe ser menor a 5MB",
+      "partnerRequiredForCategory": "Se requiere pareja para {category}"
     },
     "confirmation": {
       "title": "Registro Confirmado",

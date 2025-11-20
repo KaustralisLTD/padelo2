@@ -305,7 +305,11 @@
         "text": "Upload venligst dit foto til turneringen. Fotoet vil blive brugt til din spillerprofil og turneringsmaterialer.",
         "filename": "Filnavn format",
         "filenameExample": "Fornavn_Efternavn.jpg (fx: Jens_Hansen.jpg)"
-      }
+      },
+      "partnerForCategory": "Partner for",
+      "userPhoto": "Dit foto",
+      "photoSizeError": "Fotoets størrelse skal være mindre end 5 MB",
+      "partnerRequiredForCategory": "Partner påkrævet for {category}"
     },
     "confirmation": {
       "title": "Registrering Bekræftet",

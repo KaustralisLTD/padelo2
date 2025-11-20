@@ -41,11 +41,16 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const [partner, setPartner] = useState<Partner | null>(null);
   const [showPartner, setShowPartner] = useState(false);
+  // Партнеры для каждой категории (для mixed категорий)
+  const [categoryPartners, setCategoryPartners] = useState<Record<string, Partner>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [partnerPhotoError, setPartnerPhotoError] = useState<string | null>(null);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  // Фото пользователя
+  const [userPhoto, setUserPhoto] = useState<{ data: string | null; name: string | null }>({ data: null, name: null });
+  const [userPhotoError, setUserPhotoError] = useState<string | null>(null);
 
   const categoryGroups = {
     male: [
@@ -161,6 +166,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     setFormData(prev => {
       // Если категория уже выбрана, убираем её
       if (prev.categories.includes(category)) {
+        // Удаляем партнера для этой категории, если был
+        if (category.startsWith('mixed')) {
+          setCategoryPartners(prevPartners => {
+            const newPartners = { ...prevPartners };
+            delete newPartners[category];
+            return newPartners;
+          });
+        }
         return {
           ...prev,
           categories: prev.categories.filter(c => c !== category),
@@ -196,9 +209,19 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       }
 
       // Добавляем новую категорию
+      const newCategories = [...filteredCategories, category];
+      
+      // Если добавляется mixed категория, создаем пустого партнера для неё
+      if (category.startsWith('mixed') && !categoryPartners[category]) {
+        setCategoryPartners(prev => ({
+          ...prev,
+          [category]: createEmptyPartner(),
+        }));
+      }
+      
       return {
         ...prev,
-        categories: [...filteredCategories, category],
+        categories: newCategories,
       };
     });
   };
@@ -217,6 +240,87 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       const base = prev ?? createEmptyPartner();
       return { ...base, [field]: value };
     });
+  };
+
+  const updateCategoryPartnerField = (category: string, field: keyof Partner, value: Partner[keyof Partner]) => {
+    setCategoryPartners(prev => {
+      const base = prev[category] ?? createEmptyPartner();
+      return {
+        ...prev,
+        [category]: { ...base, [field]: value },
+      };
+    });
+  };
+
+  const handleCategoryPartnerPhotoChange = (category: string, event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+
+    if (!file) {
+      setCategoryPartners(prev => {
+        const base = prev[category] ?? createEmptyPartner();
+        return {
+          ...prev,
+          [category]: { ...base, photoData: null, photoName: null },
+        };
+      });
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setCategoryPartners(prev => {
+        const base = prev[category] ?? createEmptyPartner();
+        return {
+          ...prev,
+          [category]: {
+            ...base,
+            photoData: typeof reader.result === 'string' ? reader.result : null,
+            photoName: file.name,
+          },
+        };
+      });
+    };
+
+    reader.onerror = () => {
+      console.error('Error reading file');
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const handleUserPhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+
+    if (!file) {
+      setUserPhoto({ data: null, name: null });
+      setUserPhotoError(null);
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUserPhotoError(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserPhoto({
+        data: typeof reader.result === 'string' ? reader.result : null,
+        name: file.name,
+      });
+      setUserPhotoError(null);
+    };
+
+    reader.onerror = () => {
+      setUserPhotoError(t('form.error') || 'Error reading file');
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handlePartnerPhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -291,6 +395,61 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         if (customField) {
           customField.scrollIntoView({ behavior: 'smooth', block: 'center' });
           customField.focus();
+        }
+        return;
+      }
+    }
+
+    // Валидация партнеров для mixed категорий
+    const mixedCategories = formData.categories.filter(c => c.startsWith('mixed'));
+    for (const category of mixedCategories) {
+      const categoryPartner = categoryPartners[category];
+      if (!categoryPartner) {
+        const errorMsg = t('form.partnerRequiredForCategory', { category: t(`categories.${category}`) }) || `Partner is required for ${t(`categories.${category}`)}`;
+        alert(errorMsg);
+        const categoryPartnerSection = document.getElementById(`partner-section-${category}`);
+        if (categoryPartnerSection) {
+          categoryPartnerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      if (!categoryPartner.name?.trim()) {
+        const errorMsg = t('form.partnerName') + ' is required' || 'Partner name is required';
+        alert(errorMsg);
+        const partnerNameField = document.querySelector(`[name="partnerName-${category}"]`) as HTMLElement;
+        if (partnerNameField) {
+          partnerNameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerNameField.focus();
+        }
+        return;
+      }
+      if (!categoryPartner.email?.trim()) {
+        const errorMsg = t('form.partnerEmail') + ' is required' || 'Partner email is required';
+        alert(errorMsg);
+        const partnerEmailField = document.querySelector(`[name="partnerEmail-${category}"]`) as HTMLElement;
+        if (partnerEmailField) {
+          partnerEmailField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerEmailField.focus();
+        }
+        return;
+      }
+      if (!categoryPartner.phone?.trim()) {
+        const errorMsg = t('form.partnerPhone') + ' is required' || 'Partner phone is required';
+        alert(errorMsg);
+        const partnerPhoneField = document.querySelector(`[name="partnerPhone-${category}"]`) as HTMLElement;
+        if (partnerPhoneField) {
+          partnerPhoneField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerPhoneField.focus();
+        }
+        return;
+      }
+      if (!categoryPartner.tshirtSize) {
+        const errorMsg = t('form.partnerSelectSize') || 'Please select partner T-shirt size';
+        alert(errorMsg);
+        const partnerTshirtField = document.querySelector(`[name="partnerTshirtSize-${category}"]`) as HTMLElement;
+        if (partnerTshirtField) {
+          partnerTshirtField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerTshirtField.focus();
         }
         return;
       }
@@ -390,6 +549,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           tshirtSize: tshirtFieldConfig.enabled ? formData.tshirtSize : '',
           customFields: enabledCustomFieldsPayload,
           partner: partnerPayload,
+          categoryPartners: Object.keys(categoryPartnersPayload).length > 0 ? categoryPartnersPayload : undefined,
+          userPhoto: userPhoto.data ? { data: userPhoto.data, name: userPhoto.name } : undefined,
         }),
       });
 
@@ -484,6 +645,57 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         />
       </div>
 
+      {/* User Photo Upload */}
+      <div>
+        <label className="block text-sm font-poppins text-text-secondary mb-2">
+          {t('form.userPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
+        </label>
+        <div className="flex items-center gap-4">
+          {userPhoto.data ? (
+            <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+              <img
+                src={userPhoto.data}
+                alt="User photo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ) : null}
+          <div className="flex-1">
+            <label className="cursor-pointer inline-block">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleUserPhotoChange}
+                className="hidden"
+                id="user-photo-upload"
+              />
+              <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                {userPhoto.name || (t('form.chooseFile') || 'Choose File')}
+              </span>
+            </label>
+            {userPhoto.name && (
+              <button
+                type="button"
+                onClick={() => {
+                  setUserPhoto({ data: null, name: null });
+                  const input = document.getElementById('user-photo-upload') as HTMLInputElement;
+                  if (input) input.value = '';
+                }}
+                className="ml-2 text-xs text-text-secondary hover:text-primary"
+              >
+                {t('form.removeFile') || 'Remove'}
+              </button>
+            )}
+            <p className="text-xs text-text-tertiary mt-2">
+              {t('form.photoHint') || 'Maximum 5MB. JPG, PNG formats.'}
+            </p>
+            {userPhotoError && (
+              <p className="text-xs text-red-400 mt-2">{userPhotoError}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Categories */}
       <div id="categories-section">
         <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -573,6 +785,111 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           {t('form.categoryHelp')}
         </p>
       </div>
+
+      {/* Partners for Mixed Categories */}
+      {formData.categories.filter(c => c.startsWith('mixed')).map((category) => {
+        const categoryPartner = categoryPartners[category] || createEmptyPartner();
+        const categoryName = t(`categories.${category}`);
+        return (
+          <div key={category} id={`partner-section-${category}`} className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
+            <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
+              {t('form.partnerForCategory')} {categoryName}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.partnerName')} *
+                </label>
+                <input
+                  type="text"
+                  required
+                  name={`partnerName-${category}`}
+                  value={categoryPartner.name || ''}
+                  onChange={(e) => updateCategoryPartnerField(category, 'name', e.target.value)}
+                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.partnerEmail')} *
+                </label>
+                <input
+                  type="email"
+                  required
+                  name={`partnerEmail-${category}`}
+                  value={categoryPartner.email || ''}
+                  onChange={(e) => updateCategoryPartnerField(category, 'email', e.target.value)}
+                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('form.partnerPhone')} *
+              </label>
+              <input
+                type="tel"
+                required
+                name={`partnerPhone-${category}`}
+                value={categoryPartner.phone || ''}
+                onChange={(e) => updateCategoryPartnerField(category, 'phone', e.target.value)}
+                className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('form.partnerTshirtSize')} *
+              </label>
+              <select
+                required
+                name={`partnerTshirtSize-${category}`}
+                value={categoryPartner.tshirtSize || ''}
+                onChange={(e) => updateCategoryPartnerField(category, 'tshirtSize', e.target.value)}
+                className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+              >
+                <option value="">{t('form.partnerSelectSize')}</option>
+                {tshirtSizes.map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('form.partnerPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
+              </label>
+              <div className="flex items-center gap-4">
+                {categoryPartner.photoData ? (
+                  <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+                    <img
+                      src={categoryPartner.photoData}
+                      alt={categoryPartner.name || 'Partner photo'}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : null}
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleCategoryPartnerPhotoChange(category, e)}
+                    className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
+                  />
+                  <p className="mt-2 text-xs text-text-secondary">
+                    {t('form.partnerPhotoOptional')}
+                  </p>
+                  {categoryPartner.photoName && (
+                    <p className="mt-2 text-xs text-text-secondary">
+                      {categoryPartner.photoName}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
 
       {/* T-shirt Size */}
       {tshirtFieldConfig.enabled && (

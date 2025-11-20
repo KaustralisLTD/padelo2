@@ -305,7 +305,11 @@
         "text": "يرجى تحميل صورتك للبطولة. ستُستخدم الصورة لملف اللاعب ومواد البطولة.",
         "filename": "تنسيق اسم الملف",
         "filenameExample": "الاسم_اللقب.jpg (مثال: أحمد_محمد.jpg)"
-      }
+      },
+      "partnerForCategory": "شريك ل",
+      "userPhoto": "صورتك",
+      "photoSizeError": "يجب أن يكون حجم الصورة أقل من 5 ميجابايت",
+      "partnerRequiredForCategory": "شريك مطلوب لـ {category}"
     },
     "confirmation": {
       "title": "تم تأكيد التسجيل",

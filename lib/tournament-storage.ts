@@ -22,6 +22,18 @@ interface TournamentRegistration {
     photoName?: string | null;
     photoData?: string | null;
   } | null;
+  categoryPartners?: Record<string, {
+    name: string;
+    email: string;
+    phone: string;
+    tshirtSize: string;
+    photoName?: string | null;
+    photoData?: string | null;
+  }>;
+  userPhoto?: {
+    data: string | null;
+    name: string | null;
+  };
   token: string;
   createdAt: string;
   confirmed: boolean;
@@ -52,8 +64,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           categories, tshirt_size, message,
           partner_name, partner_email, partner_phone,
           partner_tshirt_size, partner_photo_name, partner_photo_data,
+          category_partners, user_photo_name, user_photo_data,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           token,
           registration.tournamentId,
@@ -74,6 +87,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.partner?.tshirtSize || null,
           registration.partner?.photoName || null,
           registration.partner?.photoData || null,
+          registration.categoryPartners ? JSON.stringify(registration.categoryPartners) : null,
+          registration.userPhoto?.name || null,
+          registration.userPhoto?.data || null,
           false,
           new Date(),
         ]
@@ -125,6 +141,11 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
           photoName: row.partner_photo_name,
           photoData: row.partner_photo_data,
         } : null,
+        categoryPartners: row.category_partners ? JSON.parse(row.category_partners) : undefined,
+        userPhoto: row.user_photo_data ? {
+          data: row.user_photo_data,
+          name: row.user_photo_name,
+        } : undefined,
         token: row.token,
         createdAt: row.created_at.toISOString(),
         confirmed: !!row.confirmed,

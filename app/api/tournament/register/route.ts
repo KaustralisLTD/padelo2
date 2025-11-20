@@ -195,16 +195,38 @@ export async function GET(request: NextRequest) {
     );
   }
   
-  const { getRegistration } = await import('@/lib/tournament-storage');
-  const registration = await getRegistration(token);
-  
-  if (!registration) {
+  try {
+    const { getRegistration } = await import('@/lib/tournament-storage');
+    const registration = await getRegistration(token);
+    
+    if (!registration) {
+      console.error(`[GET /api/tournament/register] Registration not found for token: ${token.substring(0, 8)}...`);
+      return NextResponse.json(
+        { error: 'Invalid or expired confirmation link. Please contact support.' },
+        { status: 404 }
+      );
+    }
+    
+    // Проверяем срок действия токена (например, 7 дней)
+    const createdAt = new Date(registration.createdAt);
+    const now = new Date();
+    const daysSinceCreation = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24);
+    
+    if (daysSinceCreation > 7) {
+      console.error(`[GET /api/tournament/register] Token expired: ${token.substring(0, 8)}... (${daysSinceCreation.toFixed(1)} days old)`);
+      return NextResponse.json(
+        { error: 'Invalid or expired confirmation link. Please contact support.' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json({ registration });
+  } catch (error) {
+    console.error('[GET /api/tournament/register] Error:', error);
     return NextResponse.json(
-      { error: 'Invalid token' },
-      { status: 404 }
+      { error: 'Failed to retrieve registration' },
+      { status: 500 }
     );
   }
-  
-  return NextResponse.json({ registration });
 }
 
