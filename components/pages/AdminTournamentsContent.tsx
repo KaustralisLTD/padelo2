@@ -214,6 +214,8 @@ export default function AdminTournamentsContent() {
           status: formData.status,
           registrationSettings: formData.registrationSettings,
           customCategories: formData.customCategories,
+          bannerImageName: formData.bannerImageName || undefined,
+          bannerImageData: formData.bannerImageData || undefined,
         }),
       });
 
@@ -266,6 +268,8 @@ export default function AdminTournamentsContent() {
           status: formData.status,
           registrationSettings: formData.registrationSettings,
           customCategories: formData.customCategories,
+          bannerImageName: formData.bannerImageName || undefined,
+          bannerImageData: formData.bannerImageData || undefined,
         }),
       });
 

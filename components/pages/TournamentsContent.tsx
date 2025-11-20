@@ -1,35 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import TournamentRegistrationForm from '@/components/forms/TournamentRegistrationForm';
 import TournamentDetails from '@/components/TournamentDetails';
 
+interface Tournament {
+  id: number;
+  name: string;
+  description?: string;
+  startDate: string;
+  endDate: string;
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived' | 'soon';
+  bannerImageName?: string | null;
+  bannerImageData?: string | null;
+}
+
 export default function TournamentsContent() {
   const t = useTranslations('Tournaments');
   const [showForm, setShowForm] = useState(false);
   const [selectedTournament, setSelectedTournament] = useState<number | null>(null);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const tournaments = [
-    {
-      id: 1,
-      name: t('tournament1.name'),
-      subtitle: t('tournament1.subtitle'),
-      date: t('tournament1.date'),
-      image: '/images/tournaments/tournament-1.png',
-      isActive: true,
-    },
-    {
-      id: 2,
-      name: t('tournament2.name'),
-      subtitle: t('tournament2.subtitle'),
-      date: t('tournament2.date'),
-      image: '/images/tournaments/tournament-1.png', // Используем существующее изображение
-      isActive: false,
-      verySoon: true,
-    },
-  ];
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      try {
+        const response = await fetch('/api/tournaments/public');
+        if (response.ok) {
+          const data = await response.json();
+          // Фильтруем только турниры со статусами 'open' и 'soon'
+          const publicTournaments = (data.tournaments || []).filter(
+            (t: Tournament) => t.status === 'open' || t.status === 'soon'
+          );
+          setTournaments(publicTournaments);
+        }
+      } catch (error) {
+        console.error('Failed to fetch tournaments:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTournaments();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
@@ -54,68 +69,79 @@ export default function TournamentsContent() {
 
         {!showForm ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              {tournaments.map((tournament) => (
-                <div
-                  key={tournament.id}
-                  onClick={() => {
-                    if (tournament.isActive) {
-                      setSelectedTournament(tournament.id);
-                      setShowForm(true);
-                    }
-                  }}
-                  className={`bg-background-secondary rounded-lg border border-border hover:border-primary transition-all overflow-hidden ${
-                    tournament.isActive
-                      ? 'cursor-pointer hover:shadow-lg hover:scale-[1.02]'
-                      : 'cursor-not-allowed opacity-75'
-                  }`}
-                >
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={tournament.image}
-                      alt={tournament.name}
-                      fill
-                      className="object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const parent = target.parentElement;
-                        if (parent) {
-                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-background"><p class="text-text-secondary text-sm font-poppins">Tournament Image</p></div>';
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-text-secondary font-poppins">{t('loading') || 'Loading...'}</p>
+              </div>
+            ) : tournaments.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-text-secondary font-poppins">{t('noTournaments') || 'No tournaments available'}</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                {tournaments.map((tournament) => {
+                  const isActive = tournament.status === 'open';
+                  const isSoon = tournament.status === 'soon';
+                  const formatDate = (dateString: string) => {
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                  };
+
+                  return (
+                    <div
+                      key={tournament.id}
+                      onClick={() => {
+                        if (isActive) {
+                          setSelectedTournament(tournament.id);
+                          setShowForm(true);
                         }
                       }}
-                    />
-                    {tournament.verySoon && (
-                      <div className="absolute top-4 right-4 bg-gradient-primary text-background px-4 py-2 rounded-lg font-orbitron font-bold text-sm">
-                        {t('verySoon')}
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-poppins font-bold mb-2 text-text">
-                      {tournament.name}
-                    </h3>
-                    {tournament.subtitle && (
-                      <p className="text-lg font-orbitron font-semibold mb-2 text-primary">
-                        {tournament.subtitle}
-                      </p>
-                    )}
-                    <p className="text-text-secondary font-poppins text-sm mb-4">
-                      {tournament.date}
-                    </p>
-                    <div
-                      className={`w-full px-4 py-2 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg text-center transition-opacity ${
-                        tournament.isActive
-                          ? 'hover:opacity-90'
-                          : 'opacity-50 cursor-not-allowed'
+                      className={`bg-background-secondary rounded-lg border border-border hover:border-primary transition-all overflow-hidden ${
+                        isActive
+                          ? 'cursor-pointer hover:shadow-lg hover:scale-[1.02]'
+                          : 'cursor-not-allowed opacity-75'
                       }`}
                     >
-                      {tournament.isActive ? t('cta') : t('comingSoon')}
+                      <div className="relative h-48 w-full">
+                        {tournament.bannerImageData ? (
+                          <img
+                            src={tournament.bannerImageData}
+                            alt={tournament.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-background">
+                            <p className="text-text-secondary text-sm font-poppins">Tournament Image</p>
+                          </div>
+                        )}
+                        {isSoon && (
+                          <div className="absolute top-4 right-4 bg-gradient-primary text-background px-4 py-2 rounded-lg font-orbitron font-bold text-sm">
+                            {t('verySoon')}
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-poppins font-bold mb-2 text-text">
+                          {tournament.name}
+                        </h3>
+                        <p className="text-text-secondary font-poppins text-sm mb-4">
+                          {formatDate(tournament.startDate)} - {formatDate(tournament.endDate)}
+                        </p>
+                        <div
+                          className={`w-full px-4 py-2 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg text-center transition-opacity ${
+                            isActive
+                              ? 'hover:opacity-90'
+                              : 'opacity-50 cursor-not-allowed'
+                          }`}
+                        >
+                          {isActive ? t('cta') : t('comingSoon')}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  );
+                })}
+              </div>
+            )}
           </>
         ) : (
           <div>
@@ -130,7 +156,7 @@ export default function TournamentsContent() {
             </button>
             <div className="mb-6">
               <h3 className="text-2xl font-poppins font-bold mb-2 text-text">
-                {t('registerFor')} {tournaments.find(t => t.id === selectedTournament)?.name}
+                {t('registerFor')} {tournaments.find(t => t.id === selectedTournament)?.name || ''}
               </h3>
             </div>
             {selectedTournament && (
