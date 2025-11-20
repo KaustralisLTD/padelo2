@@ -47,6 +47,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [expandedCategoryPartners, setExpandedCategoryPartners] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [error, setError] = useState<string | null>(null);
   const [partnerPhotoError, setPartnerPhotoError] = useState<string | null>(null);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
