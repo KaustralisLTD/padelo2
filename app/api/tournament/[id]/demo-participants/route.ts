@@ -44,7 +44,7 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
     }
     
     // Создаем нового пользователя с ролью 'participant'
-    const userId = crypto.randomUUID();
+    const userId = crypto.randomBytes(16).toString('hex');
     const defaultPassword = crypto.randomBytes(32).toString('hex');
     const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
     
@@ -164,6 +164,13 @@ export async function POST(
         
         // Получаем или создаем user_id по email
         const userId = await getOrCreateUserByEmail(email, firstName, lastName);
+        
+        if (!userId) {
+          console.error(`[demo-participants] Failed to create/get user for ${email}`);
+          continue; // Пропускаем этого участника, если не удалось создать пользователя
+        }
+        
+        console.log(`[demo-participants] Created user ${userId} for ${email}`);
         
         const [result] = await pool.execute(
           `INSERT INTO tournament_registrations 

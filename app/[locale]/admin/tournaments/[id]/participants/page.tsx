@@ -57,7 +57,7 @@ export default function TournamentParticipantsPage() {
 
   const categoryEntries = Object.entries(customCategories);
 
-  const renderCategoryCheckboxes = (
+  const renderCategoryDropdown = (
     selectedCategories: string[],
     onToggle: (category: string) => void,
     size: 'sm' | 'md' = 'md'
@@ -66,23 +66,32 @@ export default function TournamentParticipantsPage() {
       return <span className="text-xs text-text-secondary">-</span>;
     }
 
-    const labelClasses = size === 'sm' ? 'text-xs' : 'text-sm';
-    const checkboxClasses = size === 'sm' ? 'h-3 w-3' : 'h-3.5 w-3.5';
+    const selectClasses = size === 'sm' ? 'text-xs' : 'text-sm';
 
     return (
-      <div className="flex flex-col gap-1">
+      <select
+        multiple
+        value={selectedCategories}
+        onChange={(e) => {
+          const selected = Array.from(e.target.selectedOptions, option => option.value);
+          // Находим категорию, которая была добавлена или удалена
+          const added = selected.find(cat => !selectedCategories.includes(cat));
+          const removed = selectedCategories.find(cat => !selected.includes(cat));
+          if (added) {
+            onToggle(added);
+          } else if (removed) {
+            onToggle(removed);
+          }
+        }}
+        className={`w-full px-2 py-1 bg-background border border-border rounded text-text ${selectClasses} focus:outline-none focus:border-primary min-h-[60px]`}
+        size={Math.min(categoryEntries.length, 4)}
+      >
         {categoryEntries.map(([code, name]) => (
-          <label key={code} className={`flex items-center gap-2 ${labelClasses}`}>
-            <input
-              type="checkbox"
-              className={`${checkboxClasses} rounded border-border bg-background text-primary focus:ring-primary`}
-              checked={selectedCategories.includes(code)}
-              onChange={() => onToggle(code)}
-            />
-            <span className="text-text">{name}</span>
-          </label>
+          <option key={code} value={code} className="text-text">
+            {name}
+          </option>
         ))}
-      </div>
+      </select>
     );
   };
 
@@ -394,7 +403,7 @@ export default function TournamentParticipantsPage() {
                         {participant.orderNumber ?? '—'}
                       </td>
                       <td className="px-3 py-2 text-xs font-mono text-text break-all">
-                        {participant.userId || '—'}
+                        {participant.userId ? participant.userId.substring(0, 8) + '...' : '—'}
                       </td>
                       <td className="px-3 py-2 text-xs text-text">
                         <div className="flex items-center gap-2">
@@ -409,7 +418,7 @@ export default function TournamentParticipantsPage() {
                       <td className="px-3 py-2 text-xs text-text break-all">{participant.email}</td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.phone || '-'}</td>
                       <td className="px-3 py-2 text-xs text-text">
-                        {renderCategoryCheckboxes(participant.categories || [], (category) =>
+                        {renderCategoryDropdown(participant.categories || [], (category) =>
                           handleCategoryToggle(participant.id, category)
                         )}
                       </td>
@@ -573,7 +582,7 @@ export default function TournamentParticipantsPage() {
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
                     {tTournaments('participantCategory')}
                   </label>
-                  {renderCategoryCheckboxes(editFormData.categories || [], handleEditCategoryToggle, 'sm')}
+                  {renderCategoryDropdown(editFormData.categories || [], handleEditCategoryToggle, 'sm')}
                 </div>
 
                 {editFormData.partnerName && (
