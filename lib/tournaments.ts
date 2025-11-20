@@ -27,7 +27,7 @@ export interface Tournament {
   maxParticipants?: number;
   priceSingleCategory?: number;
   priceDoubleCategory?: number;
-  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived';
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived' | 'soon';
   createdAt: string;
   updatedAt?: string;
   registrationSettings: TournamentRegistrationSettings;
@@ -35,6 +35,8 @@ export interface Tournament {
   registrationsConfirmed: number;
   demoParticipantsCount?: number | null;
   customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
+  bannerImageName?: string | null;
+  bannerImageData?: string | null; // Base64 encoded image data
 }
 
 export interface TournamentGroup {
@@ -172,6 +174,8 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         registrationsConfirmed: counts.confirmed,
         demoParticipantsCount: row.demo_participants_count ?? null,
         customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
+        bannerImageName: row.banner_image_name ?? null,
+        bannerImageData: row.banner_image_data ?? null,
       };
     });
   } catch (error) {
@@ -229,7 +233,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       [row.id]
     ) as any[];
     const statsRow = registrationStats[0] || { totalRegistrations: 0, confirmedRegistrations: 0 };
-
+    
     return {
       id: row.id,
       name: row.name,
@@ -250,8 +254,10 @@ export async function getTournament(id: number): Promise<Tournament | null> {
       registrationSettings: parseRegistrationSettings(row.registration_settings),
       registrationsTotal: Number(statsRow.totalRegistrations) || 0,
       registrationsConfirmed: Number(statsRow.confirmedRegistrations) || 0,
-      demoParticipantsCount: row.demo_participants_count ?? null,
-      customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
+        demoParticipantsCount: row.demo_participants_count ?? null,
+        customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
+        bannerImageName: row.banner_image_name ?? null,
+        bannerImageData: row.banner_image_data ?? null,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
@@ -272,8 +278,8 @@ export async function createTournament(
   const pool = getDbPool();
   const registrationSettings = normalizeRegistrationSettings(tournament.registrationSettings);
   const [result] = await pool.execute(
-    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings, custom_categories)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings, custom_categories, banner_image_name, banner_image_data)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       tournament.name,
       tournament.description || null,
@@ -291,6 +297,8 @@ export async function createTournament(
       tournament.demoParticipantsCount || null,
       JSON.stringify(registrationSettings),
       tournament.customCategories ? JSON.stringify(tournament.customCategories) : null,
+      tournament.bannerImageName || null,
+      tournament.bannerImageData || null,
     ]
   ) as any;
   
@@ -371,6 +379,14 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if (tournament.customCategories !== undefined) {
     updates.push('custom_categories = ?');
     values.push(tournament.customCategories ? JSON.stringify(tournament.customCategories) : null);
+  }
+  if (tournament.bannerImageName !== undefined) {
+    updates.push('banner_image_name = ?');
+    values.push(tournament.bannerImageName || null);
+  }
+  if (tournament.bannerImageData !== undefined) {
+    updates.push('banner_image_data = ?');
+    values.push(tournament.bannerImageData || null);
   }
   
   if (updates.length === 0) {

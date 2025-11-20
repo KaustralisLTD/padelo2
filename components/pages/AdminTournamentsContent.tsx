@@ -32,7 +32,7 @@ interface Tournament {
   maxParticipants?: number;
   priceSingleCategory?: number;
   priceDoubleCategory?: number;
-  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived';
+  status: 'draft' | 'open' | 'closed' | 'in_progress' | 'completed' | 'demo' | 'archived' | 'soon';
   createdAt: string;
   updatedAt?: string;
   registrationsTotal?: number;
@@ -40,6 +40,8 @@ interface Tournament {
   registrationSettings?: TournamentRegistrationSettings;
   demoParticipantsCount?: number | null;
   customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
+  bannerImageName?: string | null;
+  bannerImageData?: string | null;
 }
 
 export default function AdminTournamentsContent() {
@@ -73,6 +75,8 @@ export default function AdminTournamentsContent() {
       mixed1: 'Mixed 1',
       mixed2: 'Mixed 2',
     } as Record<string, string>,
+    bannerImageName: null as string | null,
+    bannerImageData: null as string | null,
   });
 
   const parseDemoParticipantsInput = (value: string | number | null | undefined) => {
@@ -539,6 +543,8 @@ export default function AdminTournamentsContent() {
         mixed1: 'Mixed 1',
         mixed2: 'Mixed 2',
       }) as Record<string, string>,
+      bannerImageName: tournament.bannerImageName || null,
+      bannerImageData: tournament.bannerImageData || null,
     });
     setShowCreateModal(true);
   };
@@ -566,6 +572,7 @@ export default function AdminTournamentsContent() {
       completed: 'bg-purple-500',
       demo: 'bg-yellow-500',
       archived: 'bg-gray-600',
+      soon: 'bg-orange-500',
     };
     return colors[status] || 'bg-gray-500';
   };
@@ -587,6 +594,7 @@ export default function AdminTournamentsContent() {
       completed: 'Completed',
       demo: 'Demo',
       archived: 'Archived',
+      soon: 'Soon',
     };
     
     return labels[normalizedStatus] || labels[status as string] || String(status);
@@ -718,7 +726,7 @@ export default function AdminTournamentsContent() {
                     </td>
                     <td className="px-6 py-4 text-text font-poppins text-sm">
                       {tournament.registrationsConfirmed ?? 0}
-                    </td>
+                      </td>
                       <td className="px-6 py-4">
                         <span
                           className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
@@ -1315,7 +1323,68 @@ export default function AdminTournamentsContent() {
                     <option value="completed">Completed</option>
                     <option value="demo">Demo</option>
                     <option value="archived">Archived</option>
+                    <option value="soon">Soon</option>
                   </select>
+                </div>
+
+                {/* Tournament Banner */}
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('tournaments.bannerImage')} <span className="text-text-tertiary text-xs">({t('tournaments.optional')})</span>
+                  </label>
+                  {formData.bannerImageData ? (
+                    <div className="mb-4">
+                      <div className="relative w-full h-48 rounded-lg overflow-hidden border border-border mb-2">
+                        <img
+                          src={formData.bannerImageData}
+                          alt="Tournament banner"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, bannerImageName: null, bannerImageData: null })}
+                        className="text-sm text-red-400 hover:text-red-300 font-poppins"
+                      >
+                        {t('tournaments.removeBanner')}
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <label className="cursor-pointer inline-block">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              if (file.size > 5 * 1024 * 1024) {
+                                alert(t('tournaments.bannerSizeError') || 'Banner size must be less than 5MB');
+                                return;
+                              }
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                const result = event.target?.result as string;
+                                setFormData({
+                                  ...formData,
+                                  bannerImageName: file.name,
+                                  bannerImageData: result,
+                                });
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          className="hidden"
+                        />
+                        <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                          {t('tournaments.chooseBanner') || 'Choose Banner'}
+                        </span>
+                      </label>
+                      <p className="text-xs text-text-tertiary mt-2">
+                        {t('tournaments.bannerHint') || 'Maximum 5MB. JPG, PNG formats.'}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Categories Management */}

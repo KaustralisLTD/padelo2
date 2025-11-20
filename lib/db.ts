@@ -480,9 +480,11 @@ export async function initDatabase() {
       registration_deadline DATETIME DEFAULT NULL,
       location VARCHAR(255) DEFAULT NULL,
       max_participants INT(11) DEFAULT NULL,
-      status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived') NOT NULL DEFAULT 'draft',
+      status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived', 'soon') NOT NULL DEFAULT 'draft',
       demo_participants_count INT DEFAULT NULL,
       registration_settings JSON DEFAULT NULL,
+      banner_image_name VARCHAR(255) DEFAULT NULL,
+      banner_image_data LONGTEXT DEFAULT NULL,
       created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
@@ -491,11 +493,11 @@ export async function initDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  // Ensure 'demo' and 'archived' statuses exist in tournaments.status ENUM
+  // Ensure 'demo', 'archived', and 'soon' statuses exist in tournaments.status ENUM
   try {
     await pool.execute(`
       ALTER TABLE tournaments
-      MODIFY status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived') NOT NULL DEFAULT 'draft'
+      MODIFY status ENUM('draft', 'open', 'closed', 'in_progress', 'completed', 'demo', 'archived', 'soon') NOT NULL DEFAULT 'draft'
     `);
   } catch (e: any) {
     // MySQL returns errno 1265 if enum already updated; ignore in that case
@@ -530,6 +532,28 @@ export async function initDatabase() {
     await pool.execute(`
       ALTER TABLE tournaments
       ADD COLUMN custom_categories JSON DEFAULT NULL COMMENT "Custom category names: {code: name}"
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      ADD COLUMN banner_image_name VARCHAR(255) DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      ADD COLUMN banner_image_data LONGTEXT DEFAULT NULL
     `);
   } catch (e: any) {
     if (!e.message?.toLowerCase().includes('duplicate column name')) {
