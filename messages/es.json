@@ -860,8 +860,9 @@
       "participantUpdated": "Participante actualizado correctamente.",
       "participantUpdateError": "No se pudo actualizar el participante.",
       "paymentStatusUpdated": "Estado de pago actualizado correctamente.",
-      "paymentStatusUpdateError": "No se pudo actualizar el estado de pago."
-      "totalParticipants": "Total: {count} participantes",    },
+      "paymentStatusUpdateError": "No se pudo actualizar el estado de pago.",
+      "totalParticipants": "Total: {count} participantes"
+    },
     "staff": {
       "assignAccess": "Asignar Acceso",
       "editAccess": "Editar Acceso",

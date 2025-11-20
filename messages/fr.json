@@ -736,8 +736,9 @@
       "participantUpdated": "Participant mis à jour avec succès.",
       "participantUpdateError": "Impossible de mettre à jour le participant.",
       "paymentStatusUpdated": "Statut de paiement mis à jour avec succès.",
-      "paymentStatusUpdateError": "Impossible de mettre à jour le statut de paiement."
-      "totalParticipants": "Total: {count} participants",    },
+      "paymentStatusUpdateError": "Impossible de mettre à jour le statut de paiement.",
+      "totalParticipants": "Total: {count} participants"
+    },
     "staff": {
       "assignAccess": "Attribuer l'Accès",
       "editAccess": "Modifier l'Accès",

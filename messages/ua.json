@@ -490,7 +490,8 @@
       "participantUpdateError": "Не вдалося оновити учасника.",
       "paymentStatusUpdated": "Статус оплати успішно оновлено.",
       "paymentStatusUpdateError": "Не вдалося оновити статус оплати.",
-      "totalParticipants": "Всього: {count} учасників",      "pairs": "пар",
+      "totalParticipants": "Всього: {count} учасників",
+      "pairs": "пар",
       "generateScheduleForAll": "Згенерувати розклад для всіх категорій",
       "generateForAllCategories": "Згенерувати розклад для всіх категорій.",
       "noSchedule": "Розклад ще не створено.",
@@ -931,8 +932,9 @@
       "participantUpdated": "Учасника успішно оновлено.",
       "participantUpdateError": "Не вдалося оновити учасника.",
       "paymentStatusUpdated": "Статус оплати успішно оновлено.",
-      "paymentStatusUpdateError": "Не вдалося оновити статус оплати."
-      "totalParticipants": "Всього: {count} учасників",    },
+      "paymentStatusUpdateError": "Не вдалося оновити статус оплати.",
+      "totalParticipants": "Всього: {count} учасників"
+    },
     "staff": {
       "title": "Управління співробітниками",
       "description": "Призначення ролей та управління співробітниками",
