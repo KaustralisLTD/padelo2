@@ -401,8 +401,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     }
 
     // Валидация партнеров для mixed категорий
-    const mixedCategories = formData.categories.filter(c => c.startsWith('mixed'));
-    for (const category of mixedCategories) {
+    const mixedCategoriesForValidation = formData.categories.filter(c => c.startsWith('mixed'));
+    for (const category of mixedCategoriesForValidation) {
       const categoryPartner = categoryPartners[category];
       if (!categoryPartner) {
         const errorMsg = t('form.partnerRequiredForCategory', { category: t(`categories.${category}`) }) || `Partner is required for ${t(`categories.${category}`)}`;
