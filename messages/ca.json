@@ -1449,7 +1449,9 @@
       "superadmin": "Super Admin",
       "staff": "Personal",
       "participant": "Participant"
-    }
+    },
+    "chooseFile": "Tria fitxer",
+    "removeFile": "Eliminar"
   },
   "ParticipantDashboard": {
     "title": "Panell de Participant",

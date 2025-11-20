@@ -1091,7 +1091,9 @@
       "superadmin": "Super Admin",
       "staff": "Personal",
       "participant": "Participante"
-    }
+    },
+    "chooseFile": "Elegir archivo",
+    "removeFile": "Eliminar"
   },
   "ParticipantDashboard": {
     "title": "Panel de Participante",

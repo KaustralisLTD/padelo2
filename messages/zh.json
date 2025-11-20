@@ -1125,7 +1125,9 @@
       "superadmin": "超级管理员",
       "staff": "员工",
       "participant": "参与者"
-    }
+    },
+    "chooseFile": "选择文件",
+    "removeFile": "删除"
   },
   "ParticipantDashboard": {
     "title": "参与者仪表板",

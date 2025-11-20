@@ -717,7 +717,9 @@
       "superadmin": "المدير العام",
       "staff": "الموظفون",
       "participant": "المشارك"
-    }
+    },
+    "chooseFile": "اختر الملف",
+    "removeFile": "إزالة"
   },
   "Admin": {
     "tournaments": {

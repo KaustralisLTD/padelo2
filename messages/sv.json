@@ -1106,7 +1106,9 @@
       "superadmin": "Super Admin",
       "staff": "Personal",
       "participant": "Deltagare"
-    }
+    },
+    "chooseFile": "Välj fil",
+    "removeFile": "Ta bort"
   },
   "ParticipantDashboard": {
     "title": "Deltagare Dashboard",

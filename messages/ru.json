@@ -1146,7 +1146,9 @@
       "superadmin": "Супер админ",
       "staff": "Персонал",
       "participant": "Участник"
-    }
+    },
+    "chooseFile": "Выбрать файл",
+    "removeFile": "Удалить"
   },
   "ParticipantDashboard": {
     "title": "Панель Участника",

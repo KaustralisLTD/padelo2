@@ -1072,7 +1072,9 @@
       "superadmin": "Super Admin",
       "staff": "Personal",
       "participant": "Teilnehmer"
-    }
+    },
+    "chooseFile": "Datei auswählen",
+    "removeFile": "Entfernen"
   },
   "ParticipantDashboard": {
     "title": "Teilnehmer-Dashboard",

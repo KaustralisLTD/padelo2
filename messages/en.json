@@ -1084,6 +1084,8 @@
     "photo": "Photo",
     "noPhoto": "No photo",
     "photoHint": "Maximum 5MB. JPG, PNG formats.",
+    "chooseFile": "Choose File",
+    "removeFile": "Remove",
     "photoSizeError": "Photo size must be less than 5MB",
     "basicInfo": "Basic Information",
     "contactInfo": "Contact Information",

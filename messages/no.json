@@ -1106,7 +1106,9 @@
       "superadmin": "Super Admin",
       "staff": "Personale",
       "participant": "Deltaker"
-    }
+    },
+    "chooseFile": "Velg fil",
+    "removeFile": "Fjern"
   },
   "ParticipantDashboard": {
     "title": "Deltaker Dashboard",

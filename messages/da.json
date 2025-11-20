@@ -1106,7 +1106,9 @@
       "superadmin": "Super Admin",
       "staff": "Personale",
       "participant": "Deltager"
-    }
+    },
+    "chooseFile": "Vælg fil",
+    "removeFile": "Fjern"
   },
   "ParticipantDashboard": {
     "title": "Deltager Dashboard",

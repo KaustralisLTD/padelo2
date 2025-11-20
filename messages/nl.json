@@ -1070,7 +1070,9 @@
       "superadmin": "Super Admin",
       "staff": "Personeel",
       "participant": "Deelnemer"
-    }
+    },
+    "chooseFile": "Kies bestand",
+    "removeFile": "Verwijderen"
   },
   "ParticipantDashboard": {
     "title": "Deelnemer Dashboard",

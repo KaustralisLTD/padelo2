@@ -251,12 +251,32 @@ export default function ProfileContent() {
                 </div>
               )}
               <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  className="block text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-poppins file:bg-primary file:text-background hover:file:opacity-90"
-                />
+                <label className="cursor-pointer inline-block">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="hidden"
+                    id="profile-photo-upload"
+                  />
+                  <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                    {photoFile ? photoFile.name : t('chooseFile') || 'Choose File'}
+                  </span>
+                </label>
+                {photoFile && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhotoFile(null);
+                      setPhotoPreview(profile?.photoData || null);
+                      const input = document.getElementById('profile-photo-upload') as HTMLInputElement;
+                      if (input) input.value = '';
+                    }}
+                    className="ml-2 text-xs text-text-secondary hover:text-primary"
+                  >
+                    {t('removeFile') || 'Remove'}
+                  </button>
+                )}
                 <p className="text-xs text-text-tertiary mt-2">{t('photoHint')}</p>
               </div>
             </div>

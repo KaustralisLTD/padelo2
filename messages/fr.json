@@ -1106,7 +1106,9 @@
       "superadmin": "Super Admin",
       "staff": "Personnel",
       "participant": "Participant"
-    }
+    },
+    "chooseFile": "Choisir un fichier",
+    "removeFile": "Supprimer"
   },
   "ParticipantDashboard": {
     "title": "Tableau de Bord Participant",
