@@ -816,7 +816,13 @@
       "paymentStatusUpdated": "Betalingsstatus succesvol bijgewerkt.",
       "paymentStatusUpdateError": "Kon betalingsstatus niet bijwerken.",
       "totalParticipants": "Totaal: {count} deelnemers",
-      "comingSoon": "Tournament management interface coming soon..."
+      "comingSoon": "Tournament management interface coming soon...",
+      "bannerImage": "Tournament Banner",
+      "chooseBanner": "Choose Banner",
+      "removeBanner": "Remove Banner",
+      "bannerHint": "Maximum 5MB. JPG, PNG formats.",
+      "bannerSizeError": "Banner size must be less than 5MB",
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "Toegang Toewijzen",
@@ -1316,6 +1322,8 @@
       "token_exchange_failed": "Token exchange failed. Please try again.",
       "user_info_failed": "Failed to fetch user information. Please try again.",
       "no_email": "Email not provided. Please try again."
-    }
+    },
+    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
+    "termsOfService": "Terms of Service"
   }
 }

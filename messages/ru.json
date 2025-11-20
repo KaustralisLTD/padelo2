@@ -731,7 +731,9 @@
       "token_exchange_failed": "Обмен токена не удался. Попробуйте еще раз.",
       "user_info_failed": "Не удалось получить информацию о пользователе. Попробуйте еще раз.",
       "no_email": "Email не предоставлен. Попробуйте еще раз."
-    }
+    },
+    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
+    "termsOfService": "Terms of Service"
   },
   "Dashboard": {
     "title": "Панель управления",
@@ -998,7 +1000,13 @@
       "participantUpdateError": "Не удалось обновить участника.",
       "paymentStatusUpdated": "Статус оплаты успешно обновлен.",
       "paymentStatusUpdateError": "Не удалось обновить статус оплаты.",
-      "totalParticipants": "Всего: {count} участников"
+      "totalParticipants": "Всего: {count} участников",
+      "bannerImage": "Tournament Banner",
+      "chooseBanner": "Choose Banner",
+      "removeBanner": "Remove Banner",
+      "bannerHint": "Maximum 5MB. JPG, PNG formats.",
+      "bannerSizeError": "Banner size must be less than 5MB",
+      "optional": "Optional"
     },
     "staff": {
       "title": "Управление сотрудниками",

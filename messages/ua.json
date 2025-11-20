@@ -750,7 +750,9 @@
     },
     "orContinueWith": "Або продовжити з",
     "continueWithGoogle": "Google",
-    "continueWithApple": "Apple"
+    "continueWithApple": "Apple",
+    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
+    "termsOfService": "Terms of Service"
   },
   "Dashboard": {
     "title": "Панель керування",
@@ -1017,7 +1019,13 @@
       "participantUpdateError": "Не вдалося оновити учасника.",
       "paymentStatusUpdated": "Статус оплати успішно оновлено.",
       "paymentStatusUpdateError": "Не вдалося оновити статус оплати.",
-      "totalParticipants": "Всього: {count} учасників"
+      "totalParticipants": "Всього: {count} учасників",
+      "bannerImage": "Tournament Banner",
+      "chooseBanner": "Choose Banner",
+      "removeBanner": "Remove Banner",
+      "bannerHint": "Maximum 5MB. JPG, PNG formats.",
+      "bannerSizeError": "Banner size must be less than 5MB",
+      "optional": "Optional"
     },
     "staff": {
       "title": "Управління співробітниками",

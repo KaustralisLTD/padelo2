@@ -729,7 +729,9 @@
     },
     "orContinueWith": "或继续使用",
     "continueWithGoogle": "Google",
-    "continueWithApple": "Apple"
+    "continueWithApple": "Apple",
+    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
+    "termsOfService": "Terms of Service"
   },
   "Admin": {
     "tournaments": {
@@ -852,7 +854,13 @@
       "paymentStatusUpdated": "付款状态已成功更新。",
       "paymentStatusUpdateError": "无法更新付款状态。",
       "totalParticipants": "总计: {count} 名参与者",
-      "comingSoon": "Tournament management interface coming soon..."
+      "comingSoon": "Tournament management interface coming soon...",
+      "bannerImage": "Tournament Banner",
+      "chooseBanner": "Choose Banner",
+      "removeBanner": "Remove Banner",
+      "bannerHint": "Maximum 5MB. JPG, PNG formats.",
+      "bannerSizeError": "Banner size must be less than 5MB",
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "分配访问权限",

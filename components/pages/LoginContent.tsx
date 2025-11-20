@@ -286,6 +286,13 @@ export default function LoginContent() {
             >
               {isSubmitting ? t('submitting') : isLogin ? t('loginButton') : t('registerButton')}
             </button>
+
+            <p className="text-xs text-text-tertiary text-center mt-4 font-poppins">
+              {t('termsAgreement')}{' '}
+              <Link href={`/${locale}/terms`} className="text-primary hover:underline">
+                {t('termsOfService')}
+              </Link>
+            </p>
           </form>
         </div>
       </div>

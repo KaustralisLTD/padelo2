@@ -672,6 +672,8 @@
     "orContinueWith": "Or continue with",
     "continueWithGoogle": "Google",
     "continueWithApple": "Apple",
+    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
+    "termsOfService": "Terms of Service",
     "errors": {
       "invalidCredentials": "Invalid email or password",
       "passwordMismatch": "Passwords do not match",
