@@ -30,7 +30,8 @@
     "partners": "Партнери",
     "contact": "Контакти",
     "legal": "Правова інформація",
-    "rights": "Всі права захищені"
+    "rights": "Всі права захищені",
+    "followUs": "Підписуйтесь"
   },
   "Hero": {
     "title": "PadelO₂",
@@ -324,7 +325,9 @@
         "text": "Будь ласка, завантажте ваше фото для турніру. Фото буде використано для вашого профілю гравця та матеріалів турніру.",
         "filename": "Формат імені файлу",
         "filenameExample": "Ім'я_Прізвище.jpg (наприклад, Іван_Іванов.jpg)"
-      }
+      },
+      "partnerRequiredNotice": "Partner information is required for this tournament.",
+      "customFieldFallback": "Custom Field"
     },
     "confirmation": {
       "title": "Реєстрація Підтверджена",
@@ -606,7 +609,15 @@
       "timeSlots": "Часові проміжки",
       "scheduleCleared": "Розклад успішно очищено",
       "groupOverLimit": "⚠️ Попередження: {current} пар (макс: {max})",
-      "groupUnderLimit": "⚠️ Попередження: {current} пар (очікується: {max})"
+      "groupUnderLimit": "⚠️ Попередження: {current} пар (очікується: {max})",
+      "startTimeRequired": "Start time is required",
+      "fillResult": "Please fill in both game scores",
+      "resultSaved": "Result saved successfully!",
+      "errorSavingResult": "Error saving result",
+      "selectPartner1": "Select Partner 1",
+      "selectPartner2": "Select Partner 2",
+      "start": "Start",
+      "end": "End"
     },
     "pair": "пар"
   },
@@ -626,7 +637,9 @@
         "support": "Підтримка"
       },
       "submit": "Відправити повідомлення",
-      "sending": "Відправка..."
+      "sending": "Відправка...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message. Please try again."
     }
   },
   "WhatsApp": {

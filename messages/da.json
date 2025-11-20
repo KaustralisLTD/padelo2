@@ -30,7 +30,8 @@
     "partners": "Partnere",
     "contact": "Kontakt",
     "legal": "Juridisk",
-    "rights": "Alle rettigheder forbeholdes"
+    "rights": "Alle rettigheder forbeholdes",
+    "followUs": "Følg os"
   },
   "Hero": {
     "title": "PadelO₂",
@@ -75,7 +76,27 @@
       "funds": "Samlede Midler",
       "countries": "Lande"
     },
-    "cta": "Bliv Partner"
+    "cta": "Bliv Partner",
+    "models": {
+      "title": "Models (примерно)",
+      "revenueShare": {
+        "title": "Revenue-share",
+        "description": "Court & machines"
+      },
+      "leaseToOwn": {
+        "title": "Lease-to-own / рассрочка",
+        "description": "Installment plans"
+      },
+      "localJv": {
+        "title": "Local JV",
+        "description": "Stake in club/rental network"
+      },
+      "techLicensing": {
+        "title": "Tech licensing",
+        "description": "API, White-label"
+      }
+    },
+    "note": "Note: profitability indicators depend on country, traffic, and venue costs; financial model provided after brief."
   },
   "InvestmentModal": {
     "title": "Investeringsforespørgsel",
@@ -337,7 +358,9 @@
       "priceDoubleCategory": "To Kategorier",
       "perCategory": "per kategori",
       "prizes": "Præmier",
-      "prizesInfo": "Præmieinformation vil blive annonceret snart. Hold øje!"
+      "prizesInfo": "Præmieinformation vil blive annonceret snart. Hold øje!",
+      "showEvents": "Show All Events",
+      "hideEvents": "Hide Events"
     },
     "rules": {
       "title": "Turneringsregler",
@@ -561,7 +584,18 @@
       "email": "E-mail",
       "optional": "valgfri",
       "nextStageCreated": "Næste fase oprettet",
-      "generateScheduleForNextStage": "Generer tidsplan for næste fase?"
+      "generateScheduleForNextStage": "Generer tidsplan for næste fase?",
+      "startTimeRequired": "Start time is required",
+      "set1": "SET 1",
+      "set2": "SET 2",
+      "set3": "SET 3 (TB)",
+      "knockoutSetsHint": "SET 1 and SET 2: up to 7 (7-6 in tiebreak). SET 3 (super tiebreak): any value (played until 2-point difference)",
+      "fillResult": "Please fill in both game scores",
+      "resultSaved": "Result saved successfully!",
+      "errorSavingResult": "Error saving result",
+      "invalidResult": "Invalid result. Please enter valid numbers.",
+      "start": "Start",
+      "end": "End"
     },
     "pair": "par"
   },
@@ -746,7 +780,8 @@
       "participantUpdateError": "Kunne ikke opdatere deltager.",
       "paymentStatusUpdated": "Betalingsstatus opdateret med succes.",
       "paymentStatusUpdateError": "Kunne ikke opdatere betalingsstatus.",
-      "totalParticipants": "I alt: {count} deltagere"
+      "totalParticipants": "I alt: {count} deltagere",
+      "comingSoon": "Tournament management interface coming soon..."
     },
     "staff": {
       "assignAccess": "Tildel Adgang",
@@ -795,7 +830,10 @@
         "totalAccess": "Samlet Adgang",
         "uniqueUsers": "Unikke Brugere",
         "uniqueTournaments": "Unikke Turneringer"
-      }
+      },
+      "title": "Manage Staff",
+      "description": "Assign roles and manage staff members",
+      "comingSoon": "Staff management interface coming soon..."
     },
     "logs": {
       "title": "Audit Logs",
@@ -1184,5 +1222,28 @@
   "Common": {
     "darkMode": "Mørk tilstand",
     "lightMode": "Lys tilstand"
+  },
+  "About": {
+    "title": "About PadelO₂",
+    "headline": "Breathe and Live",
+    "subhead": "A multi-language platform for the global padel ecosystem",
+    "body": "PadelO₂ is a brand that unites competitions, training, and technology. We build courts, produce AI training machines, develop the Academy, and create investment opportunities for padel growth worldwide. Our products speak different languages and support local communities.",
+    "mission": "Our mission is to showcase the history, growth, and future of padel visually and interactively, so every player 'breathes' the game.",
+    "highlights": {
+      "title": "Highlights",
+      "multilanguage": {
+        "title": "Multi-language",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Complete Ecosystem",
+        "description": "AI-Machines + Academy + Courts + Investments — all in one"
+      },
+      "design": {
+        "title": "Design DNA",
+        "description": "Neon-aqua, clean typography, 'breathing' rhythm"
+      }
+    },
+    "cta": "Meet the team"
   }
 }

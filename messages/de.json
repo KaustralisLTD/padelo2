@@ -30,7 +30,8 @@
     "partners": "Partner",
     "contact": "Kontakt",
     "legal": "Rechtliches",
-    "rights": "Alle Rechte vorbehalten"
+    "rights": "Alle Rechte vorbehalten",
+    "followUs": "Folgen Sie uns"
   },
   "Hero": {
     "title": "PadelO₂",
@@ -75,7 +76,27 @@
       "funds": "Gesamtmittel",
       "countries": "Länder"
     },
-    "cta": "Partner Werden"
+    "cta": "Partner Werden",
+    "models": {
+      "title": "Models (примерно)",
+      "revenueShare": {
+        "title": "Revenue-share",
+        "description": "Court & machines"
+      },
+      "leaseToOwn": {
+        "title": "Lease-to-own / рассрочка",
+        "description": "Installment plans"
+      },
+      "localJv": {
+        "title": "Local JV",
+        "description": "Stake in club/rental network"
+      },
+      "techLicensing": {
+        "title": "Tech licensing",
+        "description": "API, White-label"
+      }
+    },
+    "note": "Note: profitability indicators depend on country, traffic, and venue costs; financial model provided after brief."
   },
   "InvestmentModal": {
     "title": "Investitionsanfrage",
@@ -282,7 +303,9 @@
         "text": "Bitte laden Sie Ihr Foto für das Turnier hoch. Das Foto wird für Ihr Spielerprofil und Turniermaterialien verwendet.",
         "filename": "Dateinamen-Format",
         "filenameExample": "Vorname_Nachname.jpg (z.B: Max_Müller.jpg)"
-      }
+      },
+      "partnerRequiredNotice": "Partner information is required for this tournament.",
+      "customFieldFallback": "Custom Field"
     },
     "confirmation": {
       "title": "Registrierung Bestätigt",
@@ -437,8 +460,6 @@
       "demoParticipantsCategoryDistribution": "Verteilung nach Kategorien",
       "demoParticipantsCategoryHint": "Geben Sie eine gerade Anzahl von Teilnehmern für jede Kategorie ein. 2 Teilnehmer = 1 Paar.",
       "demoParticipantsCategoryOdd": "Kategorie {category} muss eine gerade Anzahl von Teilnehmern haben.",
-      "demoParticipantsCategoryDistribution": "Verteilung nach Kategorien",
-      "demoParticipantsCategoryHint": "Geben Sie eine gerade Anzahl von Teilnehmern für jede Kategorie ein. 2 Teilnehmer = 1 Paar.",
       "categories": "Kategorien",
       "categoriesManagement": "Kategorienverwaltung",
       "categoriesDescription": "Verwalten Sie die Turnierkategorien. Sie können Kategorien hinzufügen, umbenennen oder entfernen.",
@@ -463,7 +484,7 @@
       "telegram": "Telegram",
       "message": "Nachricht",
       "partnerInfo": "Partnerinformationen",
-      "partnerName": "Partnername",
+      "partnerName": "Partner-Name",
       "partnerEmail": "Partner-E-Mail",
       "partnerPhone": "Partner-Telefon",
       "partnerTshirtSize": "Partner T-Shirt-Größe",
@@ -472,7 +493,8 @@
       "participantUpdateError": "Teilnehmer konnte nicht aktualisiert werden.",
       "paymentStatusUpdated": "Zahlungsstatus erfolgreich aktualisiert.",
       "paymentStatusUpdateError": "Zahlungsstatus konnte nicht aktualisiert werden.",
-      "totalParticipants": "Gesamt: {count} Teilnehmer",      "pairs": "Paare",
+      "totalParticipants": "Gesamt: {count} Teilnehmer",
+      "pairs": "Paare",
       "adminPanel": "Admin Panel",
       "search": "Search",
       "searchPlaceholder": "Search by player names...",
@@ -508,7 +530,6 @@
       "errorUpdatingMatch": "Error updating match",
       "fillAllFields": "Please fill in all fields",
       "noCourts": "No courts",
-      "save": "Speichern",
       "knockoutStage": "K.O.-Phase",
       "startKnockout": "K.O.-Phase starten",
       "groups": "Gruppen",
@@ -530,7 +551,6 @@
       "changePlayers": "Spieler ändern",
       "notifyParticipants": "Teilnehmer über Änderungen benachrichtigen",
       "completed": "Abgeschlossen",
-      "actions": "Aktionen",
       "editResult": "Ergebnis bearbeiten",
       "enterResult": "Spielergebnis eingeben",
       "pair1Games": "Spiele Paar 1",
@@ -561,13 +581,21 @@
       "scheduleCleared": "Zeitplan erfolgreich gelöscht",
       "groupOverLimit": "⚠️ Warnung: {current} Paare (max: {max})",
       "groupUnderLimit": "⚠️ Warnung: {current} Paare (erwartet: {max})",
-      "firstName": "Vorname",
-      "lastName": "Nachname",
       "email": "E-Mail",
       "optional": "optional",
-      "partnerName": "Partner-Name",
       "nextStageCreated": "Nächste Stufe erstellt",
-      "generateScheduleForNextStage": "Zeitplan für nächste Stufe generieren?"
+      "generateScheduleForNextStage": "Zeitplan für nächste Stufe generieren?",
+      "startTimeRequired": "Start time is required",
+      "set1": "SET 1",
+      "set2": "SET 2",
+      "set3": "SET 3 (TB)",
+      "knockoutSetsHint": "SET 1 and SET 2: up to 7 (7-6 in tiebreak). SET 3 (super tiebreak): any value (played until 2-point difference)",
+      "fillResult": "Please fill in both game scores",
+      "resultSaved": "Result saved successfully!",
+      "errorSavingResult": "Error saving result",
+      "invalidResult": "Invalid result. Please enter valid numbers.",
+      "start": "Start",
+      "end": "End"
     },
     "pair": "Paare"
   },
@@ -603,7 +631,6 @@
       "createTournament": "Turnier Erstellen",
       "editTournament": "Turnier Bearbeiten",
       "name": "Name",
-      "description": "Beschreibung",
       "startDate": "Startdatum",
       "endDate": "Enddatum",
       "registrationDeadline": "Anmeldeschluss",
@@ -704,7 +731,6 @@
       "paymentPending": "Ausstehend",
       "paymentPaid": "Bezahlt",
       "paymentRefunded": "Erstattet",
-      "actions": "Aktionen",
       "editParticipant": "Teilnehmer Bearbeiten",
       "firstName": "Vorname",
       "lastName": "Nachname",
@@ -720,7 +746,8 @@
       "participantUpdateError": "Teilnehmer konnte nicht aktualisiert werden.",
       "paymentStatusUpdated": "Zahlungsstatus erfolgreich aktualisiert.",
       "paymentStatusUpdateError": "Zahlungsstatus konnte nicht aktualisiert werden.",
-      "totalParticipants": "Gesamt: {count} Teilnehmer"
+      "totalParticipants": "Gesamt: {count} Teilnehmer",
+      "comingSoon": "Tournament management interface coming soon..."
     },
     "staff": {
       "assignAccess": "Zugriff Zuweisen",
@@ -769,7 +796,10 @@
         "totalAccess": "Gesamtzugriffe",
         "uniqueUsers": "Eindeutige Benutzer",
         "uniqueTournaments": "Eindeutige Turniere"
-      }
+      },
+      "title": "Manage Staff",
+      "description": "Assign roles and manage staff members",
+      "comingSoon": "Staff management interface coming soon..."
     },
     "logs": {
       "title": "Audit Logs",
@@ -1182,5 +1212,63 @@
   "Common": {
     "darkMode": "Dunkler Modus",
     "lightMode": "Heller Modus"
+  },
+  "About": {
+    "title": "About PadelO₂",
+    "headline": "Breathe and Live",
+    "subhead": "A multi-language platform for the global padel ecosystem",
+    "body": "PadelO₂ is a brand that unites competitions, training, and technology. We build courts, produce AI training machines, develop the Academy, and create investment opportunities for padel growth worldwide. Our products speak different languages and support local communities.",
+    "mission": "Our mission is to showcase the history, growth, and future of padel visually and interactively, so every player 'breathes' the game.",
+    "highlights": {
+      "title": "Highlights",
+      "multilanguage": {
+        "title": "Multi-language",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Complete Ecosystem",
+        "description": "AI-Machines + Academy + Courts + Investments — all in one"
+      },
+      "design": {
+        "title": "Design DNA",
+        "description": "Neon-aqua, clean typography, 'breathing' rhythm"
+      }
+    },
+    "cta": "Meet the team"
+  },
+  "Login": {
+    "title": "Login",
+    "description": "Access your account",
+    "loginTitle": "Welcome Back",
+    "loginDescription": "Sign in to your account",
+    "registerTitle": "Create Account",
+    "registerDescription": "Join PadelO₂ community",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Sign In",
+    "registerButton": "Create Account",
+    "submitting": "Processing...",
+    "orContinueWith": "Or continue with",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "passwordMismatch": "Passwords do not match",
+      "registrationFailed": "Registration failed. Please try again.",
+      "generic": "An error occurred. Please try again.",
+      "oauthFailed": "OAuth authentication failed. Please try again.",
+      "oauth_cancelled": "Authentication cancelled",
+      "invalid_state": "Invalid authentication state. Please try again.",
+      "no_code": "Authentication code not received. Please try again.",
+      "oauth_not_configured": "OAuth not configured. Please contact support.",
+      "token_exchange_failed": "Token exchange failed. Please try again.",
+      "user_info_failed": "Failed to fetch user information. Please try again.",
+      "no_email": "Email not provided. Please try again."
+    }
   }
 }

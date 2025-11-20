@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import LoginContent from '@/components/pages/LoginContent';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { Suspense } from 'react';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -21,7 +22,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <LoginContent />;
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-20 mt-20 text-center">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
+  );
 }
 
 

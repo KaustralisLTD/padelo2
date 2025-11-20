@@ -30,7 +30,8 @@
     "partners": "Socis",
     "contact": "Contacte",
     "legal": "Legal",
-    "rights": "Tots els drets reservats"
+    "rights": "Tots els drets reservats",
+    "followUs": "Segueix-nos"
   },
   "Hero": {
     "title": "PadelO₂",
@@ -133,7 +134,8 @@
         "description": "Màquines d'entrenament connectades per IoT amb anàlisi d'IA i seguiment de rendiment en temps real. Entrena de manera més intel·ligent amb informació basada en dades i programes d'entrenament adaptatius."
       }
     },
-    "cta": "Uneix-te a l'Acadèmia"
+    "cta": "Uneix-te a l'Acadèmia",
+    "back": "Back"
   },
   "Machines": {
     "title": "Màquines d'Entrenament amb IA",
@@ -162,7 +164,8 @@
         "description": "Autoservei mitjançant casella QR"
       }
     },
-    "cta": "Explorar les màquines"
+    "cta": "Explorar les màquines",
+    "back": "Back"
   },
   "Courts": {
     "title": "Pistes de Pàdel",
@@ -198,7 +201,8 @@
       "mobile": "Mòbil"
     },
     "gallery": "Galeria",
-    "cta": "Obtenir especificacions i pressupost"
+    "cta": "Obtenir especificacions i pressupost",
+    "back": "Back"
   },
   "Partners": {
     "title": "Els Nostres Socis",
@@ -499,7 +503,10 @@
           "comingSoon": "Els premis i assoliments es mostraran aquí"
         }
       }
-    }
+    },
+    "partners": "Our Partners",
+    "cta": "Become a Partner",
+    "back": "Back"
   },
   "Tournaments": {
     "tournamentDetails": {
@@ -524,7 +531,11 @@
       "registrationDeadline": "Data Límit de Registre",
       "maxParticipants": "Màx. Participants",
       "prizes": "Premis",
-      "prizesInfo": "La informació sobre premis s'anunciarà aviat. Estigueu atents!"
+      "prizesInfo": "La informació sobre premis s'anunciarà aviat. Estigueu atents!",
+      "pricing": "Pricing",
+      "priceSingleCategory": "One Category",
+      "priceDoubleCategory": "Two Categories",
+      "perCategory": "per category"
     },
     "rules": {
       "title": "Regles del Torneig",
@@ -602,8 +613,6 @@
       "demoParticipantsCategoryDistribution": "Distribució per Categories",
       "demoParticipantsCategoryHint": "Introduïu un nombre parell de participants per a cada categoria. 2 participants = 1 parella.",
       "demoParticipantsCategoryOdd": "La categoria {category} ha de tenir un nombre parell de participants.",
-      "demoParticipantsCategoryDistribution": "Distribució per Categories",
-      "demoParticipantsCategoryHint": "Introduïu un nombre parell de participants per a cada categoria. 2 participants = 1 parella.",
       "categories": "Categories",
       "categoriesManagement": "Gestió de Categories",
       "categoriesDescription": "Gestioneu les categories del torneig. Podeu afegir, canviar el nom o eliminar categories.",
@@ -628,7 +637,7 @@
       "telegram": "Telegram",
       "message": "Missatge",
       "partnerInfo": "Informació del Company",
-      "partnerName": "Nom del Company",
+      "partnerName": "Nom del company",
       "partnerEmail": "Email del Company",
       "partnerPhone": "Telèfon del Company",
       "partnerTshirtSize": "Mida de Samarreta del Company",
@@ -637,7 +646,8 @@
       "participantUpdateError": "No s'ha pogut actualitzar el participant.",
       "paymentStatusUpdated": "Estat del pagament actualitzat correctament.",
       "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament.",
-      "totalParticipants": "Total: {count} participants",      "pairs": "parelles",
+      "totalParticipants": "Total: {count} participants",
+      "pairs": "parelles",
       "noSchedule": "Encara no s'ha creat el calendari.",
       "adminHint": "Generate schedule for category.",
       "scheduleSettings": "Schedule Generation Settings",
@@ -695,7 +705,6 @@
       "errorUpdatingMatch": "Error updating match",
       "fillAllFields": "Please fill in all fields",
       "noCourts": "No courts",
-      "save": "Desar",
       "knockoutStage": "Fase Eliminatòria",
       "startKnockout": "Iniciar Fase Eliminatòria",
       "groups": "Grups",
@@ -717,7 +726,6 @@
       "changePlayers": "Canviar Jugadors",
       "notifyParticipants": "Notificar als participants sobre els canvis",
       "completed": "Completat",
-      "actions": "Accions",
       "editResult": "Editar Resultat",
       "enterResult": "Introduir Resultat del Partit",
       "pair1Games": "Jocs Parella 1",
@@ -748,15 +756,118 @@
       "scheduleCleared": "Horari netejat exitosament",
       "groupOverLimit": "⚠️ Advertència: {current} parelles (màx: {max})",
       "groupUnderLimit": "⚠️ Advertència: {current} parelles (esperat: {max})",
-      "firstName": "Nom",
-      "lastName": "Cognom",
       "email": "Correu electrònic",
       "optional": "opcional",
-      "partnerName": "Nom del company",
       "nextStageCreated": "Següent etapa creada",
-      "generateScheduleForNextStage": "Generar horari per a la següent etapa?"
+      "generateScheduleForNextStage": "Generar horari per a la següent etapa?",
+      "startTimeRequired": "Start time is required",
+      "set1": "SET 1",
+      "set2": "SET 2",
+      "set3": "SET 3 (TB)",
+      "knockoutSetsHint": "SET 1 and SET 2: up to 7 (7-6 in tiebreak). SET 3 (super tiebreak): any value (played until 2-point difference)",
+      "fillResult": "Please fill in both game scores",
+      "resultSaved": "Result saved successfully!",
+      "errorSavingResult": "Error saving result",
+      "invalidResult": "Invalid result. Please enter valid numbers.",
+      "start": "Start",
+      "end": "End"
     },
-    "pair": "parelles"
+    "pair": "parelles",
+    "title": "Tournaments",
+    "headline": "Compete at the Highest Level",
+    "subhead": "Join professional and amateur padel tournaments worldwide",
+    "description": "Discover upcoming padel tournaments and register to compete.",
+    "body": "PadelO₂ organizes and supports tournaments at all levels, from local club competitions to international championships. Whether you're a professional player or a passionate amateur, find the perfect tournament to showcase your skills and connect with the padel community.",
+    "cta": "Register Now",
+    "verySoon": "VERY SOON",
+    "comingSoon": "Coming Soon",
+    "back": "Back to tournaments",
+    "registerFor": "Register for",
+    "photoUploadInfo": "Please upload your photo. File name: FirstName_LastName.jpg (e.g., John_Doe.jpg)",
+    "tournament1": {
+      "name": "UA PADEL OPEN",
+      "subtitle": "Winter 2025",
+      "date": "December 19-21, 2025"
+    },
+    "tournament2": {
+      "name": "Upcoming Tournament",
+      "subtitle": "Details Coming Soon",
+      "date": "TBA"
+    },
+    "categories": {
+      "male1": "Men's 1",
+      "male2": "Men's 2",
+      "female1": "Women's 1",
+      "female2": "Women's 2",
+      "mixed1": "Mixed 1",
+      "mixed2": "Mixed 2"
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "telegram": "Telegram Account",
+      "phone": "Phone",
+      "categories": "Categories",
+      "selectMultiple": "You can select multiple (e.g., Men's + Mixed)",
+      "categoryHelp": "You can only select one Men's (1 or 2), one Women's (1 or 2), and one Mixed (1 or 2). You may combine Men's + Mixed or Women's + Mixed, but you cannot select two Men's, two Women's, or two Mixed categories at the same time.",
+      "tshirtSize": "T-shirt Size",
+      "selectSize": "Select size",
+      "addPartner": "Add Partner",
+      "removePartner": "Remove Partner",
+      "partnerName": "Partner Name",
+      "partnerEmail": "Partner Email",
+      "partnerPhone": "Partner Phone",
+      "partnerTshirtSize": "Partner T-shirt Size",
+      "partnerSelectSize": "Select partner size",
+      "partnerPhoto": "Partner Photo",
+      "partnerPhotoOptional": "Upload partner photo (optional)",
+      "partnerRequiredNotice": "Partner information is required for this tournament.",
+      "customFieldFallback": "Custom Field",
+      "message": "Message",
+      "messagePlaceholder": "I would like to leave additional preferences regarding the timing of my games",
+      "optional": "Optional",
+      "registerButton": "REGISTER NOW",
+      "submitting": "Submitting...",
+      "success": "Registration successful! Please check your email for confirmation.",
+      "error": "Error submitting registration. Please try again.",
+      "validation": {
+        "selectCategory": "Please select at least one category"
+      },
+      "photoInstructions": {
+        "title": "Photo Upload Instructions",
+        "text": "Please upload your photo for the tournament. The photo will be used for your player profile and tournament materials.",
+        "filename": "File name format",
+        "filenameExample": "FirstName_LastName.jpg (e.g., John_Doe.jpg)"
+      }
+    },
+    "confirmation": {
+      "title": "Registration Confirmed",
+      "description": "Your tournament registration has been confirmed",
+      "loading": "Confirming your registration...",
+      "success": "Your registration has been successfully confirmed!",
+      "error": "Invalid or expired confirmation link. Please contact support.",
+      "backToTournaments": "Back to Tournaments",
+      "registrationDetails": "Registration Details",
+      "goToDashboard": "Go to Dashboard"
+    },
+    "dashboard": {
+      "title": "Tournament Participant Dashboard",
+      "description": "Your tournament registration dashboard",
+      "loading": "Loading your dashboard...",
+      "noRegistration": "No registration found. Please register for a tournament first.",
+      "registerNow": "Register Now",
+      "registrationInfo": "Registration Information",
+      "tournamentInfo": "Tournament Information",
+      "tournament": "Tournament",
+      "status": "Status",
+      "confirmed": "Confirmed",
+      "pending": "Pending Confirmation",
+      "partnerInfo": "Partner Information",
+      "photoUpload": "Photo Upload",
+      "photoInstructions": "Please upload your photo. The file should be named: FirstName_LastName.jpg",
+      "uploadPhoto": "Upload Photo"
+    }
   },
   "Dashboard": {
     "title": "Dashboard",
@@ -804,7 +915,6 @@
       "createTournament": "Crear Torneig",
       "editTournament": "Editar Torneig",
       "name": "Nom",
-      "description": "Descripció",
       "startDate": "Data d'Inici",
       "endDate": "Data de Fi",
       "registrationDeadline": "Data Límit de Registre",
@@ -872,8 +982,8 @@
       "participantsList": "Llista de Participants",
       "noParticipants": "Encara no hi ha participants registrats.",
       "loading": "Carregant...",
-            "participantOrder": "Núm.",
-            "participantUserId": "ID d'usuari",
+      "participantOrder": "Núm.",
+      "participantUserId": "ID d'usuari",
       "participantName": "Nom",
       "participantEmail": "Correu",
       "participantPartner": "Parella",
@@ -904,7 +1014,6 @@
       "paymentPending": "Pendent",
       "paymentPaid": "Pagat",
       "paymentRefunded": "Reemborsat",
-      "actions": "Accions",
       "editParticipant": "Editar Participant",
       "firstName": "Nom",
       "lastName": "Cognom",
@@ -920,7 +1029,8 @@
       "participantUpdateError": "No s'ha pogut actualitzar el participant.",
       "paymentStatusUpdated": "Estat del pagament actualitzat correctament.",
       "paymentStatusUpdateError": "No s'ha pogut actualitzar l'estat del pagament.",
-      "totalParticipants": "Total: {count} participants"
+      "totalParticipants": "Total: {count} participants",
+      "comingSoon": "Tournament management interface coming soon..."
     },
     "staff": {
       "title": "Manage Staff",
@@ -1041,7 +1151,9 @@
       "state": "State",
       "info": "Query",
       "noProcesses": "No active processes",
-      "errorLoading": "Failed to load database statistics."
+      "errorLoading": "Failed to load database statistics.",
+      "unauthorized": "You do not have access to this tool.",
+      "unknown": "Unknown"
     },
     "loading": "Загрузка...",
     "backToDashboard": "Вернуться в панель управления",
@@ -1320,5 +1432,88 @@
   "Common": {
     "darkMode": "Mode fosc",
     "lightMode": "Mode clar"
+  },
+  "About": {
+    "title": "About PadelO₂",
+    "headline": "Breathe and Live",
+    "subhead": "A multi-language platform for the global padel ecosystem",
+    "body": "PadelO₂ is a brand that unites competitions, training, and technology. We build courts, produce AI training machines, develop the Academy, and create investment opportunities for padel growth worldwide. Our products speak different languages and support local communities.",
+    "mission": "Our mission is to showcase the history, growth, and future of padel visually and interactively, so every player 'breathes' the game.",
+    "highlights": {
+      "title": "Highlights",
+      "multilanguage": {
+        "title": "Multi-language",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Complete Ecosystem",
+        "description": "AI-Machines + Academy + Courts + Investments — all in one"
+      },
+      "design": {
+        "title": "Design DNA",
+        "description": "Neon-aqua, clean typography, 'breathing' rhythm"
+      }
+    },
+    "cta": "Meet the team"
+  },
+  "Contact": {
+    "title": "Get in Touch",
+    "description": "Have questions? We'd love to hear from you.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "topic": "Topic",
+      "selectTopic": "Select a topic",
+      "topics": {
+        "general": "General Inquiry",
+        "investments": "Investments",
+        "partnerships": "Partnerships",
+        "support": "Support"
+      },
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Error sending message. Please try again."
+    }
+  },
+  "WhatsApp": {
+    "button": "Chat on WhatsApp",
+    "message": "Hello! I'm interested in learning more about your padel services."
+  },
+  "Login": {
+    "title": "Login",
+    "description": "Access your account",
+    "loginTitle": "Welcome Back",
+    "loginDescription": "Sign in to your account",
+    "registerTitle": "Create Account",
+    "registerDescription": "Join PadelO₂ community",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Sign In",
+    "registerButton": "Create Account",
+    "submitting": "Processing...",
+    "orContinueWith": "Or continue with",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "passwordMismatch": "Passwords do not match",
+      "registrationFailed": "Registration failed. Please try again.",
+      "generic": "An error occurred. Please try again.",
+      "oauthFailed": "OAuth authentication failed. Please try again.",
+      "oauth_cancelled": "Authentication cancelled",
+      "invalid_state": "Invalid authentication state. Please try again.",
+      "no_code": "Authentication code not received. Please try again.",
+      "oauth_not_configured": "OAuth not configured. Please contact support.",
+      "token_exchange_failed": "Token exchange failed. Please try again.",
+      "user_info_failed": "Failed to fetch user information. Please try again.",
+      "no_email": "Email not provided. Please try again."
+    }
   }
 }

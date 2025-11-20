@@ -30,7 +30,8 @@
     "partners": "Партнеры",
     "contact": "Контакты",
     "legal": "Правовая информация",
-    "rights": "Все права защищены"
+    "rights": "Все права защищены",
+    "followUs": "Подписывайтесь"
   },
   "Hero": {
     "title": "PadelO₂",
@@ -572,7 +573,13 @@
       "optional": "опционально",
       "partnerName": "Имя партнера",
       "nextStageCreated": "Следующий этап создан",
-      "generateScheduleForNextStage": "Сгенерировать расписание для следующего этапа?"
+      "generateScheduleForNextStage": "Сгенерировать расписание для следующего этапа?",
+      "startTimeRequired": "Start time is required",
+      "fillResult": "Please fill in both game scores",
+      "resultSaved": "Result saved successfully!",
+      "errorSavingResult": "Error saving result",
+      "start": "Start",
+      "end": "End"
     },
     "pair": "пар"
   },
@@ -886,7 +893,6 @@
       "paymentPending": "Ожидает",
       "paymentPaid": "Оплачено",
       "paymentRefunded": "Возвращено",
-      "actions": "Действия",
       "editParticipant": "Редактировать участника",
       "firstName": "Имя",
       "lastName": "Фамилия",

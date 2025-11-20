@@ -30,7 +30,8 @@
     "partners": "合作伙伴",
     "contact": "联系",
     "legal": "法律",
-    "rights": "版权所有"
+    "rights": "版权所有",
+    "followUs": "关注我们"
   },
   "Hero": {
     "title": "PadelO₂",
@@ -75,7 +76,27 @@
       "funds": "总资金",
       "countries": "国家"
     },
-    "cta": "成为合作伙伴"
+    "cta": "成为合作伙伴",
+    "models": {
+      "title": "Models (примерно)",
+      "revenueShare": {
+        "title": "Revenue-share",
+        "description": "Court & machines"
+      },
+      "leaseToOwn": {
+        "title": "Lease-to-own / рассрочка",
+        "description": "Installment plans"
+      },
+      "localJv": {
+        "title": "Local JV",
+        "description": "Stake in club/rental network"
+      },
+      "techLicensing": {
+        "title": "Tech licensing",
+        "description": "API, White-label"
+      }
+    },
+    "note": "Note: profitability indicators depend on country, traffic, and venue costs; financial model provided after brief."
   },
   "InvestmentModal": {
     "title": "投资咨询",
@@ -282,7 +303,9 @@
         "text": "请上传您的锦标赛照片。照片将用于您的球员资料和锦标赛材料。",
         "filename": "文件名格式",
         "filenameExample": "名_姓.jpg（例如：张三.jpg）"
-      }
+      },
+      "partnerRequiredNotice": "Partner information is required for this tournament.",
+      "customFieldFallback": "Custom Field"
     },
     "confirmation": {
       "title": "注册已确认",
@@ -335,7 +358,9 @@
       "priceDoubleCategory": "两个类别",
       "perCategory": "每个类别",
       "prizes": "奖品",
-      "prizesInfo": "奖品信息将很快公布。敬请关注！"
+      "prizesInfo": "奖品信息将很快公布。敬请关注！",
+      "showEvents": "Show All Events",
+      "hideEvents": "Hide Events"
     },
     "rules": {
       "title": "锦标赛规则",
@@ -545,7 +570,32 @@
       "email": "电子邮件",
       "optional": "可选",
       "nextStageCreated": "下一阶段已创建",
-      "generateScheduleForNextStage": "为下一阶段生成时间表？"
+      "generateScheduleForNextStage": "为下一阶段生成时间表？",
+      "startTimeRequired": "Start time is required",
+      "set1": "SET 1",
+      "set2": "SET 2",
+      "set3": "SET 3 (TB)",
+      "knockoutSetsHint": "SET 1 and SET 2: up to 7 (7-6 in tiebreak). SET 3 (super tiebreak): any value (played until 2-point difference)",
+      "fillResult": "Please fill in both game scores",
+      "resultSaved": "Result saved successfully!",
+      "errorSavingResult": "Error saving result",
+      "invalidResult": "Invalid result. Please enter valid numbers.",
+      "filterByDays": "Filter by days",
+      "allDays": "All days",
+      "expandTimeRange": "Extend time range",
+      "expandEarlyHours": "Expand Early Hours",
+      "collapseEarlyHours": "Collapse Early Hours",
+      "expandLeft": "Expand earlier",
+      "expandRight": "Expand later",
+      "dropHere": "Drop match here",
+      "resizeTop": "Adjust start time",
+      "resizeBottom": "Adjust end time",
+      "increaseDurationTop": "Start 15 min earlier",
+      "decreaseDurationTop": "Start 15 min later",
+      "increaseDurationBottom": "Extend duration (+15 min)",
+      "decreaseDurationBottom": "Shorten duration (-15 min)",
+      "start": "Start",
+      "end": "End"
     },
     "pair": "对"
   },
@@ -730,7 +780,8 @@
       "participantUpdateError": "无法更新参与者。",
       "paymentStatusUpdated": "付款状态已成功更新。",
       "paymentStatusUpdateError": "无法更新付款状态。",
-      "totalParticipants": "总计: {count} 名参与者"
+      "totalParticipants": "总计: {count} 名参与者",
+      "comingSoon": "Tournament management interface coming soon..."
     },
     "staff": {
       "assignAccess": "分配访问权限",
@@ -779,7 +830,10 @@
         "totalAccess": "总访问数",
         "uniqueUsers": "唯一用户",
         "uniqueTournaments": "唯一锦标赛"
-      }
+      },
+      "title": "Manage Staff",
+      "description": "Assign roles and manage staff members",
+      "comingSoon": "Staff management interface coming soon..."
     },
     "logs": {
       "title": "审计日志",
@@ -1187,5 +1241,28 @@
   "Common": {
     "darkMode": "深色模式",
     "lightMode": "浅色模式"
+  },
+  "About": {
+    "title": "About PadelO₂",
+    "headline": "Breathe and Live",
+    "subhead": "A multi-language platform for the global padel ecosystem",
+    "body": "PadelO₂ is a brand that unites competitions, training, and technology. We build courts, produce AI training machines, develop the Academy, and create investment opportunities for padel growth worldwide. Our products speak different languages and support local communities.",
+    "mission": "Our mission is to showcase the history, growth, and future of padel visually and interactively, so every player 'breathes' the game.",
+    "highlights": {
+      "title": "Highlights",
+      "multilanguage": {
+        "title": "Multi-language",
+        "description": "EN/ES/CAT/UA/RU/…"
+      },
+      "ecosystem": {
+        "title": "Complete Ecosystem",
+        "description": "AI-Machines + Academy + Courts + Investments — all in one"
+      },
+      "design": {
+        "title": "Design DNA",
+        "description": "Neon-aqua, clean typography, 'breathing' rhythm"
+      }
+    },
+    "cta": "Meet the team"
   }
 }
