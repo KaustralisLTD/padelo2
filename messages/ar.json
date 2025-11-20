@@ -309,7 +309,10 @@
       "partnerForCategory": "شريك ل",
       "userPhoto": "صورتك",
       "photoSizeError": "يجب أن يكون حجم الصورة أقل من 5 ميجابايت",
-      "partnerRequiredForCategory": "شريك مطلوب لـ {category}"
+      "partnerRequiredForCategory": "شريك مطلوب لـ {category}",
+      "chooseFile": "اختر الملف",
+      "photoHint": "الحد الأقصى 5 ميجابايت. صيغ JPG، PNG.",
+      "removeFile": "إزالة"
     },
     "confirmation": {
       "title": "تم تأكيد التسجيل",

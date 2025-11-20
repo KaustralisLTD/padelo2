@@ -331,7 +331,10 @@
       "partnerForCategory": "Партнер для",
       "userPhoto": "Ваше фото",
       "photoSizeError": "Розмір фото має бути менше 5МБ",
-      "partnerRequiredForCategory": "Партнер обов'язковий для {category}"
+      "partnerRequiredForCategory": "Партнер обов'язковий для {category}",
+      "chooseFile": "Обрати файл",
+      "photoHint": "Максимум 5МБ. Формати JPG, PNG.",
+      "removeFile": "Видалити"
     },
     "confirmation": {
       "title": "Реєстрація Підтверджена",

@@ -309,7 +309,10 @@
       "partnerForCategory": "Partner per",
       "userPhoto": "La tua foto",
       "photoSizeError": "La dimensione della foto deve essere inferiore a 5 MB",
-      "partnerRequiredForCategory": "Partner richiesto per {category}"
+      "partnerRequiredForCategory": "Partner richiesto per {category}",
+      "chooseFile": "Scegli file",
+      "photoHint": "Massimo 5 MB. Formati JPG, PNG.",
+      "removeFile": "Rimuovi"
     },
     "confirmation": {
       "title": "Registrazione Confermata",

@@ -855,7 +855,10 @@
       "partnerForCategory": "Parella per",
       "userPhoto": "La teva foto",
       "photoSizeError": "La mida de la foto ha de ser inferior a 5 MB",
-      "partnerRequiredForCategory": "Parella requerida per {category}"
+      "partnerRequiredForCategory": "Parella requerida per {category}",
+      "chooseFile": "Tria fitxer",
+      "photoHint": "Màxim 5 MB. Formats JPG, PNG.",
+      "removeFile": "Eliminar"
     },
     "confirmation": {
       "title": "Registration Confirmed",

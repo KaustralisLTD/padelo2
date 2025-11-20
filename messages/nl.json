@@ -309,7 +309,10 @@
       "partnerForCategory": "Partner voor",
       "userPhoto": "Uw foto",
       "photoSizeError": "De foto moet kleiner zijn dan 5 MB",
-      "partnerRequiredForCategory": "Partner vereist voor {category}"
+      "partnerRequiredForCategory": "Partner vereist voor {category}",
+      "chooseFile": "Kies bestand",
+      "photoHint": "Maximaal 5 MB. Formaten JPG, PNG.",
+      "removeFile": "Verwijderen"
     },
     "confirmation": {
       "title": "Registratie Bevestigd",

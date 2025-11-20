@@ -331,7 +331,10 @@
       "partnerForCategory": "Партнер для",
       "userPhoto": "Ваше фото",
       "photoSizeError": "Размер фото должен быть менее 5МБ",
-      "partnerRequiredForCategory": "Партнер обязателен для {category}"
+      "partnerRequiredForCategory": "Партнер обязателен для {category}",
+      "chooseFile": "Выбрать файл",
+      "photoHint": "Максимум 5МБ. Форматы JPG, PNG.",
+      "removeFile": "Удалить"
     },
     "confirmation": {
       "title": "Регистрация Подтверждена",

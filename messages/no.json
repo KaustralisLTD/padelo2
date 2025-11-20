@@ -309,7 +309,10 @@
       "partnerForCategory": "Partner for",
       "userPhoto": "Ditt foto",
       "photoSizeError": "Fotots størrelse må være mindre enn 5 MB",
-      "partnerRequiredForCategory": "Partner påkrevd for {category}"
+      "partnerRequiredForCategory": "Partner påkrevd for {category}",
+      "chooseFile": "Velg fil",
+      "photoHint": "Maksimum 5 MB. Formater JPG, PNG.",
+      "removeFile": "Fjern"
     },
     "confirmation": {
       "title": "Registrering Bekreftet",

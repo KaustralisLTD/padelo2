@@ -309,7 +309,10 @@
       "partnerForCategory": "Partner för",
       "userPhoto": "Ditt foto",
       "photoSizeError": "Fotots storlek måste vara mindre än 5 MB",
-      "partnerRequiredForCategory": "Partner krävs för {category}"
+      "partnerRequiredForCategory": "Partner krävs för {category}",
+      "chooseFile": "Välj fil",
+      "photoHint": "Maximalt 5 MB. Format JPG, PNG.",
+      "removeFile": "Ta bort"
     },
     "confirmation": {
       "title": "Registrering Bekräftad",

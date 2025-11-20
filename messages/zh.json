@@ -309,7 +309,10 @@
       "partnerForCategory": "合作伙伴",
       "userPhoto": "您的照片",
       "photoSizeError": "照片大小必须小于 5MB",
-      "partnerRequiredForCategory": "{category} 需要合作伙伴"
+      "partnerRequiredForCategory": "{category} 需要合作伙伴",
+      "chooseFile": "选择文件",
+      "photoHint": "最大 5MB。格式 JPG、PNG。",
+      "removeFile": "删除"
     },
     "confirmation": {
       "title": "注册已确认",
