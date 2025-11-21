@@ -1,14 +1,44 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
+import { useEffect, useState } from 'react';
 
 const WhatsAppButton = () => {
   const t = useTranslations('WhatsApp');
   const locale = useLocale();
+  const [userInfo, setUserInfo] = useState<{ name?: string; userId?: string } | null>(null);
+  
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    if (token) {
+      fetch('/api/auth/login', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.session) {
+            setUserInfo({
+              name: data.session.firstName && data.session.lastName 
+                ? `${data.session.firstName} ${data.session.lastName}` 
+                : data.session.email,
+              userId: data.session.userId,
+            });
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
   
   const phoneNumber = '34662423738';
-  const message = encodeURIComponent(t('message'));
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+  let message = t('message');
+  
+  if (userInfo) {
+    const userDetails = `\n\n👤 ${t('userInfo') || 'User Info'}: ${userInfo.name || 'N/A'}\n🆔 User ID: ${userInfo.userId || 'N/A'}`;
+    message += userDetails;
+  }
+  
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
   return (
     <a
