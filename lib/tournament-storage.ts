@@ -67,6 +67,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
       const tshirtSize = registration.tshirtSize || '';
       
       // Проверяем, какие поля есть в таблице, и строим запрос динамически
+      // Используем NOW() для created_at вместо передачи Date объекта
       const [result] = await pool.execute(
         `INSERT INTO tournament_registrations (
           token, tournament_id, user_id, tournament_name, locale,
@@ -76,7 +77,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           partner_tshirt_size, partner_photo_name, partner_photo_data,
           category_partners, user_photo_name, user_photo_data,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
         [
           token,
           registration.tournamentId,
@@ -101,7 +102,6 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.userPhoto?.name || null,
           registration.userPhoto?.data || null,
           false,
-          new Date(),
         ]
       ) as any;
       
