@@ -614,7 +614,10 @@
       "noParticipants": "尚未注册任何参与者。",
       "participantsLoadError": "加载参与者失败。",
       "participantCategoryUpdated": "参与者类别更新成功。",
-      "participantCategoryUpdateError": "更新参与者类别失败。"
+      "participantCategoryUpdateError": "更新参与者类别失败。",
+      "selectFromParticipants": "Select from participants",
+      "selectPartner": "Select partner",
+      "byCategories": "by categories"
     },
     "pair": "对",
     "backToTournaments": "返回锦标赛",

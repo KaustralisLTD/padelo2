@@ -782,7 +782,10 @@
       "noParticipants": "Encara no hi ha participants registrats.",
       "participantsLoadError": "Error en carregar participants.",
       "participantCategoryUpdated": "Categoria de participant actualitzada amb èxit.",
-      "participantCategoryUpdateError": "Error en actualitzar categoria de participant."
+      "participantCategoryUpdateError": "Error en actualitzar categoria de participant.",
+      "selectFromParticipants": "Select from participants",
+      "selectPartner": "Select partner",
+      "byCategories": "by categories"
     },
     "pair": "parelles",
     "title": "Tournaments",

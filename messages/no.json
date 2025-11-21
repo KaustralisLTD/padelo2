@@ -614,7 +614,10 @@
       "noParticipants": "Ingen deltakere registrert ennå.",
       "participantsLoadError": "Feil ved lasting av deltakere.",
       "participantCategoryUpdated": "Deltakerkategori oppdatert med suksess.",
-      "participantCategoryUpdateError": "Feil ved oppdatering av deltakerkategori."
+      "participantCategoryUpdateError": "Feil ved oppdatering av deltakerkategori.",
+      "selectFromParticipants": "Select from participants",
+      "selectPartner": "Select partner",
+      "byCategories": "by categories"
     },
     "pair": "par",
     "backToTournaments": "Tilbake til Turneringer",

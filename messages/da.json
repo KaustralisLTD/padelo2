@@ -614,7 +614,10 @@
       "noParticipants": "Ingen deltagere registreret endnu.",
       "participantsLoadError": "Fejl ved indlæsning af deltagere.",
       "participantCategoryUpdated": "Deltagerkategori opdateret med succes.",
-      "participantCategoryUpdateError": "Fejl ved opdatering af deltagerkategori."
+      "participantCategoryUpdateError": "Fejl ved opdatering af deltagerkategori.",
+      "selectFromParticipants": "Select from participants",
+      "selectPartner": "Select partner",
+      "byCategories": "by categories"
     },
     "pair": "par",
     "backToTournaments": "Tilbage til Turneringer",

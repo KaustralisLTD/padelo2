@@ -636,7 +636,10 @@
       "noParticipants": "Aún no hay participantes registrados.",
       "participantsLoadError": "Error al cargar participantes.",
       "participantCategoryUpdated": "Categoría de participante actualizada exitosamente.",
-      "participantCategoryUpdateError": "Error al actualizar categoría de participante."
+      "participantCategoryUpdateError": "Error al actualizar categoría de participante.",
+      "selectFromParticipants": "Select from participants",
+      "selectPartner": "Select partner",
+      "byCategories": "by categories"
     },
     "pair": "pares",
     "backToTournaments": "Volver a Torneos",

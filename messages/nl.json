@@ -614,7 +614,10 @@
       "noParticipants": "Nog geen deelnemers geregistreerd.",
       "participantsLoadError": "Fout bij het laden van deelnemers.",
       "participantCategoryUpdated": "Deelnemercategorie succesvol bijgewerkt.",
-      "participantCategoryUpdateError": "Fout bij het bijwerken van deelnemercategorie."
+      "participantCategoryUpdateError": "Fout bij het bijwerken van deelnemercategorie.",
+      "selectFromParticipants": "Select from participants",
+      "selectPartner": "Select partner",
+      "byCategories": "by categories"
     },
     "pair": "paren",
     "backToTournaments": "Terug naar Toernooien",

@@ -994,7 +994,7 @@ export default function TournamentParticipantsPage() {
                 {(editFormData.categories || []).length > 0 && (
                   <div className="pt-4 border-t border-border">
                     <h4 className="text-lg font-poppins font-semibold text-text mb-4">
-                      {tTournaments('partnerInfo')} по категориям
+                      {tTournaments('partnerInfo')} {tTournaments('byCategories')}
                     </h4>
                     <div className="space-y-4">
                       {(editFormData.categories || []).map((category) => {

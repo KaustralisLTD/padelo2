@@ -861,11 +861,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('form.partnerName')} {partnerRequired && <span className="text-red-400">*</span>}
+                    {t('form.partnerName')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
                   </label>
                   <input
                     type="text"
-                    required={partnerRequired}
+                    required={partnerRequired || showPartner}
                     name="partnerName"
                     value={partner?.name || ''}
                     onChange={(e) => setPartner({ ...partner!, name: e.target.value })}
@@ -874,11 +874,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 </div>
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('form.partnerEmail')} {partnerRequired && <span className="text-red-400">*</span>}
+                    {t('form.partnerEmail')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
                   </label>
                   <input
                     type="email"
-                    required={partnerRequired}
+                    required={partnerRequired || showPartner}
                     name="partnerEmail"
                     value={partner?.email || ''}
                     onChange={(e) => setPartner({ ...partner!, email: e.target.value })}
@@ -888,11 +888,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </div>
               <div>
                 <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerPhone')} {partnerRequired && <span className="text-red-400">*</span>}
+                  {t('form.partnerPhone')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
                 </label>
                 <input
                   type="tel"
-                  required={partnerRequired}
+                  required={partnerRequired || showPartner}
                   name="partnerPhone"
                   value={partner?.phone || ''}
                   onChange={(e) => setPartner({ ...partner!, phone: e.target.value })}
@@ -901,10 +901,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </div>
               <div>
                 <label className="block text-sm font-poppins text-text-secondary mb-2">
-                  {t('form.partnerTshirtSize')} {partnerRequired && <span className="text-red-400">*</span>}
+                  {t('form.partnerTshirtSize')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
                 </label>
                 <select
-                  required={partnerRequired}
+                  required={partnerRequired || showPartner}
                   name="partnerTshirtSize"
                   value={partner?.tshirtSize || ''}
                   onChange={(e) => setPartner({ ...partner!, tshirtSize: e.target.value })}
@@ -1005,11 +1005,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('form.partnerName')} {isRequired && <span className="text-red-400">*</span>}
+                      {t('form.partnerName')} {(isRequired || isExpanded) && <span className="text-red-400">*</span>}
                     </label>
                     <input
                       type="text"
-                      required={isRequired}
+                      required={isRequired || isExpanded}
                       name={`partnerName-${category}`}
                       value={categoryPartner.name || ''}
                       onChange={(e) => updateCategoryPartnerField(category, 'name', e.target.value)}
@@ -1018,11 +1018,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   </div>
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('form.partnerEmail')} {isRequired && <span className="text-red-400">*</span>}
+                      {t('form.partnerEmail')} {(isRequired || isExpanded) && <span className="text-red-400">*</span>}
                     </label>
                     <input
                       type="email"
-                      required={isRequired}
+                      required={isRequired || isExpanded}
                       name={`partnerEmail-${category}`}
                       value={categoryPartner.email || ''}
                       onChange={(e) => updateCategoryPartnerField(category, 'email', e.target.value)}
@@ -1032,11 +1032,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 </div>
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('form.partnerPhone')} {isRequired && <span className="text-red-400">*</span>}
+                    {t('form.partnerPhone')} {(isRequired || isExpanded) && <span className="text-red-400">*</span>}
                   </label>
                   <input
                     type="tel"
-                    required={isRequired}
+                    required={isRequired || isExpanded}
                     name={`partnerPhone-${category}`}
                     value={categoryPartner.phone || ''}
                     onChange={(e) => updateCategoryPartnerField(category, 'phone', e.target.value)}
@@ -1045,10 +1045,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 </div>
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('form.partnerTshirtSize')} {isRequired && <span className="text-red-400">*</span>}
+                    {t('form.partnerTshirtSize')} {(isRequired || isExpanded) && <span className="text-red-400">*</span>}
                   </label>
                   <select
-                    required={isRequired}
+                    required={isRequired || isExpanded}
                     name={`partnerTshirtSize-${category}`}
                     value={categoryPartner.tshirtSize || ''}
                     onChange={(e) => updateCategoryPartnerField(category, 'tshirtSize', e.target.value)}
