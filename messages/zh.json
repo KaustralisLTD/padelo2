@@ -728,13 +728,18 @@
       "oauth_not_configured": "OAuth 未配置。请联系支持。",
       "token_exchange_failed": "令牌交换失败。请重试。",
       "user_info_failed": "无法获取用户信息。请重试。",
-      "no_email": "未提供电子邮件。请重试。"
+      "no_email": "未提供电子邮件。请重试。",
+      "failed_to_get_token": "获取令牌失败。请重试。",
+      "failed_to_get_profile": "获取配置文件失败。请重试。",
+      "user_already_exists_oauth": "用户已存在。请登录。",
+      "failed_to_create_user_oauth": "创建用户失败。请重试。",
+      "failed_to_create_session_oauth": "创建会话失败。请重试。"
     },
     "orContinueWith": "或继续使用",
     "continueWithGoogle": "Google",
     "continueWithApple": "Apple",
-    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
-    "termsOfService": "Terms of Service"
+    "termsAgreement": "通过登录或注册，我同意 PadelO2 的",
+    "termsOfService": "服务条款"
   },
   "Admin": {
     "tournaments": {

@@ -699,12 +699,12 @@
     "message": "Ciao! Sono interessato a saperne di più sui vostri servizi di padel."
   },
   "Login": {
-    "title": "Accedi",
+    "title": "Accesso",
     "description": "Accedi al tuo account",
     "loginTitle": "Bentornato",
     "loginDescription": "Accedi al tuo account",
     "registerTitle": "Crea Account",
-    "registerDescription": "Unisciti alla comunità PadelO₂",
+    "registerDescription": "Unisciti alla community PadelO₂",
     "login": "Accedi",
     "profile": "Profilo",
     "register": "Registrati",
@@ -728,13 +728,18 @@
       "oauth_not_configured": "OAuth non configurato. Contatta il supporto.",
       "token_exchange_failed": "Scambio di token fallito. Riprova.",
       "user_info_failed": "Impossibile recuperare le informazioni utente. Riprova.",
-      "no_email": "Email non fornita. Riprova."
+      "no_email": "Email non fornita. Riprova.",
+      "failed_to_get_token": "Errore nel recupero del token. Riprova.",
+      "failed_to_get_profile": "Errore nel recupero del profilo. Riprova.",
+      "user_already_exists_oauth": "L'utente esiste già. Accedi.",
+      "failed_to_create_user_oauth": "Errore nella creazione dell'utente. Riprova.",
+      "failed_to_create_session_oauth": "Errore nella creazione della sessione. Riprova."
     },
-    "orContinueWith": "O continua con",
+    "orContinueWith": "Oppure continua con",
     "continueWithGoogle": "Google",
     "continueWithApple": "Apple",
-    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
-    "termsOfService": "Terms of Service"
+    "termsAgreement": "Accedendo o registrandoti, accetto i",
+    "termsOfService": "Termini di Servizio"
   },
   "Admin": {
     "tournaments": {

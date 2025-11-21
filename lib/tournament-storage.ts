@@ -188,6 +188,45 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
       }
       
       const row = rows[0];
+      
+      // Безопасный парсинг categories - может быть JSON массив или строка
+      let categories: string[] = [];
+      try {
+        if (row.categories) {
+          if (typeof row.categories === 'string') {
+            // Пытаемся распарсить как JSON
+            try {
+              const parsed = JSON.parse(row.categories);
+              categories = Array.isArray(parsed) ? parsed : typeof parsed === 'string' ? [parsed] : [];
+            } catch (jsonError) {
+              // Если не JSON, значит это строка - преобразуем в массив
+              console.warn(`[getRegistration] categories is not JSON, treating as string: ${row.categories}`);
+              categories = [row.categories];
+            }
+          } else if (Array.isArray(row.categories)) {
+            categories = row.categories;
+          }
+        }
+      } catch (e) {
+        console.error(`[getRegistration] Error parsing categories:`, e);
+        categories = [];
+      }
+      
+      // Безопасный парсинг category_partners
+      let categoryPartners: Record<string, any> | undefined = undefined;
+      if (row.category_partners) {
+        try {
+          if (typeof row.category_partners === 'string') {
+            categoryPartners = JSON.parse(row.category_partners);
+          } else if (typeof row.category_partners === 'object') {
+            categoryPartners = row.category_partners;
+          }
+        } catch (e) {
+          console.warn(`[getRegistration] Failed to parse category_partners as JSON: ${row.category_partners}`);
+          categoryPartners = undefined;
+        }
+      }
+      
       return {
         tournamentId: row.tournament_id,
         tournamentName: row.tournament_name,
@@ -198,7 +237,7 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
         email: row.email,
         telegram: row.telegram,
         phone: row.phone,
-        categories: JSON.parse(row.categories),
+        categories,
         tshirtSize: row.tshirt_size,
         message: row.message,
         partner: row.partner_name ? {
@@ -209,7 +248,7 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
           photoName: row.partner_photo_name,
           photoData: row.partner_photo_data,
         } : null,
-        categoryPartners: row.category_partners ? JSON.parse(row.category_partners) : undefined,
+        categoryPartners,
         userPhoto: row.user_photo_data ? {
           data: row.user_photo_data,
           name: row.user_photo_name,
