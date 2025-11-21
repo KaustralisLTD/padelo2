@@ -222,21 +222,35 @@ export async function POST(request: NextRequest) {
       } else {
         // Если email верифицирован - отправляем детальное письмо о турнире
         const { sendTournamentRegistrationEmail } = await import('@/lib/email');
+        const tournamentData = tournament ? {
+          id: tournament.id,
+          name: tournament.name,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          location: tournament.location || undefined,
+          locationAddress: tournament.locationAddress || undefined,
+          locationCoordinates: tournament.locationCoordinates || undefined,
+          eventSchedule: tournament.eventSchedule || undefined,
+          priceSingleCategory: tournament.priceSingleCategory || undefined,
+          priceDoubleCategory: tournament.priceDoubleCategory || undefined,
+          description: tournament.description || undefined,
+          bannerImageData: tournament.bannerImageData || undefined,
+        } : {
+          id: body.tournamentId ? parseInt(body.tournamentId, 10) : 0,
+          name: body.tournamentName,
+          startDate: body.startDate || '',
+          endDate: body.endDate || '',
+          location: body.location,
+          locationAddress: body.locationAddress,
+          eventSchedule: body.eventSchedule,
+          priceSingleCategory: body.priceSingleCategory,
+          priceDoubleCategory: body.priceDoubleCategory,
+        };
         await sendTournamentRegistrationEmail({
           email: body.email,
           firstName: body.firstName,
           lastName: body.lastName,
-          tournament: tournament || {
-            id: body.tournamentId ? parseInt(body.tournamentId, 10) : 0,
-            name: body.tournamentName,
-            startDate: body.startDate || '',
-            endDate: body.endDate || '',
-            location: body.location,
-            locationAddress: body.locationAddress,
-            eventSchedule: body.eventSchedule,
-            priceSingleCategory: body.priceSingleCategory,
-            priceDoubleCategory: body.priceDoubleCategory,
-          },
+          tournament: tournamentData,
           categories: body.categories || [],
           locale: body.locale || 'en',
         });
