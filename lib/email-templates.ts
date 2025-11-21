@@ -30,6 +30,7 @@ export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
       subject: 'Подтвердите регистрацию',
       greeting: 'Здравствуйте',
       thankYou: 'Спасибо за регистрацию',
+      thankYouFor: 'Спасибо за регистрацию на',
       confirmText: 'Пожалуйста, подтвердите регистрацию, нажав кнопку ниже:',
       confirmButton: 'Подтвердить регистрацию',
       orCopy: 'Или скопируйте эту ссылку:',
@@ -206,7 +207,7 @@ export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
               </p>
               
               <p style="margin: 0 0 20px 0; color: #666666; font-size: 16px; line-height: 1.6;">
-                ${t.thankYou} для <strong style="color: #333333;">${tournamentName}</strong>!
+                ${t.thankYouFor || t.thankYou} <strong style="color: #333333;">${tournamentName}</strong>!
               </p>
               
               <p style="margin: 0 0 30px 0; color: #666666; font-size: 16px; line-height: 1.6;">
