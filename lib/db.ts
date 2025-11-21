@@ -202,7 +202,7 @@ export async function initDatabase() {
       telegram VARCHAR(100) DEFAULT NULL,
       phone VARCHAR(50) NOT NULL,
       categories JSON NOT NULL,
-      tshirt_size VARCHAR(10) NOT NULL,
+      tshirt_size VARCHAR(10) DEFAULT '',
       message TEXT DEFAULT NULL,
       partner_name VARCHAR(100) DEFAULT NULL,
       partner_email VARCHAR(255) DEFAULT NULL,

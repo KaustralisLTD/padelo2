@@ -57,6 +57,15 @@ export async function saveRegistration(token: string, registration: TournamentRe
       const { getDbPool } = await import('./db');
       const pool = getDbPool();
       
+      // Убеждаемся, что categories всегда массив
+      const categoriesArray = Array.isArray(registration.categories) ? registration.categories : [];
+      if (categoriesArray.length === 0) {
+        throw new Error('At least one category must be selected');
+      }
+      
+      // Убеждаемся, что tshirt_size не null (если поле не заполнено, используем пустую строку)
+      const tshirtSize = registration.tshirtSize || '';
+      
       const [result] = await pool.execute(
         `INSERT INTO tournament_registrations (
           token, tournament_id, user_id, tournament_name, locale,
@@ -78,8 +87,8 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.email,
           registration.telegram || null,
           registration.phone,
-          JSON.stringify(registration.categories),
-          registration.tshirtSize || null,
+          JSON.stringify(categoriesArray),
+          tshirtSize,
           registration.message || null,
           registration.partner?.name || null,
           registration.partner?.email || null,
