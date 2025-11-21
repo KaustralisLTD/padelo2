@@ -53,6 +53,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [userId, setUserId] = useState<string | null>(null);
   const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
   const [existingToken, setExistingToken] = useState<string | null>(null);
+  const [emailVerified, setEmailVerified] = useState<boolean>(true); // Default to true, will be updated from API response
   // Фото пользователя
   const [userPhoto, setUserPhoto] = useState<{ data: string | null; name: string | null }>({ data: null, name: null });
   const [userPhotoError, setUserPhotoError] = useState<string | null>(null);
@@ -601,7 +602,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         setExistingToken(data.token);
         // Store token in localStorage for dashboard access
         localStorage.setItem('tournament_token', data.token);
-        // Не перенаправляем на confirmation - показываем сообщение о необходимости проверить почту
+        // Store emailVerified status to show appropriate message
+        setEmailVerified(data.emailVerified || false);
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.error('[TournamentRegistrationForm] Registration failed:', errorData);
@@ -1199,7 +1201,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               <h3 className="font-bold text-xl mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {t('form.registrationReceived')}
               </h3>
-              <p className="text-text text-sm mb-3 leading-relaxed">{t('form.registrationReceivedMessage', { tournamentName })}</p>
+              <p className="text-text text-sm mb-3 leading-relaxed">
+                {emailVerified 
+                  ? t('form.registrationReceivedMessage', { tournamentName })
+                  : t('form.registrationReceivedMessageUnverified', { tournamentName })}
+              </p>
               <div className="bg-background/50 rounded-lg p-3 border border-primary/20">
                 <p className="text-text font-semibold text-sm mb-1 flex items-center gap-2">
                   <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">

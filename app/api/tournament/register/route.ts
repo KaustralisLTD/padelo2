@@ -266,6 +266,7 @@ export async function POST(request: NextRequest) {
       success: true,
       token,
       message: 'Registration submitted successfully. Please check your email for confirmation.',
+      emailVerified,
       ...(confirmationUrl && { confirmationUrl }), // Возвращаем URL для отладки только если он был создан
     });
   } catch (error) {

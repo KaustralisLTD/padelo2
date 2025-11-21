@@ -30,19 +30,19 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const dashboardUrl = `${siteUrl}/${locale}/dashboard`;
 
-  // Форматируем даты
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
-    } catch {
-      return dateString;
-    }
-  };
+  // Import localization utilities
+  const { getLocalizedCategoryName, formatLocalizedDate } = require('@/lib/localization-utils');
+
+  // Форматируем даты с локализацией
+  const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
+  
+  // Локализуем категории
+  const localizedCategories = categories.map(cat => getLocalizedCategoryName(cat, locale));
 
   const translations: Record<string, Record<string, string>> = {
     en: {
-      subject: 'We got your registration - PadelO₂',
+      subject: (tournamentName: string) => `We got your registration for ${tournamentName} - PadelO₂`,
+      subjectBase: 'We got your registration - PadelO₂',
       greeting: 'Hello',
       thankYou: 'Thank you for registering',
       message: 'We received your registration for',
@@ -55,7 +55,8 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Single category',
       multipleCategories: 'Multiple categories',
       paymentDeadline: 'Payment Deadline',
-      paymentNote: 'Please pay for your participation at least 15 days before the tournament starts, as there is a preparation procedure.',
+      paymentNote: 'Please complete your payment no later than 15 days before the tournament starts, so we can reserve your spot and prepare properly for the event.',
+      paymentDeadlineText: 'Final payment deadline:',
       eventSchedule: 'Event Schedule',
       viewDashboard: 'View Dashboard',
       footer: 'See you at the tournament!',
@@ -64,7 +65,8 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       followJourney: 'Follow the journey:'
     },
     ru: {
-      subject: 'Мы получили вашу регистрацию - PadelO₂',
+      subject: (tournamentName: string) => `Мы получили вашу регистрацию на ${tournamentName} - PadelO₂`,
+      subjectBase: 'Мы получили вашу регистрацию - PadelO₂',
       greeting: 'Здравствуйте',
       thankYou: 'Спасибо за регистрацию',
       message: 'Мы получили вашу регистрацию на',
@@ -77,7 +79,8 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Одна категория',
       multipleCategories: 'Несколько категорий',
       paymentDeadline: 'Срок оплаты',
-      paymentNote: 'Пожалуйста, оплатите участие не менее чем за 15 дней до начала турнира, так как есть процедура подготовки.',
+      paymentNote: 'Пожалуйста, осуществите оплату не позднее чем за 15 дней до старта турнира, чтобы мы могли зарезервировать за вами место и качественно подготовиться к событию.',
+      paymentDeadlineText: 'Крайний срок оплаты:',
       eventSchedule: 'Расписание событий',
       viewDashboard: 'Перейти в Панель',
       footer: 'Увидимся на турнире!',
@@ -86,7 +89,8 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       followJourney: 'Следите за путешествием:'
     },
     ua: {
-      subject: 'Ми отримали вашу реєстрацію - PadelO₂',
+      subject: (tournamentName: string) => `Ми отримали вашу реєстрацію на ${tournamentName} - PadelO₂`,
+      subjectBase: 'Ми отримали вашу реєстрацію - PadelO₂',
       greeting: 'Вітаємо',
       thankYou: 'Дякуємо за реєстрацію',
       message: 'Ми отримали вашу реєстрацію на',
@@ -99,7 +103,8 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Одна категорія',
       multipleCategories: 'Кілька категорій',
       paymentDeadline: 'Термін оплати',
-      paymentNote: 'Будь ласка, оплатіть участь не менше ніж за 15 днів до початку турніру, оскільки є процедура підготовки.',
+      paymentNote: 'Будь ласка, здійсніть оплату не пізніше ніж за 15 днів до старту турніру, щоб ми могли зарезервувати за вами місце та якісно підготуватися до події.',
+      paymentDeadlineText: 'Кінцевий термін оплати:',
       eventSchedule: 'Розклад подій',
       viewDashboard: 'Перейти до Панелі',
       footer: 'Побачимося на турнірі!',
@@ -121,7 +126,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Una categoría',
       multipleCategories: 'Múltiples categorías',
       paymentDeadline: 'Fecha Límite de Pago',
-      paymentNote: 'Por favor, paga tu participación al menos 15 días antes del inicio del torneo, ya que hay un procedimiento de preparación.',
+      paymentNote: 'Por favor, paga tu participación al menos 15 días antes del inicio del torneo, ya que hay un procedimiento de preparación.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Calendario de Eventos',
       viewDashboard: 'Ver Panel',
       footer: '¡Nos vemos en el torneo!',
@@ -143,7 +148,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Une catégorie',
       multipleCategories: 'Plusieurs catégories',
       paymentDeadline: 'Date Limite de Paiement',
-      paymentNote: 'Veuillez payer votre participation au moins 15 jours avant le début du tournoi, car il y a une procédure de préparation.',
+      paymentNote: 'Veuillez payer votre participation au moins 15 jours avant le début du tournoi, car il y a une procédure de préparation.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Calendrier des Événements',
       viewDashboard: 'Voir le Tableau de bord',
       footer: 'À bientôt au tournoi!',
@@ -165,7 +170,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Eine Kategorie',
       multipleCategories: 'Mehrere Kategorien',
       paymentDeadline: 'Zahlungsfrist',
-      paymentNote: 'Bitte zahlen Sie Ihre Teilnahme mindestens 15 Tage vor Turnierbeginn, da es ein Vorbereitungsverfahren gibt.',
+      paymentNote: 'Bitte zahlen Sie Ihre Teilnahme mindestens 15 Tage vor Turnierbeginn, da es ein Vorbereitungsverfahren gibt.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Veranstaltungskalender',
       viewDashboard: 'Dashboard anzeigen',
       footer: 'Wir sehen uns beim Turnier!',
@@ -231,7 +236,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Één categorie',
       multipleCategories: 'Meerdere categorieën',
       paymentDeadline: 'Betaaltermijn',
-      paymentNote: 'Betaal uw deelname minimaal 15 dagen voor aanvang van het toernooi, omdat er een voorbereidingsprocedure is.',
+      paymentNote: 'Betaal uw deelname minimaal 15 dagen voor aanvang van het toernooi, omdat er een voorbereidingsprocedure is.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Evenementenkalender',
       viewDashboard: 'Dashboard bekijken',
       footer: 'Tot ziens op het toernooi!',
@@ -253,7 +258,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Én kategori',
       multipleCategories: 'Flere kategorier',
       paymentDeadline: 'Betalingsfrist',
-      paymentNote: 'Betal venligst for din deltagelse mindst 15 dage før turneringen starter, da der er en forberedelsesprocedure.',
+      paymentNote: 'Betal venligst for din deltagelse mindst 15 dage før turneringen starter, da der er en forberedelsesprocedure.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Begivenhedskalender',
       viewDashboard: 'Se Dashboard',
       footer: 'Vi ses til turneringen!',
@@ -275,7 +280,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'En kategori',
       multipleCategories: 'Flera kategorier',
       paymentDeadline: 'Betalningsfrist',
-      paymentNote: 'Vänligen betala för din deltagande minst 15 dagar före turneringen börjar, eftersom det finns en förberedelseprocedur.',
+      paymentNote: 'Vänligen betala för din deltagande minst 15 dagar före turneringen börjar, eftersom det finns en förberedelseprocedur.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Evenemangskalender',
       viewDashboard: 'Se Dashboard',
       footer: 'Vi ses på turneringen!',
@@ -297,7 +302,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'Én kategori',
       multipleCategories: 'Flere kategorier',
       paymentDeadline: 'Betalingsfrist',
-      paymentNote: 'Vennligst betal for din deltakelse minst 15 dager før turneringen starter, da det er en forberedelsesprosedyre.',
+      paymentNote: 'Vennligst betal for din deltakelse minst 15 dager før turneringen starter, da det er en forberedelsesprosedyre.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'Arrangementskalender',
       viewDashboard: 'Se Dashboard',
       footer: 'Vi sees på turneringen!',
@@ -319,7 +324,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: 'فئة واحدة',
       multipleCategories: 'فئات متعددة',
       paymentDeadline: 'موعد الدفع',
-      paymentNote: 'يرجى دفع رسوم المشاركة قبل 15 يومًا على الأقل من بداية البطولة، حيث توجد إجراءات تحضيرية.',
+      paymentNote: 'يرجى دفع رسوم المشاركة قبل 15 يومًا على الأقل من بداية البطولة، حيث توجد إجراءات تحضيرية.',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: 'جدول الأحداث',
       viewDashboard: 'عرض لوحة التحكم',
       footer: 'نراكم في البطولة!',
@@ -341,7 +346,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       singleCategory: '单一类别',
       multipleCategories: '多个类别',
       paymentDeadline: '付款截止日期',
-      paymentNote: '请至少在锦标赛开始前15天支付您的参与费用，因为有准备程序。',
+      paymentNote: '请至少在锦标赛开始前15天支付您的参与费用，因为有准备程序。',\n      paymentDeadlineText: 'Fecha límite de pago final:',
       eventSchedule: '活动日程',
       viewDashboard: '查看仪表板',
       footer: '锦标赛见！',
@@ -353,20 +358,26 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
 
   const t = translations[locale] || translations.en;
   const categoryCount = categories.length;
+  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceSingleCategory * количество
   const totalPrice = categoryCount === 1 
     ? tournament.priceSingleCategory 
-    : tournament.priceDoubleCategory || (tournament.priceSingleCategory ? tournament.priceSingleCategory * categoryCount : undefined);
+    : tournament.priceSingleCategory ? tournament.priceSingleCategory * categoryCount : undefined;
   
   // Вычисляем дату оплаты (15 дней до начала)
   const paymentDeadlineDate = new Date(tournament.startDate);
   paymentDeadlineDate.setDate(paymentDeadlineDate.getDate() - 15);
+  
+  // Получаем subject с названием турнира
+  const subjectText = typeof t.subject === 'function' 
+    ? t.subject(tournament.name) 
+    : (t.subjectBase || t.subject || 'We got your registration - PadelO₂').replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
 
   return `
 <!DOCTYPE html>
 <html lang="${locale}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="margin:0;padding:0;">
   <head>
     <meta charset="UTF-8" />
-    <title>${t.subject}</title>
+    <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
@@ -442,13 +453,13 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${categories.join(', ')}</div>
+                          <div class="detail-value">${localizedCategories.join(', ')}</div>
                         </div>
                         
                         ${totalPrice ? `
                         <div class="detail-row" style="border-bottom: none;">
                           <div class="detail-label">${t.price}:</div>
-                          <div class="detail-value"><strong>${totalPrice} ${locale === 'ru' || locale === 'ua' ? 'UAH' : 'EUR'}</strong> (${categoryCount === 1 ? t.singleCategory : t.multipleCategories})</div>
+                          <div class="detail-value"><strong>${totalPrice} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceSingleCategory} + ${tournament.priceSingleCategory}` : categoryCount + ' ' + t.multipleCategories})` : ''}</div>
                         </div>
                         ` : ''}
                       </div>
@@ -971,7 +982,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
 <html lang="${locale}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="margin:0;padding:0;">
   <head>
     <meta charset="UTF-8" />
-    <title>${t.subject}</title>
+    <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }

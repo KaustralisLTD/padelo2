@@ -33,8 +33,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Send welcome email
-    const locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    // Send welcome email - extract locale from URL
+    const url = new URL(request.url);
+    const localeFromUrl = url.pathname.split('/')[1];
+    const locale = localeFromUrl && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(localeFromUrl)
+      ? localeFromUrl
+      : request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
     await sendWelcomeEmail(result.user.email, result.user.firstName, locale);
 
     // Create session for verified user

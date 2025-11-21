@@ -968,6 +968,27 @@ export async function sendTournamentRegistrationEmail(data: {
     locale: data.locale || 'en',
   });
 
+  // Get subject with tournament name
+  const subjectTranslations: Record<string, (name: string) => string> = {
+    en: (name: string) => `We got your registration for ${name} - PadelO₂`,
+    ru: (name: string) => `Мы получили вашу регистрацию на ${name} - PadelO₂`,
+    ua: (name: string) => `Ми отримали вашу реєстрацію на ${name} - PadelO₂`,
+    es: (name: string) => `Recibimos tu registro para ${name} - PadelO₂`,
+    fr: (name: string) => `Nous avons reçu votre inscription pour ${name} - PadelO₂`,
+    de: (name: string) => `Wir haben Ihre Anmeldung für ${name} erhalten - PadelO₂`,
+    it: (name: string) => `Abbiamo ricevuto la tua registrazione per ${name} - PadelO₂`,
+    ca: (name: string) => `Hem rebut el teu registre per a ${name} - PadelO₂`,
+    nl: (name: string) => `We hebben uw registratie ontvangen voor ${name} - PadelO₂`,
+    da: (name: string) => `Vi har modtaget din tilmelding til ${name} - PadelO₂`,
+    sv: (name: string) => `Vi har mottagit din registrering för ${name} - PadelO₂`,
+    no: (name: string) => `Vi har mottatt din registrering for ${name} - PadelO₂`,
+    ar: (name: string) => `لقد استلمنا تسجيلك لـ ${name} - PadelO₂`,
+    zh: (name: string) => `我们已收到您对 ${name} 的注册 - PadelO₂`,
+  };
+
+  const getSubject = subjectTranslations[data.locale || 'en'] || subjectTranslations.en;
+  const subject = getSubject(data.tournament.name);
+
   const translations: Record<string, string> = {
     en: 'We got your registration - PadelO₂',
     ru: 'Мы получили вашу регистрацию - PadelO₂',
@@ -987,7 +1008,7 @@ export async function sendTournamentRegistrationEmail(data: {
 
   return await sendEmail({
     to: data.email,
-    subject: translations[data.locale || 'en'] || translations.en,
+    subject: subject,
     html,
   });
 }
