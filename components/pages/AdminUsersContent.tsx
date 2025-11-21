@@ -417,6 +417,12 @@ export default function AdminUsersContent() {
             <table className="w-full">
               <thead className="bg-background border-b border-border">
                 <tr>
+                  <th className="px-2 py-4 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-16">
+                    #
+                  </th>
+                  <th className="px-2 py-4 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-24">
+                    User ID
+                  </th>
                   <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.email')}</th>
                   <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.name')}</th>
                   <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.role')}</th>
@@ -425,9 +431,21 @@ export default function AdminUsersContent() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {users.map((user, index) => (
                   <tr key={user.id} className="border-b border-border hover:bg-background/50 transition-colors">
-                    <td className="px-6 py-4 text-text-secondary font-poppins">{user.email}</td>
+                    <td className="px-2 py-4 text-xs text-text-secondary font-poppins text-center">
+                      {index + 1}
+                    </td>
+                    <td className="px-2 py-4 text-xs text-text-secondary font-poppins">
+                      <CopyableField value={user.id} fieldId={`userId-${user.id}`}>
+                        <span className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px] font-semibold truncate block max-w-[80px]">
+                          {user.id.substring(0, 6)}...
+                        </span>
+                      </CopyableField>
+                    </td>
+                    <td className="px-6 py-4 text-text-secondary font-poppins">
+                      <CopyableField value={user.email} fieldId={`email-${user.id}`} />
+                    </td>
                     <td className="px-6 py-4 text-text-secondary font-poppins">
                       {user.firstName} {user.lastName}
                     </td>
@@ -441,31 +459,35 @@ export default function AdminUsersContent() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {new Date(user.createdAt).toLocaleString(locale, {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex gap-2">
-                        <button
+                        <ActionIconButton
+                          label={t('users.view')}
                           onClick={() => {
                             setSelectedUserId(user.id);
                             setActiveTab('profile');
                           }}
-                          className="px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors font-poppins"
-                        >
-                          {t('users.view')}
-                        </button>
-                        <button
+                          Icon={ViewIcon}
+                        />
+                        <ActionIconButton
+                          label={t('users.edit')}
                           onClick={() => openEditModal(user)}
-                          className="px-3 py-1 text-sm bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors font-poppins"
-                        >
-                          {t('users.edit')}
-                        </button>
-                        <button
+                          Icon={EditIcon}
+                        />
+                        <ActionIconButton
+                          label={t('users.delete')}
                           onClick={() => handleDelete(user.id)}
-                          className="px-3 py-1 text-sm bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition-colors font-poppins"
-                        >
-                          {t('users.delete')}
-                        </button>
+                          Icon={TrashIcon}
+                          variant="danger"
+                        />
                       </div>
                     </td>
                   </tr>
