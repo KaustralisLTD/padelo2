@@ -184,7 +184,9 @@ export default function DashboardContent() {
     );
   }
 
-  const registration = selectedRegistration;
+  if (!selectedRegistration) {
+    return null;
+  }
 
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
@@ -229,24 +231,23 @@ export default function DashboardContent() {
           </div>
         )}
 
-        {registration && (
-          <>
-            <div className="flex justify-between items-center mb-8">
-              <h1 className="text-3xl md:text-4xl font-poppins font-bold gradient-text">
-                {t('dashboard.title')}
-              </h1>
-              {!isEditing && (
-                <button
-                  onClick={handleEdit}
-                  className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                  {t('dashboard.editButton')}
-                </button>
-              )}
-            </div>
+        <>
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-poppins font-bold gradient-text">
+              {t('dashboard.title')}
+            </h1>
+            {!isEditing && (
+              <button
+                onClick={handleEdit}
+                className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                {t('dashboard.editButton')}
+              </button>
+            )}
+          </div>
 
         {saveStatus === 'success' && (
           <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-sm font-poppins mb-6">
@@ -457,12 +458,12 @@ export default function DashboardContent() {
               {t('dashboard.registrationInfo')}
             </h2>
             <div className="space-y-2 text-text-secondary font-poppins">
-              <p><strong className="text-text">{t('form.firstName')}:</strong> {registration.firstName}</p>
-              <p><strong className="text-text">{t('form.lastName')}:</strong> {registration.lastName}</p>
-              <p><strong className="text-text">{t('form.email')}:</strong> {registration.email}</p>
-              <p><strong className="text-text">{t('form.phone')}:</strong> {registration.phone}</p>
-              {registration.telegram && (
-                <p><strong className="text-text">{t('form.telegram')}:</strong> {registration.telegram}</p>
+              <p><strong className="text-text">{t('form.firstName')}:</strong> {selectedRegistration.firstName}</p>
+              <p><strong className="text-text">{t('form.lastName')}:</strong> {selectedRegistration.lastName}</p>
+              <p><strong className="text-text">{t('form.email')}:</strong> {selectedRegistration.email}</p>
+              <p><strong className="text-text">{t('form.phone')}:</strong> {selectedRegistration.phone}</p>
+              {selectedRegistration.telegram && (
+                <p><strong className="text-text">{t('form.telegram')}:</strong> {selectedRegistration.telegram}</p>
               )}
             </div>
           </div>
@@ -473,13 +474,13 @@ export default function DashboardContent() {
               {t('dashboard.tournamentInfo')}
             </h2>
             <div className="space-y-2 text-text-secondary font-poppins">
-              <p><strong className="text-text">{t('dashboard.tournament')}:</strong> {registration.tournamentName}</p>
+              <p><strong className="text-text">{t('dashboard.tournament')}:</strong> {selectedRegistration.tournamentName}</p>
               <p><strong className="text-text">{t('form.categories')}:</strong> {
-                registration.categories.map((cat: string) => t(`categories.${cat}`)).join(', ')
+                selectedRegistration.categories.map((cat: string) => t(`categories.${cat}`)).join(', ')
               }</p>
-              <p><strong className="text-text">{t('form.tshirtSize')}:</strong> {registration.tshirtSize}</p>
+              <p><strong className="text-text">{t('form.tshirtSize')}:</strong> {selectedRegistration.tshirtSize}</p>
               <p><strong className="text-text">{t('dashboard.status')}:</strong> {
-                registration.confirmed ? (
+                selectedRegistration.confirmed ? (
                   <span className="text-green-400">{t('dashboard.confirmed')}</span>
                 ) : (
                   <span className="text-yellow-400">{t('dashboard.pending')}</span>
@@ -490,24 +491,24 @@ export default function DashboardContent() {
         </div>
 
         {/* Partner Info */}
-        {registration.partner && (
+        {selectedRegistration.partner && (
           <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
             <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
               {t('dashboard.partnerInfo')}
             </h2>
             <div className="space-y-2 text-text-secondary font-poppins">
-              <p><strong className="text-text">{t('form.partnerName')}:</strong> {registration.partner.name}</p>
-              <p><strong className="text-text">{t('form.partnerEmail')}:</strong> {registration.partner.email}</p>
-              <p><strong className="text-text">{t('form.partnerPhone')}:</strong> {registration.partner.phone}</p>
-              <p><strong className="text-text">{t('form.partnerTshirtSize')}:</strong> {registration.partner.tshirtSize}</p>
-              {registration.partner.photoName && (
-                <p><strong className="text-text">{t('form.partnerPhoto')}:</strong> {registration.partner.photoName}</p>
+              <p><strong className="text-text">{t('form.partnerName')}:</strong> {selectedRegistration.partner.name}</p>
+              <p><strong className="text-text">{t('form.partnerEmail')}:</strong> {selectedRegistration.partner.email}</p>
+              <p><strong className="text-text">{t('form.partnerPhone')}:</strong> {selectedRegistration.partner.phone}</p>
+              <p><strong className="text-text">{t('form.partnerTshirtSize')}:</strong> {selectedRegistration.partner.tshirtSize}</p>
+              {selectedRegistration.partner.photoName && (
+                <p><strong className="text-text">{t('form.partnerPhoto')}:</strong> {selectedRegistration.partner.photoName}</p>
               )}
-              {registration.partner.photoData && (
+              {selectedRegistration.partner.photoData && (
                 <div className="mt-4">
                   <Image
-                    src={registration.partner.photoData}
-                    alt={registration.partner.name}
+                    src={selectedRegistration.partner.photoData}
+                    alt={selectedRegistration.partner.name}
                     width={220}
                     height={220}
                     className="rounded-lg border border-gray-700 object-cover"
@@ -547,16 +548,18 @@ export default function DashboardContent() {
         </div>
 
         {/* Message */}
-        {registration.message && (
+        {selectedRegistration.message && (
           <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
             <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
               {t('form.message')}
             </h2>
-            <p className="text-text-secondary font-poppins">{registration.message}</p>
+            <p className="text-text-secondary font-poppins">{selectedRegistration.message}</p>
           </div>
-            )}
+        )}
           </>
         )}
+        </>
+      )}
       </div>
     </div>
   );
