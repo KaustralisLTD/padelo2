@@ -615,6 +615,12 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   // Локализуем категории
   const localizedCategories = categories.map(cat => getLocalizedCategoryName(cat, locale));
 
+  // Получаем переведенное расписание событий
+  let eventScheduleToDisplay = tournament.eventSchedule || [];
+  if (tournament.translations?.eventSchedule?.[locale]) {
+    eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
+  }
+
   const translations: Record<string, Record<string, string>> = {
     en: {
       subject: 'Payment confirmed - Tournament registration - PadelO₂',
