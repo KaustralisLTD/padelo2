@@ -146,6 +146,12 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
       
       console.log(`[getRegistration] Looking for token: ${token.substring(0, 8)}... (length: ${token.length})`);
       
+      // Сначала проверим, есть ли вообще регистрации в таблице
+      const [countRows] = await pool.execute(
+        `SELECT COUNT(*) as count FROM tournament_registrations`
+      ) as any[];
+      console.log(`[getRegistration] Total registrations in DB: ${countRows[0].count}`);
+      
       const [rows] = await pool.execute(
         `SELECT * FROM tournament_registrations WHERE token = ?`,
         [token]
@@ -156,13 +162,28 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
       if (rows.length === 0) {
         // Попробуем найти регистрацию без учета регистра (на случай проблем с кодировкой)
         const [allRows] = await pool.execute(
-          `SELECT token FROM tournament_registrations WHERE token LIKE ? LIMIT 5`,
+          `SELECT token, created_at FROM tournament_registrations WHERE token LIKE ? ORDER BY created_at DESC LIMIT 5`,
           [`${token.substring(0, 8)}%`]
         ) as any[];
         console.log(`[getRegistration] Found ${allRows.length} similar tokens (first 8 chars match)`);
         if (allRows.length > 0) {
-          console.log(`[getRegistration] Sample tokens:`, allRows.map((r: any) => r.token.substring(0, 16)));
+          console.log(`[getRegistration] Sample tokens:`, allRows.map((r: any) => ({
+            token: r.token.substring(0, 16) + '...',
+            length: r.token.length,
+            created: r.created_at
+          })));
         }
+        
+        // Также проверим последние 5 регистраций для отладки
+        const [recentRows] = await pool.execute(
+          `SELECT token, created_at FROM tournament_registrations ORDER BY created_at DESC LIMIT 5`
+        ) as any[];
+        console.log(`[getRegistration] Most recent registrations:`, recentRows.map((r: any) => ({
+          token: r.token.substring(0, 16) + '...',
+          length: r.token.length,
+          created: r.created_at
+        })));
+        
         return undefined;
       }
       
