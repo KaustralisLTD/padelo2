@@ -67,7 +67,14 @@ export async function POST(request: NextRequest) {
     const locale = bodyLocale && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(bodyLocale)
       ? bodyLocale
       : request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
-    await sendEmailVerification(email, firstName, verificationToken, locale);
+    
+    console.log(`[POST /api/auth/register] Sending verification email to ${email} with locale ${locale}`);
+    const emailSent = await sendEmailVerification(email, firstName, verificationToken, locale);
+    if (!emailSent) {
+      console.error(`[POST /api/auth/register] Failed to send verification email to ${email}`);
+    } else {
+      console.log(`[POST /api/auth/register] Verification email sent successfully to ${email}`);
+    }
 
     // Don't create session until email is verified
     // User needs to verify email first

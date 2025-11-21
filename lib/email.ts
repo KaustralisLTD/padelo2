@@ -16,8 +16,8 @@ interface EmailOptions {
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const { to, subject, html, from, replyTo } = options;
   const fromEmail = from || process.env.SMTP_FROM || 'hello@padelO2.com';
-  // Format: "PadelO₂ <email@domain.com>"
-  const fromName = `PadelO₂ <${fromEmail}>`;
+  // Format: "PadelO2 <email@domain.com>" - используем обычный текст без специальных символов для совместимости
+  const fromName = `PadelO2 <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
 
   try {
@@ -25,25 +25,42 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       const { Resend } = await import('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
       
-      await resend.emails.send({
+      console.log(`[Email] Attempting to send via Resend to ${recipients.join(', ')}`);
+      console.log(`[Email] From: ${fromName}`);
+      console.log(`[Email] Subject: ${subject}`);
+      
+      const result = await resend.emails.send({
         from: fromName,
         to: recipients,
         subject,
         html,
         reply_to: replyTo || fromEmail,
       });
+      
+      if (result.error) {
+        console.error('❌ Resend API error:', result.error);
+        return false;
+      }
+      
       console.log(`✅ Email sent via Resend to ${recipients.join(', ')}`);
+      console.log(`[Email] Resend response:`, JSON.stringify(result.data || result, null, 2));
       return true;
     }
     
     // Fallback: log to console (development only)
-    console.log(`[Email] Would send email to ${recipients.join(', ')}`);
+    console.log(`[Email] RESEND_API_KEY not configured - would send email to ${recipients.join(', ')}`);
     console.log(`[Email] Subject: ${subject}`);
     console.log(`[Email] From: ${fromEmail}`);
     console.log(`[Email] Configure RESEND_API_KEY to enable email sending`);
     return true; // Return true even in fallback mode
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Email sending error:', error);
+    console.error('❌ Error details:', {
+      message: error?.message,
+      name: error?.name,
+      stack: error?.stack,
+      response: error?.response?.data || error?.response,
+    });
     // Don't fail the request if email fails
     return false;
   }
@@ -302,9 +319,9 @@ export async function sendEmailVerification(
   const t = translations[locale] || translations.en;
   
   const html = `
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="${locale}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="margin:0;padding:0;">
-  <head>
+    <head>
     <meta charset="UTF-8" />
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -332,7 +349,7 @@ export async function sendEmailVerification(
         .center-mobile { text-align: center !important; }
       }
     </style>
-  </head>
+    </head>
   <body class="font-default">
     <table role="presentation" class="wrapper" width="100%">
       <tr>
@@ -345,16 +362,16 @@ export async function sendEmailVerification(
                 </div>
               </td>
             </tr>
-            <tr>
-              <td align="center">
+        <tr>
+          <td align="center">
                 <table role="presentation" width="100%">
-                  <tr>
+              <tr>
                     <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
                   </tr>
                 </table>
-              </td>
-            </tr>
-            <tr>
+                </td>
+              </tr>
+              <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">
                   <tr>
@@ -372,7 +389,7 @@ export async function sendEmailVerification(
                       
                       <div class="info-box">
                         <p class="muted" style="margin: 0; color: #0c4a6e; font-size: 13px;">${t.notYou}</p>
-                      </div>
+                  </div>
                       
                       <p class="muted" style="margin: 20px 0 0 0; font-size: 12px; color: #6b7280;">
                         ${locale === 'ru' || locale === 'ua' ? 'Или скопируйте эту ссылку:' : locale === 'en' ? 'Or copy this link:' : 'Ou copiez ce lien:'}
@@ -390,9 +407,9 @@ export async function sendEmailVerification(
                   <tr>
                     <td class="font-default" style="padding-bottom: 6px;">
                       <span class="muted" style="font-size: 11px;">${t.followJourney}</span>
-                    </td>
-                  </tr>
-                  <tr>
+                </td>
+              </tr>
+              <tr>
                     <td>
                       <table role="presentation" cellspacing="0" cellpadding="0">
                         <tr>
@@ -434,14 +451,14 @@ export async function sendEmailVerification(
                     </td>
                   </tr>
                 </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
   `.trim();
 
   return await sendEmail({
