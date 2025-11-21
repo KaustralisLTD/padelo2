@@ -993,6 +993,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   };
 
   const t = translations[locale] || translations.en;
+  const subjectText = t.subject || 'Payment confirmed - Tournament registration - PadelO₂';
 
   return `
 <!DOCTYPE html>
