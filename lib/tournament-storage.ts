@@ -105,7 +105,20 @@ export async function saveRegistration(token: string, registration: TournamentRe
         ]
       ) as any;
       
-      console.log(`[saveRegistration] Registration saved to database with ID: ${result.insertId}, token: ${token.substring(0, 8)}...`);
+      console.log(`[saveRegistration] Registration saved to database with ID: ${result.insertId}, token: ${token.substring(0, 8)}... (full length: ${token.length})`);
+      
+      // Проверяем, что регистрация действительно сохранилась
+      const [verifyRows] = await pool.execute(
+        `SELECT token FROM tournament_registrations WHERE id = ?`,
+        [result.insertId]
+      ) as any[];
+      if (verifyRows.length > 0) {
+        const savedToken = verifyRows[0].token;
+        console.log(`[saveRegistration] Verification: saved token length: ${savedToken.length}, matches: ${savedToken === token}`);
+        if (savedToken !== token) {
+          console.error(`[saveRegistration] TOKEN MISMATCH! Expected: ${token.substring(0, 16)}..., Got: ${savedToken.substring(0, 16)}...`);
+        }
+      }
     } catch (error: any) {
       console.error('[saveRegistration] Database save error:', error);
       console.error('[saveRegistration] Error details:', {
