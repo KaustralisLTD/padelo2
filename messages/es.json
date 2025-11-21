@@ -290,6 +290,7 @@
       "mixed1": "Mixto 1",
       "mixed2": "Mixto 2"
     },
+    "delete": "Eliminar",
     "form": {
       "firstName": "Nombre",
       "lastName": "Apellido",

@@ -290,6 +290,7 @@
       "mixed1": "Микста 1",
       "mixed2": "Микста 2"
     },
+    "delete": "Удалить",
     "form": {
       "firstName": "Имя",
       "lastName": "Фамилия",

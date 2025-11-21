@@ -98,83 +98,113 @@ export async function POST(
 
     switch (template) {
       case 'tournament_registration': {
-        const tournamentData = {
-          id: tournament.id,
-          name: tournament.name,
-          startDate: tournament.startDate,
-          endDate: tournament.endDate,
-          location: tournament.location || undefined,
-          locationAddress: tournament.locationAddress || undefined,
-          locationCoordinates: tournament.locationCoordinates || undefined,
-          eventSchedule: tournament.eventSchedule || undefined,
-          priceSingleCategory: tournament.priceSingleCategory || undefined,
-          priceDoubleCategory: tournament.priceDoubleCategory || undefined,
-          description: tournament.description || undefined,
-          bannerImageData: tournament.bannerImageData || undefined,
-        };
-        
-        const categories = JSON.parse(registration.categories || '[]');
-        emailSent = await sendTournamentRegistrationEmail({
-          email: registration.email,
-          firstName: registration.first_name,
-          lastName: registration.last_name,
-          tournament: tournamentData,
-          categories,
-          locale: participantLocale,
-        });
+        try {
+          const tournamentData = {
+            id: tournament.id,
+            name: tournament.name,
+            startDate: tournament.startDate,
+            endDate: tournament.endDate,
+            location: tournament.location || undefined,
+            locationAddress: tournament.locationAddress || undefined,
+            locationCoordinates: tournament.locationCoordinates || undefined,
+            eventSchedule: tournament.eventSchedule || undefined,
+            priceSingleCategory: tournament.priceSingleCategory || undefined,
+            priceDoubleCategory: tournament.priceDoubleCategory || undefined,
+            description: tournament.description || undefined,
+            bannerImageData: tournament.bannerImageData || undefined,
+          };
+          
+          let categories: string[] = [];
+          try {
+            categories = JSON.parse(registration.categories || '[]');
+            if (!Array.isArray(categories)) {
+              categories = [];
+            }
+          } catch (e) {
+            console.error('[send-email] Error parsing categories:', e);
+            categories = [];
+          }
+          
+          emailSent = await sendTournamentRegistrationEmail({
+            email: registration.email,
+            firstName: registration.first_name || undefined,
+            lastName: registration.last_name || undefined,
+            tournament: tournamentData,
+            categories,
+            locale: participantLocale,
+          });
+        } catch (error: any) {
+          console.error('[send-email] Error in tournament_registration:', error);
+          throw new Error(`Failed to send tournament registration email: ${error.message}`);
+        }
         break;
       }
 
       case 'tournament_confirmed': {
-        const tournamentData = {
-          id: tournament.id,
-          name: tournament.name,
-          startDate: tournament.startDate,
-          endDate: tournament.endDate,
-          location: tournament.location || undefined,
-          locationAddress: tournament.locationAddress || undefined,
-          locationCoordinates: tournament.locationCoordinates || undefined,
-          eventSchedule: tournament.eventSchedule || undefined,
-          description: tournament.description || undefined,
-          bannerImageData: tournament.bannerImageData || undefined,
-        };
-        
-        const categories = JSON.parse(registration.categories || '[]');
-        const paymentAmount = tournament.priceSingleCategory || 0;
-        
-        const html = getTournamentRegistrationConfirmedEmailTemplate({
-          firstName: registration.first_name,
-          lastName: registration.last_name,
-          tournament: tournamentData,
-          categories,
-          paymentAmount,
-          paymentMethod: 'Manual',
-          orderNumber: `REG-${registration.id}`,
-          locale: participantLocale,
-        });
+        try {
+          const tournamentData = {
+            id: tournament.id,
+            name: tournament.name,
+            startDate: tournament.startDate,
+            endDate: tournament.endDate,
+            location: tournament.location || undefined,
+            locationAddress: tournament.locationAddress || undefined,
+            locationCoordinates: tournament.locationCoordinates || undefined,
+            eventSchedule: tournament.eventSchedule || undefined,
+            description: tournament.description || undefined,
+            bannerImageData: tournament.bannerImageData || undefined,
+          };
+          
+          let categories: string[] = [];
+          try {
+            categories = JSON.parse(registration.categories || '[]');
+            if (!Array.isArray(categories)) {
+              categories = [];
+            }
+          } catch (e) {
+            console.error('[send-email] Error parsing categories:', e);
+            categories = [];
+          }
+          
+          const paymentAmount = tournament.priceSingleCategory || 0;
+          
+          const html = getTournamentRegistrationConfirmedEmailTemplate({
+            firstName: registration.first_name || undefined,
+            lastName: registration.last_name || undefined,
+            tournament: tournamentData,
+            categories,
+            paymentAmount,
+            paymentMethod: 'Manual',
+            orderNumber: `REG-${registration.id}`,
+            locale: participantLocale,
+          });
 
-        const translations: Record<string, string> = {
-          en: 'Payment confirmed - Tournament registration - PadelO₂',
-          ru: 'Оплата подтверждена - Регистрация на турнир - PadelO₂',
-          ua: 'Оплата підтверджена - Реєстрація на турнір - PadelO₂',
-          es: 'Pago confirmado - Registro de torneo - PadelO₂',
-          fr: 'Paiement confirmé - Inscription au tournoi - PadelO₂',
-          de: 'Zahlung bestätigt - Turnieranmeldung - PadelO₂',
-          it: 'Pagamento confermato - Registrazione torneo - PadelO₂',
-          ca: 'Pagament confirmat - Registre de torneig - PadelO₂',
-          nl: 'Betaling bevestigd - Toernooi registratie - PadelO₂',
-          da: 'Betaling bekræftet - Turnering registrering - PadelO₂',
-          sv: 'Betalning bekräftad - Turnering registrering - PadelO₂',
-          no: 'Betaling bekreftet - Turnering registrering - PadelO₂',
-          ar: 'تم تأكيد الدفع - تسجيل البطولة - PadelO₂',
-          zh: '付款已确认 - 锦标赛注册 - PadelO₂',
-        };
+          const translations: Record<string, string> = {
+            en: 'Payment confirmed - Tournament registration - PadelO₂',
+            ru: 'Оплата подтверждена - Регистрация на турнир - PadelO₂',
+            ua: 'Оплата підтверджена - Реєстрація на турнір - PadelO₂',
+            es: 'Pago confirmado - Registro de torneo - PadelO₂',
+            fr: 'Paiement confirmé - Inscription au tournoi - PadelO₂',
+            de: 'Zahlung bestätigt - Turnieranmeldung - PadelO₂',
+            it: 'Pagamento confermato - Registrazione torneo - PadelO₂',
+            ca: 'Pagament confirmat - Registre de torneig - PadelO₂',
+            nl: 'Betaling bevestigd - Toernooi registratie - PadelO₂',
+            da: 'Betaling bekræftet - Turnering registrering - PadelO₂',
+            sv: 'Betalning bekräftad - Turnering registrering - PadelO₂',
+            no: 'Betaling bekreftet - Turnering registrering - PadelO₂',
+            ar: 'تم تأكيد الدفع - تسجيل البطولة - PadelO₂',
+            zh: '付款已确认 - 锦标赛注册 - PadelO₂',
+          };
 
-        emailSent = await sendEmail({
-          to: registration.email,
-          subject: translations[participantLocale] || translations.en,
-          html,
-        });
+          emailSent = await sendEmail({
+            to: registration.email,
+            subject: translations[participantLocale] || translations.en,
+            html,
+          });
+        } catch (error: any) {
+          console.error('[send-email] Error in tournament_confirmed:', error);
+          throw new Error(`Failed to send tournament confirmed email: ${error.message}`);
+        }
         break;
       }
 

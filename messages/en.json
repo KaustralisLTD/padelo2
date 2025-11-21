@@ -309,6 +309,7 @@
       "mixed1": "Mixed 1",
       "mixed2": "Mixed 2"
     },
+    "delete": "Delete",
     "backToTournaments": "Back to Tournaments",
     "participants": "Participants",
     "totalParticipants": "Total: {count} participants",
