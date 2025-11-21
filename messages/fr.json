@@ -878,7 +878,10 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional"
+      "optional": "Optional",
+      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
+      "participantDeleted": "Participant deleted successfully.",
+      "participantDeleteError": "Error deleting participant."
     },
     "staff": {
       "assignAccess": "Attribuer l'Accès",
