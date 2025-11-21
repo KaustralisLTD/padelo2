@@ -587,6 +587,10 @@ export interface TournamentRegistrationConfirmedEmailData {
     eventSchedule?: Array<{ title: string; date: string; time: string; description?: string }>;
     description?: string;
     bannerImageData?: string;
+    translations?: {
+      description?: Record<string, string>;
+      eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    };
   };
   categories: string[];
   paymentAmount: number;
@@ -602,14 +606,14 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const dashboardUrl = `${siteUrl}/${locale}/dashboard`;
 
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
-    } catch {
-      return dateString;
-    }
-  };
+  // Import localization utilities
+  const { getLocalizedCategoryName, formatLocalizedDate } = require('@/lib/localization-utils');
+
+  // Форматируем даты с локализацией
+  const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
+  
+  // Локализуем категории
+  const localizedCategories = categories.map(cat => getLocalizedCategoryName(cat, locale));
 
   const translations: Record<string, Record<string, string>> = {
     en: {
@@ -637,7 +641,8 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       footer: 'See you at the tournament!',
       team: 'PadelO₂ Team',
       receivingEmail: 'You\'re receiving this email because your payment was confirmed for a tournament on',
-      followJourney: 'Follow the journey:'
+      followJourney: 'Follow the journey:',
+      welcomeToCourt: 'Welcome to the court'
     },
     ru: {
       subject: 'Оплата подтверждена - Регистрация на турнир - PadelO₂',
@@ -664,7 +669,8 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       footer: 'Увидимся на турнире!',
       team: 'Команда PadelO₂',
       receivingEmail: 'Вы получаете это письмо, потому что ваша оплата была подтверждена за турнир на',
-      followJourney: 'Следите за путешествием:'
+      followJourney: 'Следите за путешествием:',
+      welcomeToCourt: 'Добро пожаловать на корт'
     },
     ua: {
       subject: 'Оплата підтверджена - Реєстрація на турнір - PadelO₂',
@@ -691,7 +697,8 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       footer: 'Побачимося на турнірі!',
       team: 'Команда PadelO₂',
       receivingEmail: 'Ви отримуєте цей лист, тому що ваша оплата була підтверджена за турнір на',
-      followJourney: 'Слідкуйте за подорожжю:'
+      followJourney: 'Слідкуйте за подорожжю:',
+      welcomeToCourt: 'Ласкаво просимо на корт'
     },
     es: {
       subject: 'Pago confirmado - Registro de torneo - PadelO₂',
@@ -1087,7 +1094,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${categories.join(', ')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')}</div>
                         </div>
                       </div>
 
@@ -1096,7 +1103,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.amount}:</div>
-                          <div class="detail-value"><strong>${paymentAmount} ${locale === 'ru' || locale === 'ua' ? 'UAH' : 'EUR'}</strong></div>
+                          <div class="detail-value"><strong>${paymentAmount} EUR</strong></div>
                         </div>
                         
                         ${paymentMethod ? `
