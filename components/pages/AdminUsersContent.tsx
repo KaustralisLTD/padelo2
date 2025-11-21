@@ -47,6 +47,115 @@ export default function AdminUsersContent() {
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
+  // Copy to clipboard function
+  const copyToClipboard = async (value: string, fieldId: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopiedField(fieldId);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // CopyableField component
+  const CopyableField = ({ 
+    value, 
+    fieldId, 
+    children, 
+    className = '' 
+  }: { 
+    value: string | null | undefined; 
+    fieldId: string; 
+    children?: React.ReactNode;
+    className?: string;
+  }) => {
+    const displayValue = value || '—';
+    const isCopied = copiedField === fieldId;
+    const canCopy = value && value !== '—' && value !== '-';
+
+    return (
+      <div className={`flex items-center gap-1.5 group ${className}`}>
+        <span 
+          className={canCopy ? 'cursor-pointer hover:text-primary transition-colors' : ''}
+          onClick={() => canCopy && copyToClipboard(value!, fieldId)}
+        >
+          {children || displayValue}
+        </span>
+        {canCopy && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              copyToClipboard(value!, fieldId);
+            }}
+            className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:text-primary"
+            title={isCopied ? 'Copied!' : 'Copy'}
+          >
+            {isCopied ? (
+              <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            )}
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  // Icon components
+  const ViewIcon = (props: any) => (
+    <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+    </svg>
+  );
+
+  const EditIcon = (props: any) => (
+    <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+  );
+
+  const TrashIcon = (props: any) => (
+    <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    </svg>
+  );
+
+  // ActionIconButton component
+  const ActionIconButton = ({
+    label,
+    onClick,
+    Icon,
+    variant = 'default',
+  }: {
+    label: string;
+    onClick?: () => void;
+    Icon: (props: any) => JSX.Element;
+    variant?: 'default' | 'danger';
+  }) => {
+    const baseClasses = "p-2 rounded transition-colors inline-flex items-center justify-center";
+    const defaultClasses = "bg-primary/20 text-primary hover:bg-primary/30";
+    const dangerClasses = "bg-red-500/20 text-red-400 hover:bg-red-500/30";
+    const className = baseClasses + (variant === 'danger' ? ` ${dangerClasses}` : ` ${defaultClasses}`);
+
+    return (
+      <button
+        onClick={onClick}
+        className={className}
+        title={label}
+        type="button"
+      >
+        <Icon className="w-4 h-4" aria-hidden="true" />
+      </button>
+    );
+  };
+
   useEffect(() => {
     if (!token) {
       router.push(`/${locale}/login`);
