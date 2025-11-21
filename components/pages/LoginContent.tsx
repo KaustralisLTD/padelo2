@@ -34,6 +34,8 @@ export default function LoginContent() {
 
     if (token && success === 'true') {
       localStorage.setItem('auth_token', token);
+      // Dispatch custom event to notify Header about auth change
+      window.dispatchEvent(new Event('auth-changed'));
       router.push(`/${locale}/dashboard`);
     }
   }, [searchParams, router, locale, t]);
@@ -64,6 +66,8 @@ export default function LoginContent() {
           if (data.token) {
           localStorage.setItem('auth_token', data.token);
             localStorage.setItem('user_role', data.user?.role || 'participant');
+          // Dispatch custom event to notify Header about auth change
+          window.dispatchEvent(new Event('auth-changed'));
           router.push(`/${locale}/dashboard`);
         } else {
           setError(t('errors.invalidCredentials'));
@@ -96,6 +100,8 @@ export default function LoginContent() {
           const data = await response.json();
           localStorage.setItem('auth_token', data.token);
           localStorage.setItem('user_role', data.role);
+          // Dispatch custom event to notify Header about auth change
+          window.dispatchEvent(new Event('auth-changed'));
           router.push(`/${locale}/dashboard`);
         } else {
           setError(t('errors.registrationFailed'));

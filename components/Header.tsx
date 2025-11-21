@@ -28,8 +28,8 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Check if user is authenticated
+  // Function to check authentication
+  const checkAuth = () => {
     const token = localStorage.getItem('auth_token');
     if (token) {
       fetch('/api/auth/login', {
@@ -43,6 +43,33 @@ const Header = () => {
     } else {
       setIsAuthenticated(false);
     }
+  };
+
+  useEffect(() => {
+    // Check authentication on mount and when pathname changes
+    checkAuth();
+  }, [pathname]);
+
+  // Listen for storage changes (login/logout from other tabs or after redirect)
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'auth_token') {
+        checkAuth();
+      }
+    };
+
+    // Listen for custom event when auth_token is set (same tab)
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('auth-changed', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('auth-changed', handleAuthChange);
+    };
   }, []);
 
   const navItems = [
