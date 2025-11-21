@@ -33,6 +33,7 @@ export default function AdminUsersContent() {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
   
   // Данные для вкладок
   const [bookings, setBookings] = useState<any[]>([]);
