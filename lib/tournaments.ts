@@ -234,6 +234,17 @@ export async function getTournament(id: number): Promise<Tournament | null> {
     ) as any[];
     const statsRow = registrationStats[0] || { totalRegistrations: 0, confirmedRegistrations: 0 };
     
+    let translations = undefined;
+    if (row.translations) {
+      try {
+        translations = typeof row.translations === 'string' 
+          ? JSON.parse(row.translations) 
+          : row.translations;
+      } catch (e) {
+        console.error(`[getTournament] Error parsing translations for tournament ${id}:`, e);
+      }
+    }
+    
     return {
       id: row.id,
       name: row.name,
@@ -258,6 +269,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
         customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
         bannerImageName: row.banner_image_name ?? null,
         bannerImageData: row.banner_image_data ?? null,
+        translations,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
