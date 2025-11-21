@@ -608,8 +608,15 @@ export default function TournamentParticipantsPage() {
         )}
 
         {success && (
-          <div className="mb-4 p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-500">
-            {success}
+          <div className="mb-4 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-lg p-6 backdrop-blur-sm">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="text-text font-poppins font-semibold text-lg">{success}</p>
+            </div>
           </div>
         )}
 
@@ -668,20 +675,102 @@ export default function TournamentParticipantsPage() {
               <label className="block text-sm font-poppins text-text-secondary mb-2">
                 {tTournaments('filterCategory')}
               </label>
-              <select
-                multiple
-                value={filterCategories}
-                onChange={(e) => {
-                  const selected = Array.from(e.target.selectedOptions, option => option.value);
-                  setFilterCategories(selected);
-                }}
-                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text text-sm focus:outline-none focus:border-primary min-h-[42px]"
-                size={Math.min(categoryEntries.length, 3)}
-              >
-                {categoryEntries.map(([code, name]) => (
-                  <option key={code} value={code}>{name}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <div 
+                  className="category-filter-trigger w-full px-4 py-2.5 bg-background border border-border rounded-lg text-text text-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all cursor-pointer min-h-[42px] flex items-center justify-between"
+                  onClick={() => {
+                    const dropdown = document.getElementById('category-filter-dropdown');
+                    if (dropdown) {
+                      dropdown.classList.toggle('hidden');
+                    }
+                  }}
+                >
+                  <div className="flex flex-wrap gap-1.5 flex-1">
+                    {filterCategories.length === 0 ? (
+                      <span className="text-text-secondary">{tTournaments('filterAll')}</span>
+                    ) : (
+                      filterCategories.map((code) => {
+                        const categoryName = customCategories[code] || code;
+                        return (
+                          <span
+                            key={code}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-primary/20 text-primary rounded-md text-xs font-poppins font-medium"
+                          >
+                            {categoryName}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setFilterCategories(filterCategories.filter(c => c !== code));
+                              }}
+                              className="hover:bg-primary/30 rounded-full p-0.5 transition-colors"
+                            >
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </span>
+                        );
+                      })
+                    )}
+                  </div>
+                  <svg 
+                    className="w-5 h-5 text-text-secondary flex-shrink-0 ml-2" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+                <div
+                  id="category-filter-dropdown"
+                  className="hidden absolute z-50 w-full mt-1 bg-background-secondary border border-border rounded-lg shadow-xl max-h-64 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="p-2 space-y-1">
+                    {categoryEntries.map(([code, name]) => {
+                      const isSelected = filterCategories.includes(code);
+                      return (
+                        <label
+                          key={code}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-background cursor-pointer transition-colors group"
+                        >
+                          <div className="relative flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={isSelected}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFilterCategories([...filterCategories, code]);
+                                } else {
+                                  setFilterCategories(filterCategories.filter(c => c !== code));
+                                }
+                              }}
+                              className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                              style={{
+                                backgroundImage: isSelected
+                                  ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
+                                  : 'none',
+                                backgroundSize: 'contain',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                              }}
+                            />
+                          </div>
+                          <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-primary' : 'text-text'}`}>
+                            {name}
+                          </span>
+                          {isSelected && (
+                            <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
