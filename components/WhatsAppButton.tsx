@@ -32,8 +32,11 @@ const WhatsAppButton = () => {
   const phoneNumber = '34662423738';
   let message = t('message');
   
-  if (userInfo) {
-    const userDetails = `\n\n👤 ${t('userInfo') || 'User Info'}: ${userInfo.name || 'N/A'}\n🆔 User ID: ${userInfo.userId || 'N/A'}`;
+  if (userInfo && userInfo.name && userInfo.name !== 'N/A') {
+    const userDetails = `\n\n👤 ${t('userInfo') || 'User Info'}: ${userInfo.name}\n🆔 User ID: ${userInfo.userId || 'N/A'}`;
+    message += userDetails;
+  } else if (userInfo && userInfo.userId) {
+    const userDetails = `\n\n🆔 User ID: ${userInfo.userId}`;
     message += userDetails;
   }
   

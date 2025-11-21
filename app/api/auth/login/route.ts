@@ -145,10 +145,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Get full user information from database
+    const { findUserById } = await import('@/lib/users');
+    const user = await findUserById(session.userId);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json({
       session: {
         userId: session.userId,
         role: session.role,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
       },
     });
   } catch (error: any) {
