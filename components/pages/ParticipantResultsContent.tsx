@@ -148,7 +148,8 @@ export function ParticipantResultsContent() {
           <div className="space-y-4">
             {matches.map((match) => {
               const hasSets = match.pair1Set1 !== null && match.pair1Set1 !== undefined;
-              const isWinner = match.winnerPairId === match.pair1Id || match.winnerPairId === match.pair2Id;
+              // Определяем, в какой паре находится пользователь (проверяем по наличию winnerPairId)
+              const userWon = match.winnerPairId === match.pair1Id || match.winnerPairId === match.pair2Id;
               
               return (
                 <div
@@ -172,7 +173,7 @@ export function ParticipantResultsContent() {
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div className={`p-4 rounded-lg ${isWinner && match.winnerPairId === match.pair1Id ? 'bg-green-500/10 border border-green-500/30' : 'bg-background border border-border'}`}>
+                        <div className={`p-4 rounded-lg ${match.winnerPairId === match.pair1Id ? 'bg-green-500/10 border border-green-500/30' : 'bg-background border border-border'}`}>
                           <div className="font-poppins text-sm text-text-secondary mb-1">{t('pair1')}</div>
                           <div className="font-poppins text-text">
                             {match.pair1Players.join(' / ')}
@@ -190,7 +191,7 @@ export function ParticipantResultsContent() {
                           )}
                         </div>
                         
-                        <div className={`p-4 rounded-lg ${isWinner && match.winnerPairId === match.pair2Id ? 'bg-green-500/10 border border-green-500/30' : 'bg-background border border-border'}`}>
+                        <div className={`p-4 rounded-lg ${match.winnerPairId === match.pair2Id ? 'bg-green-500/10 border border-green-500/30' : 'bg-background border border-border'}`}>
                           <div className="font-poppins text-sm text-text-secondary mb-1">{t('pair2')}</div>
                           <div className="font-poppins text-text">
                             {match.pair2Players.join(' / ')}
