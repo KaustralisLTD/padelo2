@@ -9,6 +9,7 @@ export interface User {
   lastName: string;
   role: UserRole;
   createdAt: string;
+  emailVerified?: boolean;
 }
 
 // Role permissions
