@@ -39,7 +39,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
   // Локализуем категории
   const localizedCategories = categories.map(cat => getLocalizedCategoryName(cat, locale));
 
-  const translations: Record<string, Record<string, string>> = {
+  const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {
       subject: (tournamentName: string) => `We got your registration for ${tournamentName} - PadelO₂`,
       subjectBase: 'We got your registration - PadelO₂',
