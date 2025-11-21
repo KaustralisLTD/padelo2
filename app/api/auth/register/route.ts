@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     await ensureInitialized();
     
     const body = await request.json();
-    const { email, password, firstName, lastName } = body;
+    const { email, password, firstName, lastName, locale: bodyLocale } = body;
 
     if (!email || !password || !firstName || !lastName) {
       return NextResponse.json(
@@ -63,8 +63,10 @@ export async function POST(request: NextRequest) {
       emailVerificationToken: verificationToken,
     });
 
-    // Send email verification
-    const locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    // Send email verification - get locale from request body or headers
+    const locale = bodyLocale && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(bodyLocale)
+      ? bodyLocale
+      : request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
     await sendEmailVerification(email, firstName, verificationToken, locale);
 
     // Don't create session until email is verified

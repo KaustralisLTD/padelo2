@@ -82,6 +82,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if email is verified
+    if (!user.emailVerified) {
+      return NextResponse.json(
+        { 
+          error: 'Email not verified',
+          emailNotVerified: true,
+          message: 'Please verify your email address before logging in. Check your inbox for the verification link.'
+        },
+        { status: 403 }
+      );
+    }
+
     // Create session
     const token = await createSession(user.id, 7); // 7 days
 

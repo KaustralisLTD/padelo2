@@ -20,6 +20,8 @@ export default function LoginContent() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
 
   // Обработка OAuth callback
   useEffect(() => {
@@ -87,24 +89,38 @@ export default function LoginContent() {
 
         const response = await fetch('/api/auth/register', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept-Language': locale,
+          },
           body: JSON.stringify({
             email: formData.email,
             password: formData.password,
             firstName: formData.firstName,
             lastName: formData.lastName,
+            locale: locale,
           }),
         });
 
         if (response.ok) {
           const data = await response.json();
-          localStorage.setItem('auth_token', data.token);
-          localStorage.setItem('user_role', data.role);
-          // Dispatch custom event to notify Header about auth change
-          window.dispatchEvent(new Event('auth-changed'));
-          router.push(`/${locale}/dashboard`);
+          // Show success message instead of redirecting
+          setSuccessMessage(t('registrationSuccess') || 'Registration successful! Please check your email to verify your account.');
+          setShowVerificationMessage(true);
+          setError(null);
+          // Reset form
+          setFormData({
+            email: '',
+            password: '',
+            firstName: '',
+            lastName: '',
+            confirmPassword: '',
+          });
+          // Switch to login mode
+          setIsLogin(true);
         } else {
-          setError(t('errors.registrationFailed'));
+          const errorData = await response.json().catch(() => ({ error: 'Registration failed' }));
+          setError(errorData.error || t('errors.registrationFailed'));
         }
       }
     } catch (err) {
@@ -123,6 +139,18 @@ export default function LoginContent() {
         <p className="text-xl text-text-secondary font-poppins text-center mb-8">
           {isLogin ? t('loginDescription') : t('registerDescription')}
         </p>
+
+        {showVerificationMessage && successMessage && (
+          <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mb-6">
+            <p className="text-green-400 font-poppins text-center">{successMessage}</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 mb-6">
+            <p className="text-red-400 font-poppins text-center">{error}</p>
+          </div>
+        )}
 
         <div className="bg-background-secondary p-8 rounded-lg border border-border">
           <div className="flex gap-4 mb-6">
@@ -143,6 +171,8 @@ export default function LoginContent() {
               onClick={() => {
                 setIsLogin(false);
                 setError(null);
+                setSuccessMessage(null);
+                setShowVerificationMessage(false);
               }}
               className={`flex-1 px-4 py-2 rounded-lg font-poppins font-semibold transition-colors ${
                 !isLogin

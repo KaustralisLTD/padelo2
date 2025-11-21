@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { saveRegistration } from '@/lib/tournament-storage';
-import { getSession } from '@/lib/users';
+import { getSession, isUserEmailVerified } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
+import { getTournament } from '@/lib/tournaments';
 
 // Helper function to get or create user by email
 async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string): Promise<string | null> {
@@ -77,7 +78,7 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
       });
       
       await resend.emails.send({
-        from: process.env.SMTP_FROM || 'PadelO₂ <noreply@padelo2.com>',
+        from: process.env.SMTP_FROM || 'PadelO₂ <hello@padelO2.com>',
         to: email,
         subject,
         html,
@@ -92,7 +93,7 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
       sgMail.default.setApiKey(process.env.SENDGRID_API_KEY);
       
       await sgMail.default.send({
-        from: process.env.SMTP_FROM || 'noreply@padelo2.com',
+        from: process.env.SMTP_FROM || 'hello@padelO2.com',
         to: email,
         subject: `Confirm your registration for ${tournamentName}`,
         html: `
@@ -191,20 +192,56 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Генерируем URL для подтверждения
-    const confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/tournament/confirmation?token=${token}`;
+    // Проверяем, верифицирован ли email пользователя
+    const emailVerified = body.email ? await isUserEmailVerified(body.email) : false;
     
-    // Отправляем email подтверждения
+    // Получаем детали турнира для отправки детального письма
+    let tournament = null;
+    if (body.tournamentId) {
+      try {
+        tournament = await getTournament(parseInt(body.tournamentId, 10));
+      } catch (error) {
+        console.error('[POST /api/tournament/register] Error fetching tournament:', error);
+      }
+    }
+    
+    // Отправляем разные письма в зависимости от верификации email
     try {
-      await sendConfirmationEmail(
-        body.email, 
-        confirmationUrl, 
-        body.tournamentName, 
-        body.locale || 'en',
-        body.firstName,
-        body.lastName
-      );
-      console.log(`[POST /api/tournament/register] Confirmation email sent to: ${body.email}`);
+      if (!emailVerified) {
+        // Если email НЕ верифицирован - отправляем письмо с верификацией
+        const confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/tournament/confirmation?token=${token}`;
+        await sendConfirmationEmail(
+          body.email, 
+          confirmationUrl, 
+          body.tournamentName, 
+          body.locale || 'en',
+          body.firstName,
+          body.lastName
+        );
+        console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email}`);
+      } else {
+        // Если email верифицирован - отправляем детальное письмо о турнире
+        const { sendTournamentRegistrationEmail } = await import('@/lib/email');
+        await sendTournamentRegistrationEmail({
+          email: body.email,
+          firstName: body.firstName,
+          lastName: body.lastName,
+          tournament: tournament || {
+            id: body.tournamentId ? parseInt(body.tournamentId, 10) : 0,
+            name: body.tournamentName,
+            startDate: body.startDate || '',
+            endDate: body.endDate || '',
+            location: body.location,
+            locationAddress: body.locationAddress,
+            eventSchedule: body.eventSchedule,
+            priceSingleCategory: body.priceSingleCategory,
+            priceDoubleCategory: body.priceDoubleCategory,
+          },
+          categories: body.categories || [],
+          locale: body.locale || 'en',
+        });
+        console.log(`[POST /api/tournament/register] Tournament registration email sent to: ${body.email}`);
+      }
     } catch (emailError: any) {
       console.error('[POST /api/tournament/register] Error sending email:', emailError);
       // Не прерываем регистрацию, если email не отправился - пользователь все равно зарегистрирован

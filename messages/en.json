@@ -693,11 +693,13 @@
     "continueWithApple": "Apple",
     "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
     "termsOfService": "Terms of Service",
+    "registrationSuccess": "Thank you for registering! Please check your email and click the verification link to activate your account.",
     "errors": {
       "invalidCredentials": "Invalid email or password",
       "passwordMismatch": "Passwords do not match",
       "registrationFailed": "Registration failed. Please try again.",
       "generic": "An error occurred. Please try again.",
+      "emailNotVerified": "Your email address has not been verified. Please check your inbox and click the verification link.",
       "oauthFailed": "OAuth authentication failed. Please try again.",
       "oauth_cancelled": "Authentication cancelled",
       "invalid_state": "Invalid authentication state. Please try again.",

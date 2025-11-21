@@ -12,6 +12,7 @@ interface User {
   lastName: string;
   role: 'superadmin' | 'staff' | 'participant' | 'manager' | 'coach' | 'tournament_admin';
   createdAt: string;
+  emailVerified?: boolean;
 }
 
 export default function AdminUsersContent() {
@@ -533,7 +534,11 @@ export default function AdminUsersContent() {
                   <th className="px-2 py-4 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-24">
                     User ID
                   </th>
-                  <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.email')}</th>
+                  <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">
+                    <div className="flex items-center gap-2">
+                      {t('users.email')}
+                    </div>
+                  </th>
                   <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.name')}</th>
                   <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.role')}</th>
                   <th className="px-6 py-4 text-left text-text font-orbitron font-semibold">{t('users.createdAt')}</th>
@@ -554,7 +559,19 @@ export default function AdminUsersContent() {
                       </CopyableField>
                     </td>
                     <td className="px-6 py-4 text-text-secondary font-poppins">
-                      <CopyableField value={user.email} fieldId={`email-${user.id}`} />
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold cursor-help ${
+                            user.emailVerified
+                              ? 'bg-green-500/20 text-green-400'
+                              : 'bg-red-500/20 text-red-400'
+                          }`}
+                          title={user.emailVerified ? 'Verified' : 'Unverified'}
+                        >
+                          {user.emailVerified ? 'V' : 'U'}
+                        </span>
+                        <CopyableField value={user.email} fieldId={`email-${user.id}`} />
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-text-secondary font-poppins">
                       {user.firstName} {user.lastName}
@@ -949,6 +966,42 @@ export default function AdminUsersContent() {
                     <option value="superadmin">Super Admin</option>
                   </select>
                 </div>
+
+                {editingUser && !editingUser.emailVerified && (
+                  <div className="pt-4 border-t border-border">
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (!token || !editingUser) return;
+                        try {
+                          const response = await fetch(`/api/admin/users/${editingUser.id}/verify-email`, {
+                            method: 'POST',
+                            headers: {
+                              'Authorization': `Bearer ${token}`,
+                              'Content-Type': 'application/json',
+                            },
+                          });
+                          const data = await response.json();
+                          if (response.ok) {
+                            setSuccess('Email verified successfully');
+                            fetchUsers();
+                            closeModals();
+                          } else {
+                            setError(data.error || 'Failed to verify email');
+                          }
+                        } catch (err) {
+                          setError('Failed to verify email');
+                        }
+                      }}
+                      className="w-full px-4 py-2 bg-green-500/20 text-green-400 border border-green-500/30 font-poppins rounded-lg hover:bg-green-500/30 transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Verify Email Manually
+                    </button>
+                  </div>
+                )}
 
                 <div className="flex gap-4 pt-4">
                   <button

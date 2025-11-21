@@ -15,7 +15,9 @@ interface EmailOptions {
  */
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const { to, subject, html, from, replyTo } = options;
-  const fromEmail = from || process.env.SMTP_FROM || 'noreply@padelo2.com';
+  const fromEmail = from || process.env.SMTP_FROM || 'hello@padelO2.com';
+  // Format: "PadelO₂ <email@domain.com>"
+  const fromName = `PadelO₂ <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
 
   try {
@@ -24,11 +26,11 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       const resend = new Resend(process.env.RESEND_API_KEY);
       
       await resend.emails.send({
-        from: fromEmail,
+        from: fromName,
         to: recipients,
         subject,
         html,
-        reply_to: replyTo,
+        reply_to: replyTo || fromEmail,
       });
       console.log(`✅ Email sent via Resend to ${recipients.join(', ')}`);
       return true;
@@ -128,6 +130,7 @@ export async function sendInvestmentRequestEmail(
 
 /**
  * Send email verification link to new user
+ * Uses the same design style as tournament email templates
  */
 export async function sendEmailVerification(
   email: string,
@@ -135,80 +138,311 @@ export async function sendEmailVerification(
   verificationToken: string,
   locale: string = 'en'
 ): Promise<boolean> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const verificationUrl = `${siteUrl}/${locale}/verify-email?token=${verificationToken}`;
+  const firstNameOnly = firstName || 'User';
   
-  const translations: Record<string, { subject: string; greeting: string; message: string; button: string; footer: string }> = {
+  const translations: Record<string, Record<string, string>> = {
     en: {
-      subject: 'Verify your email address - PadelO2',
-      greeting: `Hello ${firstName}!`,
-      message: 'Thank you for registering on PadelO2. Please verify your email address by clicking the button below:',
+      subject: 'Verify your email address - PadelO₂',
+      greeting: 'Hello',
+      message: 'Thank you for registering on PadelO₂. Please verify your email address by clicking the button below:',
       button: 'Verify Email',
-      footer: 'If you did not create an account, please ignore this email.'
-    },
-    uk: {
-      subject: 'Підтвердіть вашу електронну адресу - PadelO2',
-      greeting: `Привіт ${firstName}!`,
-      message: 'Дякуємо за реєстрацію на PadelO2. Будь ласка, підтвердіть вашу електронну адресу, натиснувши кнопку нижче:',
-      button: 'Підтвердити Email',
-      footer: 'Якщо ви не створювали обліковий запис, проігноруйте цей лист.'
+      notYou: 'If you did not create an account, please ignore this email.',
+      footer: 'Welcome to the court',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'You\'re receiving this email because you signed up on',
+      followJourney: 'Follow the journey:'
     },
     ru: {
-      subject: 'Подтвердите ваш email адрес - PadelO2',
-      greeting: `Привет ${firstName}!`,
-      message: 'Спасибо за регистрацию на PadelO2. Пожалуйста, подтвердите ваш email адрес, нажав кнопку ниже:',
+      subject: 'Подтвердите ваш email адрес - PadelO₂',
+      greeting: 'Здравствуйте',
+      message: 'Спасибо за регистрацию на PadelO₂. Пожалуйста, подтвердите ваш email адрес, нажав кнопку ниже:',
       button: 'Подтвердить Email',
-      footer: 'Если вы не создавали аккаунт, проигнорируйте это письмо.'
+      notYou: 'Если вы не создавали аккаунт, проигнорируйте это письмо.',
+      footer: 'Добро пожаловать на корт',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Вы получаете это письмо, потому что зарегистрировались на',
+      followJourney: 'Следите за путешествием:'
+    },
+    ua: {
+      subject: 'Підтвердіть вашу email адресу - PadelO₂',
+      greeting: 'Вітаємо',
+      message: 'Дякуємо за реєстрацію на PadelO₂. Будь ласка, підтвердіть вашу email адресу, натиснувши кнопку нижче:',
+      button: 'Підтвердити Email',
+      notYou: 'Якщо ви не створювали акаунт, проігноруйте цей лист.',
+      footer: 'Ласкаво просимо на корт',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Ви отримуєте цей лист, тому що зареєструвалися на',
+      followJourney: 'Слідкуйте за подорожжю:'
+    },
+    es: {
+      subject: 'Verifica tu dirección de correo electrónico - PadelO₂',
+      greeting: 'Hola',
+      message: 'Gracias por registrarte en PadelO₂. Por favor, verifica tu dirección de correo electrónico haciendo clic en el botón a continuación:',
+      button: 'Verificar Email',
+      notYou: 'Si no creaste una cuenta, ignora este correo.',
+      footer: 'Bienvenido a la cancha',
+      team: 'Equipo PadelO₂',
+      receivingEmail: 'Estás recibiendo este correo porque te registraste en',
+      followJourney: 'Sigue el viaje:'
+    },
+    fr: {
+      subject: 'Vérifiez votre adresse e-mail - PadelO₂',
+      greeting: 'Bonjour',
+      message: 'Merci de vous être inscrit sur PadelO₂. Veuillez vérifier votre adresse e-mail en cliquant sur le bouton ci-dessous:',
+      button: 'Vérifier l\'Email',
+      notYou: 'Si vous n\'avez pas créé de compte, ignorez cet e-mail.',
+      footer: 'Bienvenue sur le terrain',
+      team: 'Équipe PadelO₂',
+      receivingEmail: 'Vous recevez cet e-mail parce que vous vous êtes inscrit sur',
+      followJourney: 'Suivez le voyage:'
+    },
+    de: {
+      subject: 'Bestätigen Sie Ihre E-Mail-Adresse - PadelO₂',
+      greeting: 'Hallo',
+      message: 'Vielen Dank für Ihre Registrierung bei PadelO₂. Bitte bestätigen Sie Ihre E-Mail-Adresse, indem Sie auf die Schaltfläche unten klicken:',
+      button: 'Email bestätigen',
+      notYou: 'Wenn Sie kein Konto erstellt haben, ignorieren Sie diese E-Mail.',
+      footer: 'Willkommen auf dem Platz',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Sie erhalten diese E-Mail, weil Sie sich auf',
+      followJourney: 'Folgen Sie der Reise:'
+    },
+    it: {
+      subject: 'Verifica il tuo indirizzo email - PadelO₂',
+      greeting: 'Ciao',
+      message: 'Grazie per esserti registrato su PadelO₂. Per favore, verifica il tuo indirizzo email cliccando sul pulsante qui sotto:',
+      button: 'Verifica Email',
+      notYou: 'Se non hai creato un account, ignora questa email.',
+      footer: 'Benvenuto in campo',
+      team: 'Team PadelO₂',
+      receivingEmail: 'Stai ricevendo questa email perché ti sei registrato su',
+      followJourney: 'Segui il viaggio:'
+    },
+    ca: {
+      subject: 'Verifica la teva adreça de correu electrònic - PadelO₂',
+      greeting: 'Hola',
+      message: 'Gràcies per registrar-te a PadelO₂. Si us plau, verifica la teva adreça de correu electrònic fent clic al botó a continuació:',
+      button: 'Verificar Email',
+      notYou: 'Si no has creat un compte, ignora aquest correu.',
+      footer: 'Benvingut a la pista',
+      team: 'Equip PadelO₂',
+      receivingEmail: 'Estàs rebent aquest correu perquè et vas registrar a',
+      followJourney: 'Segueix el viatge:'
+    },
+    nl: {
+      subject: 'Verifieer uw e-mailadres - PadelO₂',
+      greeting: 'Hallo',
+      message: 'Bedankt voor uw registratie bij PadelO₂. Verifieer uw e-mailadres door op de knop hieronder te klikken:',
+      button: 'E-mail verifiëren',
+      notYou: 'Als u geen account heeft aangemaakt, negeer deze e-mail dan.',
+      footer: 'Welkom op de baan',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'U ontvangt deze e-mail omdat u zich heeft geregistreerd op',
+      followJourney: 'Volg de reis:'
+    },
+    da: {
+      subject: 'Bekræft din e-mailadresse - PadelO₂',
+      greeting: 'Hej',
+      message: 'Tak for din registrering på PadelO₂. Bekræft venligst din e-mailadresse ved at klikke på knappen nedenfor:',
+      button: 'Bekræft Email',
+      notYou: 'Hvis du ikke har oprettet en konto, skal du ignorere denne e-mail.',
+      footer: 'Velkommen til banen',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du modtager denne e-mail, fordi du tilmeldte dig på',
+      followJourney: 'Følg rejsen:'
+    },
+    sv: {
+      subject: 'Verifiera din e-postadress - PadelO₂',
+      greeting: 'Hej',
+      message: 'Tack för din registrering på PadelO₂. Vänligen verifiera din e-postadress genom att klicka på knappen nedan:',
+      button: 'Verifiera E-post',
+      notYou: 'Om du inte skapade ett konto, ignorera detta e-postmeddelande.',
+      footer: 'Välkommen till banan',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du får detta e-postmeddelande eftersom du registrerade dig på',
+      followJourney: 'Följ resan:'
+    },
+    no: {
+      subject: 'Bekreft din e-postadresse - PadelO₂',
+      greeting: 'Hei',
+      message: 'Takk for din registrering på PadelO₂. Vennligst bekreft din e-postadresse ved å klikke på knappen nedenfor:',
+      button: 'Bekreft E-post',
+      notYou: 'Hvis du ikke opprettet en konto, ignorer denne e-posten.',
+      footer: 'Velkommen til banen',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du mottar denne e-posten fordi du registrerte deg på',
+      followJourney: 'Følg reisen:'
+    },
+    ar: {
+      subject: 'تحقق من عنوان بريدك الإلكتروني - PadelO₂',
+      greeting: 'مرحبا',
+      message: 'شكرا لتسجيلك في PadelO₂. يرجى التحقق من عنوان بريدك الإلكتروني بالنقر على الزر أدناه:',
+      button: 'تحقق من البريد الإلكتروني',
+      notYou: 'إذا لم تقم بإنشاء حساب، يرجى تجاهل هذا البريد الإلكتروني.',
+      footer: 'مرحبا بك في الملعب',
+      team: 'فريق PadelO₂',
+      receivingEmail: 'أنت تتلقى هذا البريد الإلكتروني لأنك سجلت على',
+      followJourney: 'تابع الرحلة:'
+    },
+    zh: {
+      subject: '验证您的电子邮件地址 - PadelO₂',
+      greeting: '您好',
+      message: '感谢您在 PadelO₂ 注册。请点击下面的按钮验证您的电子邮件地址:',
+      button: '验证电子邮件',
+      notYou: '如果您没有创建账户，请忽略此电子邮件。',
+      footer: '欢迎来到球场',
+      team: 'PadelO₂ 团队',
+      receivingEmail: '您收到此电子邮件是因为您在',
+      followJourney: '跟随旅程:'
     }
   };
   
   const t = translations[locale] || translations.en;
   
   const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
-        <tr>
-          <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
-              <tr>
-                <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
-                  <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">🎾 PadelO2</h1>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding: 40px 30px;">
-                  <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 28px; font-weight: 700;">${t.greeting}</h2>
-                  <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">${t.message}</p>
-                  <div style="text-align: center; margin: 40px 0;">
-                    <a href="${verificationUrl}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: transform 0.2s;">${t.button}</a>
-                  </div>
-                  <p style="color: #8a8a8a; font-size: 14px; line-height: 1.6; margin: 30px 0 0 0;">${t.footer}</p>
-                  <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e8e8e8;">
-                    <p style="color: #999; font-size: 12px; margin: 0 0 10px 0;">Или скопируйте эту ссылку:</p>
-                    <p style="margin: 0;">
-                      <a href="${verificationUrl}" style="color: #667eea; word-break: break-all; font-size: 12px; text-decoration: none;">${verificationUrl}</a>
-                    </p>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="background: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e8e8e8;">
-                  <p style="color: #999; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} PadelO2. Все права защищены.</p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </body>
-    </html>
-  `;
+<!DOCTYPE html>
+<html lang="${locale}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="margin:0;padding:0;">
+  <head>
+    <meta charset="UTF-8" />
+    <title>${t.subject}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      table { border-spacing: 0; border-collapse: collapse; }
+      a { text-decoration: none; }
+      .wrapper { width: 100%; padding: 32px 10px; }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
+      .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
+      .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
+      .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
+      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .social-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f1f5f9; border-radius: 999px; font-size: 11px; color: #475569; text-decoration: none; }
+      .social-icon-circle { width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; }
+      .social-ig { background-color: #E4405F; }
+      .social-yt { background-color: #FF0000; }
+      .social-tt { background-color: #000000; }
+      .social-fb { background-color: #1877F2; }
+      @media screen and (max-width: 600px) {
+        .p-body { padding: 0 18px 20px 18px !important; }
+        .p-footer { padding: 14px 18px 24px 18px !important; }
+        .center-mobile { text-align: center !important; }
+      }
+    </style>
+  </head>
+  <body class="font-default">
+    <table role="presentation" class="wrapper" width="100%">
+      <tr>
+        <td align="center">
+          <table role="presentation" class="main">
+            <tr>
+              <td style="padding: 22px 30px 12px 30px;">
+                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="p-body" style="padding: 20px 30px 10px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default">
+                      <div class="h1" style="margin: 0 0 10px 0;">${t.greeting} ${firstNameOnly}!</div>
+                      <p class="lead" style="margin: 0 0 12px 0;">${t.message}</p>
+                      
+                      <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 20px 0 18px 0;">
+                        <tr>
+                          <td align="left" class="center-mobile">
+                            <a href="${verificationUrl}" class="btn-primary">${t.button}</a>
+                          </td>
+                        </tr>
+                      </table>
+                      
+                      <div class="info-box">
+                        <p class="muted" style="margin: 0; color: #0c4a6e; font-size: 13px;">${t.notYou}</p>
+                      </div>
+                      
+                      <p class="muted" style="margin: 20px 0 0 0; font-size: 12px; color: #6b7280;">
+                        ${locale === 'ru' || locale === 'ua' ? 'Или скопируйте эту ссылку:' : locale === 'en' ? 'Or copy this link:' : 'Ou copiez ce lien:'}
+                        <br>
+                        <a href="${verificationUrl}" style="color: #0284c7; word-break: break-all; font-size: 11px;">${verificationUrl}</a>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="p-footer" style="padding: 10px 30px 24px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" style="padding-bottom: 6px;">
+                      <span class="muted" style="font-size: 11px;">${t.followJourney}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table role="presentation" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="padding: 3px 4px 3px 0%;">
+                            <a href="https://www.instagram.com/padelo2com/" class="social-pill">
+                              <span class="social-icon-circle social-ig">IG</span>
+                              <span>Instagram</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 4px;">
+                            <a href="https://www.youtube.com/@PadelO2" class="social-pill">
+                              <span class="social-icon-circle social-yt">YT</span>
+                              <span>YouTube</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 4px;">
+                            <a href="https://www.tiktok.com/@padelo2com" class="social-pill">
+                              <span class="social-icon-circle social-tt">TT</span>
+                              <span>TikTok</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 0 3px 4px;">
+                            <a href="https://www.facebook.com/profile.php?id=61583860325680" class="social-pill">
+                              <span class="social-icon-circle social-fb">f</span>
+                              <span>Facebook</span>
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding-top: 16px;">
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
+                      <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
+                      <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+  `.trim();
 
   return await sendEmail({
     to: email,
@@ -676,6 +910,64 @@ export async function sendAccountDeletedEmail(
   return await sendEmail({
     to: email,
     subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send tournament registration email (for verified users)
+ */
+export async function sendTournamentRegistrationEmail(data: {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  tournament: {
+    id: number;
+    name: string;
+    startDate: string;
+    endDate: string;
+    location?: string;
+    locationAddress?: string;
+    locationCoordinates?: { lat: number; lng: number };
+    eventSchedule?: Array<{ title: string; date: string; time: string; description?: string }>;
+    priceSingleCategory?: number;
+    priceDoubleCategory?: number;
+    description?: string;
+    bannerImageData?: string;
+  };
+  categories: string[];
+  locale?: string;
+}): Promise<boolean> {
+  const { getTournamentRegistrationEmailTemplate } = await import('@/lib/email-templates-tournament');
+  
+  const html = getTournamentRegistrationEmailTemplate({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    tournament: data.tournament,
+    categories: data.categories,
+    locale: data.locale || 'en',
+  });
+
+  const translations: Record<string, string> = {
+    en: 'We got your registration - PadelO₂',
+    ru: 'Мы получили вашу регистрацию - PadelO₂',
+    ua: 'Ми отримали вашу реєстрацію - PadelO₂',
+    es: 'Recibimos tu registro - PadelO₂',
+    fr: 'Nous avons reçu votre inscription - PadelO₂',
+    de: 'Wir haben Ihre Anmeldung erhalten - PadelO₂',
+    it: 'Abbiamo ricevuto la tua registrazione - PadelO₂',
+    ca: 'Hem rebut el teu registre - PadelO₂',
+    nl: 'We hebben uw registratie ontvangen - PadelO₂',
+    da: 'Vi har modtaget din registrering - PadelO₂',
+    sv: 'Vi har mottagit din registrering - PadelO₂',
+    no: 'Vi har mottatt din registrering - PadelO₂',
+    ar: 'لقد استلمنا تسجيلك - PadelO₂',
+    zh: '我们已收到您的注册 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: data.email,
+    subject: translations[data.locale || 'en'] || translations.en,
     html,
   });
 }

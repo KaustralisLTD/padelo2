@@ -23,6 +23,7 @@ export interface UserUpdateData {
   firstName?: string;
   lastName?: string;
   role?: UserRole;
+  emailVerified?: boolean;
 }
 
 // Check if database is configured
@@ -151,6 +152,28 @@ export async function findUserByEmail(email: string): Promise<User | null> {
   }
 }
 
+// Check if user email is verified
+export async function isUserEmailVerified(email: string): Promise<boolean> {
+  if (!useDatabase) {
+    return false;
+  }
+
+  try {
+    const pool = getDbPool();
+    const [rows] = await pool.execute(
+      'SELECT email_verified FROM users WHERE email = ?',
+      [email]
+    ) as any[];
+
+    if (rows.length === 0) return false;
+
+    return rows[0].email_verified === 1 || rows[0].email_verified === true;
+  } catch (error) {
+    console.error('Error checking email verification:', error);
+    return false;
+  }
+}
+
 // Find user by ID
 export async function findUserById(id: string): Promise<User | null> {
   if (!useDatabase) {
@@ -215,7 +238,7 @@ export async function verifyPassword(email: string, password: string): Promise<U
   try {
     const pool = getDbPool();
     const [rows] = await pool.execute(
-      'SELECT id, email, password_hash, first_name, last_name, role, created_at FROM users WHERE email = ?',
+      'SELECT id, email, password_hash, first_name, last_name, role, created_at, email_verified FROM users WHERE email = ?',
       [email]
     ) as any[];
 
@@ -237,6 +260,7 @@ export async function verifyPassword(email: string, password: string): Promise<U
       lastName: user.last_name,
       role: user.role,
       createdAt: user.created_at.toISOString(),
+      emailVerified: user.email_verified === 1 || user.email_verified === true,
     };
   } catch (error: any) {
     console.error('[Auth] Error verifying password:', error.message || error);
@@ -406,6 +430,15 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
       updates.push('password_hash = ?');
       values.push(passwordHash);
     }
+    if (data.emailVerified !== undefined) {
+      updates.push('email_verified = ?');
+      values.push(data.emailVerified ? 1 : 0);
+      if (data.emailVerified) {
+        updates.push('email_verified_at = NOW()');
+      } else {
+        updates.push('email_verified_at = NULL');
+      }
+    }
 
     if (updates.length === 0) {
       return await findUserById(id);
@@ -502,7 +535,7 @@ export async function getAllUsers(): Promise<User[]> {
   try {
     const pool = getDbPool();
     const [rows] = await pool.execute(
-      'SELECT id, email, first_name, last_name, role, created_at FROM users ORDER BY created_at DESC'
+      'SELECT id, email, first_name, last_name, role, created_at, email_verified FROM users ORDER BY created_at DESC'
     ) as any[];
 
     return rows.map((user: any) => ({
@@ -512,6 +545,7 @@ export async function getAllUsers(): Promise<User[]> {
       lastName: user.last_name,
       role: user.role,
       createdAt: user.created_at.toISOString(),
+      emailVerified: user.email_verified === 1 || user.email_verified === true,
     }));
   } catch (error) {
     console.error('Error getting all users:', error);
