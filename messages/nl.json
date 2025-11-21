@@ -1468,7 +1468,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "Er is iets misgegaan!",
+    "tryAgain": "Opnieuw proberen",
+    "errorLoadingWallet": "Fout bij het laden van portemonneedata",
+    "loading": "Portemonnee laden..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1492,7 +1496,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "Vandaag",
+    "time": "Tijd",
+    "searchByName": "Zoeken op naam",
+    "sportPadel": "Padel",
+    "typeAll": "Alle typen",
+    "typeCourt": "Baanreservering",
+    "typeTraining": "Training",
+    "typeAITraining": "AI-training",
+    "typeTournament": "Toernooi",
+    "upcoming": "Aankomend",
+    "late": "Laat",
+    "noUpcomingBookings": "Geen aankomende reserveringen",
+    "upcomingBookingsHint": "Uw aankomende reserveringen in de komende 2 uur verschijnen hier"
   },
   "ParticipantResults": {
     "title": "My Results",

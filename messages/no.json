@@ -1469,7 +1469,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "Noe gikk galt!",
+    "tryAgain": "Prøv igjen",
+    "errorLoadingWallet": "Kunne ikke laste lommebokdata",
+    "loading": "Laster lommebok..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1493,7 +1497,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "I dag",
+    "time": "Tid",
+    "searchByName": "Søk etter navn",
+    "sportPadel": "Padel",
+    "typeAll": "Alle typer",
+    "typeCourt": "Banebooking",
+    "typeTraining": "Trening",
+    "typeAITraining": "AI-trening",
+    "typeTournament": "Turnering",
+    "upcoming": "Kommende",
+    "late": "Forsinket",
+    "noUpcomingBookings": "Ingen kommende bookinger",
+    "upcomingBookingsHint": "Dine kommende bookinger i de neste 2 timene vises her"
   },
   "ParticipantResults": {
     "title": "My Results",

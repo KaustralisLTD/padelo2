@@ -1739,7 +1739,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "Alguna cosa ha sortit malament!",
+    "tryAgain": "Tornar a intentar",
+    "errorLoadingWallet": "Error en carregar les dades del moneder",
+    "loading": "Carregant moneder..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1763,7 +1767,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "Avui",
+    "time": "Hora",
+    "searchByName": "Cercar per nom",
+    "sportPadel": "Pàdel",
+    "typeAll": "Tots els tipus",
+    "typeCourt": "Reserva de pista",
+    "typeTraining": "Entrenament",
+    "typeAITraining": "Entrenament amb IA",
+    "typeTournament": "Torneig",
+    "upcoming": "Pròxims",
+    "late": "Tardans",
+    "noUpcomingBookings": "No hi ha reserves properes",
+    "upcomingBookingsHint": "Les teves reserves properes en les properes 2 hores apareixeran aquí"
   },
   "ParticipantResults": {
     "title": "My Results",

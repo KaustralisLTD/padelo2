@@ -1462,7 +1462,11 @@
       "completed": "Завершено",
       "pending": "В очікуванні",
       "failed": "Помилка"
-    }
+    },
+    "error": "Щось пішло не так!",
+    "tryAgain": "Спробувати знову",
+    "errorLoadingWallet": "Не вдалося завантажити дані гаманця",
+    "loading": "Завантаження гаманця..."
   },
   "ParticipantSchedule": {
     "title": "Мій Розклад",
@@ -1486,7 +1490,20 @@
       "cancelled": "Скасовано"
     },
     "minutes": "хвилин",
-    "court": "Корт"
+    "court": "Корт",
+    "today": "Сьогодні",
+    "time": "Час",
+    "searchByName": "Пошук за ім'ям",
+    "sportPadel": "Падел",
+    "typeAll": "Всі типи",
+    "typeCourt": "Бронювання корту",
+    "typeTraining": "Тренування",
+    "typeAITraining": "Тренування з AI",
+    "typeTournament": "Турнір",
+    "upcoming": "Майбутні",
+    "late": "Запізнені",
+    "noUpcomingBookings": "Немає майбутніх бронювань",
+    "upcomingBookingsHint": "Ваші майбутні бронювання протягом наступних 2 годин з'являться тут"
   },
   "ParticipantResults": {
     "title": "Мої Результати",

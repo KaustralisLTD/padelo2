@@ -45,6 +45,16 @@ export function ParticipantWalletContent() {
       }),
     ])
       .then(async ([walletRes, transactionsRes]) => {
+        if (!walletRes.ok) {
+          const errorData = await walletRes.json().catch(() => ({}));
+          throw new Error(errorData.error || t('errorLoadingWallet'));
+        }
+        
+        if (!transactionsRes.ok) {
+          const errorData = await transactionsRes.json().catch(() => ({}));
+          console.error('Error fetching transactions:', errorData.error);
+        }
+        
         const walletData = await walletRes.json();
         const transactionsData = await transactionsRes.json();
         
@@ -62,7 +72,7 @@ export function ParticipantWalletContent() {
       })
       .catch((err) => {
         console.error('Error fetching wallet data:', err);
-        setError('Failed to load wallet data');
+        setError(err.message || t('errorLoadingWallet'));
       })
       .finally(() => setLoading(false));
   }, [locale, router]);
@@ -94,8 +104,51 @@ export function ParticipantWalletContent() {
         </div>
 
         {error && (
-          <div className="bg-red-500/20 border border-red-500 rounded-lg p-4 mb-6">
-            <p className="text-red-400 font-poppins">{error}</p>
+          <div className="bg-red-500/20 border border-red-500 rounded-lg p-6 mb-6 text-center">
+            <p className="text-red-400 font-poppins mb-4">{t('error') || 'Something went wrong!'}</p>
+            <p className="text-red-300 font-poppins text-sm mb-4">{error}</p>
+            <button
+              onClick={() => {
+                setError(null);
+                setLoading(true);
+                const token = localStorage.getItem('auth_token');
+                if (token) {
+                  Promise.all([
+                    fetch('/api/user/wallet', {
+                      headers: { 'Authorization': `Bearer ${token}` },
+                    }),
+                    fetch('/api/user/wallet/transactions', {
+                      headers: { 'Authorization': `Bearer ${token}` },
+                    }),
+                  ])
+                    .then(async ([walletRes, transactionsRes]) => {
+                      if (!walletRes.ok) {
+                        const errorData = await walletRes.json().catch(() => ({}));
+                        throw new Error(errorData.error || t('errorLoadingWallet'));
+                      }
+                      const walletData = await walletRes.json();
+                      const transactionsData = await transactionsRes.json();
+                      if (walletData.error) {
+                        setError(walletData.error);
+                      } else {
+                        setWallet(walletData.wallet || { balance: 0, currency: 'EUR' });
+                      }
+                      if (transactionsData.error) {
+                        console.error('Error fetching transactions:', transactionsData.error);
+                      } else {
+                        setTransactions(transactionsData.transactions || []);
+                      }
+                    })
+                    .catch((err) => {
+                      setError(err.message || t('errorLoadingWallet'));
+                    })
+                    .finally(() => setLoading(false));
+                }
+              }}
+              className="px-6 py-3 bg-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              {t('tryAgain') || 'Try again'}
+            </button>
           </div>
         )}
 

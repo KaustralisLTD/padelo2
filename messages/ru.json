@@ -1460,7 +1460,11 @@
       "completed": "Завершено",
       "pending": "В ожидании",
       "failed": "Ошибка"
-    }
+    },
+    "error": "Что-то пошло не так!",
+    "tryAgain": "Попробовать снова",
+    "errorLoadingWallet": "Не удалось загрузить данные кошелька",
+    "loading": "Загрузка кошелька..."
   },
   "ParticipantSchedule": {
     "title": "Мое Расписание",
@@ -1484,7 +1488,20 @@
       "cancelled": "Отменено"
     },
     "minutes": "минут",
-    "court": "Корт"
+    "court": "Корт",
+    "today": "Сегодня",
+    "time": "Время",
+    "searchByName": "Поиск по имени",
+    "sportPadel": "Падел",
+    "typeAll": "Все типы",
+    "typeCourt": "Бронирование корта",
+    "typeTraining": "Тренировка",
+    "typeAITraining": "Тренировка с AI",
+    "typeTournament": "Турнир",
+    "upcoming": "Предстоящие",
+    "late": "Опоздавшие",
+    "noUpcomingBookings": "Нет предстоящих бронирований",
+    "upcomingBookingsHint": "Ваши предстоящие бронирования в течение следующих 2 часов появятся здесь"
   },
   "ParticipantResults": {
     "title": "Мои Результаты",

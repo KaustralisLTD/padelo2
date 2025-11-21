@@ -1469,7 +1469,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "Qualcosa è andato storto!",
+    "tryAgain": "Riprova",
+    "errorLoadingWallet": "Impossibile caricare i dati del portafoglio",
+    "loading": "Caricamento portafoglio..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1493,7 +1497,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "Oggi",
+    "time": "Ora",
+    "searchByName": "Cerca per nome",
+    "sportPadel": "Padel",
+    "typeAll": "Tutti i tipi",
+    "typeCourt": "Prenotazione campo",
+    "typeTraining": "Allenamento",
+    "typeAITraining": "Allenamento con IA",
+    "typeTournament": "Torneo",
+    "upcoming": "Prossimi",
+    "late": "In ritardo",
+    "noUpcomingBookings": "Nessuna prenotazione in arrivo",
+    "upcomingBookingsHint": "Le tue prossime prenotazioni nelle prossime 2 ore appariranno qui"
   },
   "ParticipantResults": {
     "title": "My Results",

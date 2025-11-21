@@ -1488,7 +1488,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "出错了！",
+    "tryAgain": "重试",
+    "errorLoadingWallet": "加载钱包数据失败",
+    "loading": "正在加载钱包..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1512,7 +1516,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "今天",
+    "time": "时间",
+    "searchByName": "按姓名搜索",
+    "sportPadel": "板网球",
+    "typeAll": "所有类型",
+    "typeCourt": "球场预订",
+    "typeTraining": "训练",
+    "typeAITraining": "AI训练",
+    "typeTournament": "锦标赛",
+    "upcoming": "即将到来",
+    "late": "迟到",
+    "noUpcomingBookings": "没有即将到来的预订",
+    "upcomingBookingsHint": "您接下来2小时内的预订将显示在这里"
   },
   "ParticipantResults": {
     "title": "My Results",

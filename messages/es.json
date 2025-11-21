@@ -1475,7 +1475,11 @@
       "completed": "Completado",
       "pending": "Pendiente",
       "failed": "Fallido"
-    }
+    },
+    "error": "¡Algo salió mal!",
+    "tryAgain": "Intentar de nuevo",
+    "errorLoadingWallet": "Error al cargar los datos de la billetera",
+    "loading": "Cargando billetera..."
   },
   "ParticipantSchedule": {
     "title": "Mi Horario",
@@ -1499,7 +1503,20 @@
       "cancelled": "Cancelado"
     },
     "minutes": "minutos",
-    "court": "Cancha"
+    "court": "Cancha",
+    "today": "Hoy",
+    "time": "Hora",
+    "searchByName": "Buscar por nombre",
+    "sportPadel": "Pádel",
+    "typeAll": "Todos los tipos",
+    "typeCourt": "Reserva de pista",
+    "typeTraining": "Entrenamiento",
+    "typeAITraining": "Entrenamiento con IA",
+    "typeTournament": "Torneo",
+    "upcoming": "Próximos",
+    "late": "Tardíos",
+    "noUpcomingBookings": "No hay reservas próximas",
+    "upcomingBookingsHint": "Tus reservas próximas en las próximas 2 horas aparecerán aquí"
   },
   "ParticipantResults": {
     "title": "Mis Resultados",

@@ -1469,7 +1469,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "Något gick fel!",
+    "tryAgain": "Försök igen",
+    "errorLoadingWallet": "Kunde inte ladda plånboksdata",
+    "loading": "Laddar plånbok..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1493,7 +1497,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "Idag",
+    "time": "Tid",
+    "searchByName": "Sök efter namn",
+    "sportPadel": "Padel",
+    "typeAll": "Alla typer",
+    "typeCourt": "Bokning av bana",
+    "typeTraining": "Träning",
+    "typeAITraining": "AI-träning",
+    "typeTournament": "Turnering",
+    "upcoming": "Kommande",
+    "late": "Försenad",
+    "noUpcomingBookings": "Inga kommande bokningar",
+    "upcomingBookingsHint": "Dina kommande bokningar inom de närmaste 2 timmarna visas här"
   },
   "ParticipantResults": {
     "title": "My Results",

@@ -1494,7 +1494,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "Etwas ist schief gelaufen!",
+    "tryAgain": "Erneut versuchen",
+    "errorLoadingWallet": "Fehler beim Laden der Brieftaschendaten",
+    "loading": "Brieftasche wird geladen..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1518,7 +1522,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "Heute",
+    "time": "Zeit",
+    "searchByName": "Nach Namen suchen",
+    "sportPadel": "Padel",
+    "typeAll": "Alle Typen",
+    "typeCourt": "Platzbuchung",
+    "typeTraining": "Training",
+    "typeAITraining": "KI-Training",
+    "typeTournament": "Turnier",
+    "upcoming": "Bevorstehend",
+    "late": "Verspätet",
+    "noUpcomingBookings": "Keine bevorstehenden Buchungen",
+    "upcomingBookingsHint": "Ihre bevorstehenden Buchungen in den nächsten 2 Stunden werden hier angezeigt"
   },
   "ParticipantResults": {
     "title": "My Results",

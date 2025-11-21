@@ -1468,7 +1468,11 @@
       "completed": "Completed",
       "pending": "Pending",
       "failed": "Failed"
-    }
+    },
+    "error": "حدث خطأ ما!",
+    "tryAgain": "حاول مرة أخرى",
+    "errorLoadingWallet": "فشل تحميل بيانات المحفظة",
+    "loading": "جارٍ تحميل المحفظة..."
   },
   "ParticipantSchedule": {
     "title": "My Schedule",
@@ -1492,7 +1496,20 @@
       "cancelled": "Cancelled"
     },
     "minutes": "minutes",
-    "court": "Court"
+    "court": "Court",
+    "today": "اليوم",
+    "time": "الوقت",
+    "searchByName": "البحث بالاسم",
+    "sportPadel": "بادل",
+    "typeAll": "جميع الأنواع",
+    "typeCourt": "حجز الملعب",
+    "typeTraining": "تدريب",
+    "typeAITraining": "تدريب بالذكاء الاصطناعي",
+    "typeTournament": "بطولة",
+    "upcoming": "القادمة",
+    "late": "متأخرة",
+    "noUpcomingBookings": "لا توجد حجوزات قادمة",
+    "upcomingBookingsHint": "ستظهر حجوزاتك القادمة في الساعتين القادمتين هنا"
   },
   "ParticipantResults": {
     "title": "My Results",
