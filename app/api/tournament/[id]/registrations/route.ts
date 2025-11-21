@@ -171,6 +171,7 @@ export async function GET(
         token: reg.token,
         paymentStatus: reg.payment_status || 'pending',
         paymentDate: reg.payment_date ? new Date(reg.payment_date).toISOString() : undefined,
+        locale: reg.locale || 'en',
         createdAt: reg.created_at.toISOString(),
         orderNumber: index + 1,
         isDemo: reg.token?.startsWith(`demo-${tournamentId}-`) || false,

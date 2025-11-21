@@ -1085,6 +1085,20 @@
       "paymentStatusUpdateError": "Failed to update payment status.",
       "totalParticipants": "Total: {count} participants"
     },
+    "participants": {
+      "sendEmail": "Send Email",
+      "sendEmailTo": "Send email to:",
+      "selectEmailTemplate": "Select Email Template",
+      "selectTemplate": "-- Select Template --",
+      "templateTournamentRegistration": "Tournament Registration - We got your registration",
+      "templateTournamentConfirmed": "Tournament Registration - Confirmed",
+      "templateWelcome": "Welcome to PadelO₂.com",
+      "templateEmailVerification": "Email Verification",
+      "send": "Send",
+      "sending": "Sending...",
+      "emailSent": "Email sent successfully",
+      "emailSendError": "Failed to send email"
+    },
     "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",

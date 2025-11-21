@@ -91,6 +91,23 @@ export async function POST(request: NextRequest) {
 
     const normalizedDemoCount = parseDemoParticipantsCount(demoParticipantsCount);
 
+    // Auto-translate description and eventSchedule if provided
+    let translatedDescription: Record<string, string> | undefined;
+    let translatedEventSchedule: Record<string, any> | undefined;
+    
+    if (description || eventSchedule) {
+      const sourceLocale = body.sourceLocale || 'en';
+      const { translateTournamentDescription, translateEventSchedule, storeTournamentTranslations } = await import('@/lib/translation-utils');
+      
+      if (description) {
+        translatedDescription = await translateTournamentDescription(description, sourceLocale);
+      }
+      
+      if (eventSchedule && Array.isArray(eventSchedule) && eventSchedule.length > 0) {
+        translatedEventSchedule = await translateEventSchedule(eventSchedule, sourceLocale);
+      }
+    }
+
     const tournament = await createTournament({
       name,
       description,
@@ -109,6 +126,15 @@ export async function POST(request: NextRequest) {
       registrationSettings,
       customCategories,
     });
+
+    // Store translations in database
+    if (translatedDescription || translatedEventSchedule) {
+      const { storeTournamentTranslations } = await import('@/lib/translation-utils');
+      await storeTournamentTranslations(tournament.id, {
+        description: translatedDescription,
+        eventSchedule: translatedEventSchedule,
+      });
+    }
 
     return NextResponse.json({ tournament }, { status: 201 });
   } catch (error: any) {

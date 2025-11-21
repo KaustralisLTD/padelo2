@@ -35,6 +35,7 @@ interface Participant {
   partnerPhone?: string;
   paymentStatus?: 'pending' | 'paid' | 'refunded';
   paymentDate?: string;
+  locale?: string;
 }
 
 export default function TournamentParticipantsPage() {
@@ -63,6 +64,9 @@ export default function TournamentParticipantsPage() {
   const [editingParticipant, setEditingParticipant] = useState<Participant | null>(null);
   const [editFormData, setEditFormData] = useState<Partial<Participant>>({});
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [emailParticipant, setEmailParticipant] = useState<Participant | null>(null);
+  const [selectedEmailTemplate, setSelectedEmailTemplate] = useState<string>('');
+  const [sendingEmail, setSendingEmail] = useState(false);
   
   // Фильтры и поиск
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -428,6 +432,42 @@ export default function TournamentParticipantsPage() {
       }
     } catch (err) {
       setError(tTournaments('paymentStatusUpdateError'));
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!token || !emailParticipant || !selectedEmailTemplate) return;
+
+    try {
+      setSendingEmail(true);
+      setError(null);
+      
+      const response = await fetch(`/api/admin/tournaments/${tournamentId}/participants/${emailParticipant.id}/send-email`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          template: selectedEmailTemplate,
+          locale: emailParticipant.locale || locale,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(t('participants.emailSent') || 'Email sent successfully');
+        setEmailParticipant(null);
+        setSelectedEmailTemplate('');
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        setError(data.error || t('participants.emailSendError') || 'Failed to send email');
+      }
+    } catch (err) {
+      setError(t('participants.emailSendError') || 'Failed to send email');
+    } finally {
+      setSendingEmail(false);
     }
   };
 
@@ -903,6 +943,18 @@ export default function TournamentParticipantsPage() {
                       <td className="px-3 py-2 text-xs">
                         <div className="flex items-center gap-1">
                           <button
+                            onClick={() => {
+                              setEmailParticipant(participant);
+                              setSelectedEmailTemplate('');
+                            }}
+                            className="p-1.5 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors"
+                            title={t('participants.sendEmail') || 'Send Email'}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                          </button>
+                          <button
                             onClick={() => handleEdit(participant)}
                             className="p-1.5 bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors"
                             title={tTournaments('edit')}
@@ -1292,6 +1344,83 @@ export default function TournamentParticipantsPage() {
                     className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
                   >
                     {tTournaments('save')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Send Email Modal */}
+        {emailParticipant && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
+              <div className="p-6 border-b border-border flex justify-between items-center">
+                <h3 className="text-2xl font-poppins font-bold gradient-text">
+                  {t('participants.sendEmail') || 'Send Email'}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmailParticipant(null);
+                    setSelectedEmailTemplate('');
+                  }}
+                  className="text-text-secondary hover:text-text transition-colors p-2 rounded-lg hover:bg-background"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div>
+                  <p className="text-sm text-text-secondary font-poppins mb-2">
+                    {t('participants.sendEmailTo') || 'Send email to:'}
+                  </p>
+                  <p className="text-text font-poppins font-semibold">
+                    {emailParticipant.firstName} {emailParticipant.lastName}
+                  </p>
+                  <p className="text-text-secondary font-poppins text-sm">
+                    {emailParticipant.email}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('participants.selectEmailTemplate') || 'Select Email Template'}
+                  </label>
+                  <select
+                    value={selectedEmailTemplate}
+                    onChange={(e) => setSelectedEmailTemplate(e.target.value)}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+                  >
+                    <option value="">{t('participants.selectTemplate') || '-- Select Template --'}</option>
+                    <option value="tournament_registration">{t('participants.templateTournamentRegistration') || 'Tournament Registration - We got your registration'}</option>
+                    <option value="tournament_confirmed">{t('participants.templateTournamentConfirmed') || 'Tournament Registration - Confirmed'}</option>
+                    <option value="welcome">{t('participants.templateWelcome') || 'Welcome to PadelO₂.com'}</option>
+                    <option value="email_verification">{t('participants.templateEmailVerification') || 'Email Verification'}</option>
+                  </select>
+                </div>
+
+                <div className="flex justify-end space-x-4 pt-4 border-t border-border">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmailParticipant(null);
+                      setSelectedEmailTemplate('');
+                    }}
+                    className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
+                  >
+                    {tTournaments('cancel')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSendEmail}
+                    disabled={!selectedEmailTemplate || sendingEmail}
+                    className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {sendingEmail ? (t('participants.sending') || 'Sending...') : (t('participants.send') || 'Send')}
                   </button>
                 </div>
               </div>
