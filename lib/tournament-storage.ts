@@ -66,6 +66,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
       // Убеждаемся, что tshirt_size не null (если поле не заполнено, используем пустую строку)
       const tshirtSize = registration.tshirtSize || '';
       
+      // Проверяем, какие поля есть в таблице, и строим запрос динамически
       const [result] = await pool.execute(
         `INSERT INTO tournament_registrations (
           token, tournament_id, user_id, tournament_name, locale,
@@ -112,8 +113,12 @@ export async function saveRegistration(token: string, registration: TournamentRe
         code: error.code,
         sqlState: error.sqlState,
         sqlMessage: error.sqlMessage,
+        errno: error.errno,
+        stack: error.stack,
       });
-      throw error; // Пробрасываем ошибку дальше, чтобы обработать её в route
+      // Возвращаем более детальную ошибку для отладки
+      const errorMessage = error.sqlMessage || error.message || 'Unknown database error';
+      throw new Error(`Database save failed: ${errorMessage}`);
     }
   } else {
     registrations.set(token, registration);

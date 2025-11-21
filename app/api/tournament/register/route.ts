@@ -40,28 +40,49 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
 }
 
 // Helper function to send confirmation email
-async function sendConfirmationEmail(email: string, confirmationUrl: string, tournamentName: string, locale: string = 'en') {
+async function sendConfirmationEmail(email: string, confirmationUrl: string, tournamentName: string, locale: string = 'en', firstName?: string, lastName?: string) {
   try {
+    // Import email template
+    const { getConfirmationEmailTemplate } = await import('@/lib/email-templates');
+    
     // Try Resend first
     if (process.env.RESEND_API_KEY) {
       const { Resend } = await import('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
       
-      await resend.emails.send({
-        from: process.env.SMTP_FROM || 'noreply@padelo2.com',
-        to: email,
-        subject: `Confirm your registration for ${tournamentName}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2>Tournament Registration Confirmation</h2>
-            <p>Thank you for registering for ${tournamentName}!</p>
-            <p>Please confirm your registration by clicking the link below:</p>
-            <p><a href="${confirmationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Confirm Registration</a></p>
-            <p>Or copy this link: ${confirmationUrl}</p>
-            <p>If you did not register for this tournament, please ignore this email.</p>
-          </div>
-        `,
+      const translations: Record<string, string> = {
+        en: `Confirm your registration for ${tournamentName}`,
+        ru: `Подтвердите регистрацию на ${tournamentName}`,
+        ua: `Підтвердіть реєстрацію на ${tournamentName}`,
+        es: `Confirma tu registro para ${tournamentName}`,
+        fr: `Confirmez votre inscription pour ${tournamentName}`,
+        de: `Bestätigen Sie Ihre Anmeldung für ${tournamentName}`,
+        it: `Conferma la tua registrazione per ${tournamentName}`,
+        ca: `Confirma el teu registre per a ${tournamentName}`,
+        nl: `Bevestig uw registratie voor ${tournamentName}`,
+        da: `Bekræft din registrering for ${tournamentName}`,
+        sv: `Bekräfta din registrering för ${tournamentName}`,
+        no: `Bekreft din registrering for ${tournamentName}`,
+        ar: `أكد تسجيلك لـ ${tournamentName}`,
+        zh: `确认您对 ${tournamentName} 的注册`
+      };
+      
+      const subject = translations[locale] || translations.en;
+      const html = getConfirmationEmailTemplate({
+        tournamentName,
+        confirmationUrl,
+        firstName,
+        lastName,
+        locale,
       });
+      
+      await resend.emails.send({
+        from: process.env.SMTP_FROM || 'PadelO₂ <noreply@padelo2.com>',
+        to: email,
+        subject,
+        html,
+      });
+      console.log(`[sendConfirmationEmail] Email sent via Resend to ${email}`);
       return;
     }
     
@@ -175,7 +196,14 @@ export async function POST(request: NextRequest) {
     
     // Отправляем email подтверждения
     try {
-      await sendConfirmationEmail(body.email, confirmationUrl, body.tournamentName, body.locale || 'en');
+      await sendConfirmationEmail(
+        body.email, 
+        confirmationUrl, 
+        body.tournamentName, 
+        body.locale || 'en',
+        body.firstName,
+        body.lastName
+      );
       console.log(`[POST /api/tournament/register] Confirmation email sent to: ${body.email}`);
     } catch (emailError: any) {
       console.error('[POST /api/tournament/register] Error sending email:', emailError);
