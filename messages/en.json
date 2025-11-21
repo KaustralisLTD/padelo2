@@ -977,6 +977,8 @@
       "priceDoubleCategory": "Price (Two Categories)",
       "priceDoubleCategoryDesc": "Price per category if participating in two categories (e.g., 25 EUR per category)",
       "status": "Status",
+      "statusUpdated": "Status updated successfully",
+      "clickToEditStatus": "Click to edit status",
       "registrationTotal": "Registered",
       "registrationPaid": "Paid",
       "registrationSettings": "Registration Settings",
