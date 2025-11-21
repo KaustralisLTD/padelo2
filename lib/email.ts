@@ -219,85 +219,40 @@ export async function sendEmailVerification(
 
 /**
  * Send welcome email after email verification
+ * Uses new email template from email-templates.ts
  */
 export async function sendWelcomeEmail(
   email: string,
   firstName: string,
   locale: string = 'en'
 ): Promise<boolean> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com';
+  const { getWelcomeEmailTemplate } = await import('@/lib/email-templates');
   
-  const translations: Record<string, { subject: string; greeting: string; message: string; button: string }> = {
-    en: {
-      subject: 'Welcome to PadelO2!',
-      greeting: `Welcome, ${firstName}!`,
-      message: 'Your email has been verified successfully. You can now access all features of PadelO2 and register for tournaments.',
-      button: 'Go to Dashboard'
-    },
-    uk: {
-      subject: 'Ласкаво просимо до PadelO2!',
-      greeting: `Ласкаво просимо, ${firstName}!`,
-      message: 'Ваш email успішно підтверджено. Тепер ви можете отримати доступ до всіх функцій PadelO2 та реєструватися на турніри.',
-      button: 'Перейти до Панелі'
-    },
-    ru: {
-      subject: 'Добро пожаловать в PadelO2!',
-      greeting: `Добро пожаловать, ${firstName}!`,
-      message: 'Ваш email успешно подтвержден. Теперь вы можете получить доступ ко всем функциям PadelO2 и регистрироваться на турниры.',
-      button: 'Перейти в Панель'
-    }
+  const html = getWelcomeEmailTemplate({
+    firstName,
+    locale,
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Welcome to PadelO₂.com',
+    ru: 'Добро пожаловать на PadelO₂.com',
+    ua: 'Ласкаво просимо на PadelO₂.com',
+    es: 'Bienvenido a PadelO₂.com',
+    fr: 'Bienvenue sur PadelO₂.com',
+    de: 'Willkommen bei PadelO₂.com',
+    it: 'Benvenuto su PadelO₂.com',
+    ca: 'Benvingut a PadelO₂.com',
+    nl: 'Welkom bij PadelO₂.com',
+    da: 'Velkommen til PadelO₂.com',
+    sv: 'Välkommen till PadelO₂.com',
+    no: 'Velkommen til PadelO₂.com',
+    ar: 'مرحبا بك في PadelO₂.com',
+    zh: '欢迎来到 PadelO₂.com'
   };
-  
-  const t = translations[locale] || translations.en;
-  
-  const html = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px;">
-        <tr>
-          <td align="center">
-            <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
-              <tr>
-                <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center;">
-                  <h1 style="color: white; margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.5px;">🎾 PadelO2</h1>
-                </td>
-              </tr>
-              <tr>
-                <td style="padding: 40px 30px;">
-                  <h2 style="color: #1a1a1a; margin: 0 0 20px 0; font-size: 28px; font-weight: 700;">${t.greeting}</h2>
-                  <p style="color: #4a4a4a; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">${t.message}</p>
-                  <div style="text-align: center; margin: 40px 0;">
-                    <a href="${siteUrl}/${locale}/dashboard" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 40px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">${t.button}</a>
-                  </div>
-                  <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-top: 30px;">
-                    <p style="color: #4a4a4a; font-size: 14px; margin: 0; line-height: 1.6;">
-                      <strong>🎉 Добро пожаловать в сообщество PadelO2!</strong><br>
-                      Теперь вы можете регистрироваться на турниры, отслеживать результаты и общаться с другими игроками.
-                    </p>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td style="background: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e8e8e8;">
-                  <p style="color: #999; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} PadelO2. Все права защищены.</p>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </body>
-    </html>
-  `;
 
   return await sendEmail({
     to: email,
-    subject: t.subject,
+    subject: translations[locale] || translations.en,
     html,
   });
 }
@@ -414,6 +369,313 @@ export async function sendRoleChangeNotification(
   return await sendEmail({
     to: email,
     subject: t.subject,
+    html,
+  });
+}
+
+/**
+ * Send password reset email
+ */
+export async function sendPasswordResetEmail(
+  email: string,
+  firstName: string,
+  resetToken: string,
+  locale: string = 'en'
+): Promise<boolean> {
+  const { getPasswordResetEmailTemplate } = await import('@/lib/email-templates');
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+  const resetUrl = `${siteUrl}/${locale}/reset-password?token=${resetToken}`;
+
+  const html = getPasswordResetEmailTemplate({
+    firstName,
+    resetUrl,
+    locale,
+    expiresIn: '1 hour',
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Reset your password - PadelO₂',
+    ru: 'Сброс пароля - PadelO₂',
+    ua: 'Скидання пароля - PadelO₂',
+    es: 'Restablecer tu contraseña - PadelO₂',
+    fr: 'Réinitialiser votre mot de passe - PadelO₂',
+    de: 'Passwort zurücksetzen - PadelO₂',
+    it: 'Reimposta la tua password - PadelO₂',
+    ca: 'Restablir la teva contrasenya - PadelO₂',
+    nl: 'Reset uw wachtwoord - PadelO₂',
+    da: 'Nulstil din adgangskode - PadelO₂',
+    sv: 'Återställ ditt lösenord - PadelO₂',
+    no: 'Tilbakestill passordet ditt - PadelO₂',
+    ar: 'إعادة تعيين كلمة المرور - PadelO₂',
+    zh: '重置您的密码 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: email,
+    subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send password changed notification
+ */
+export async function sendPasswordChangedEmail(
+  email: string,
+  firstName: string,
+  locale: string = 'en',
+  timestamp?: string
+): Promise<boolean> {
+  const { getPasswordChangedEmailTemplate } = await import('@/lib/email-templates');
+
+  const html = getPasswordChangedEmailTemplate({
+    firstName,
+    locale,
+    timestamp,
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Your password has been changed - PadelO₂',
+    ru: 'Ваш пароль был изменен - PadelO₂',
+    ua: 'Ваш пароль було змінено - PadelO₂',
+    es: 'Tu contraseña ha sido cambiada - PadelO₂',
+    fr: 'Votre mot de passe a été modifié - PadelO₂',
+    de: 'Ihr Passwort wurde geändert - PadelO₂',
+    it: 'La tua password è stata modificata - PadelO₂',
+    ca: 'La teva contrasenya ha estat canviada - PadelO₂',
+    nl: 'Uw wachtwoord is gewijzigd - PadelO₂',
+    da: 'Din adgangskode er blevet ændret - PadelO₂',
+    sv: 'Ditt lösenord har ändrats - PadelO₂',
+    no: 'Passordet ditt har blitt endret - PadelO₂',
+    ar: 'تم تغيير كلمة المرور الخاصة بك - PadelO₂',
+    zh: '您的密码已更改 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: email,
+    subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send new device login notification
+ */
+export async function sendNewDeviceLoginEmail(
+  email: string,
+  firstName: string,
+  deviceInfo?: string,
+  location?: string,
+  ipAddress?: string,
+  locale: string = 'en'
+): Promise<boolean> {
+  const { getNewDeviceLoginEmailTemplate } = await import('@/lib/email-templates');
+
+  const html = getNewDeviceLoginEmailTemplate({
+    firstName,
+    deviceInfo,
+    location,
+    ipAddress,
+    timestamp: new Date().toLocaleString(locale),
+    locale,
+  });
+
+  const translations: Record<string, string> = {
+    en: 'New device login detected - PadelO₂',
+    ru: 'Обнаружен вход с нового устройства - PadelO₂',
+    ua: 'Виявлено вхід з нового пристрою - PadelO₂',
+    es: 'Inicio de sesión desde nuevo dispositivo detectado - PadelO₂',
+    fr: 'Connexion depuis un nouvel appareil détectée - PadelO₂',
+    de: 'Anmeldung von neuem Gerät erkannt - PadelO₂',
+    it: 'Accesso da nuovo dispositivo rilevato - PadelO₂',
+    ca: 'Inici de sessió des de nou dispositiu detectat - PadelO₂',
+    nl: 'Aanmelding vanaf nieuw apparaat gedetecteerd - PadelO₂',
+    da: 'Login fra ny enhed registreret - PadelO₂',
+    sv: 'Inloggning från ny enhet upptäckt - PadelO₂',
+    no: 'Innlogging fra ny enhet oppdaget - PadelO₂',
+    ar: 'تم اكتشاف تسجيل الدخول من جهاز جديد - PadelO₂',
+    zh: '检测到新设备登录 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: email,
+    subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send email change notification to old address
+ */
+export async function sendChangeEmailOldAddressEmail(
+  oldEmail: string,
+  newEmail: string,
+  firstName: string,
+  cancelToken: string,
+  locale: string = 'en'
+): Promise<boolean> {
+  const { getChangeEmailOldAddressEmailTemplate } = await import('@/lib/email-templates');
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+  const cancelUrl = `${siteUrl}/${locale}/cancel-email-change?token=${cancelToken}`;
+
+  const html = getChangeEmailOldAddressEmailTemplate({
+    firstName,
+    oldEmail,
+    newEmail,
+    cancelUrl,
+    locale,
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Email change requested - PadelO₂',
+    ru: 'Запрос на изменение email - PadelO₂',
+    ua: 'Запит на зміну email - PadelO₂',
+    es: 'Solicitud de cambio de correo electrónico - PadelO₂',
+    fr: 'Demande de changement d\'e-mail - PadelO₂',
+    de: 'E-Mail-Änderung angefordert - PadelO₂',
+    it: 'Richiesta di modifica email - PadelO₂',
+    ca: 'Sol·licitud de canvi de correu electrònic - PadelO₂',
+    nl: 'E-mailwijziging aangevraagd - PadelO₂',
+    da: 'E-mailændring anmodet - PadelO₂',
+    sv: 'E-poständring begärd - PadelO₂',
+    no: 'E-postendring forespurt - PadelO₂',
+    ar: 'تم طلب تغيير البريد الإلكتروني - PadelO₂',
+    zh: '请求更改电子邮件 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: oldEmail,
+    subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send email change confirmation to new address
+ */
+export async function sendChangeEmailNewAddressEmail(
+  newEmail: string,
+  firstName: string,
+  confirmToken: string,
+  locale: string = 'en'
+): Promise<boolean> {
+  const { getChangeEmailNewAddressEmailTemplate } = await import('@/lib/email-templates');
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+  const confirmUrl = `${siteUrl}/${locale}/confirm-email-change?token=${confirmToken}`;
+
+  const html = getChangeEmailNewAddressEmailTemplate({
+    firstName,
+    newEmail,
+    confirmUrl,
+    locale,
+    expiresIn: '24 hours',
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Confirm your new email address - PadelO₂',
+    ru: 'Подтвердите ваш новый email адрес - PadelO₂',
+    ua: 'Підтвердіть вашу нову email адресу - PadelO₂',
+    es: 'Confirma tu nueva dirección de correo electrónico - PadelO₂',
+    fr: 'Confirmez votre nouvelle adresse e-mail - PadelO₂',
+    de: 'Bestätigen Sie Ihre neue E-Mail-Adresse - PadelO₂',
+    it: 'Conferma il tuo nuovo indirizzo email - PadelO₂',
+    ca: 'Confirma la teva nova adreça de correu electrònic - PadelO₂',
+    nl: 'Bevestig uw nieuwe e-mailadres - PadelO₂',
+    da: 'Bekræft din nye e-mailadresse - PadelO₂',
+    sv: 'Bekräfta din nya e-postadress - PadelO₂',
+    no: 'Bekreft din nye e-postadresse - PadelO₂',
+    ar: 'أكد عنوان بريدك الإلكتروني الجديد - PadelO₂',
+    zh: '确认您的新电子邮件地址 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: newEmail,
+    subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send account deletion confirmation email
+ */
+export async function sendAccountDeletionConfirmEmail(
+  email: string,
+  firstName: string,
+  confirmToken: string,
+  locale: string = 'en'
+): Promise<boolean> {
+  const { getAccountDeletionConfirmEmailTemplate } = await import('@/lib/email-templates');
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+  const confirmUrl = `${siteUrl}/${locale}/confirm-account-deletion?token=${confirmToken}`;
+
+  const html = getAccountDeletionConfirmEmailTemplate({
+    firstName,
+    confirmUrl,
+    locale,
+    expiresIn: '7 days',
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Confirm account deletion - PadelO₂',
+    ru: 'Подтверждение удаления аккаунта - PadelO₂',
+    ua: 'Підтвердження видалення акаунта - PadelO₂',
+    es: 'Confirmar eliminación de cuenta - PadelO₂',
+    fr: 'Confirmer la suppression du compte - PadelO₂',
+    de: 'Kontolöschung bestätigen - PadelO₂',
+    it: 'Conferma eliminazione account - PadelO₂',
+    ca: 'Confirmar eliminació de compte - PadelO₂',
+    nl: 'Accountverwijdering bevestigen - PadelO₂',
+    da: 'Bekræft kontosletning - PadelO₂',
+    sv: 'Bekräfta kontoborttagning - PadelO₂',
+    no: 'Bekreft kontosletting - PadelO₂',
+    ar: 'تأكيد حذف الحساب - PadelO₂',
+    zh: '确认删除账户 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: email,
+    subject: translations[locale] || translations.en,
+    html,
+  });
+}
+
+/**
+ * Send account deleted final notice
+ */
+export async function sendAccountDeletedEmail(
+  email: string,
+  firstName: string,
+  locale: string = 'en',
+  deletedAt?: string
+): Promise<boolean> {
+  const { getAccountDeletedEmailTemplate } = await import('@/lib/email-templates');
+
+  const html = getAccountDeletedEmailTemplate({
+    firstName,
+    deletedAt,
+    locale,
+  });
+
+  const translations: Record<string, string> = {
+    en: 'Your account has been deleted - PadelO₂',
+    ru: 'Ваш аккаунт был удален - PadelO₂',
+    ua: 'Ваш акаунт було видалено - PadelO₂',
+    es: 'Tu cuenta ha sido eliminada - PadelO₂',
+    fr: 'Votre compte a été supprimé - PadelO₂',
+    de: 'Ihr Konto wurde gelöscht - PadelO₂',
+    it: 'Il tuo account è stato eliminato - PadelO₂',
+    ca: 'El teu compte ha estat eliminat - PadelO₂',
+    nl: 'Uw account is verwijderd - PadelO₂',
+    da: 'Din konto er blevet slettet - PadelO₂',
+    sv: 'Ditt konto har tagits bort - PadelO₂',
+    no: 'Kontoen din er blitt slettet - PadelO₂',
+    ar: 'تم حذف حسابك - PadelO₂',
+    zh: '您的账户已被删除 - PadelO₂'
+  };
+
+  return await sendEmail({
+    to: email,
+    subject: translations[locale] || translations.en,
     html,
   });
 }
