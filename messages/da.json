@@ -681,7 +681,11 @@
     "samePartnerError": "Den samme partner kan ikke være i forskellige kategorier",
     "selectFromParticipants": "Vælg fra deltagere",
     "selectPartner": "Vælg partner",
-    "enterManually": "Indtast manuelt"
+    "enterManually": "Indtast manuelt",
+    "delete": "Slet",
+    "confirmDeleteParticipant": "Er du sikker på, at du vil slette deltageren {name}? Denne handling kan ikke fortrydes.",
+    "participantDeleted": "Deltager slettet med succes.",
+    "participantDeleteError": "Fejl ved sletning af deltager."
   },
   "Contact": {
     "title": "Kontakt Os",
@@ -879,9 +883,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "Er du sikker på, at du vil slette deltageren {name}? Denne handling kan ikke fortrydes.",
+      "participantDeleted": "Deltager slettet med succes.",
+      "participantDeleteError": "Fejl ved sletning af deltager."
     },
     "staff": {
       "assignAccess": "Tildel Adgang",

@@ -681,7 +681,11 @@
     "samePartnerError": "同一合作伙伴不能出现在不同类别中",
     "selectFromParticipants": "从参与者中选择",
     "selectPartner": "选择合作伙伴",
-    "enterManually": "手动输入"
+    "enterManually": "手动输入",
+    "delete": "删除",
+    "confirmDeleteParticipant": "您确定要删除参与者 {name} 吗？此操作无法撤销。",
+    "participantDeleted": "参与者已成功删除。",
+    "participantDeleteError": "删除参与者时出错。"
   },
   "Contact": {
     "title": "联系我们",
@@ -879,9 +883,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "您确定要删除参与者 {name} 吗？此操作无法撤销。",
+      "participantDeleted": "参与者已成功删除。",
+      "participantDeleteError": "删除参与者时出错。"
     },
     "staff": {
       "assignAccess": "分配访问权限",

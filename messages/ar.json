@@ -681,7 +681,11 @@
     "samePartnerError": "لا يمكن أن يكون نفس الشريك في فئات مختلفة",
     "selectFromParticipants": "اختر من المشاركين",
     "selectPartner": "اختر الشريك",
-    "enterManually": "أدخل يدوياً"
+    "enterManually": "أدخل يدوياً",
+    "delete": "حذف",
+    "confirmDeleteParticipant": "هل أنت متأكد أنك تريد حذف المشارك {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+    "participantDeleted": "تم حذف المشارك بنجاح.",
+    "participantDeleteError": "خطأ في حذف المشارك."
   },
   "Contact": {
     "title": "اتصل بنا",
@@ -872,9 +876,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "هل أنت متأكد أنك تريد حذف المشارك {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "participantDeleted": "تم حذف المشارك بنجاح.",
+      "participantDeleteError": "خطأ في حذف المشارك."
     },
     "staff": {
       "assignAccess": "تعيين الوصول",

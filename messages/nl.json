@@ -681,7 +681,11 @@
     "samePartnerError": "Dezelfde partner kan niet in verschillende categorieën zijn",
     "selectFromParticipants": "Selecteren uit deelnemers",
     "selectPartner": "Partner selecteren",
-    "enterManually": "Handmatig invoeren"
+    "enterManually": "Handmatig invoeren",
+    "delete": "Verwijderen",
+    "confirmDeleteParticipant": "Weet u zeker dat u deelnemer {name} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+    "participantDeleted": "Deelnemer succesvol verwijderd.",
+    "participantDeleteError": "Fout bij het verwijderen van deelnemer."
   },
   "Contact": {
     "title": "Neem Contact Op",
@@ -836,9 +840,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "Weet u zeker dat u deelnemer {name} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
+      "participantDeleted": "Deelnemer succesvol verwijderd.",
+      "participantDeleteError": "Fout bij het verwijderen van deelnemer."
     },
     "staff": {
       "assignAccess": "Toegang Toewijzen",

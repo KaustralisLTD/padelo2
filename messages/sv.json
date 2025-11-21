@@ -681,7 +681,11 @@
     "samePartnerError": "Samma partner kan inte vara i olika kategorier",
     "selectFromParticipants": "Välj från deltagare",
     "selectPartner": "Välj partner",
-    "enterManually": "Ange manuellt"
+    "enterManually": "Ange manuellt",
+    "delete": "Radera",
+    "confirmDeleteParticipant": "Är du säker på att du vill radera deltagaren {name}? Denna åtgärd kan inte ångras.",
+    "participantDeleted": "Deltagare raderad framgångsrikt.",
+    "participantDeleteError": "Fel vid radering av deltagare."
   },
   "Contact": {
     "title": "Kontakta Oss",
@@ -879,9 +883,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "Är du säker på att du vill radera deltagaren {name}? Denna åtgärd kan inte ångras.",
+      "participantDeleted": "Deltagare raderad framgångsrikt.",
+      "participantDeleteError": "Fel vid radering av deltagare."
     },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",

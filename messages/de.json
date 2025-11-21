@@ -681,7 +681,11 @@
     "samePartnerError": "Derselbe Partner kann nicht in verschiedenen Kategorien sein",
     "selectFromParticipants": "Aus Teilnehmern auswählen",
     "selectPartner": "Partner auswählen",
-    "enterManually": "Manuell eingeben"
+    "enterManually": "Manuell eingeben",
+    "delete": "Löschen",
+    "confirmDeleteParticipant": "Sind Sie sicher, dass Sie den Teilnehmer {name} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "participantDeleted": "Teilnehmer erfolgreich gelöscht.",
+    "participantDeleteError": "Fehler beim Löschen des Teilnehmers."
   },
   "Contact": {
     "title": "Kontaktieren Sie Uns",
@@ -838,9 +842,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "Sind Sie sicher, dass Sie den Teilnehmer {name} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "participantDeleted": "Teilnehmer erfolgreich gelöscht.",
+      "participantDeleteError": "Fehler beim Löschen des Teilnehmers."
     },
     "staff": {
       "assignAccess": "Zugriff Zuweisen",

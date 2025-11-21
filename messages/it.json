@@ -681,7 +681,11 @@
     "samePartnerError": "Lo stesso partner non può essere in diverse categorie",
     "selectFromParticipants": "Seleziona dai partecipanti",
     "selectPartner": "Seleziona partner",
-    "enterManually": "Inserisci manualmente"
+    "enterManually": "Inserisci manualmente",
+    "delete": "Elimina",
+    "confirmDeleteParticipant": "Sei sicuro di voler eliminare il partecipante {name}? Questa azione non può essere annullata.",
+    "participantDeleted": "Partecipante eliminato con successo.",
+    "participantDeleteError": "Errore durante l'eliminazione del partecipante."
   },
   "Contact": {
     "title": "Contattaci",
@@ -879,9 +883,9 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "confirmDeleteParticipant": "Sei sicuro di voler eliminare il partecipante {name}? Questa azione non può essere annullata.",
+      "participantDeleted": "Partecipante eliminato con successo.",
+      "participantDeleteError": "Errore durante l'eliminazione del partecipante."
     },
     "staff": {
       "assignAccess": "Assegna Accesso",
