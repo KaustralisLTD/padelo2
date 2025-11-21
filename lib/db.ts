@@ -467,6 +467,11 @@ export async function initDatabase() {
   } catch (e: any) {
     if (!e.message.includes('Duplicate column name')) throw e;
   }
+  try {
+    await pool.execute('ALTER TABLE tournaments ADD COLUMN translations JSON DEFAULT NULL COMMENT "Translations for description and eventSchedule: {description: {locale: text}, eventSchedule: {locale: array}}"');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
 
   // Create sessions table for storing user sessions
   await pool.execute(`
