@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams, useLocale } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import Link from 'next/link';
 
 function VerifyEmailContent() {
