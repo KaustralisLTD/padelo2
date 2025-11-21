@@ -562,7 +562,159 @@ git push origin main
 
 ---
 
+---
+
+## 📧 Email Шаблоны - Инструкция по редактированию
+
+### Основной файл шаблонов
+**Файл**: `lib/email-templates.ts`
+
+Этот файл содержит все email шаблоны для системы. При создании новых шаблонов или изменении существующих, используйте этот файл как основу.
+
+### Структура шаблона
+
+#### 1. Интерфейс данных
+```typescript
+export interface EmailTemplateData {
+  tournamentName: string;
+  confirmationUrl: string;
+  firstName?: string;
+  lastName?: string;
+  locale?: string;
+}
+```
+
+#### 2. Функция шаблона
+```typescript
+export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
+  const { tournamentName, confirmationUrl, firstName, lastName, locale = 'en' } = data;
+  // ... логика шаблона
+}
+```
+
+#### 3. Переводы
+Все переводы хранятся в объекте `translations` внутри функции шаблона:
+```typescript
+const translations: Record<string, Record<string, string>> = {
+  en: { /* английские переводы */ },
+  ru: { /* русские переводы */ },
+  ua: { /* украинские переводы */ },
+  // ... остальные языки (es, fr, de, it, ca, nl, da, sv, no, ar, zh)
+};
+```
+
+### Как добавить новый email шаблон
+
+1. **Создайте интерфейс для данных**:
+```typescript
+export interface NewEmailTemplateData {
+  // ваши поля
+  userName: string;
+  locale?: string;
+}
+```
+
+2. **Создайте функцию шаблона**:
+```typescript
+export function getNewEmailTemplate(data: NewEmailTemplateData): string {
+  const { userName, locale = 'en' } = data;
+  
+  // Добавьте переводы для всех 14 языков
+  const translations: Record<string, Record<string, string>> = {
+    en: { /* ... */ },
+    ru: { /* ... */ },
+    // ... все языки
+  };
+  
+  const t = translations[locale] || translations.en;
+  
+  // Верните HTML шаблон
+  return `<!DOCTYPE html>...`;
+}
+```
+
+3. **Используйте единый стиль дизайна**:
+   - Радиальный градиент фона: `background: radial-gradient(circle at 50% 0%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0))`
+   - Основной контейнер: `max-width: 600px`, `margin: 0 auto`
+   - Цвета: используйте цвета из темы сайта (primary, accent)
+   - Шрифты: `font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
+
+4. **Добавьте переводы для всех 14 языков**:
+   - en (English), ru (Русский), ua (Українська), es (Español), fr (Français), de (Deutsch), it (Italiano), ca (Català), nl (Nederlands), da (Dansk), sv (Svenska), no (Norsk), ar (العربية), zh (中文)
+
+### Как использовать шаблон в API
+
+```typescript
+import { getConfirmationEmailTemplate } from '@/lib/email-templates';
+import { sendEmail } from '@/lib/email';
+
+// В вашем API route
+const html = getConfirmationEmailTemplate({
+  tournamentName: 'UA PADEL OPEN',
+  confirmationUrl: 'https://padelo2.com/en/tournament/confirmation?token=...',
+  firstName: 'John',
+  lastName: 'Doe',
+  locale: 'en',
+});
+
+await sendEmail({
+  to: 'user@example.com',
+  subject: 'Confirm your registration',
+  html,
+});
+```
+
+### Важные моменты при редактировании
+
+1. **Всегда добавляйте переводы для всех 14 языков** - даже если временно используете английский текст
+2. **Используйте inline стили** - многие email клиенты не поддерживают внешние CSS
+3. **Тестируйте на разных устройствах** - используйте адаптивный дизайн
+4. **Проверяйте отображение в разных email клиентах** - Gmail, Outlook, Apple Mail
+5. **Сохраняйте единый стиль** - используйте те же цвета, шрифты и структуру, что и в основном шаблоне
+
+### Структура HTML шаблона (рекомендуемая)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; background: radial-gradient(...);">
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <!-- Основной контейнер -->
+        <table width="600" cellpadding="0" cellspacing="0" style="background: white; border-radius: 12px;">
+          <!-- Header с логотипом -->
+          <!-- Контент -->
+          <!-- Footer -->
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+```
+
+### Где используются email шаблоны
+
+- `app/api/tournament/register/route.ts` - отправка подтверждения регистрации
+- `lib/email.ts` - функции отправки email (sendEmail, sendContactFormEmail, etc.)
+
+### Скрипты для добавления переводов
+
+Если нужно добавить новые ключи переводов в email шаблоны, используйте скрипт:
+```bash
+node scripts/add-email-translations.js
+```
+
+Создайте скрипт по аналогии с `scripts/add-thankYouFor-translations.js`
+
+---
+
 *План создан: 2025-11-14*  
-*Последнее обновление: 2025-01-XX*  
+*Последнее обновление: 2025-01-21*  
 *Приоритет: Критические проблемы → UX → Новые функции*
 
