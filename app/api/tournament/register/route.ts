@@ -206,10 +206,11 @@ export async function POST(request: NextRequest) {
     }
     
     // Отправляем разные письма в зависимости от верификации email
+    let confirmationUrl: string | undefined;
     try {
       if (!emailVerified) {
         // Если email НЕ верифицирован - отправляем письмо с верификацией
-        const confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/tournament/confirmation?token=${token}`;
+        confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/tournament/confirmation?token=${token}`;
         await sendConfirmationEmail(
           body.email, 
           confirmationUrl, 
@@ -265,7 +266,7 @@ export async function POST(request: NextRequest) {
       success: true,
       token,
       message: 'Registration submitted successfully. Please check your email for confirmation.',
-      confirmationUrl, // Возвращаем URL для отладки
+      ...(confirmationUrl && { confirmationUrl }), // Возвращаем URL для отладки только если он был создан
     });
   } catch (error) {
     console.error('Registration error:', error);
