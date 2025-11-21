@@ -312,7 +312,11 @@
       "partnerRequiredForCategory": "Partenaire requis pour {category}",
       "chooseFile": "Choisir un fichier",
       "photoHint": "Maximum 5 Mo. Formats JPG, PNG.",
-      "removeFile": "Supprimer"
+      "removeFile": "Supprimer",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
     },
     "confirmation": {
       "title": "Inscription Confirmée",
@@ -339,7 +343,13 @@
       "partnerInfo": "Informations du Partenaire",
       "photoUpload": "Téléchargement de Photo",
       "photoInstructions": "Veuillez télécharger votre photo. Le fichier doit être nommé: Prénom_Nom.jpg",
-      "uploadPhoto": "Télécharger la Photo"
+      "uploadPhoto": "Télécharger la Photo",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "tournamentDetails": {
       "title": "Détails du Tournoi",

@@ -26,7 +26,7 @@ export default function ConfirmationContent({ token }: ConfirmationContentProps)
           const data = await response.json();
           setRegistration(data.registration);
           
-          // If not already confirmed, confirm the registration
+          // If not already confirmed, confirm the registration (только когда пользователь переходит по ссылке из письма)
           if (!data.registration.confirmed) {
             const confirmResponse = await fetch('/api/tournament/confirm', {
               method: 'POST',

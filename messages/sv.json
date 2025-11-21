@@ -312,7 +312,11 @@
       "partnerRequiredForCategory": "Partner krävs för {category}",
       "chooseFile": "Välj fil",
       "photoHint": "Maximalt 5 MB. Format JPG, PNG.",
-      "removeFile": "Ta bort"
+      "removeFile": "Ta bort",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
     },
     "confirmation": {
       "title": "Registrering Bekräftad",
@@ -339,7 +343,13 @@
       "partnerInfo": "Partnerinformation",
       "photoUpload": "Foto Uppladdning",
       "photoInstructions": "Ladda upp din foto. Filen ska heta: Förnamn_Efternamn.jpg",
-      "uploadPhoto": "Ladda Upp Foto"
+      "uploadPhoto": "Ladda Upp Foto",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "tournamentDetails": {
       "title": "Turneringsdetaljer",

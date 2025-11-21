@@ -312,7 +312,11 @@
       "partnerRequiredForCategory": "شريك مطلوب لـ {category}",
       "chooseFile": "اختر الملف",
       "photoHint": "الحد الأقصى 5 ميجابايت. صيغ JPG، PNG.",
-      "removeFile": "إزالة"
+      "removeFile": "إزالة",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
     },
     "confirmation": {
       "title": "تم تأكيد التسجيل",
@@ -339,7 +343,13 @@
       "partnerInfo": "معلومات الشريك",
       "photoUpload": "تحميل الصورة",
       "photoInstructions": "يرجى تحميل صورتك. يجب أن يكون اسم الملف: الاسم_اللقب.jpg",
-      "uploadPhoto": "تحميل الصورة"
+      "uploadPhoto": "تحميل الصورة",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "tournamentDetails": {
       "title": "تفاصيل البطولة",

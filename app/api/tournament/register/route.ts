@@ -287,3 +287,150 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * PATCH - обновить регистрацию по токену (для участника)
+ */
+export async function PATCH(request: NextRequest) {
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const token = searchParams.get('token');
+    
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Token required' },
+        { status: 400 }
+      );
+    }
+    
+    // Получаем регистрацию по токену
+    const { getRegistration } = await import('@/lib/tournament-storage');
+    const registration = await getRegistration(token);
+    
+    if (!registration) {
+      return NextResponse.json(
+        { error: 'Registration not found' },
+        { status: 404 }
+      );
+    }
+    
+    const body = await request.json();
+    const pool = getDbPool();
+    
+    // Формируем UPDATE запрос динамически
+    const updates: string[] = [];
+    const values: any[] = [];
+    
+    if (body.firstName !== undefined) {
+      updates.push('first_name = ?');
+      values.push(body.firstName);
+    }
+    if (body.lastName !== undefined) {
+      updates.push('last_name = ?');
+      values.push(body.lastName);
+    }
+    if (body.email !== undefined) {
+      updates.push('email = ?');
+      values.push(body.email);
+    }
+    if (body.phone !== undefined) {
+      updates.push('phone = ?');
+      values.push(body.phone);
+    }
+    if (body.telegram !== undefined) {
+      updates.push('telegram = ?');
+      values.push(body.telegram);
+    }
+    if (body.tshirtSize !== undefined) {
+      updates.push('tshirt_size = ?');
+      values.push(body.tshirtSize);
+    }
+    if (body.message !== undefined) {
+      updates.push('message = ?');
+      values.push(body.message);
+    }
+    if (body.categories !== undefined) {
+      updates.push('categories = ?');
+      values.push(JSON.stringify(body.categories));
+    }
+    
+    // Обновление партнера
+    if (body.partner !== undefined) {
+      if (body.partner === null) {
+        updates.push('partner_name = NULL, partner_email = NULL, partner_phone = NULL, partner_tshirt_size = NULL, partner_photo_name = NULL, partner_photo_data = NULL');
+      } else {
+        if (body.partner.name !== undefined) {
+          updates.push('partner_name = ?');
+          values.push(body.partner.name);
+        }
+        if (body.partner.email !== undefined) {
+          updates.push('partner_email = ?');
+          values.push(body.partner.email);
+        }
+        if (body.partner.phone !== undefined) {
+          updates.push('partner_phone = ?');
+          values.push(body.partner.phone);
+        }
+        if (body.partner.tshirtSize !== undefined) {
+          updates.push('partner_tshirt_size = ?');
+          values.push(body.partner.tshirtSize);
+        }
+        if (body.partner.photoName !== undefined) {
+          updates.push('partner_photo_name = ?');
+          values.push(body.partner.photoName);
+        }
+        if (body.partner.photoData !== undefined) {
+          updates.push('partner_photo_data = ?');
+          values.push(body.partner.photoData);
+        }
+      }
+    }
+    
+    // Обновление партнеров для категорий
+    if (body.categoryPartners !== undefined) {
+      updates.push('category_partners = ?');
+      values.push(JSON.stringify(body.categoryPartners));
+    }
+    
+    // Обновление фото пользователя
+    if (body.userPhoto !== undefined) {
+      if (body.userPhoto === null) {
+        updates.push('user_photo_name = NULL, user_photo_data = NULL');
+      } else {
+        if (body.userPhoto.name !== undefined) {
+          updates.push('user_photo_name = ?');
+          values.push(body.userPhoto.name);
+        }
+        if (body.userPhoto.data !== undefined) {
+          updates.push('user_photo_data = ?');
+          values.push(body.userPhoto.data);
+        }
+      }
+    }
+    
+    if (updates.length === 0) {
+      return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
+    }
+    
+    values.push(token);
+    
+    await pool.execute(
+      `UPDATE tournament_registrations SET ${updates.join(', ')} WHERE token = ?`,
+      values
+    );
+    
+    // Получаем обновленную регистрацию
+    const updatedRegistration = await getRegistration(token);
+    
+    return NextResponse.json({ 
+      success: true,
+      registration: updatedRegistration 
+    });
+  } catch (error: any) {
+    console.error('[PATCH /api/tournament/register] Error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to update registration' },
+      { status: 500 }
+    );
+  }
+}
+

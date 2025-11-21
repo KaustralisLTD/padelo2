@@ -393,6 +393,10 @@
       "registerButton": "REGISTER NOW",
       "submitting": "Submitting...",
       "success": "Registration successful! Please check your email for confirmation.",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
       "error": "Error submitting registration. Please try again.",
       "validation": {
         "selectCategory": "Please select at least one category"
@@ -429,7 +433,13 @@
       "partnerInfo": "Partner Information",
       "photoUpload": "Photo Upload",
       "photoInstructions": "Please upload your photo. The file should be named: FirstName_LastName.jpg",
-      "uploadPhoto": "Upload Photo"
+      "uploadPhoto": "Upload Photo",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "rules": {
       "title": "Tournament Rules",

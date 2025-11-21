@@ -334,7 +334,11 @@
       "partnerRequiredForCategory": "Se requiere pareja para {category}",
       "chooseFile": "Elegir archivo",
       "photoHint": "Máximo 5MB. Formatos JPG, PNG.",
-      "removeFile": "Eliminar"
+      "removeFile": "Eliminar",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
     },
     "confirmation": {
       "title": "Registro Confirmado",
@@ -361,7 +365,13 @@
       "partnerInfo": "Información de Pareja",
       "photoUpload": "Subir Foto",
       "photoInstructions": "Por favor, sube tu foto. El archivo debe llamarse: Nombre_Apellido.jpg",
-      "uploadPhoto": "Subir Foto"
+      "uploadPhoto": "Subir Foto",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "tournamentDetails": {
       "title": "Detalles del Torneo",

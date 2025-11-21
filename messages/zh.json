@@ -312,7 +312,11 @@
       "partnerRequiredForCategory": "{category} 需要合作伙伴",
       "chooseFile": "选择文件",
       "photoHint": "最大 5MB。格式 JPG、PNG。",
-      "removeFile": "删除"
+      "removeFile": "删除",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
     },
     "confirmation": {
       "title": "注册已确认",
@@ -339,7 +343,13 @@
       "partnerInfo": "搭档信息",
       "photoUpload": "照片上传",
       "photoInstructions": "请上传您的照片。文件应命名为：名_姓.jpg",
-      "uploadPhoto": "上传照片"
+      "uploadPhoto": "上传照片",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "tournamentDetails": {
       "title": "锦标赛详情",

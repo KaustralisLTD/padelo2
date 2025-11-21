@@ -861,7 +861,11 @@
       "partnerRequiredForCategory": "Parella requerida per {category}",
       "chooseFile": "Tria fitxer",
       "photoHint": "Màxim 5 MB. Formats JPG, PNG.",
-      "removeFile": "Eliminar"
+      "removeFile": "Eliminar",
+      "registrationReceived": "Registration Received!",
+      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
+      "checkEmail": "Please check your email inbox for the confirmation link.",
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
     },
     "confirmation": {
       "title": "Registration Confirmed",
@@ -888,7 +892,13 @@
       "partnerInfo": "Partner Information",
       "photoUpload": "Photo Upload",
       "photoInstructions": "Please upload your photo. The file should be named: FirstName_LastName.jpg",
-      "uploadPhoto": "Upload Photo"
+      "uploadPhoto": "Upload Photo",
+      "editRegistration": "Edit Registration",
+      "editButton": "Edit",
+      "saveChanges": "Save Changes",
+      "cancelEdit": "Cancel",
+      "registrationUpdated": "Registration updated successfully!",
+      "registrationUpdateError": "Error updating registration. Please try again."
     },
     "backToTournaments": "Tornar als Tornejos",
     "participants": "Participants",
