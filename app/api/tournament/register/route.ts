@@ -236,6 +236,7 @@ export async function POST(request: NextRequest) {
           priceDoubleCategory: tournament.priceDoubleCategory || undefined,
           description: tournament.description || undefined,
           bannerImageData: tournament.bannerImageData || undefined,
+          translations: tournament.translations || undefined,
         } : {
           id: body.tournamentId ? parseInt(body.tournamentId, 10) : 0,
           name: body.tournamentName,

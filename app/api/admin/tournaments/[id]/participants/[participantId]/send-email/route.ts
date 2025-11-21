@@ -99,20 +99,21 @@ export async function POST(
     switch (template) {
       case 'tournament_registration': {
         try {
-          const tournamentData = {
-            id: tournament.id,
-            name: tournament.name,
-            startDate: tournament.startDate,
-            endDate: tournament.endDate,
-            location: tournament.location || undefined,
-            locationAddress: tournament.locationAddress || undefined,
-            locationCoordinates: tournament.locationCoordinates || undefined,
-            eventSchedule: tournament.eventSchedule || undefined,
-            priceSingleCategory: tournament.priceSingleCategory || undefined,
-            priceDoubleCategory: tournament.priceDoubleCategory || undefined,
-            description: tournament.description || undefined,
-            bannerImageData: tournament.bannerImageData || undefined,
-          };
+        const tournamentData = {
+          id: tournament.id,
+          name: tournament.name,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          location: tournament.location || undefined,
+          locationAddress: tournament.locationAddress || undefined,
+          locationCoordinates: tournament.locationCoordinates || undefined,
+          eventSchedule: tournament.eventSchedule || undefined,
+          priceSingleCategory: tournament.priceSingleCategory || undefined,
+          priceDoubleCategory: tournament.priceDoubleCategory || undefined,
+          description: tournament.description || undefined,
+          bannerImageData: tournament.bannerImageData || undefined,
+          translations: tournament.translations || undefined,
+        };
           
           let categories: string[] = [];
           try {

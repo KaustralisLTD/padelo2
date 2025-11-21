@@ -18,6 +18,10 @@ export interface TournamentRegistrationEmailData {
     priceDoubleCategory?: number;
     description?: string;
     bannerImageData?: string;
+    translations?: {
+      description?: Record<string, string>;
+      eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    };
   };
   categories: string[];
   locale?: string;
@@ -38,6 +42,12 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
   
   // Локализуем категории
   const localizedCategories = categories.map(cat => getLocalizedCategoryName(cat, locale));
+
+  // Получаем переведенное расписание событий из БД
+  let eventScheduleToDisplay = tournament.eventSchedule || [];
+  if (tournament.translations?.eventSchedule?.[locale]) {
+    eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
+  }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {
@@ -487,12 +497,12 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                         <p class="muted" style="margin: 8px 0 0 0; color: #92400e; font-size: 13px;">${t.paymentNote}</p>
                       </div>
 
-                      ${tournament.eventSchedule && tournament.eventSchedule.length > 0 ? `
+                      ${eventScheduleToDisplay && eventScheduleToDisplay.length > 0 ? `
                       <div class="info-box" style="margin-top: 20px;">
                         <p class="muted" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e; font-size: 14px;">${t.eventSchedule}:</p>
-                        ${tournament.eventSchedule.map((event: any) => `
+                        ${eventScheduleToDisplay.map((event: any) => `
                           <div class="detail-row">
-                            <div class="detail-value"><strong>${event.title}</strong> - ${formatDate(event.date)} ${event.time ? `в ${event.time}` : ''}</div>
+                            <div class="detail-value"><strong>${event.title}</strong> - ${formatDate(event.date)} ${event.time ? (locale === 'ua' || locale === 'ru' ? 'в' : 'at') + ' ' + event.time : ''}</div>
                             ${event.description ? `<div class="detail-value" style="margin-top: 4px; font-size: 12px; color: #6b7280;">${event.description}</div>` : ''}
                           </div>
                         `).join('')}
