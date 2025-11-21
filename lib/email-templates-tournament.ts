@@ -383,7 +383,8 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
   if (typeof t.subject === 'function') {
     subjectText = t.subject(tournament.name);
   } else {
-    const baseSubject = t.subjectBase || (typeof t.subject === 'string' ? t.subject : 'We got your registration - PadelO₂');
+    const subjectString = typeof t.subject === 'string' ? t.subject : 'We got your registration - PadelO₂';
+    const baseSubject: string = t.subjectBase || subjectString;
     subjectText = baseSubject.replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
   }
 
