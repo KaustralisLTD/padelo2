@@ -858,34 +858,67 @@ export default function TournamentParticipantsPage() {
                       </td>
                       <td className="px-3 py-2 text-xs text-text whitespace-nowrap">{participant.tshirtSize || '-'}</td>
                       <td className="px-3 py-2 text-xs">
-                        <select
-                          value={participant.paymentStatus || 'pending'}
-                          onChange={(e) =>
-                            handlePaymentStatusChange(
-                              participant.id,
-                              e.target.value as 'pending' | 'paid' | 'refunded'
-                            )
-                          }
-                          className="w-full px-2 py-1 bg-background border border-border rounded text-text text-xs focus:outline-none focus:border-primary"
-                        >
-                          <option value="pending">{tTournaments('paymentPending')}</option>
-                          <option value="paid">{tTournaments('paymentPaid')}</option>
-                          <option value="refunded">{tTournaments('paymentRefunded')}</option>
-                        </select>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => handlePaymentStatusChange(participant.id, 'pending')}
+                            className={`p-1.5 rounded transition-colors ${
+                              participant.paymentStatus === 'pending'
+                                ? 'bg-yellow-500/20 text-yellow-400'
+                                : 'bg-background-secondary text-text-secondary hover:bg-yellow-500/10 hover:text-yellow-400'
+                            }`}
+                            title={tTournaments('paymentPending')}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => handlePaymentStatusChange(participant.id, 'paid')}
+                            className={`p-1.5 rounded transition-colors ${
+                              participant.paymentStatus === 'paid'
+                                ? 'bg-green-500/20 text-green-400'
+                                : 'bg-background-secondary text-text-secondary hover:bg-green-500/10 hover:text-green-400'
+                            }`}
+                            title={tTournaments('paymentPaid')}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => handlePaymentStatusChange(participant.id, 'refunded')}
+                            className={`p-1.5 rounded transition-colors ${
+                              participant.paymentStatus === 'refunded'
+                                ? 'bg-red-500/20 text-red-400'
+                                : 'bg-background-secondary text-text-secondary hover:bg-red-500/10 hover:text-red-400'
+                            }`}
+                            title={tTournaments('paymentRefunded')}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
                       </td>
                       <td className="px-3 py-2 text-xs">
-                        <div className="flex gap-2">
+                        <div className="flex items-center gap-1">
                           <button
                             onClick={() => handleEdit(participant)}
-                            className="px-2 py-1 bg-primary text-background rounded hover:opacity-90 transition-opacity text-xs whitespace-nowrap"
+                            className="p-1.5 bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors"
+                            title={tTournaments('edit')}
                           >
-                            {tTournaments('edit')}
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
                           </button>
                           <button
                             onClick={() => handleDelete(participant.id, participant.firstName, participant.lastName)}
-                            className="px-2 py-1 bg-red-500 text-background rounded hover:opacity-90 transition-opacity text-xs whitespace-nowrap"
+                            className="p-1.5 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition-colors"
+                            title={tTournaments('delete')}
                           >
-                            {tTournaments('delete')}
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                           </button>
                         </div>
                       </td>
