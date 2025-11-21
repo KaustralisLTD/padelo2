@@ -1148,12 +1148,12 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         ` : ''}
                       </div>
 
-                      ${tournament.eventSchedule && tournament.eventSchedule.length > 0 ? `
+                      ${eventScheduleToDisplay && eventScheduleToDisplay.length > 0 ? `
                       <div class="info-box" style="margin-top: 20px;">
                         <p class="muted" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e; font-size: 14px;">${t.eventSchedule}:</p>
-                        ${tournament.eventSchedule.map((event: any) => `
+                        ${eventScheduleToDisplay.map((event: any) => `
                           <div class="detail-row">
-                            <div class="detail-value"><strong>${event.title}</strong> - ${formatDate(event.date)} ${event.time ? `в ${event.time}` : ''}</div>
+                            <div class="detail-value"><strong>${event.title}</strong> - ${formatDate(event.date)} ${event.time ? (locale === 'ua' || locale === 'ru' ? 'в' : 'at') + ' ' + event.time : ''}</div>
                             ${event.description ? `<div class="detail-value" style="margin-top: 4px; font-size: 12px; color: #6b7280;">${event.description}</div>` : ''}
                           </div>
                         `).join('')}
