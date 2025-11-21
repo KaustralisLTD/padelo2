@@ -335,11 +335,11 @@
       "chooseFile": "Выбрать файл",
       "photoHint": "Максимум 5МБ. Форматы JPG, PNG.",
       "removeFile": "Удалить",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email"
+      "registrationReceived": "Регистрация получена!",
+      "registrationReceivedMessage": "Мы получили вашу заявку на регистрацию в турнире {tournamentName}. Пожалуйста, проверьте вашу электронную почту и перейдите по ссылке подтверждения для завершения регистрации.",
+      "checkEmail": "Пожалуйста, проверьте вашу почту для получения ссылки подтверждения.",
+      "emailInstructions": "Если вы не видите письмо, пожалуйста, проверьте папку со спамом. Ссылка подтверждения будет действительна в течение 7 дней.",
+      "resendVerificationEmail": "Отправить письмо подтверждения повторно"
     },
     "confirmation": {
       "title": "Регистрация Подтверждена",
@@ -685,7 +685,9 @@
     "samePartnerError": "Один партнер не может быть в разных категориях",
     "selectFromParticipants": "Выбрать из участников",
     "selectPartner": "Выбрать партнера",
-    "enterManually": "Ввести вручную"
+    "enterManually": "Ввести вручную",
+    "statusUpdated": "Статус успешно обновлен",
+    "clickToEditStatus": "Нажмите для редактирования статуса"
   },
   "Contact": {
     "title": "Свяжитесь с нами",

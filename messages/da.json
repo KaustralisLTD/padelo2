@@ -686,7 +686,9 @@
     "delete": "Slet",
     "confirmDeleteParticipant": "Er du sikker på, at du vil slette deltageren {name}? Denne handling kan ikke fortrydes.",
     "participantDeleted": "Deltager slettet med succes.",
-    "participantDeleteError": "Fejl ved sletning af deltager."
+    "participantDeleteError": "Fejl ved sletning af deltager.",
+    "statusUpdated": "Status opdateret med succes",
+    "clickToEditStatus": "Klik for at redigere status"
   },
   "Contact": {
     "title": "Kontakt Os",

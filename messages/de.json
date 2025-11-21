@@ -686,7 +686,9 @@
     "delete": "Löschen",
     "confirmDeleteParticipant": "Sind Sie sicher, dass Sie den Teilnehmer {name} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
     "participantDeleted": "Teilnehmer erfolgreich gelöscht.",
-    "participantDeleteError": "Fehler beim Löschen des Teilnehmers."
+    "participantDeleteError": "Fehler beim Löschen des Teilnehmers.",
+    "statusUpdated": "Status erfolgreich aktualisiert",
+    "clickToEditStatus": "Klicken Sie, um den Status zu bearbeiten"
   },
   "Contact": {
     "title": "Kontaktieren Sie Uns",

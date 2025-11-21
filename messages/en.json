@@ -640,7 +640,9 @@
       "end": "End",
       "remove": "Remove",
       "addTimeSlot": "Add time slot"
-    }
+    },
+    "statusUpdated": "Status updated successfully",
+    "clickToEditStatus": "Click to edit status"
   },
   "Contact": {
     "title": "Get in Touch",

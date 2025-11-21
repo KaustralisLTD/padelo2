@@ -686,7 +686,9 @@
     "delete": "Radera",
     "confirmDeleteParticipant": "Är du säker på att du vill radera deltagaren {name}? Denna åtgärd kan inte ångras.",
     "participantDeleted": "Deltagare raderad framgångsrikt.",
-    "participantDeleteError": "Fel vid radering av deltagare."
+    "participantDeleteError": "Fel vid radering av deltagare.",
+    "statusUpdated": "Status uppdaterad",
+    "clickToEditStatus": "Klicka för att redigera status"
   },
   "Contact": {
     "title": "Kontakta Oss",

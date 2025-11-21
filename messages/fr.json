@@ -686,7 +686,9 @@
     "delete": "Supprimer",
     "confirmDeleteParticipant": "Êtes-vous sûr de vouloir supprimer le participant {name} ? Cette action ne peut pas être annulée.",
     "participantDeleted": "Participant supprimé avec succès.",
-    "participantDeleteError": "Erreur lors de la suppression du participant."
+    "participantDeleteError": "Erreur lors de la suppression du participant.",
+    "statusUpdated": "Statut mis à jour avec succès",
+    "clickToEditStatus": "Cliquez pour modifier le statut"
   },
   "Contact": {
     "title": "Contactez-Nous",

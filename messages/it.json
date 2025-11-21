@@ -686,7 +686,9 @@
     "delete": "Elimina",
     "confirmDeleteParticipant": "Sei sicuro di voler eliminare il partecipante {name}? Questa azione non può essere annullata.",
     "participantDeleted": "Partecipante eliminato con successo.",
-    "participantDeleteError": "Errore durante l'eliminazione del partecipante."
+    "participantDeleteError": "Errore durante l'eliminazione del partecipante.",
+    "statusUpdated": "Stato aggiornato con successo",
+    "clickToEditStatus": "Clicca per modificare lo stato"
   },
   "Contact": {
     "title": "Contattaci",

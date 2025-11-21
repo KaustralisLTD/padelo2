@@ -956,7 +956,9 @@
     "delete": "Eliminar",
     "confirmDeleteParticipant": "Esteu segur que voleu eliminar el participant {name}? Aquesta acció no es pot desfer.",
     "participantDeleted": "Participant eliminat amb èxit.",
-    "participantDeleteError": "Error en eliminar el participant."
+    "participantDeleteError": "Error en eliminar el participant.",
+    "statusUpdated": "Estat actualitzat correctament",
+    "clickToEditStatus": "Feu clic per editar l'estat"
   },
   "Dashboard": {
     "title": "Dashboard",

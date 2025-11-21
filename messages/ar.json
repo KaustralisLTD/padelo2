@@ -686,7 +686,9 @@
     "delete": "حذف",
     "confirmDeleteParticipant": "هل أنت متأكد أنك تريد حذف المشارك {name}؟ لا يمكن التراجع عن هذا الإجراء.",
     "participantDeleted": "تم حذف المشارك بنجاح.",
-    "participantDeleteError": "خطأ في حذف المشارك."
+    "participantDeleteError": "خطأ في حذف المشارك.",
+    "statusUpdated": "تم تحديث الحالة بنجاح",
+    "clickToEditStatus": "انقر لتعديل الحالة"
   },
   "Contact": {
     "title": "اتصل بنا",

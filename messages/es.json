@@ -707,7 +707,9 @@
     "samePartnerError": "El mismo pareja no puede estar en diferentes categorías",
     "selectFromParticipants": "Seleccionar de participantes",
     "selectPartner": "Seleccionar pareja",
-    "enterManually": "Ingresar manualmente"
+    "enterManually": "Ingresar manualmente",
+    "statusUpdated": "Estado actualizado correctamente",
+    "clickToEditStatus": "Haga clic para editar el estado"
   },
   "Contact": {
     "title": "Contáctanos",

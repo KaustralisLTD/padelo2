@@ -97,6 +97,7 @@ export default function AdminTournamentsContent() {
   const [formData, setFormData] = useState(createDefaultFormData);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [editingStatusId, setEditingStatusId] = useState<number | null>(null);
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
   const registrationSettings = normalizeRegistrationSettings(formData.registrationSettings);
@@ -732,11 +733,66 @@ export default function AdminTournamentsContent() {
                       {tournament.registrationsConfirmed ?? 0}
                       </td>
                       <td className="px-6 py-4">
-                        <span
-                          className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)}`}
-                        >
-                          {getStatusLabel(tournament.status)}
-                        </span>
+                        {editingStatusId === tournament.id ? (
+                          <select
+                            value={tournament.status}
+                            onChange={async (e) => {
+                              const newStatus = e.target.value as Tournament['status'];
+                              try {
+                                const response = await fetch('/api/admin/tournaments', {
+                                  method: 'PUT',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`,
+                                  },
+                                  body: JSON.stringify({
+                                    id: tournament.id,
+                                    status: newStatus,
+                                  }),
+                                });
+                                
+                                if (response.ok) {
+                                  const data = await response.json();
+                                  setTournaments(tournaments.map(t => 
+                                    t.id === tournament.id ? { ...t, status: newStatus } : t
+                                  ));
+                                  setEditingStatusId(null);
+                                  setSuccess(t('tournaments.statusUpdated') || 'Status updated successfully');
+                                  setTimeout(() => setSuccess(null), 3000);
+                                } else {
+                                  const errorData = await response.json();
+                                  setError(errorData.error || 'Failed to update status');
+                                  setTimeout(() => setError(null), 3000);
+                                }
+                              } catch (err: any) {
+                                setError(err.message || 'Failed to update status');
+                                setTimeout(() => setError(null), 3000);
+                              }
+                            }}
+                            onBlur={() => setEditingStatusId(null)}
+                            autoFocus
+                            className={`px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white border-2 border-primary ${getStatusColor(tournament.status)} focus:outline-none focus:ring-2 focus:ring-primary`}
+                            style={{ appearance: 'none', backgroundImage: 'none' }}
+                          >
+                            <option value="draft" className="bg-gray-500">Draft</option>
+                            <option value="open" className="bg-green-500">Open</option>
+                            <option value="closed" className="bg-red-500">Closed</option>
+                            <option value="in_progress" className="bg-blue-500">In Progress</option>
+                            <option value="completed" className="bg-purple-500">Completed</option>
+                            <option value="demo" className="bg-yellow-500">Demo</option>
+                            <option value="archived" className="bg-gray-600">Archived</option>
+                            <option value="soon" className="bg-orange-500">Soon</option>
+                          </select>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setEditingStatusId(tournament.id)}
+                            className={`inline-block px-3 py-1 rounded-full text-xs font-poppins font-semibold text-white ${getStatusColor(tournament.status)} hover:opacity-80 transition-opacity cursor-pointer`}
+                            title={t('tournaments.clickToEditStatus') || 'Click to edit status'}
+                          >
+                            {getStatusLabel(tournament.status)}
+                          </button>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-2">

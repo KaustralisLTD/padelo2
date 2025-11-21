@@ -704,7 +704,9 @@
     "samePartnerError": "Один партнер не може бути в різних категоріях",
     "selectFromParticipants": "Обрати з учасників",
     "selectPartner": "Обрати партнера",
-    "enterManually": "Ввести вручну"
+    "enterManually": "Ввести вручну",
+    "statusUpdated": "Статус успішно оновлено",
+    "clickToEditStatus": "Натисніть для редагування статусу"
   },
   "Contact": {
     "title": "Зв'яжіться з нами",

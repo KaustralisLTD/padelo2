@@ -686,7 +686,9 @@
     "delete": "Verwijderen",
     "confirmDeleteParticipant": "Weet u zeker dat u deelnemer {name} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
     "participantDeleted": "Deelnemer succesvol verwijderd.",
-    "participantDeleteError": "Fout bij het verwijderen van deelnemer."
+    "participantDeleteError": "Fout bij het verwijderen van deelnemer.",
+    "statusUpdated": "Status succesvol bijgewerkt",
+    "clickToEditStatus": "Klik om de status te bewerken"
   },
   "Contact": {
     "title": "Neem Contact Op",
