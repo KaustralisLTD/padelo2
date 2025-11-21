@@ -79,8 +79,8 @@ export async function translateTournamentDescription(
 export async function translateEventSchedule(
   eventSchedule: Array<{ title: string; date: string; time: string; description?: string }> | undefined,
   sourceLocale: string = 'en'
-): Promise<Record<string, Array<{ title: string; date: string; time: string; description?: string }>>> | undefined {
-  if (!eventSchedule || eventSchedule.length === 0) return undefined;
+): Promise<Record<string, Array<{ title: string; date: string; time: string; description?: string }>> | undefined> {
+  if (!eventSchedule || eventSchedule.length === 0) return Promise.resolve(undefined);
 
   const translations: Record<string, Array<{ title: string; date: string; time: string; description?: string }>> = {};
   
