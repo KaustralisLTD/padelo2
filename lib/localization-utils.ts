@@ -129,7 +129,25 @@ export function getLocalizedCategoryName(categoryCode: string, locale: string): 
 export function formatLocalizedDate(dateString: string, locale: string): string {
   try {
     const date = new Date(dateString);
-    return date.toLocaleDateString(locale, { 
+    // Map locale codes to proper Intl locale strings
+    const localeMap: Record<string, string> = {
+      'en': 'en-US',
+      'ru': 'ru-RU',
+      'ua': 'uk-UA',
+      'es': 'es-ES',
+      'fr': 'fr-FR',
+      'de': 'de-DE',
+      'it': 'it-IT',
+      'ca': 'ca-ES',
+      'nl': 'nl-NL',
+      'da': 'da-DK',
+      'sv': 'sv-SE',
+      'no': 'no-NO',
+      'ar': 'ar-SA',
+      'zh': 'zh-CN',
+    };
+    const intlLocale = localeMap[locale] || locale;
+    return date.toLocaleDateString(intlLocale, { 
       year: 'numeric', 
       month: 'long', 
       day: 'numeric' 

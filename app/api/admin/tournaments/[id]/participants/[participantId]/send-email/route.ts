@@ -168,13 +168,17 @@ export async function POST(
             categories = [];
           }
           
-          const paymentAmount = tournament.priceSingleCategory || 0;
+          // Calculate payment amount based on number of categories
+          const categoryCount = categories.length;
+          const paymentAmount = categoryCount > 0 
+            ? (tournament.priceSingleCategory || 0) * categoryCount 
+            : tournament.priceSingleCategory || 0;
           
           const html = getTournamentRegistrationConfirmedEmailTemplate({
             firstName: registration.first_name || undefined,
             lastName: registration.last_name || undefined,
             tournament: tournamentData,
-            categories,
+            categories: categories.length > 0 ? categories : [],
             paymentAmount,
             paymentMethod: 'Manual',
             orderNumber: `REG-${registration.id}`,

@@ -346,10 +346,13 @@ export async function sendEmailVerification(
       .social-yt { background-color: #FF0000; }
       .social-tt { background-color: #000000; }
       .social-fb { background-color: #1877F2; }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body { padding: 0 18px 20px 18px !important; }
         .p-footer { padding: 14px 18px 24px 18px !important; }
         .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
     </head>
@@ -359,10 +362,28 @@ export async function sendEmailVerification(
         <td align="center">
           <table role="presentation" class="main">
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${t.footer}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
         <tr>
