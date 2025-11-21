@@ -18,6 +18,18 @@ export async function GET(request: NextRequest) {
 
     const pool = getDbPool();
     
+    // Получаем email пользователя
+    const [userRows] = await pool.execute(
+      'SELECT email FROM users WHERE id = ?',
+      [session.userId]
+    ) as any[];
+    
+    if (userRows.length === 0) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+    
+    const userEmail = userRows[0].email;
+    
     // Получаем матчи пользователя через регистрации
     const [matches] = await pool.execute(`
       SELECT 
@@ -79,8 +91,8 @@ export async function GET(request: NextRequest) {
         AND tm.pair2_games IS NOT NULL
       ORDER BY tm.match_date DESC, tm.created_at DESC
     `, [
-      session.userId, session.email, session.userId, session.email,
-      session.userId, session.email, session.userId, session.email
+      session.userId, userEmail, session.userId, userEmail,
+      session.userId, userEmail, session.userId, userEmail
     ]) as any[];
 
     // Подсчитываем статистику
@@ -91,10 +103,10 @@ export async function GET(request: NextRequest) {
 
     matches.forEach((m: any) => {
       // Проверяем, в какой паре находится пользователь
-      const userInPair1 = (m.pair1_player1_user_id === session.userId || m.pair1_player1_email === session.email) ||
-                          (m.pair1_player2_user_id === session.userId || m.pair1_player2_email === session.email);
-      const userInPair2 = (m.pair2_player1_user_id === session.userId || m.pair2_player1_email === session.email) ||
-                          (m.pair2_player2_user_id === session.userId || m.pair2_player2_email === session.email);
+      const userInPair1 = (m.pair1_player1_user_id === session.userId || m.pair1_player1_email === userEmail) ||
+                          (m.pair1_player2_user_id === session.userId || m.pair1_player2_email === userEmail);
+      const userInPair2 = (m.pair2_player1_user_id === session.userId || m.pair2_player1_email === userEmail) ||
+                          (m.pair2_player2_user_id === session.userId || m.pair2_player2_email === userEmail);
       
       if (userInPair1) {
         if (m.winner_pair_id === m.pair1_id) {
