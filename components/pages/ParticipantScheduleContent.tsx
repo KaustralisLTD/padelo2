@@ -267,14 +267,14 @@ export function ParticipantScheduleContent() {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="bg-background border-b border-border">
+                  <tr className="bg-background border-b border-gray-800/30">
                     <th className="w-32 p-3 text-left text-sm font-orbitron font-semibold text-text-secondary sticky left-0 bg-background z-10">
                       {t('time') || 'Time'}
                     </th>
                     {courts.map((court) => (
                       <th
                         key={court.id}
-                        className="min-w-[180px] p-3 text-center text-sm font-orbitron font-semibold text-text border-l border-border"
+                        className="min-w-[180px] p-3 text-center text-sm font-orbitron font-semibold text-text border-l border-gray-800/30"
                       >
                         <div>{court.name}</div>
                         {court.location && (
@@ -288,7 +288,7 @@ export function ParticipantScheduleContent() {
                 </thead>
                 <tbody>
                   {timeSlots.map((timeSlot, slotIndex) => (
-                    <tr key={timeSlot} className="border-b border-border/50 hover:bg-background/30">
+                    <tr key={timeSlot} className="border-b border-gray-800/20 hover:bg-background/30">
                       <td className="w-32 p-2 text-sm font-poppins text-text-secondary sticky left-0 bg-background-secondary z-10">
                         {new Date(`2000-01-01 ${timeSlot}`).toLocaleTimeString(locale, {
                           hour: '2-digit',
@@ -302,7 +302,7 @@ export function ParticipantScheduleContent() {
                         return (
                           <td
                             key={court.id}
-                            className="min-w-[180px] p-0 relative border-l border-border/50"
+                            className="min-w-[180px] p-0 relative border-l border-gray-800/20"
                           >
                             {isStartOfBooking && (
                               <div

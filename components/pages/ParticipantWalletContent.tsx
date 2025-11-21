@@ -158,7 +158,7 @@ export function ParticipantWalletContent() {
               {t('balance')}
             </h2>
             <div className="text-4xl font-bold text-primary mb-2">
-              {wallet?.balance?.toFixed(2) || '0.00'} {wallet?.currency || 'EUR'}
+              {typeof wallet?.balance === 'number' ? wallet.balance.toFixed(2) : parseFloat(String(wallet?.balance || 0)).toFixed(2)} {wallet?.currency || 'EUR'}
             </div>
             <p className="text-text-secondary font-poppins text-sm">
               {t('balanceDescription')}
@@ -232,7 +232,7 @@ export function ParticipantWalletContent() {
                       : 'text-red-400'
                   }`}>
                     {transaction.type === 'deposit' || transaction.type === 'refund' ? '+' : '-'}
-                    {transaction.amount.toFixed(2)} {transaction.currency}
+                    {typeof transaction.amount === 'number' ? transaction.amount.toFixed(2) : parseFloat(String(transaction.amount || 0)).toFixed(2)} {transaction.currency}
                   </div>
                 </div>
               ))}

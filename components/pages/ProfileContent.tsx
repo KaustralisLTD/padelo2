@@ -408,7 +408,7 @@ export default function ProfileContent() {
 
           {/* Status Messages */}
           {submitStatus === 'success' && (
-            <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-sm font-poppins">
+            <div className="p-4 bg-primary/10 border border-primary/30 rounded-lg text-primary text-sm font-poppins">
               {t('updateSuccess')}
             </div>
           )}
