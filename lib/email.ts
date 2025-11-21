@@ -15,7 +15,9 @@ interface EmailOptions {
  */
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const { to, subject, html, from, replyTo } = options;
-  const fromEmail = from || process.env.SMTP_FROM || 'hello@padelO2.com';
+  // Используем верифицированный домен из переменной окружения или fallback на onboarding.resend.dev для тестирования
+  const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'onboarding.resend.dev';
+  const fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
   // Format: "PadelO2 <email@domain.com>" - используем обычный текст без специальных символов для совместимости
   const fromName = `PadelO2 <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
@@ -28,6 +30,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       console.log(`[Email] Attempting to send via Resend to ${recipients.join(', ')}`);
       console.log(`[Email] From: ${fromName}`);
       console.log(`[Email] Subject: ${subject}`);
+      console.log(`[Email] Using domain: ${verifiedDomain}`);
       
       const result = await resend.emails.send({
         from: fromName,

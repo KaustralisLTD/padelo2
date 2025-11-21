@@ -420,12 +420,28 @@ export default function AdminUsersContent() {
               {t('users.description')}
             </p>
           </div>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
-          >
-            {t('users.createUser')}
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                setLoading(true);
+                fetchUsers();
+              }}
+              disabled={loading}
+              className="px-6 py-3 bg-background-secondary border border-border text-text font-orbitron font-semibold rounded-lg hover:bg-background hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              title={t('users.refresh') || 'Refresh'}
+            >
+              <svg className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {t('users.refresh') || 'Refresh'}
+            </button>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              {t('users.createUser')}
+            </button>
+          </div>
         </div>
 
         {error && (
