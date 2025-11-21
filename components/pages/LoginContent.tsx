@@ -22,6 +22,7 @@ export default function LoginContent() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [emailNotVerified, setEmailNotVerified] = useState(false);
 
   // Обработка OAuth callback
   useEffect(() => {
@@ -77,7 +78,13 @@ export default function LoginContent() {
         } else {
           const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
           console.error('Login error:', errorData);
-          setError(errorData.error || t('errors.invalidCredentials'));
+          if (errorData.emailNotVerified) {
+            setEmailNotVerified(true);
+            setError(t('errors.emailNotVerified') || errorData.message || 'Please verify your email address before logging in.');
+          } else {
+            setEmailNotVerified(false);
+            setError(errorData.error || t('errors.invalidCredentials'));
+          }
         }
       } else {
         // Register logic
@@ -148,7 +155,12 @@ export default function LoginContent() {
 
         {error && (
           <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 mb-6">
-            <p className="text-red-400 font-poppins text-center">{error}</p>
+            <p className="text-red-400 font-poppins text-center font-semibold mb-2">{error}</p>
+            {emailNotVerified && (
+              <p className="text-red-300 font-poppins text-center text-sm">
+                {t('errors.emailNotVerifiedDetails') || 'Please check your email inbox and click the verification link to activate your account.'}
+              </p>
+            )}
           </div>
         )}
 
@@ -173,6 +185,7 @@ export default function LoginContent() {
                 setError(null);
                 setSuccessMessage(null);
                 setShowVerificationMessage(false);
+                setEmailNotVerified(false);
               }}
               className={`flex-1 px-4 py-2 rounded-lg font-poppins font-semibold transition-colors ${
                 !isLogin
