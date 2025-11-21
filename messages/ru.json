@@ -1025,9 +1025,10 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
-      "participantDeleted": "Participant deleted successfully.",
-      "participantDeleteError": "Error deleting participant."
+      "delete": "Удалить",
+      "confirmDeleteParticipant": "Вы уверены, что хотите удалить участника {name}? Это действие нельзя отменить.",
+      "participantDeleted": "Участник успешно удален.",
+      "participantDeleteError": "Ошибка при удалении участника."
     },
     "staff": {
       "title": "Управление сотрудниками",
