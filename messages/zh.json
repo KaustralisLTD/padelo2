@@ -735,11 +735,13 @@
     "loginButton": "登录",
     "registerButton": "创建账户",
     "submitting": "处理中...",
+    "registrationSuccess": "感谢您的注册！请检查您的电子邮件并点击验证链接以激活您的账户。",
     "errors": {
       "invalidCredentials": "电子邮件或密码无效",
       "passwordMismatch": "密码不匹配",
       "registrationFailed": "注册失败。请重试。",
       "generic": "发生错误。请重试。",
+      "emailNotVerified": "您的电子邮件地址尚未验证。请检查您的收件箱并点击验证链接。",
       "oauthFailed": "OAuth 身份验证失败。请重试。",
       "oauth_cancelled": "身份验证已取消",
       "invalid_state": "无效的身份验证状态。请重试。",

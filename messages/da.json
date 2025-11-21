@@ -735,11 +735,13 @@
     "loginButton": "Log ind",
     "registerButton": "Opret konto",
     "submitting": "Behandler...",
+    "registrationSuccess": "Tak for din registrering! Tjek venligst din e-mail og klik på bekræftelseslinket for at aktivere din konto.",
     "errors": {
       "invalidCredentials": "Ugyldig e-mail eller adgangskode",
       "passwordMismatch": "Adgangskoder matcher ikke",
       "registrationFailed": "Registrering mislykkedes. Prøv igen.",
       "generic": "Der opstod en fejl. Prøv igen.",
+      "emailNotVerified": "Din e-mailadresse er ikke blevet bekræftet. Tjek venligst din indbakke og klik på bekræftelseslinket.",
       "oauthFailed": "OAuth-godkendelse mislykkedes. Prøv igen.",
       "oauth_cancelled": "Godkendelse annulleret",
       "invalid_state": "Ugyldig godkendelsesstatus. Prøv igen.",

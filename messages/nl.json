@@ -1338,11 +1338,13 @@
     "orContinueWith": "Of ga verder met",
     "continueWithGoogle": "Google",
     "continueWithApple": "Apple",
+    "registrationSuccess": "Bedankt voor uw registratie! Controleer uw e-mail en klik op de verificatielink om uw account te activeren.",
     "errors": {
       "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
       "passwordMismatch": "Wachtwoorden komen niet overeen",
       "registrationFailed": "Registratie mislukt. Probeer het opnieuw.",
       "generic": "Er is een fout opgetreden. Probeer het opnieuw.",
+      "emailNotVerified": "Uw e-mailadres is niet geverifieerd. Controleer uw inbox en klik op de verificatielink.",
       "oauthFailed": "OAuth-authenticatie mislukt. Probeer het opnieuw.",
       "oauth_cancelled": "Authenticatie geannuleerd",
       "invalid_state": "Ongeldige authenticatiestatus. Probeer het opnieuw.",

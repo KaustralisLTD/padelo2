@@ -735,11 +735,13 @@
     "loginButton": "Logga in",
     "registerButton": "Skapa konto",
     "submitting": "Bearbetar...",
+    "registrationSuccess": "Tack för din registrering! Vänligen kontrollera din e-post och klicka på verifieringslänken för att aktivera ditt konto.",
     "errors": {
       "invalidCredentials": "Ogiltig e-post eller lösenord",
       "passwordMismatch": "Lösenorden matchar inte",
       "registrationFailed": "Registrering misslyckades. Försök igen.",
       "generic": "Ett fel uppstod. Försök igen.",
+      "emailNotVerified": "Din e-postadress har inte verifierats. Vänligen kontrollera din inkorg och klicka på verifieringslänken.",
       "oauthFailed": "OAuth-autentisering misslyckades. Försök igen.",
       "oauth_cancelled": "Autentisering avbruten",
       "invalid_state": "Ogiltig autentiseringsstatus. Försök igen.",

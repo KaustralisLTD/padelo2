@@ -1364,11 +1364,13 @@
     "orContinueWith": "Oder fortfahren mit",
     "continueWithGoogle": "Google",
     "continueWithApple": "Apple",
+    "registrationSuccess": "Vielen Dank für Ihre Registrierung! Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Bestätigungslink, um Ihr Konto zu aktivieren.",
     "errors": {
       "invalidCredentials": "Ungültige E-Mail oder Passwort",
       "passwordMismatch": "Passwörter stimmen nicht überein",
       "registrationFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+      "emailNotVerified": "Ihre E-Mail-Adresse wurde nicht verifiziert. Bitte überprüfen Sie Ihr Postfach und klicken Sie auf den Bestätigungslink.",
       "oauthFailed": "OAuth-Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
       "oauth_cancelled": "Authentifizierung abgebrochen",
       "invalid_state": "Ungültiger Authentifizierungsstatus. Bitte versuchen Sie es erneut.",

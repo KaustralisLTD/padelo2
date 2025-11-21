@@ -1609,11 +1609,13 @@
     "orContinueWith": "O continua amb",
     "continueWithGoogle": "Google",
     "continueWithApple": "Apple",
+    "registrationSuccess": "Gràcies per registrar-te! Si us plau, revisa el teu correu electrònic i fes clic a l'enllaç de verificació per activar el teu compte.",
     "errors": {
       "invalidCredentials": "Correu electrònic o contrasenya invàlids",
       "passwordMismatch": "Les contrasenyes no coincideixen",
       "registrationFailed": "Error en el registre. Si us plau, torna-ho a intentar.",
       "generic": "S'ha produït un error. Si us plau, torna-ho a intentar.",
+      "emailNotVerified": "La teva adreça de correu electrònic no ha estat verificada. Si us plau, revisa la teva safata d'entrada i fes clic a l'enllaç de verificació.",
       "oauthFailed": "Error en l'autenticació OAuth. Si us plau, torna-ho a intentar.",
       "oauth_cancelled": "Autenticació cancel·lada",
       "invalid_state": "Estat d'autenticació invàlid. Si us plau, torna-ho a intentar.",

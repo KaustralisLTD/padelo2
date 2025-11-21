@@ -735,11 +735,13 @@
     "loginButton": "Logg inn",
     "registerButton": "Opprett konto",
     "submitting": "Behandler...",
+    "registrationSuccess": "Takk for din registrering! Vennligst sjekk e-posten din og klikk på bekreftelseslenken for å aktivere kontoen din.",
     "errors": {
       "invalidCredentials": "Ugyldig e-post eller passord",
       "passwordMismatch": "Passordene stemmer ikke",
       "registrationFailed": "Registrering mislyktes. Prøv igjen.",
       "generic": "En feil oppstod. Prøv igjen.",
+      "emailNotVerified": "Din e-postadresse er ikke bekreftet. Vennligst sjekk innboksen din og klikk på bekreftelseslenken.",
       "oauthFailed": "OAuth-autentisering mislyktes. Prøv igjen.",
       "oauth_cancelled": "Autentisering avbrutt",
       "invalid_state": "Ugyldig autentiseringsstatus. Prøv igjen.",
