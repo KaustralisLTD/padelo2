@@ -8,7 +8,6 @@ import Link from 'next/link';
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const locale = useLocale();
-  const t = useTranslations('Auth');
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState<string>('');
   const [user, setUser] = useState<any>(null);
@@ -191,14 +190,14 @@ function VerifyEmailContent() {
     }
   };
 
-  const t = translations[locale] || translations.en;
+  const translationsT = translations[locale] || translations.en;
 
   if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-cyan-400 mx-auto mb-4"></div>
-          <p className="text-text-secondary font-poppins">{t.verifying}</p>
+          <p className="text-text-secondary font-poppins">{translationsT.verifying}</p>
         </div>
       </div>
     );
@@ -213,13 +212,13 @@ function VerifyEmailContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h1 className="text-2xl font-poppins font-bold mb-4 text-text">{t.verificationFailed}</h1>
+          <h1 className="text-2xl font-poppins font-bold mb-4 text-text">{translationsT.verificationFailed}</h1>
           <p className="text-text-secondary font-poppins mb-6">{message}</p>
           <Link
             href={`/${locale}/login`}
             className="inline-block bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-6 py-3 rounded-lg font-poppins font-semibold hover:opacity-90 transition-opacity"
           >
-            {t.goToLogin}
+            {translationsT.goToLogin}
           </Link>
         </div>
       </div>
@@ -235,15 +234,15 @@ function VerifyEmailContent() {
           </svg>
         </div>
         <h1 className="text-2xl font-poppins font-bold mb-4 text-text">
-          {t.congratulations}
+          {translationsT.congratulations}
         </h1>
         <p className="text-text-secondary font-poppins mb-6">
-          {t.fullAccess}
+          {translationsT.fullAccess}
         </p>
         {user && (
           <div className="bg-background rounded-lg p-4 mb-6 text-left">
             <p className="text-text-secondary text-sm mb-1">
-              {t.name}
+              {translationsT.name}
             </p>
             <p className="text-text font-poppins font-semibold">
               {user.firstName} {user.lastName}
@@ -259,13 +258,13 @@ function VerifyEmailContent() {
             href={`/${locale}/dashboard`}
             className="inline-block bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-6 py-3 rounded-lg font-poppins font-semibold hover:opacity-90 transition-opacity"
           >
-            {t.goToDashboard}
+            {translationsT.goToDashboard}
           </Link>
           <Link
             href={`/${locale}/tournaments`}
             className="inline-block bg-background text-text px-6 py-3 rounded-lg font-poppins font-semibold hover:opacity-90 transition-opacity border border-border"
           >
-            {t.viewTournaments}
+            {translationsT.viewTournaments}
           </Link>
         </div>
       </div>
