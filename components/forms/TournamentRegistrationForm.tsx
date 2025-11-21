@@ -51,6 +51,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [partnerPhotoError, setPartnerPhotoError] = useState<string | null>(null);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isAlreadyRegistered, setIsAlreadyRegistered] = useState(false);
+  const [existingToken, setExistingToken] = useState<string | null>(null);
   // Фото пользователя
   const [userPhoto, setUserPhoto] = useState<{ data: string | null; name: string | null }>({ data: null, name: null });
   const [userPhotoError, setUserPhotoError] = useState<string | null>(null);
@@ -1184,16 +1186,27 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       )}
 
       {submitStatus === 'success' && (
-        <div className="p-6 bg-green-500/20 border border-green-500 rounded-lg text-green-400 font-poppins space-y-3">
-          <div className="flex items-start gap-3">
-            <svg className="w-6 h-6 text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+        <div className="p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
+              <svg className="w-6 h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-lg mb-2">{t('form.registrationReceived')}</h3>
-              <p className="text-sm mb-2">{t('form.registrationReceivedMessage', { tournamentName })}</p>
-              <p className="text-sm font-semibold">{t('form.checkEmail')}</p>
-              <p className="text-xs mt-2 opacity-80">{t('form.emailInstructions')}</p>
+              <h3 className="font-bold text-xl mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                {t('form.registrationReceived')}
+              </h3>
+              <p className="text-text text-sm mb-3 leading-relaxed">{t('form.registrationReceivedMessage', { tournamentName })}</p>
+              <div className="bg-background/50 rounded-lg p-3 border border-primary/20">
+                <p className="text-text font-semibold text-sm mb-1 flex items-center gap-2">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  {t('form.checkEmail')}
+                </p>
+                <p className="text-text-secondary text-xs leading-relaxed">{t('form.emailInstructions')}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -1210,13 +1223,48 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full px-8 py-4 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 text-lg"
-      >
-        {isSubmitting ? t('form.submitting') : t('form.registerButton')}
-      </button>
+      {isAlreadyRegistered && submitStatus === 'success' ? (
+        <button
+          type="button"
+          onClick={async () => {
+            if (!existingToken) return;
+            setIsSubmitting(true);
+            try {
+              // Отправляем запрос на повторную отправку email
+              const response = await fetch('/api/tournament/resend-confirmation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: existingToken }),
+              });
+              if (response.ok) {
+                setSubmitStatus('success');
+                setError(null);
+              } else {
+                setError(t('form.resendEmailError') || 'Failed to resend email');
+              }
+            } catch (error) {
+              setError(t('form.resendEmailError') || 'Failed to resend email');
+            } finally {
+              setIsSubmitting(false);
+            }
+          }}
+          disabled={isSubmitting}
+          className="w-full px-8 py-4 bg-gradient-to-r from-primary to-accent text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 text-lg flex items-center justify-center gap-2"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          {isSubmitting ? t('form.submitting') : t('form.resendVerificationEmail')}
+        </button>
+      ) : (
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full px-8 py-4 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 text-lg"
+        >
+          {isSubmitting ? t('form.submitting') : t('form.registerButton')}
+        </button>
+      )}
     </form>
   );
 };

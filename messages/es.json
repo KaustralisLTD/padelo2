@@ -338,7 +338,8 @@
       "registrationReceived": "Registration Received!",
       "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
       "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
+      "resendVerificationEmail": "Resend Verification Email"
     },
     "confirmation": {
       "title": "Registro Confirmado",
@@ -647,7 +648,6 @@
       "participantsLoadError": "Error al cargar participantes.",
       "participantCategoryUpdated": "Categoría de participante actualizada exitosamente.",
       "participantCategoryUpdateError": "Error al actualizar categoría de participante.",
-      "delete": "Eliminar",
       "confirmDeleteParticipant": "¿Está seguro de que desea eliminar al participante {name}? Esta acción no se puede deshacer.",
       "participantDeleted": "Participante eliminado exitosamente.",
       "participantDeleteError": "Error al eliminar participante.",

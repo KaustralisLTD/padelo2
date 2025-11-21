@@ -316,7 +316,8 @@
       "registrationReceived": "Registration Received!",
       "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
       "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
+      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
+      "resendVerificationEmail": "Resend Verification Email"
     },
     "confirmation": {
       "title": "Registrering Bekreftet",

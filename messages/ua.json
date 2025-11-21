@@ -335,10 +335,11 @@
       "chooseFile": "Обрати файл",
       "photoHint": "Максимум 5МБ. Формати JPG, PNG.",
       "removeFile": "Видалити",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days."
+      "registrationReceived": "Заявку отримано!",
+      "registrationReceivedMessage": "Ми отримали вашу заявку на реєстрацію в турнірі {tournamentName}. Будь ласка, перевірте вашу пошту та перейдіть за посиланням для підтвердження, щоб завершити реєстрацію.",
+      "checkEmail": "Будь ласка, перевірте вашу поштову скриньку для посилання підтвердження.",
+      "emailInstructions": "Якщо ви не бачите листа, перевірте папку спам. Посилання підтвердження буде дійсним протягом 7 днів.",
+      "resendVerificationEmail": "Відправити email верифікації повторно"
     },
     "confirmation": {
       "title": "Реєстрація Підтверджена",
