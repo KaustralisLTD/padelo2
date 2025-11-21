@@ -153,6 +153,7 @@ export async function POST(
             eventSchedule: tournament.eventSchedule || undefined,
             description: tournament.description || undefined,
             bannerImageData: tournament.bannerImageData || undefined,
+            translations: tournament.translations || undefined,
           };
           
           let categories: string[] = [];
