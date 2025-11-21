@@ -165,13 +165,22 @@ export default function LoginContent() {
         )}
 
         {error && (
-          <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4 mb-6">
-            <p className="text-red-400 font-poppins text-center font-semibold mb-2">{error}</p>
-            {emailNotVerified && (
-              <p className="text-red-300 font-poppins text-center text-sm">
-                {t('errors.emailNotVerifiedDetails') || 'Please check your email inbox and click the verification link to activate your account.'}
-              </p>
-            )}
+          <div className="bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-5 mb-6 backdrop-blur-sm">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <p className="text-text font-poppins font-semibold mb-2">{error}</p>
+                {emailNotVerified && (
+                  <p className="text-text-secondary font-poppins text-sm">
+                    {t('errors.emailNotVerifiedDetails') || 'Please check your email inbox and click the verification link to activate your account.'}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
 

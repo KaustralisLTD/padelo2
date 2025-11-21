@@ -445,14 +445,28 @@ export default function AdminUsersContent() {
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-500/10 border border-red-500 rounded-lg text-red-400 font-poppins">
-            {error}
+          <div className="mb-4 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-5 backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <p className="text-text font-poppins font-semibold">{error}</p>
+            </div>
           </div>
         )}
 
         {success && (
-          <div className="mb-4 p-4 bg-green-500/10 border border-green-500 rounded-lg text-green-400 font-poppins">
-            {success}
+          <div className="mb-4 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-lg p-5 backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="text-text font-poppins font-semibold">{success}</p>
+            </div>
           </div>
         )}
 
@@ -1009,7 +1023,7 @@ export default function AdminUsersContent() {
                           setError('Failed to verify email');
                         }
                       }}
-                      className="w-full px-4 py-2 bg-green-500/20 text-green-400 border border-green-500/30 font-poppins rounded-lg hover:bg-green-500/30 transition-colors flex items-center justify-center gap-2"
+                      className="w-full px-4 py-2 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-text border border-cyan-500/30 font-poppins rounded-lg hover:from-cyan-500/30 hover:to-purple-500/30 transition-all flex items-center justify-center gap-2"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
