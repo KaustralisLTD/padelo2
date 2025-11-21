@@ -168,10 +168,37 @@ export async function PUT(request: NextRequest) {
     const hasDemoCountField = Object.prototype.hasOwnProperty.call(body, 'demoParticipantsCount');
     const normalizedDemoCount = hasDemoCountField ? parseDemoParticipantsCount(demoParticipantsCount) : undefined;
 
+    // Auto-translate description and eventSchedule if updated
+    let translatedDescription: Record<string, string> | undefined;
+    let translatedEventSchedule: Record<string, any> | undefined;
+    
+    if (updates.description || updates.eventSchedule) {
+      const sourceLocale = body.sourceLocale || 'en';
+      const { translateTournamentDescription, translateEventSchedule, storeTournamentTranslations } = await import('@/lib/translation-utils');
+      
+      if (updates.description) {
+        translatedDescription = await translateTournamentDescription(updates.description, sourceLocale);
+      }
+      
+      if (updates.eventSchedule && Array.isArray(updates.eventSchedule) && updates.eventSchedule.length > 0) {
+        translatedEventSchedule = await translateEventSchedule(updates.eventSchedule, sourceLocale);
+      }
+    }
+
     const tournament = await updateTournament(id, {
       ...updates,
       ...(hasDemoCountField ? { demoParticipantsCount: normalizedDemoCount ?? null } : {}),
     });
+
+    // Store translations in database
+    if (translatedDescription || translatedEventSchedule) {
+      const { storeTournamentTranslations } = await import('@/lib/translation-utils');
+      await storeTournamentTranslations(tournament.id, {
+        description: translatedDescription,
+        eventSchedule: translatedEventSchedule,
+      });
+    }
+
     return NextResponse.json({ tournament });
   } catch (error: any) {
     console.error('Error updating tournament:', error);
