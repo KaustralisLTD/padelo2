@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import ParticipantResultsContent from '@/components/pages/ParticipantResultsContent';
+import { ParticipantResultsContent } from '@/components/pages/ParticipantResultsContent';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
