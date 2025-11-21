@@ -473,6 +473,39 @@ export default function TournamentParticipantsPage() {
     }
   };
 
+  const handleDelete = async (participantId: number, firstName: string, lastName: string) => {
+    if (!token) return;
+
+    const confirmMessage = tTournaments('confirmDeleteParticipant', { 
+      name: `${firstName} ${lastName}` 
+    }) || `Вы уверены, что хотите удалить участника ${firstName} ${lastName}? Это действие нельзя отменить.`;
+
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      setError(null);
+      const response = await fetch(`/api/tournament/${tournamentId}/registrations/${participantId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setSuccess(tTournaments('participantDeleted') || 'Участник успешно удален');
+        fetchParticipants();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.error || tTournaments('participantDeleteError') || 'Ошибка при удалении участника');
+      }
+    } catch (err) {
+      setError(tTournaments('participantDeleteError') || 'Ошибка при удалении участника');
+    }
+  };
+
   const handleEditCategoryToggle = (category: string) => {
     setEditFormData((prev) => {
       const current = prev.categories || [];
@@ -841,12 +874,20 @@ export default function TournamentParticipantsPage() {
                         </select>
                       </td>
                       <td className="px-3 py-2 text-xs">
-                        <button
-                          onClick={() => handleEdit(participant)}
-                          className="px-2 py-1 bg-primary text-background rounded hover:opacity-90 transition-opacity text-xs whitespace-nowrap"
-                        >
-                          {tTournaments('edit')}
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEdit(participant)}
+                            className="px-2 py-1 bg-primary text-background rounded hover:opacity-90 transition-opacity text-xs whitespace-nowrap"
+                          >
+                            {tTournaments('edit')}
+                          </button>
+                          <button
+                            onClick={() => handleDelete(participant.id, participant.firstName, participant.lastName)}
+                            className="px-2 py-1 bg-red-500 text-background rounded hover:opacity-90 transition-opacity text-xs whitespace-nowrap"
+                          >
+                            {tTournaments('delete')}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                       );

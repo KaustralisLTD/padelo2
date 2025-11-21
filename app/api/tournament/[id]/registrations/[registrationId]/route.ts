@@ -317,3 +317,59 @@ export async function PATCH(
   }
 }
 
+/**
+ * DELETE - удалить регистрацию участника
+ */
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string; registrationId: string }> }
+) {
+  try {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const session = await getSession(token);
+    if (session?.role !== 'superadmin' && session?.role !== 'staff') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    const { id, registrationId } = await params;
+    const tournamentId = parseInt(id, 10);
+    const registrationIdNum = parseInt(registrationId, 10);
+
+    if (isNaN(tournamentId) || isNaN(registrationIdNum)) {
+      return NextResponse.json({ error: 'Invalid tournament or registration ID' }, { status: 400 });
+    }
+
+    const pool = getDbPool();
+
+    // Проверяем, что регистрация принадлежит этому турниру
+    const [check] = await pool.execute(
+      'SELECT id FROM tournament_registrations WHERE id = ? AND tournament_id = ?',
+      [registrationIdNum, tournamentId]
+    ) as any[];
+
+    if (check.length === 0) {
+      return NextResponse.json({ error: 'Registration not found' }, { status: 404 });
+    }
+
+    // Удаляем регистрацию
+    await pool.execute(
+      'DELETE FROM tournament_registrations WHERE id = ? AND tournament_id = ?',
+      [registrationIdNum, tournamentId]
+    );
+
+    return NextResponse.json({ success: true, message: 'Registration deleted successfully' });
+  } catch (error: any) {
+    console.error('Error deleting registration:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to delete registration' },
+      { status: 500 }
+    );
+  }
+}
+
