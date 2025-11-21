@@ -33,10 +33,10 @@ const WhatsAppButton = () => {
   let message = t('message');
   
   if (userInfo && userInfo.name && userInfo.name !== 'N/A') {
-    const userDetails = `\n\n👤 ${t('userInfo') || 'User Info'}: ${userInfo.name}\n🆔 User ID: ${userInfo.userId || 'N/A'}`;
+    const userDetails = `\n\n👤 ${t('userName') || 'Name'}: ${userInfo.name}\n🆔 ${t('userId') || 'User ID'}: ${userInfo.userId || 'N/A'}`;
     message += userDetails;
   } else if (userInfo && userInfo.userId) {
-    const userDetails = `\n\n🆔 User ID: ${userInfo.userId}`;
+    const userDetails = `\n\n🆔 ${t('userId') || 'User ID'}: ${userInfo.userId}`;
     message += userDetails;
   }
   

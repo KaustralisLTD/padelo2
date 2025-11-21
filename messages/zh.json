@@ -711,7 +711,9 @@
   },
   "WhatsApp": {
     "button": "在 WhatsApp 上聊天",
-    "message": "你好！我想了解更多关于您的板式网球服务。"
+    "message": "你好！我想了解更多关于您的板式网球服务。",
+    "userName": "姓名",
+    "userId": "用户ID"
   },
   "Login": {
     "title": "登录",

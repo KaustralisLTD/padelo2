@@ -732,7 +732,9 @@
   },
   "WhatsApp": {
     "button": "Chatear en WhatsApp",
-    "message": "¡Hola! Me interesa conocer más sobre sus servicios de pádel."
+    "message": "¡Hola! Me interesa conocer más sobre sus servicios de pádel.",
+    "userName": "Nombre",
+    "userId": "ID de usuario"
   },
   "Admin": {
     "loading": "Cargando...",

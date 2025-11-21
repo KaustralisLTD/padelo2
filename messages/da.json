@@ -711,7 +711,9 @@
   },
   "WhatsApp": {
     "button": "Chat på WhatsApp",
-    "message": "Hej! Jeg er interesseret i at lære mere om jeres padel tjenester."
+    "message": "Hej! Jeg er interesseret i at lære mere om jeres padel tjenester.",
+    "userName": "Navn",
+    "userId": "Bruger-ID"
   },
   "Login": {
     "title": "Log ind",

@@ -665,7 +665,9 @@
   },
   "WhatsApp": {
     "button": "Chat on WhatsApp",
-    "message": "Hello! I'm interested in learning more about your padel services."
+    "message": "Hello! I'm interested in learning more about your padel services.",
+    "userName": "Name",
+    "userId": "User ID"
   },
   "Login": {
     "title": "Login",

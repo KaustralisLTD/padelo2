@@ -711,7 +711,9 @@
   },
   "WhatsApp": {
     "button": "Auf WhatsApp chatten",
-    "message": "Hallo! Ich interessiere mich für weitere Informationen über Ihre Padel-Dienste."
+    "message": "Hallo! Ich interessiere mich für weitere Informationen über Ihre Padel-Dienste.",
+    "userName": "Name",
+    "userId": "Benutzer-ID"
   },
   "Admin": {
     "tournaments": {
