@@ -416,9 +416,17 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       }
     }
 
-    // Валидация партнеров для mixed категорий
+    // Валидация партнеров для mixed категорий (только если блок развернут или обязателен)
     const mixedCategoriesForValidation = formData.categories.filter(c => c.startsWith('mixed'));
     for (const category of mixedCategoriesForValidation) {
+      const isExpanded = expandedCategoryPartners[category] || false;
+      const isRequired = partnerRequired;
+      const shouldValidate = isRequired || isExpanded;
+      
+      if (!shouldValidate) {
+        continue; // Пропускаем валидацию, если блок не развернут и не обязателен
+      }
+      
       const categoryPartner = categoryPartners[category];
       if (!categoryPartner) {
         const errorMsg = t('form.partnerRequiredForCategory', { category: t(`categories.${category}`) }) || `Partner is required for ${t(`categories.${category}`)}`;
