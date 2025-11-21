@@ -269,6 +269,24 @@ export default function TournamentParticipantsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId, token]);
 
+  // Close category filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const dropdown = document.getElementById('category-filter-dropdown');
+      const trigger = target.closest('.category-filter-trigger');
+      
+      if (dropdown && !dropdown.contains(target) && !trigger) {
+        dropdown.classList.add('hidden');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const fetchTournament = async () => {
     if (!token) return;
 
@@ -602,8 +620,15 @@ export default function TournamentParticipantsPage() {
         </div>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-500">
-            {error}
+          <div className="mb-4 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-6 backdrop-blur-sm">
+            <div className="flex items-center justify-center gap-3">
+              <div className="w-10 h-10 bg-gradient-danger rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <p className="text-text font-poppins font-semibold text-lg">{error}</p>
+            </div>
           </div>
         )}
 
