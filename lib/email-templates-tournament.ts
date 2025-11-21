@@ -501,15 +501,13 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.join(', ')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')}</div>
                         </div>
                         
-                        ${totalPrice ? `
                         <div class="detail-row" style="border-bottom: none;">
                           <div class="detail-label">${t.price}:</div>
-                          <div class="detail-value"><strong>${totalPrice} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceSingleCategory} + ${tournament.priceSingleCategory}` : categoryCount + ' ' + t.multipleCategories})` : ''}</div>
+                          <div class="detail-value"><strong>${totalPrice || 0} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceSingleCategory || 0} + ${tournament.priceSingleCategory || 0}` : categoryCount + ' ' + t.multipleCategories})` : ''}</div>
                         </div>
-                        ` : ''}
                       </div>
 
                       <div class="warning-box">
