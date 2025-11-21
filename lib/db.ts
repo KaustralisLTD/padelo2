@@ -317,6 +317,20 @@ export async function initDatabase() {
     }
   }
 
+  // Migrate tshirt_size to allow empty string instead of NOT NULL
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      MODIFY COLUMN tshirt_size VARCHAR(10) DEFAULT ''
+    `);
+    console.log('[Migration] Updated tshirt_size column to allow empty string');
+  } catch (e: any) {
+    // Ignore if column doesn't exist or already modified
+    if (!e.message?.toLowerCase().includes('duplicate') && !e.message?.toLowerCase().includes('doesn\'t exist')) {
+      console.error('[Migration] Error updating tshirt_size column:', e.message);
+    }
+  }
+
   // Create users table if it doesn't exist
   await pool.execute(`
     CREATE TABLE IF NOT EXISTS users (
