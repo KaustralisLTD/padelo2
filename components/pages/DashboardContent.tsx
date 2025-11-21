@@ -559,7 +559,6 @@ export default function DashboardContent() {
           </>
         )}
         </>
-      )}
       </div>
     </div>
   );
