@@ -119,31 +119,25 @@ export async function storeTournamentTranslations(
   }
 ): Promise<void> {
   try {
-    const pool = await import('@/lib/db').then(m => m.getDbPool());
-    
-    // Check if translations column exists, if not, we'll store in JSON format
-    // For now, we'll store translations in a JSON column or separate table
-    // This is a placeholder - actual implementation depends on DB schema
+    const { getDbPool } = await import('@/lib/db');
+    const pool = getDbPool();
     
     const translationsJson = JSON.stringify(translations);
     
-    // Try to update tournaments table with translations
-    try {
-      await pool.execute(
-        `UPDATE tournaments SET translations = ? WHERE id = ?`,
-        [translationsJson, tournamentId]
-      );
-    } catch (e: any) {
-      // If translations column doesn't exist, we'll need to add it
-      if (e.message.includes("Unknown column 'translations'")) {
-        console.warn('[storeTournamentTranslations] Translations column not found, skipping storage');
-        // In production, you might want to add the column automatically
-      } else {
-        throw e;
-      }
+    // Update tournaments table with translations
+    await pool.execute(
+      `UPDATE tournaments SET translations = ? WHERE id = ?`,
+      [translationsJson, tournamentId]
+    );
+    
+    console.log(`[storeTournamentTranslations] Stored translations for tournament ${tournamentId}`);
+  } catch (error: any) {
+    // If translations column doesn't exist, log warning but don't fail
+    if (error.message?.includes("Unknown column 'translations'")) {
+      console.warn('[storeTournamentTranslations] Translations column not found. Run database migration to add it.');
+    } else {
+      console.error('[storeTournamentTranslations] Error storing translations:', error);
     }
-  } catch (error) {
-    console.error('[storeTournamentTranslations] Error storing translations:', error);
     // Don't throw - translations are optional
   }
 }
