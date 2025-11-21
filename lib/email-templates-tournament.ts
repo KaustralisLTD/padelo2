@@ -1031,10 +1031,13 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       .social-yt { background-color: #FF0000; }
       .social-tt { background-color: #000000; }
       .social-fb { background-color: #1877F2; }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body { padding: 0 18px 20px 18px !important; }
         .p-footer { padding: 14px 18px 24px 18px !important; }
         .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
   </head>

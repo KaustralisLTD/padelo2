@@ -37,6 +37,10 @@ export interface Tournament {
   customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
   bannerImageName?: string | null;
   bannerImageData?: string | null; // Base64 encoded image data
+  translations?: {
+    description?: Record<string, string>;
+    eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+  };
 }
 
 export interface TournamentGroup {
