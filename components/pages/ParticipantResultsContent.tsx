@@ -10,6 +10,8 @@ interface Match {
   tournamentName: string;
   category: string;
   groupName: string;
+  pair1Id: number;
+  pair2Id: number;
   pair1Players: string[];
   pair2Players: string[];
   pair1Games: number;
@@ -148,8 +150,6 @@ export function ParticipantResultsContent() {
           <div className="space-y-4">
             {matches.map((match) => {
               const hasSets = match.pair1Set1 !== null && match.pair1Set1 !== undefined;
-              // Определяем, в какой паре находится пользователь (проверяем по наличию winnerPairId)
-              const userWon = match.winnerPairId === match.pair1Id || match.winnerPairId === match.pair2Id;
               
               return (
                 <div
