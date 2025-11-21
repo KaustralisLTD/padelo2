@@ -238,10 +238,26 @@ export async function GET(request: NextRequest) {
   
   try {
     const { getRegistration } = await import('@/lib/tournament-storage');
+    console.log(`[GET /api/tournament/register] Requested token: ${token.substring(0, 8)}... (length: ${token.length})`);
     const registration = await getRegistration(token);
     
     if (!registration) {
-      console.error(`[GET /api/tournament/register] Registration not found for token: ${token.substring(0, 8)}...`);
+      console.error(`[GET /api/tournament/register] Registration not found for token: ${token.substring(0, 8)}... (length: ${token.length})`);
+      // Попробуем найти все регистрации с похожими токенами для отладки
+      try {
+        const { getDbPool } = await import('@/lib/db');
+        const pool = getDbPool();
+        const [allTokens] = await pool.execute(
+          `SELECT token, created_at FROM tournament_registrations ORDER BY created_at DESC LIMIT 5`
+        ) as any[];
+        console.log(`[GET /api/tournament/register] Recent tokens in DB:`, allTokens.map((r: any) => ({
+          token: r.token.substring(0, 16) + '...',
+          length: r.token.length,
+          created: r.created_at
+        })));
+      } catch (debugError) {
+        console.error('[GET /api/tournament/register] Debug query failed:', debugError);
+      }
       return NextResponse.json(
         { error: 'Invalid or expired confirmation link. Please contact support.' },
         { status: 404 }

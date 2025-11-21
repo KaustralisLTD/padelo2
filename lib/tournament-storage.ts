@@ -131,12 +131,25 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
       const { getDbPool } = await import('./db');
       const pool = getDbPool();
       
+      console.log(`[getRegistration] Looking for token: ${token.substring(0, 8)}... (length: ${token.length})`);
+      
       const [rows] = await pool.execute(
         `SELECT * FROM tournament_registrations WHERE token = ?`,
         [token]
       ) as any[];
       
+      console.log(`[getRegistration] Found ${rows.length} registration(s) for token: ${token.substring(0, 8)}...`);
+      
       if (rows.length === 0) {
+        // Попробуем найти регистрацию без учета регистра (на случай проблем с кодировкой)
+        const [allRows] = await pool.execute(
+          `SELECT token FROM tournament_registrations WHERE token LIKE ? LIMIT 5`,
+          [`${token.substring(0, 8)}%`]
+        ) as any[];
+        console.log(`[getRegistration] Found ${allRows.length} similar tokens (first 8 chars match)`);
+        if (allRows.length > 0) {
+          console.log(`[getRegistration] Sample tokens:`, allRows.map((r: any) => r.token.substring(0, 16)));
+        }
         return undefined;
       }
       
