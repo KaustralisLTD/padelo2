@@ -1216,7 +1216,11 @@
       "schedule": "Mi calendario",
       "scheduleDesc": "Consulta el horario de tus partidos",
       "results": "Mis resultados",
-      "resultsDesc": "Consulta los resultados de tus partidos"
+      "resultsDesc": "Consulta los resultados de tus partidos",
+      "settings": "Configuración de Cuenta",
+      "settingsDesc": "Gestionar tu perfil e información de cuenta",
+      "wallet": "Billetera",
+      "walletDesc": "Ver saldo e historial de transacciones"
     }
   },
   "Merchandise": {
@@ -1446,6 +1450,70 @@
     "contact": {
       "title": "12. How to Contact Us",
       "text1": "You may contact us regarding the Services or these Terms by email at"
+    }
+  },
+  "ParticipantWallet": {
+    "title": "Mi Billetera",
+    "description": "Ver tu saldo e historial de transacciones",
+    "backToDashboard": "Volver al Panel",
+    "balance": "Saldo",
+    "balanceDescription": "Tu saldo actual de cuenta",
+    "topUp": "Recargar",
+    "topUpDescription": "Agregar fondos a tu cuenta usando Revolut o Stripe",
+    "comingSoon": "Próximamente",
+    "transactions": "Historial de Transacciones",
+    "noTransactions": "Aún no hay transacciones",
+    "types": {
+      "deposit": "Depósito",
+      "withdrawal": "Retiro",
+      "payment": "Pago",
+      "refund": "Reembolso"
+    },
+    "status": {
+      "completed": "Completado",
+      "pending": "Pendiente",
+      "failed": "Fallido"
+    }
+  },
+  "ParticipantSchedule": {
+    "title": "Mi Horario",
+    "description": "Ver y gestionar tus reservas, entrenamientos y torneos",
+    "createBooking": "Crear Reserva",
+    "backToDashboard": "Volver al Panel",
+    "loading": "Cargando horario...",
+    "noBookings": "No se encontraron reservas. ¡Crea tu primera reserva!",
+    "createFirstBooking": "Crear Primera Reserva",
+    "close": "Cerrar",
+    "comingSoon": "Esta función llegará pronto. Podrás reservar canchas, entrenamientos y sesiones con máquina AI.",
+    "types": {
+      "court": "Reserva de Cancha",
+      "training": "Entrenamiento",
+      "ai_training": "Entrenamiento con AI",
+      "tournament": "Torneo"
+    },
+    "status": {
+      "upcoming": "Próximo",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "minutes": "minutos",
+    "court": "Cancha"
+  },
+  "ParticipantResults": {
+    "title": "Mis Resultados",
+    "description": "Ver tu historial de partidos y estadísticas",
+    "backToDashboard": "Volver al Panel",
+    "loading": "Cargando resultados...",
+    "noMatches": "Aún no hay partidos. ¡Participa en torneos para ver tus resultados aquí!",
+    "pair1": "Pareja 1",
+    "pair2": "Pareja 2",
+    "court": "Cancha",
+    "statistics": {
+      "totalMatches": "Total de Partidos",
+      "wins": "Victorias",
+      "losses": "Derrotas",
+      "winRate": "Tasa de Victoria",
+      "games": "Juegos"
     }
   }
 }

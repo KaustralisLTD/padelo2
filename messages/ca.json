@@ -994,7 +994,11 @@
       "schedule": "My Schedule",
       "scheduleDesc": "View your match schedule",
       "results": "My Results",
-      "resultsDesc": "View your match results"
+      "resultsDesc": "View your match results",
+      "settings": "Account Settings",
+      "settingsDesc": "Manage your profile and account information",
+      "wallet": "Wallet",
+      "walletDesc": "View balance and transaction history"
     }
   },
   "Admin": {
@@ -1710,6 +1714,70 @@
     "contact": {
       "title": "12. How to Contact Us",
       "text1": "You may contact us regarding the Services or these Terms by email at"
+    }
+  },
+  "ParticipantWallet": {
+    "title": "My Wallet",
+    "description": "View your balance and transaction history",
+    "backToDashboard": "Back to Dashboard",
+    "balance": "Balance",
+    "balanceDescription": "Your current account balance",
+    "topUp": "Top Up",
+    "topUpDescription": "Add funds to your account using Revolut or Stripe",
+    "comingSoon": "Coming Soon",
+    "transactions": "Transaction History",
+    "noTransactions": "No transactions yet",
+    "types": {
+      "deposit": "Deposit",
+      "withdrawal": "Withdrawal",
+      "payment": "Payment",
+      "refund": "Refund"
+    },
+    "status": {
+      "completed": "Completed",
+      "pending": "Pending",
+      "failed": "Failed"
+    }
+  },
+  "ParticipantSchedule": {
+    "title": "My Schedule",
+    "description": "View and manage your bookings, trainings, and tournaments",
+    "createBooking": "Create Booking",
+    "backToDashboard": "Back to Dashboard",
+    "loading": "Loading schedule...",
+    "noBookings": "No bookings found. Create your first booking!",
+    "createFirstBooking": "Create First Booking",
+    "close": "Close",
+    "comingSoon": "This feature is coming soon. You will be able to book courts, trainings, and AI machine sessions.",
+    "types": {
+      "court": "Court Booking",
+      "training": "Training",
+      "ai_training": "AI Training",
+      "tournament": "Tournament"
+    },
+    "status": {
+      "upcoming": "Upcoming",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "minutes": "minutes",
+    "court": "Court"
+  },
+  "ParticipantResults": {
+    "title": "My Results",
+    "description": "View your match history and statistics",
+    "backToDashboard": "Back to Dashboard",
+    "loading": "Loading results...",
+    "noMatches": "No matches found yet. Participate in tournaments to see your results here!",
+    "pair1": "Pair 1",
+    "pair2": "Pair 2",
+    "court": "Court",
+    "statistics": {
+      "totalMatches": "Total Matches",
+      "wins": "Wins",
+      "losses": "Losses",
+      "winRate": "Win Rate",
+      "games": "Games"
     }
   }
 }

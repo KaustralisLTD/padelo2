@@ -790,7 +790,11 @@
       "schedule": "Мое расписание",
       "scheduleDesc": "Просмотр расписания ваших матчей",
       "results": "Мои результаты",
-      "resultsDesc": "Просмотр результатов ваших матчей"
+      "resultsDesc": "Просмотр результатов ваших матчей",
+      "settings": "Настройки Аккаунта",
+      "settingsDesc": "Управлять профилем и информацией аккаунта",
+      "wallet": "Кошелек",
+      "walletDesc": "Просмотреть баланс и историю транзакций"
     }
   },
   "Admin": {
@@ -1431,6 +1435,70 @@
     "contact": {
       "title": "12. How to Contact Us",
       "text1": "You may contact us regarding the Services or these Terms by email at"
+    }
+  },
+  "ParticipantWallet": {
+    "title": "Мой Кошелек",
+    "description": "Просмотреть баланс и историю транзакций",
+    "backToDashboard": "Вернуться к Панели",
+    "balance": "Баланс",
+    "balanceDescription": "Ваш текущий баланс счета",
+    "topUp": "Пополнить",
+    "topUpDescription": "Добавить средства на счет через Revolut или Stripe",
+    "comingSoon": "Скоро",
+    "transactions": "История транзакций",
+    "noTransactions": "Пока нет транзакций",
+    "types": {
+      "deposit": "Пополнение",
+      "withdrawal": "Вывод",
+      "payment": "Оплата",
+      "refund": "Возврат"
+    },
+    "status": {
+      "completed": "Завершено",
+      "pending": "В ожидании",
+      "failed": "Ошибка"
+    }
+  },
+  "ParticipantSchedule": {
+    "title": "Мое Расписание",
+    "description": "Просматривайте и управляйте бронированиями, тренировками и турнирами",
+    "createBooking": "Создать Бронирование",
+    "backToDashboard": "Вернуться к Панели",
+    "loading": "Загрузка расписания...",
+    "noBookings": "Бронирования не найдены. Создайте первое бронирование!",
+    "createFirstBooking": "Создать Первое Бронирование",
+    "close": "Закрыть",
+    "comingSoon": "Эта функция скоро. Вы сможете бронировать корты, тренировки и сессии с AI машинкой.",
+    "types": {
+      "court": "Бронирование Корта",
+      "training": "Тренировка",
+      "ai_training": "Тренировка с AI",
+      "tournament": "Турнир"
+    },
+    "status": {
+      "upcoming": "Предстоящее",
+      "completed": "Завершено",
+      "cancelled": "Отменено"
+    },
+    "minutes": "минут",
+    "court": "Корт"
+  },
+  "ParticipantResults": {
+    "title": "Мои Результаты",
+    "description": "Просмотреть историю матчей и статистику",
+    "backToDashboard": "Вернуться к Панели",
+    "loading": "Загрузка результатов...",
+    "noMatches": "Матчей пока нет. Участвуйте в турнирах, чтобы увидеть свои результаты здесь!",
+    "pair1": "Пара 1",
+    "pair2": "Пара 2",
+    "court": "Корт",
+    "statistics": {
+      "totalMatches": "Всего Матчей",
+      "wins": "Победы",
+      "losses": "Поражения",
+      "winRate": "Процент Побед",
+      "games": "Игры"
     }
   }
 }

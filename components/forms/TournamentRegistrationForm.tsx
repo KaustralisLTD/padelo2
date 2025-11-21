@@ -597,6 +597,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         const data = await response.json();
         console.log('[TournamentRegistrationForm] Registration successful:', data);
         setSubmitStatus('success');
+        setIsAlreadyRegistered(true);
+        setExistingToken(data.token);
         // Store token in localStorage for dashboard access
         localStorage.setItem('tournament_token', data.token);
         // Не перенаправляем на confirmation - показываем сообщение о необходимости проверить почту

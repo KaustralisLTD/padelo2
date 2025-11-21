@@ -809,7 +809,11 @@
       "schedule": "Мій розклад",
       "scheduleDesc": "Перегляд розкладу ваших матчів",
       "results": "Мої результати",
-      "resultsDesc": "Перегляд результатів ваших матчів"
+      "resultsDesc": "Перегляд результатів ваших матчів",
+      "settings": "Налаштування Акаунту",
+      "settingsDesc": "Керувати профілем та інформацією акаунту",
+      "wallet": "Гаманець",
+      "walletDesc": "Переглянути баланс та історію транзакцій"
     }
   },
   "Admin": {
@@ -1045,7 +1049,6 @@
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional",
-      "delete": "Видалити",
       "confirmDeleteParticipant": "Ви впевнені, що хочете видалити учасника {name}? Цю дію неможливо скасувати.",
       "participantDeleted": "Учасника успішно видалено.",
       "participantDeleteError": "Помилка при видаленні учасника."
@@ -1434,6 +1437,70 @@
     "contact": {
       "title": "12. How to Contact Us",
       "text1": "You may contact us regarding the Services or these Terms by email at"
+    }
+  },
+  "ParticipantWallet": {
+    "title": "Мій Гаманець",
+    "description": "Переглянути баланс та історію транзакцій",
+    "backToDashboard": "Повернутися до Панелі",
+    "balance": "Баланс",
+    "balanceDescription": "Ваш поточний баланс рахунку",
+    "topUp": "Поповнити",
+    "topUpDescription": "Додати кошти на рахунок через Revolut або Stripe",
+    "comingSoon": "Незабаром",
+    "transactions": "Історія транзакцій",
+    "noTransactions": "Поки що немає транзакцій",
+    "types": {
+      "deposit": "Поповнення",
+      "withdrawal": "Виведення",
+      "payment": "Оплата",
+      "refund": "Повернення"
+    },
+    "status": {
+      "completed": "Завершено",
+      "pending": "В очікуванні",
+      "failed": "Помилка"
+    }
+  },
+  "ParticipantSchedule": {
+    "title": "Мій Розклад",
+    "description": "Переглядайте та керуйте бронюваннями, тренуваннями та турнірами",
+    "createBooking": "Створити Бронювання",
+    "backToDashboard": "Повернутися до Панелі",
+    "loading": "Завантаження розкладу...",
+    "noBookings": "Бронювання не знайдено. Створіть перше бронювання!",
+    "createFirstBooking": "Створити Перше Бронювання",
+    "close": "Закрити",
+    "comingSoon": "Ця функція незабаром. Ви зможете бронювати корти, тренування та сесії з AI машинкою.",
+    "types": {
+      "court": "Бронювання Корту",
+      "training": "Тренування",
+      "ai_training": "Тренування з AI",
+      "tournament": "Турнір"
+    },
+    "status": {
+      "upcoming": "Майбутнє",
+      "completed": "Завершено",
+      "cancelled": "Скасовано"
+    },
+    "minutes": "хвилин",
+    "court": "Корт"
+  },
+  "ParticipantResults": {
+    "title": "Мої Результати",
+    "description": "Переглянути історію матчів та статистику",
+    "backToDashboard": "Повернутися до Панелі",
+    "loading": "Завантаження результатів...",
+    "noMatches": "Матчів поки що немає. Берейте участь у турнірах, щоб побачити свої результати тут!",
+    "pair1": "Пара 1",
+    "pair2": "Пара 2",
+    "court": "Корт",
+    "statistics": {
+      "totalMatches": "Всього Матчів",
+      "wins": "Перемоги",
+      "losses": "Поразки",
+      "winRate": "Відсоток Перемог",
+      "games": "Ігри"
     }
   }
 }

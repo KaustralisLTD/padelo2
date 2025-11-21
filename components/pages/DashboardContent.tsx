@@ -8,7 +8,8 @@ import Link from 'next/link';
 export default function DashboardContent() {
   const t = useTranslations('Tournaments');
   const locale = useLocale();
-  const [registration, setRegistration] = useState<any>(null);
+  const [registrations, setRegistrations] = useState<any[]>([]);
+  const [selectedRegistration, setSelectedRegistration] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState<any>(null);
@@ -18,15 +19,54 @@ export default function DashboardContent() {
   useEffect(() => {
     // Get token from URL or localStorage
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token') || localStorage.getItem('tournament_token');
+    const token = urlParams.get('token');
     
+    // Try to fetch all registrations for the logged-in user
+    fetchAllRegistrations();
+    
+    // If token is provided, fetch that specific registration
     if (token) {
       localStorage.setItem('tournament_token', token);
       fetchRegistration(token);
-    } else {
-      setLoading(false);
     }
   }, []);
+
+  const fetchAllRegistrations = async () => {
+    try {
+      const authToken = localStorage.getItem('auth_token');
+      if (!authToken) {
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch('/api/user/tournament-registrations', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.registrations && data.registrations.length > 0) {
+          setRegistrations(data.registrations);
+          // If no token in URL, select the first registration
+          const urlParams = new URLSearchParams(window.location.search);
+          const token = urlParams.get('token');
+          if (!token && data.registrations.length > 0) {
+            // Fetch the first registration by token
+            fetchRegistration(data.registrations[0].token);
+          }
+        } else {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching registrations:', error);
+      setLoading(false);
+    }
+  };
 
   const fetchRegistration = async (token: string) => {
     try {
@@ -34,7 +74,7 @@ export default function DashboardContent() {
       if (response.ok) {
         const data = await response.json();
         if (data.registration) {
-          setRegistration(data.registration);
+          setSelectedRegistration(data.registration);
         } else {
           setLoading(false);
           return;
@@ -50,18 +90,26 @@ export default function DashboardContent() {
     }
   };
 
+  const handleSelectRegistration = (token: string) => {
+    localStorage.setItem('tournament_token', token);
+    fetchRegistration(token);
+    setIsEditing(false);
+    setEditData(null);
+  };
+
   const handleEdit = () => {
+    if (!selectedRegistration) return;
     setEditData({
-      firstName: registration.firstName,
-      lastName: registration.lastName,
-      email: registration.email,
-      phone: registration.phone,
-      telegram: registration.telegram || '',
-      tshirtSize: registration.tshirtSize || '',
-      message: registration.message || '',
-      categories: [...(registration.categories || [])],
-      partner: registration.partner ? { ...registration.partner } : null,
-      categoryPartners: registration.categoryPartners ? { ...registration.categoryPartners } : {},
+      firstName: selectedRegistration.firstName,
+      lastName: selectedRegistration.lastName,
+      email: selectedRegistration.email,
+      phone: selectedRegistration.phone,
+      telegram: selectedRegistration.telegram || '',
+      tshirtSize: selectedRegistration.tshirtSize || '',
+      message: selectedRegistration.message || '',
+      categories: [...(selectedRegistration.categories || [])],
+      partner: selectedRegistration.partner ? { ...selectedRegistration.partner } : null,
+      categoryPartners: selectedRegistration.categoryPartners ? { ...selectedRegistration.categoryPartners } : {},
     });
     setIsEditing(true);
   };
@@ -85,7 +133,7 @@ export default function DashboardContent() {
 
       if (response.ok) {
         const data = await response.json();
-        setRegistration(data.registration);
+        setSelectedRegistration(data.registration);
         setSaveStatus('success');
         setIsEditing(false);
         // Refresh registration data
@@ -120,7 +168,7 @@ export default function DashboardContent() {
     );
   }
 
-  if (!registration) {
+  if (!selectedRegistration && !loading) {
     return (
       <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-4xl mx-auto text-center">
@@ -136,25 +184,69 @@ export default function DashboardContent() {
     );
   }
 
+  const registration = selectedRegistration;
+
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-poppins font-bold gradient-text">
-            {t('dashboard.title')}
-          </h1>
-          {!isEditing && (
-            <button
-              onClick={handleEdit}
-              className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              {t('dashboard.editButton') || t('edit')}
-            </button>
-          )}
-        </div>
+        {/* Tournament Selection - если несколько турниров */}
+        {registrations.length > 1 && (
+          <div className="mb-6">
+            <h2 className="text-lg font-orbitron font-semibold text-text mb-4">
+              {t('dashboard.selectTournament') || 'Select Tournament'}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {registrations.map((reg) => (
+                <button
+                  key={reg.id}
+                  onClick={() => handleSelectRegistration(reg.token)}
+                  className={`p-4 rounded-lg border transition-colors text-left ${
+                    selectedRegistration?.token === reg.token
+                      ? 'bg-primary/20 border-primary'
+                      : 'bg-background-secondary border-border hover:border-primary'
+                  }`}
+                >
+                  <div className="font-poppins font-semibold text-text mb-1">
+                    {reg.tournamentName}
+                  </div>
+                  <div className="text-sm text-text-secondary font-poppins">
+                    {reg.tournamentStartDate
+                      ? new Date(reg.tournamentStartDate).toLocaleDateString(locale, {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })
+                      : ''}
+                  </div>
+                  <div className="text-xs text-text-secondary font-poppins mt-1">
+                    {reg.confirmed
+                      ? t('dashboard.confirmed')
+                      : t('dashboard.pending')}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {registration && (
+          <>
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-3xl md:text-4xl font-poppins font-bold gradient-text">
+                {t('dashboard.title')}
+              </h1>
+              {!isEditing && (
+                <button
+                  onClick={handleEdit}
+                  className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  {t('dashboard.editButton')}
+                </button>
+              )}
+            </div>
 
         {saveStatus === 'success' && (
           <div className="p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-400 text-sm font-poppins mb-6">
@@ -358,110 +450,110 @@ export default function DashboardContent() {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Registration Info */}
-              <div className="bg-background-secondary p-6 rounded-lg border border-gray-800">
-                <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
-                  {t('dashboard.registrationInfo')}
-                </h2>
-                <div className="space-y-2 text-text-secondary font-poppins">
-                  <p><strong className="text-text">{t('form.firstName')}:</strong> {registration.firstName}</p>
-                  <p><strong className="text-text">{t('form.lastName')}:</strong> {registration.lastName}</p>
-                  <p><strong className="text-text">{t('form.email')}:</strong> {registration.email}</p>
-                  <p><strong className="text-text">{t('form.phone')}:</strong> {registration.phone}</p>
-                  {registration.telegram && (
-                    <p><strong className="text-text">{t('form.telegram')}:</strong> {registration.telegram}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Tournament Info */}
-              <div className="bg-background-secondary p-6 rounded-lg border border-gray-800">
-                <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
-                  {t('dashboard.tournamentInfo')}
-                </h2>
-                <div className="space-y-2 text-text-secondary font-poppins">
-                  <p><strong className="text-text">{t('dashboard.tournament')}:</strong> {registration.tournamentName}</p>
-                  <p><strong className="text-text">{t('form.categories')}:</strong> {
-                    registration.categories.map((cat: string) => t(`categories.${cat}`)).join(', ')
-                  }</p>
-                  <p><strong className="text-text">{t('form.tshirtSize')}:</strong> {registration.tshirtSize}</p>
-                  <p><strong className="text-text">{t('dashboard.status')}:</strong> {
-                    registration.confirmed ? (
-                      <span className="text-green-400">{t('dashboard.confirmed')}</span>
-                    ) : (
-                      <span className="text-yellow-400">{t('dashboard.pending')}</span>
-                    )
-                  }</p>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Registration Info */}
+          <div className="bg-background-secondary p-6 rounded-lg border border-gray-800">
+            <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+              {t('dashboard.registrationInfo')}
+            </h2>
+            <div className="space-y-2 text-text-secondary font-poppins">
+              <p><strong className="text-text">{t('form.firstName')}:</strong> {registration.firstName}</p>
+              <p><strong className="text-text">{t('form.lastName')}:</strong> {registration.lastName}</p>
+              <p><strong className="text-text">{t('form.email')}:</strong> {registration.email}</p>
+              <p><strong className="text-text">{t('form.phone')}:</strong> {registration.phone}</p>
+              {registration.telegram && (
+                <p><strong className="text-text">{t('form.telegram')}:</strong> {registration.telegram}</p>
+              )}
             </div>
+          </div>
 
-            {/* Partner Info */}
-            {registration.partner && (
-              <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
-                <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
-                  {t('dashboard.partnerInfo')}
-                </h2>
-                <div className="space-y-2 text-text-secondary font-poppins">
-                  <p><strong className="text-text">{t('form.partnerName')}:</strong> {registration.partner.name}</p>
-                  <p><strong className="text-text">{t('form.partnerEmail')}:</strong> {registration.partner.email}</p>
-                  <p><strong className="text-text">{t('form.partnerPhone')}:</strong> {registration.partner.phone}</p>
-                  <p><strong className="text-text">{t('form.partnerTshirtSize')}:</strong> {registration.partner.tshirtSize}</p>
-                  {registration.partner.photoName && (
-                    <p><strong className="text-text">{t('form.partnerPhoto')}:</strong> {registration.partner.photoName}</p>
-                  )}
-                  {registration.partner.photoData && (
-                    <div className="mt-4">
-                      <Image
-                        src={registration.partner.photoData}
-                        alt={registration.partner.name}
-                        width={220}
-                        height={220}
-                        className="rounded-lg border border-gray-700 object-cover"
-                        unoptimized
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Photo Upload */}
-            <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
-              <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
-                {t('dashboard.photoUpload')}
-              </h2>
-              <p className="text-text-secondary font-poppins text-sm mb-4">
-                {t('dashboard.photoInstructions')}
-              </p>
-              <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="photo-upload"
-                />
-                <label
-                  htmlFor="photo-upload"
-                  className="cursor-pointer inline-block px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  {t('dashboard.uploadPhoto')}
-                </label>
-                <p className="text-text-secondary font-poppins text-xs mt-2">
-                  {t('form.photoInstructions.filenameExample')}
-                </p>
-              </div>
+          {/* Tournament Info */}
+          <div className="bg-background-secondary p-6 rounded-lg border border-gray-800">
+            <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+              {t('dashboard.tournamentInfo')}
+            </h2>
+            <div className="space-y-2 text-text-secondary font-poppins">
+              <p><strong className="text-text">{t('dashboard.tournament')}:</strong> {registration.tournamentName}</p>
+              <p><strong className="text-text">{t('form.categories')}:</strong> {
+                registration.categories.map((cat: string) => t(`categories.${cat}`)).join(', ')
+              }</p>
+              <p><strong className="text-text">{t('form.tshirtSize')}:</strong> {registration.tshirtSize}</p>
+              <p><strong className="text-text">{t('dashboard.status')}:</strong> {
+                registration.confirmed ? (
+                  <span className="text-green-400">{t('dashboard.confirmed')}</span>
+                ) : (
+                  <span className="text-yellow-400">{t('dashboard.pending')}</span>
+                )
+              }</p>
             </div>
+          </div>
+        </div>
 
-            {/* Message */}
-            {registration.message && (
-              <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
-                <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
-                  {t('form.message')}
-                </h2>
-                <p className="text-text-secondary font-poppins">{registration.message}</p>
-              </div>
+        {/* Partner Info */}
+        {registration.partner && (
+          <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
+            <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+              {t('dashboard.partnerInfo')}
+            </h2>
+            <div className="space-y-2 text-text-secondary font-poppins">
+              <p><strong className="text-text">{t('form.partnerName')}:</strong> {registration.partner.name}</p>
+              <p><strong className="text-text">{t('form.partnerEmail')}:</strong> {registration.partner.email}</p>
+              <p><strong className="text-text">{t('form.partnerPhone')}:</strong> {registration.partner.phone}</p>
+              <p><strong className="text-text">{t('form.partnerTshirtSize')}:</strong> {registration.partner.tshirtSize}</p>
+              {registration.partner.photoName && (
+                <p><strong className="text-text">{t('form.partnerPhoto')}:</strong> {registration.partner.photoName}</p>
+              )}
+              {registration.partner.photoData && (
+                <div className="mt-4">
+                  <Image
+                    src={registration.partner.photoData}
+                    alt={registration.partner.name}
+                    width={220}
+                    height={220}
+                    className="rounded-lg border border-gray-700 object-cover"
+                    unoptimized
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Photo Upload */}
+        <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
+          <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+            {t('dashboard.photoUpload')}
+          </h2>
+          <p className="text-text-secondary font-poppins text-sm mb-4">
+            {t('dashboard.photoInstructions')}
+          </p>
+          <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center">
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              id="photo-upload"
+            />
+            <label
+              htmlFor="photo-upload"
+              className="cursor-pointer inline-block px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            >
+              {t('dashboard.uploadPhoto')}
+            </label>
+            <p className="text-text-secondary font-poppins text-xs mt-2">
+              {t('form.photoInstructions.filenameExample')}
+            </p>
+          </div>
+        </div>
+
+        {/* Message */}
+        {registration.message && (
+          <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
+            <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+              {t('form.message')}
+            </h2>
+            <p className="text-text-secondary font-poppins">{registration.message}</p>
+          </div>
             )}
           </>
         )}
