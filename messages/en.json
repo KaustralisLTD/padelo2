@@ -437,6 +437,7 @@
       "photoUpload": "Photo Upload",
       "photoInstructions": "Please upload your photo. The file should be named: FirstName_LastName.jpg",
       "uploadPhoto": "Upload Photo",
+      "uploadingPhoto": "Uploading...",
       "editRegistration": "Edit Registration",
       "editButton": "Edit",
       "saveChanges": "Save Changes",

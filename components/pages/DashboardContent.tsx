@@ -15,6 +15,8 @@ export default function DashboardContent() {
   const [editData, setEditData] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   useEffect(() => {
     // Get token from URL or localStorage
@@ -155,6 +157,85 @@ export default function DashboardContent() {
     setIsEditing(false);
     setEditData(null);
     setSaveStatus('idle');
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setPhotoError(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setPhotoError('Please select an image file');
+      return;
+    }
+
+    setUploadingPhoto(true);
+    setPhotoError(null);
+
+    try {
+      // Read file as base64
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64Data = reader.result as string;
+          const fileName = `${selectedRegistration.firstName}_${selectedRegistration.lastName}.${file.name.split('.').pop()}`;
+
+          const token = localStorage.getItem('tournament_token');
+          if (!token) {
+            setPhotoError('Token not found');
+            setUploadingPhoto(false);
+            return;
+          }
+
+          const response = await fetch(`/api/tournament/register?token=${token}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userPhoto: {
+                name: fileName,
+                data: base64Data,
+              },
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setSelectedRegistration(data.registration);
+            // Refresh registration data
+            setTimeout(() => {
+              fetchRegistration(token);
+            }, 500);
+          } else {
+            const errorData = await response.json().catch(() => ({ error: 'Failed to upload photo' }));
+            setPhotoError(errorData.error || 'Failed to upload photo');
+          }
+        } catch (error) {
+          console.error('Error uploading photo:', error);
+          setPhotoError('Failed to upload photo');
+        } finally {
+          setUploadingPhoto(false);
+          // Reset input
+          e.target.value = '';
+        }
+      };
+      reader.onerror = () => {
+        setPhotoError('Failed to read file');
+        setUploadingPhoto(false);
+        e.target.value = '';
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error handling photo upload:', error);
+      setPhotoError('Failed to upload photo');
+      setUploadingPhoto(false);
+      e.target.value = '';
+    }
   };
 
   if (loading) {
@@ -528,22 +609,43 @@ export default function DashboardContent() {
           <p className="text-text-secondary font-poppins text-sm mb-4">
             {t('dashboard.photoInstructions')}
           </p>
+          
+          {/* Current Photo Preview */}
+          {selectedRegistration.userPhoto?.data && (
+            <div className="mb-4">
+              <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-border">
+                <img
+                  src={selectedRegistration.userPhoto.data}
+                  alt="User photo"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          )}
+
           <div className="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center">
             <input
               type="file"
               accept="image/*"
               className="hidden"
               id="photo-upload"
+              onChange={handlePhotoUpload}
+              disabled={uploadingPhoto}
             />
             <label
               htmlFor="photo-upload"
-              className="cursor-pointer inline-block px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className={`cursor-pointer inline-block px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg transition-opacity ${
+                uploadingPhoto ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
+              }`}
             >
-              {t('dashboard.uploadPhoto')}
+              {uploadingPhoto ? (t('dashboard.uploadingPhoto') || 'Uploading...') : t('dashboard.uploadPhoto')}
             </label>
             <p className="text-text-secondary font-poppins text-xs mt-2">
-              {t('form.photoInstructions.filenameExample')}
+              {t('form.photoInstructions.filenameExample') || `${selectedRegistration.firstName}_${selectedRegistration.lastName}.jpg`}
             </p>
+            {photoError && (
+              <p className="text-red-400 font-poppins text-sm mt-2">{photoError}</p>
+            )}
           </div>
         </div>
 
