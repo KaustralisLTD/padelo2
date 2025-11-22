@@ -90,6 +90,29 @@ export default function DashboardContent() {
         const data = await response.json();
         if (data.registration) {
           setSelectedRegistration(data.registration);
+          
+          // Загружаем настройки турнира
+          if (data.registration.tournamentId) {
+            try {
+              const tournamentResponse = await fetch(`/api/tournament/${data.registration.tournamentId}`);
+              if (tournamentResponse.ok) {
+                const tournamentData = await tournamentResponse.json();
+                if (tournamentData.tournament) {
+                  const settings = tournamentData.tournament.registrationSettings;
+                  setRegistrationSettings(normalizeRegistrationSettings(settings));
+                  setCustomCategories(tournamentData.tournament.customCategories || {});
+                  setKidsCategoryEnabled(tournamentData.tournament.kidsCategoryEnabled || false);
+                  
+                  // Загружаем данные ребенка, если есть
+                  if (data.registration.childData) {
+                    setChildData(data.registration.childData);
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('Error fetching tournament settings:', error);
+            }
+          }
         } else {
           setLoading(false);
           return;
@@ -125,6 +148,7 @@ export default function DashboardContent() {
       categories: [...(selectedRegistration.categories || [])],
       partner: selectedRegistration.partner ? { ...selectedRegistration.partner } : null,
       categoryPartners: selectedRegistration.categoryPartners ? { ...selectedRegistration.categoryPartners } : {},
+      childData: selectedRegistration.childData ? { ...selectedRegistration.childData } : null,
     });
     setIsEditing(true);
   };

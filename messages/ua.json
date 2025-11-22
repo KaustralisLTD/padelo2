@@ -331,6 +331,8 @@
       "customFieldFallback": "Custom Field",
       "partnerForCategory": "Партнер для",
       "userPhoto": "Ваше фото",
+      "childInformation": "Інформація про дитину",
+      "childPhoto": "Фото дитини",
       "photoSizeError": "Розмір фото має бути менше 5МБ",
       "partnerRequiredForCategory": "Партнер обов'язковий для {category}",
       "chooseFile": "Обрати файл",
