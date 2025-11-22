@@ -848,6 +848,35 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           </div>
         </div>
 
+        {/* KIDS Category */}
+        {kidsCategoryEnabled && (
+          <div className="mt-4">
+            <label
+              className={`flex items-center space-x-2 p-3 bg-background-secondary border rounded-lg cursor-pointer transition-colors ${
+                formData.categories.includes('kids')
+                  ? 'border-primary bg-primary/10'
+                  : 'border-gray-700 hover:border-primary'
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={formData.categories.includes('kids')}
+                onChange={() => {
+                  const newCategories = formData.categories.includes('kids')
+                    ? formData.categories.filter(c => c !== 'kids')
+                    : [...formData.categories, 'kids'];
+                  setFormData({ ...formData, categories: newCategories });
+                  if (!formData.categories.includes('kids') && !childData) {
+                    setChildData({ firstName: '', lastName: '', photoData: null, photoName: null });
+                  }
+                }}
+                className="w-4 h-4 text-primary bg-background border-gray-600 rounded focus:ring-primary"
+              />
+              <span className="text-text font-poppins text-sm">{t('categories.kids') || 'KIDS'}</span>
+            </label>
+          </div>
+        )}
+
         {/* Helper text */}
         <p className="text-xs font-poppins text-text-tertiary mt-3">
           {t('form.categoryHelp')}
