@@ -1577,7 +1577,7 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
   if (typeof t.subject === 'function') {
     subjectText = t.subject(tournament.name);
   } else {
-    const subjectString = typeof t.subject === 'string' ? t.subject : t.subjectBase || 'You\'re on the waiting list - PadelO₂';
+    const subjectString = typeof t.subject === 'string' ? t.subject : (typeof t.subjectBase === 'string' ? t.subjectBase : 'You\'re on the waiting list - PadelO₂');
     subjectText = subjectString.replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
   }
 
@@ -2145,7 +2145,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
   if (typeof t.subject === 'function') {
     subjectText = t.subject(tournament.name);
   } else {
-    const subjectString = typeof t.subject === 'string' ? t.subject : t.subjectBase || 'A spot is available - PadelO₂';
+    const subjectString = typeof t.subject === 'string' ? t.subject : (typeof t.subjectBase === 'string' ? t.subjectBase : 'A spot is available - PadelO₂');
     subjectText = subjectString.replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
   }
 
@@ -2722,7 +2722,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
   if (typeof t.subject === 'function') {
     subjectText = t.subject(tournament.name);
   } else {
-    const subjectString = typeof t.subject === 'string' ? t.subject : t.subjectBase || 'Payment received - PadelO₂';
+    const subjectString = typeof t.subject === 'string' ? t.subject : (typeof t.subjectBase === 'string' ? t.subjectBase : 'Payment received - PadelO₂');
     subjectText = subjectString.replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
   }
 
@@ -3256,7 +3256,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
   if (typeof t.subject === 'function') {
     subjectText = t.subject(tournament.name);
   } else {
-    const subjectString = typeof t.subject === 'string' ? t.subject : t.subjectBase || 'Payment failed - PadelO₂';
+    const subjectString = typeof t.subject === 'string' ? t.subject : (typeof t.subjectBase === 'string' ? t.subjectBase : 'Payment failed - PadelO₂');
     subjectText = subjectString.replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
   }
 
@@ -3668,7 +3668,7 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
   if (typeof t.subject === 'function') {
     subjectText = t.subject(tournament.name);
   } else {
-    const subjectString = typeof t.subject === 'string' ? t.subject : t.subjectBase || 'Your match schedule is ready - PadelO₂';
+    const subjectString = typeof t.subject === 'string' ? t.subject : (typeof t.subjectBase === 'string' ? t.subjectBase : 'Your match schedule is ready - PadelO₂');
     subjectText = subjectString.replace(' - PadelO₂', ` for ${tournament.name} - PadelO₂`);
   }
 
