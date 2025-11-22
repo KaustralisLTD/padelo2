@@ -444,7 +444,11 @@
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
       "registrationUpdateError": "Error updating registration. Please try again.",
-      "selectTournament": "Select Tournament"
+      "selectTournament": "Select Tournament",
+      "leaveTournament": "Leave Tournament",
+      "confirmLeaveTournament": "Are you sure you want to leave this tournament? This action cannot be undone.",
+      "leaveTournamentError": "Failed to leave tournament. Please try again.",
+      "leaving": "Leaving..."
     },
     "rules": {
       "title": "Tournament Rules",

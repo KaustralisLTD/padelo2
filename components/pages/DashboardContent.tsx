@@ -17,6 +17,7 @@ export default function DashboardContent() {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoError, setPhotoError] = useState<string | null>(null);
+  const [leavingTournament, setLeavingTournament] = useState(false);
 
   useEffect(() => {
     // Get token from URL or localStorage
@@ -238,6 +239,48 @@ export default function DashboardContent() {
     }
   };
 
+  const handleLeaveTournament = async () => {
+    if (!selectedRegistration) return;
+    
+    const confirmMessage = t('dashboard.confirmLeaveTournament') || 
+      `Вы уверены, что хотите покинуть турнир "${selectedRegistration.tournamentName}"? Это действие нельзя отменить.`;
+    
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      setLeavingTournament(true);
+      const authToken = localStorage.getItem('auth_token');
+      if (!authToken) {
+        throw new Error('No auth token');
+      }
+
+      const response = await fetch(`/api/tournament/${selectedRegistration.tournamentId}/registrations/${selectedRegistration.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        // Успешно покинули турнир
+        setSelectedRegistration(null);
+        setRegistrations(registrations.filter(r => r.id !== selectedRegistration.id));
+        // Перенаправляем на страницу турниров или dashboard
+        window.location.href = `/${locale}/tournaments`;
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Failed to leave tournament' }));
+        alert(errorData.error || t('dashboard.leaveTournamentError') || 'Failed to leave tournament');
+      }
+    } catch (error) {
+      console.error('Error leaving tournament:', error);
+      alert(t('dashboard.leaveTournamentError') || 'Failed to leave tournament');
+    } finally {
+      setLeavingTournament(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-20 mt-20">
@@ -318,15 +361,36 @@ export default function DashboardContent() {
               {t('dashboard.title')}
             </h1>
             {!isEditing && (
-              <button
-                onClick={handleEdit}
-                className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                {t('dashboard.editButton')}
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleEdit}
+                  className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  {t('dashboard.editButton')}
+                </button>
+                <button
+                  onClick={handleLeaveTournament}
+                  disabled={leavingTournament}
+                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {leavingTournament ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      {t('dashboard.leaving') || 'Leaving...'}
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      {t('dashboard.leaveTournament') || 'Leave Tournament'}
+                    </>
+                  )}
+                </button>
+              </div>
             )}
           </div>
 
