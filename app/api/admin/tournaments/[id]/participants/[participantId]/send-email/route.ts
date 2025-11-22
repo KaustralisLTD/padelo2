@@ -136,8 +136,16 @@ export async function POST(
             if (!Array.isArray(categories)) {
               categories = [];
             }
+            console.log('[send-email] Parsed categories:', {
+              raw: registration.categories,
+              parsed: categories,
+              participantId: registrationId,
+            });
           } catch (e) {
-            console.error('[send-email] Error parsing categories:', e);
+            console.error('[send-email] Error parsing categories:', e, {
+              raw: registration.categories,
+              participantId: registrationId,
+            });
             categories = [];
           }
           

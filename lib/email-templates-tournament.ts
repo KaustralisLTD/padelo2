@@ -41,8 +41,24 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
   const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
   
   // Локализуем категории
+  // Нормализуем и локализуем категории, с fallback на оригинальные значения
   const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => getLocalizedCategoryName(cat, locale)).filter(cat => cat && cat.trim() !== '')
+    ? categories.map(cat => {
+        const localized = getLocalizedCategoryName(cat, locale);
+        // Если локализация вернула оригинальное значение (не найдено), используем его
+        // Если локализация вернула пустую строку, используем оригинальное значение
+        const result = localized && localized.trim() !== '' ? localized : cat;
+        // Логируем для отладки
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[email-template] Category localization:', {
+            original: cat,
+            localized: localized,
+            result: result,
+            locale: locale,
+          });
+        }
+        return result;
+      }).filter(cat => cat && cat.trim() !== '')
     : [];
 
   // Получаем переведенное расписание событий из БД
@@ -644,8 +660,24 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
   
   // Локализуем категории
+  // Нормализуем и локализуем категории, с fallback на оригинальные значения
   const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => getLocalizedCategoryName(cat, locale)).filter(cat => cat && cat.trim() !== '')
+    ? categories.map(cat => {
+        const localized = getLocalizedCategoryName(cat, locale);
+        // Если локализация вернула оригинальное значение (не найдено), используем его
+        // Если локализация вернула пустую строку, используем оригинальное значение
+        const result = localized && localized.trim() !== '' ? localized : cat;
+        // Логируем для отладки
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[email-template] Category localization:', {
+            original: cat,
+            localized: localized,
+            result: result,
+            locale: locale,
+          });
+        }
+        return result;
+      }).filter(cat => cat && cat.trim() !== '')
     : [];
 
   // Получаем переведенное расписание событий
@@ -1297,8 +1329,24 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
   const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
   
   // Локализуем категории
+  // Нормализуем и локализуем категории, с fallback на оригинальные значения
   const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => getLocalizedCategoryName(cat, locale)).filter(cat => cat && cat.trim() !== '')
+    ? categories.map(cat => {
+        const localized = getLocalizedCategoryName(cat, locale);
+        // Если локализация вернула оригинальное значение (не найдено), используем его
+        // Если локализация вернула пустую строку, используем оригинальное значение
+        const result = localized && localized.trim() !== '' ? localized : cat;
+        // Логируем для отладки
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[email-template] Category localization:', {
+            original: cat,
+            localized: localized,
+            result: result,
+            locale: locale,
+          });
+        }
+        return result;
+      }).filter(cat => cat && cat.trim() !== '')
     : [];
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
@@ -1803,8 +1851,24 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
   const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
   
   // Локализуем категории
+  // Нормализуем и локализуем категории, с fallback на оригинальные значения
   const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => getLocalizedCategoryName(cat, locale)).filter(cat => cat && cat.trim() !== '')
+    ? categories.map(cat => {
+        const localized = getLocalizedCategoryName(cat, locale);
+        // Если локализация вернула оригинальное значение (не найдено), используем его
+        // Если локализация вернула пустую строку, используем оригинальное значение
+        const result = localized && localized.trim() !== '' ? localized : cat;
+        // Логируем для отладки
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[email-template] Category localization:', {
+            original: cat,
+            localized: localized,
+            result: result,
+            locale: locale,
+          });
+        }
+        return result;
+      }).filter(cat => cat && cat.trim() !== '')
     : [];
 
   // Расчет цены
@@ -2385,8 +2449,24 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
   const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
   
   // Локализуем категории
+  // Нормализуем и локализуем категории, с fallback на оригинальные значения
   const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => getLocalizedCategoryName(cat, locale)).filter(cat => cat && cat.trim() !== '')
+    ? categories.map(cat => {
+        const localized = getLocalizedCategoryName(cat, locale);
+        // Если локализация вернула оригинальное значение (не найдено), используем его
+        // Если локализация вернула пустую строку, используем оригинальное значение
+        const result = localized && localized.trim() !== '' ? localized : cat;
+        // Логируем для отладки
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[email-template] Category localization:', {
+            original: cat,
+            localized: localized,
+            result: result,
+            locale: locale,
+          });
+        }
+        return result;
+      }).filter(cat => cat && cat.trim() !== '')
     : [];
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
@@ -2962,8 +3042,24 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
   const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
   
   // Локализуем категории
+  // Нормализуем и локализуем категории, с fallback на оригинальные значения
   const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => getLocalizedCategoryName(cat, locale)).filter(cat => cat && cat.trim() !== '')
+    ? categories.map(cat => {
+        const localized = getLocalizedCategoryName(cat, locale);
+        // Если локализация вернула оригинальное значение (не найдено), используем его
+        // Если локализация вернула пустую строку, используем оригинальное значение
+        const result = localized && localized.trim() !== '' ? localized : cat;
+        // Логируем для отладки
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[email-template] Category localization:', {
+            original: cat,
+            localized: localized,
+            result: result,
+            locale: locale,
+          });
+        }
+        return result;
+      }).filter(cat => cat && cat.trim() !== '')
     : [];
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {

@@ -1,9 +1,42 @@
 // Utility functions for localization
 
 /**
+ * Normalize category code (e.g., "Male 1" -> "male1", "Mixed 1" -> "mixed1")
+ */
+function normalizeCategoryCode(categoryCode: string): string {
+  if (!categoryCode) return categoryCode;
+  
+  // Remove spaces and convert to lowercase
+  const normalized = categoryCode.toLowerCase().replace(/\s+/g, '');
+  
+  // Map common variations
+  const variations: Record<string, string> = {
+    'male1': 'male1',
+    'male2': 'male2',
+    'men1': 'male1',
+    'men2': 'male2',
+    'men\'s1': 'male1',
+    'men\'s2': 'male2',
+    'female1': 'female1',
+    'female2': 'female2',
+    'women1': 'female1',
+    'women2': 'female2',
+    'women\'s1': 'female1',
+    'women\'s2': 'female2',
+    'mixed1': 'mixed1',
+    'mixed2': 'mixed2',
+  };
+  
+  return variations[normalized] || normalized;
+}
+
+/**
  * Get localized category name
  */
 export function getLocalizedCategoryName(categoryCode: string, locale: string): string {
+  // Normalize the category code first
+  const normalizedCode = normalizeCategoryCode(categoryCode);
+  
   const categoryTranslations: Record<string, Record<string, string>> = {
     en: {
       male1: "Men's 1",
@@ -120,7 +153,7 @@ export function getLocalizedCategoryName(categoryCode: string, locale: string): 
   };
 
   const translations = categoryTranslations[locale] || categoryTranslations.en;
-  return translations[categoryCode] || categoryCode;
+  return translations[normalizedCode] || categoryCode;
 }
 
 /**

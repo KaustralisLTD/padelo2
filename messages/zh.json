@@ -346,7 +346,7 @@
       "photoInstructions": "请上传您的照片。文件应命名为：名_姓.jpg",
       "uploadPhoto": "上传照片",
       "editRegistration": "Edit Registration",
-      "editButton": "Edit",
+      "editButton": "编辑",
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
