@@ -49,13 +49,12 @@ export async function POST(request: NextRequest) {
     const locale = acceptLanguage.split(',')[0].split('-')[0] || 'en';
 
     // Send password reset email
-    await sendPasswordResetEmail({
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
+    await sendPasswordResetEmail(
+      user.email,
+      user.firstName,
       resetToken,
-      locale,
-    });
+      locale
+    );
 
     return NextResponse.json({
       success: true,
