@@ -182,6 +182,8 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         customCategories: row.custom_categories ? (typeof row.custom_categories === 'string' ? JSON.parse(row.custom_categories) : row.custom_categories) : undefined,
         bannerImageName: row.banner_image_name ?? null,
         bannerImageData: row.banner_image_data ?? null,
+        categoryPrices: row.category_prices ? (typeof row.category_prices === 'string' ? JSON.parse(row.category_prices) : row.category_prices) : undefined,
+        kidsCategoryEnabled: row.kids_category_enabled ? !!row.kids_category_enabled : false,
       };
     });
   } catch (error) {
