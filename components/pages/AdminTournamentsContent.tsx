@@ -764,9 +764,9 @@ export default function AdminTournamentsContent() {
                       <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                         {t('tournaments.name')}
                       </th>
-                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                      {t('tournaments.startDate')}
-                    </th>
+                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                        {t('tournaments.startDate')}
+                      </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                       {t('tournaments.endDate')}
                     </th>
@@ -788,8 +788,48 @@ export default function AdminTournamentsContent() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {tournaments.map((tournament) => (
+                  {(() => {
+                    // Фильтрация турниров
+                    let filtered = tournaments;
+                    
+                    if (searchQuery) {
+                      const query = searchQuery.toLowerCase();
+                      filtered = filtered.filter(t => 
+                        t.name.toLowerCase().includes(query) ||
+                        (t.location && t.location.toLowerCase().includes(query)) ||
+                        (t.description && t.description.toLowerCase().includes(query))
+                      );
+                    }
+                    
+                    if (filterStatus !== 'all') {
+                      filtered = filtered.filter(t => t.status === filterStatus);
+                    }
+                    
+                    if (filterLocation) {
+                      const locationQuery = filterLocation.toLowerCase();
+                      filtered = filtered.filter(t => 
+                        t.location && t.location.toLowerCase().includes(locationQuery)
+                      );
+                    }
+                    
+                    return filtered.map((tournament, index) => (
                     <tr key={tournament.id} className="hover:bg-background transition-colors">
+                      <td className="px-4 py-4 text-text-secondary font-poppins text-sm text-center">
+                        {index + 1}
+                      </td>
+                      <td className="px-4 py-4 text-text-secondary font-poppins text-sm">
+                        {tournament.createdAt ? (
+                          <div>
+                            <div>{formatDate(tournament.createdAt)}</div>
+                            <div className="text-xs text-text-tertiary">
+                              {new Date(tournament.createdAt).toLocaleTimeString(locale, { 
+                                hour: '2-digit', 
+                                minute: '2-digit' 
+                              })}
+                            </div>
+                          </div>
+                        ) : '-'}
+                      </td>
                       <td className="px-6 py-4">
                         <div className="font-poppins font-semibold text-text">{tournament.name}</div>
                         {tournament.description && (
@@ -906,10 +946,12 @@ export default function AdminTournamentsContent() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                    ));
+                  })()}
                 </tbody>
               </table>
             </div>
+          </div>
           </div>
         )}
 
