@@ -415,6 +415,16 @@ export async function initDatabase() {
     if (!e.message.includes('Duplicate column name')) throw e;
   }
   try {
+    await pool.execute('ALTER TABLE users ADD COLUMN password_reset_token VARCHAR(64) DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN password_reset_expires DATETIME DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
     await pool.execute('ALTER TABLE users MODIFY password_hash VARCHAR(255) DEFAULT NULL');
   } catch (e: any) {
     // Ignore if already modified

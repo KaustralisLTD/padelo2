@@ -23,6 +23,8 @@ export default function LoginContent() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   const [emailNotVerified, setEmailNotVerified] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   // Обработка OAuth callback
   useEffect(() => {
@@ -83,7 +85,15 @@ export default function LoginContent() {
             setError(t('errors.emailNotVerified') || errorData.message || 'Please verify your email address before logging in.');
           } else {
             setEmailNotVerified(false);
-            setError(errorData.error || t('errors.invalidCredentials'));
+            // Используем детальное сообщение об ошибке, если оно есть
+            const errorMessage = errorData.message || errorData.error || t('errors.invalidCredentials');
+            setError(errorMessage);
+            // Сохраняем тип ошибки для отображения кнопки Forgot password
+            if (errorData.errorType === 'invalidPassword') {
+              setShowForgotPassword(true);
+            } else {
+              setShowForgotPassword(false);
+            }
           }
         }
       } else {
@@ -206,6 +216,7 @@ export default function LoginContent() {
                 setSuccessMessage(null);
                 setShowVerificationMessage(false);
                 setEmailNotVerified(false);
+                setShowForgotPassword(false);
               }}
               className={`flex-1 px-4 py-2 rounded-lg font-poppins font-semibold transition-colors ${
                 !isLogin

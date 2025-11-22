@@ -207,9 +207,12 @@ export async function POST(
           }
           
           // Calculate payment amount based on number of categories
+          // If single category: priceSingleCategory, if multiple: priceDoubleCategory * count
           const categoryCount = categories.length;
-          const paymentAmount = categoryCount > 0 
-            ? (tournament.priceSingleCategory || 0) * categoryCount 
+          const paymentAmount = categoryCount === 1
+            ? (tournament.priceSingleCategory || 0)
+            : categoryCount > 1
+            ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
             : tournament.priceSingleCategory || 0;
           
           const html = getTournamentRegistrationConfirmedEmailTemplate({

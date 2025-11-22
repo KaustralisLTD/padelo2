@@ -66,18 +66,27 @@ export async function POST(request: NextRequest) {
     }
 
     if (!user) {
+      // Проверяем, существует ли пользователь с таким email
+      const userExists = await findUserByEmail(email);
+      
       // Логируем неудачную попытку входа (асинхронно, не блокируем ответ)
       const ipAddress = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
       const userAgent = request.headers.get('user-agent') || 'unknown';
       logAction('login', 'user', {
         userEmail: email,
-        details: { success: false, error: 'Invalid credentials' },
+        details: { success: false, error: userExists ? 'Invalid password' : 'User not found' },
         ipAddress,
         userAgent,
       }).catch(() => {}); // Игнорируем ошибки логирования
 
       return NextResponse.json(
-        { error: 'Invalid credentials' },
+        { 
+          error: 'Invalid credentials',
+          errorType: userExists ? 'invalidPassword' : 'userNotFound',
+          message: userExists 
+            ? 'The password you entered is incorrect. Please check your password and try again.'
+            : 'No account found with this email address. Please check your email or create a new account.'
+        },
         { status: 401 }
       );
     }

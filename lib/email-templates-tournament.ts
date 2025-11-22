@@ -409,10 +409,10 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
 
   const t = translations[locale] || translations.en;
   const categoryCount = categories.length;
-  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceSingleCategory * количество
+  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceDoubleCategory * количество
   const totalPrice = categoryCount === 1 
     ? tournament.priceSingleCategory 
-    : tournament.priceSingleCategory ? tournament.priceSingleCategory * categoryCount : undefined;
+    : tournament.priceDoubleCategory ? tournament.priceDoubleCategory * categoryCount : (tournament.priceSingleCategory ? tournament.priceSingleCategory * categoryCount : undefined);
   
   // Вычисляем дату оплаты (15 дней до начала)
   const paymentDeadlineDate = new Date(tournament.startDate);
@@ -536,7 +536,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                         
                         <div class="detail-row" style="border-bottom: none;">
                           <div class="detail-label">${t.price}:</div>
-                          <div class="detail-value"><strong>${totalPrice && totalPrice > 0 ? totalPrice : (tournament.priceSingleCategory || 0)} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceSingleCategory || 0} + ${tournament.priceSingleCategory || 0}` : categoryCount + ' ' + t.multipleCategories})` : ''}</div>
+                          <div class="detail-value"><strong>${totalPrice && totalPrice > 0 ? totalPrice : (tournament.priceSingleCategory || 0)} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0} + ${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0}` : categoryCount + ' × ' + (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0)})` : ''}</div>
                         </div>
                       </div>
 
@@ -1919,11 +1919,11 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
     localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
-  // Расчет цены
+  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceDoubleCategory * количество
   const categoryCount = categories.length;
   const totalPrice = categoryCount === 1 
     ? (tournament.priceSingleCategory || 0)
-    : (tournament.priceSingleCategory || 0) * categoryCount;
+    : (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount;
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {

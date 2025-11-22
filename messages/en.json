@@ -697,6 +697,54 @@
     "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
     "termsOfService": "Terms of Service",
     "registrationSuccess": "Thank you for registering! Please check your email and click the verification link to activate your account.",
+    "forgotPassword": "Forgot Password?",
+    "errors": {
+      "invalidPassword": "The password you entered is incorrect. Please check your password and try again.",
+      "userNotFound": "No account found with this email address. Please check your email or create a new account."
+    }
+  },
+  "ForgotPassword": {
+    "title": "Forgot Password",
+    "description": "Enter your email address and we'll send you a link to reset your password.",
+    "email": "Email Address",
+    "emailPlaceholder": "your.email@example.com",
+    "hint": "We'll send a password reset link to this email address if an account exists.",
+    "submit": "Send Reset Link",
+    "submitting": "Sending...",
+    "backToLogin": "Back to Login",
+    "success": {
+      "title": "Check Your Email",
+      "message": "If an account with this email exists, we've sent a password reset link. Please check your inbox and follow the instructions."
+    },
+    "errors": {
+      "failed": "Failed to send reset email. Please try again.",
+      "generic": "An error occurred. Please try again."
+    }
+  },
+  "Login": {
+    "title": "Login",
+    "description": "Access your account",
+    "loginTitle": "Welcome Back",
+    "loginDescription": "Sign in to your account",
+    "registerTitle": "Create Account",
+    "registerDescription": "Join PadelO₂ community",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Sign In",
+    "registerButton": "Create Account",
+    "submitting": "Processing...",
+    "orContinueWith": "Or continue with",
+    "continueWithGoogle": "Google",
+    "continueWithApple": "Apple",
+    "termsAgreement": "By logging in or signing up, I agree to PadelO2's",
+    "termsOfService": "Terms of Service",
+    "registrationSuccess": "Thank you for registering! Please check your email and click the verification link to activate your account.",
+    "forgotPassword": "Forgot Password?",
     "errors": {
       "invalidCredentials": "Invalid email or password",
       "passwordMismatch": "Passwords do not match",
