@@ -178,6 +178,7 @@ export default function AdminUsersContent() {
       .catch(() => {
         router.push(`/${locale}/login`);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   // Загрузка данных при смене вкладки
@@ -185,6 +186,7 @@ export default function AdminUsersContent() {
     if (selectedUserId && activeTab !== 'list') {
       fetchTabData(activeTab);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedUserId, activeTab, token]);
 
   const fetchTabData = async (tab: string) => {

@@ -2,6 +2,7 @@
 
 import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import Image from 'next/image';
 import {
   TournamentRegistrationSettings,
   getDefaultRegistrationSettings,
@@ -721,10 +722,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         <div className="flex items-center gap-4">
           {userPhoto.data ? (
             <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
-              <img
+              <Image
                 src={userPhoto.data}
                 alt="User photo"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                unoptimized
               />
             </div>
           ) : null}
@@ -984,10 +987,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                 <div className="flex items-center gap-4">
                   {partner?.photoData ? (
                     <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
-                      <img
+                      <Image
                         src={partner.photoData}
                         alt={partner.name || 'Partner photo'}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        unoptimized
                       />
                     </div>
                   ) : null}
@@ -1128,10 +1133,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   <div className="flex items-center gap-4">
                     {categoryPartner.photoData ? (
                       <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
-                        <img
+                        <Image
                           src={categoryPartner.photoData}
                           alt={categoryPartner.name || 'Partner photo'}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
+                          unoptimized
                         />
                       </div>
                     ) : null}

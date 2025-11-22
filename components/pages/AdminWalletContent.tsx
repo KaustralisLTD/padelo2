@@ -66,6 +66,7 @@ export default function AdminWalletContent() {
       .catch(() => {
         router.push(`/${locale}/login`);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   const fetchData = async () => {
@@ -108,6 +109,7 @@ export default function AdminWalletContent() {
     if (token) {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, token]);
 
   if (loading) {

@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 
 const Academy = () => {
   const t = useTranslations('Academy');
@@ -50,10 +51,11 @@ const Academy = () => {
               className="bg-background p-6 rounded-lg border border-gray-800 hover:border-primary transition-colors overflow-hidden"
             >
               <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
-                <img
+                <Image
                   src={`/images/academy/${program.key}-training.jpg`}
                   alt={t(`programs.${program.key}.title`)}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';

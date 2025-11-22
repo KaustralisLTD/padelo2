@@ -104,10 +104,12 @@ export default function TournamentsContent() {
                     >
                       <div className="relative h-48 w-full">
                         {tournament.bannerImageData ? (
-                          <img
+                          <Image
                             src={tournament.bannerImageData}
                             alt={tournament.name}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
+                            unoptimized
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-background">

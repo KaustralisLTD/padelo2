@@ -61,6 +61,7 @@ export default function TournamentScheduleAdmin({ tournamentId, refreshToken }: 
 
   useEffect(() => {
     fetchSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId, refreshToken]);
 
   // Инициализация диапазона времени только один раз

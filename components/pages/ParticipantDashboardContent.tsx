@@ -40,6 +40,7 @@ export function ParticipantDashboardContent() {
     }
 
     fetchTournaments(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   const fetchTournaments = async (token: string) => {

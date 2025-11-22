@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface ConfirmationContentProps {
@@ -150,10 +151,13 @@ export default function ConfirmationContent({ token }: ConfirmationContentProps)
               {registration.partner.photoData && (
                 <div className="mt-4">
                   <p className="text-sm text-text-secondary mb-2">{t('form.partnerPhoto')}</p>
-                  <img
+                  <Image
                     src={registration.partner.photoData}
                     alt={registration.partner.name}
-                    className="w-full max-w-xs rounded-lg border border-gray-700"
+                    width={300}
+                    height={300}
+                    className="w-full max-w-xs rounded-lg border border-gray-700 object-cover"
+                    unoptimized
                   />
                 </div>
               )}

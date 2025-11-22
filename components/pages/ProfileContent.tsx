@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface ProfileData {
@@ -239,10 +240,12 @@ export default function ProfileContent() {
             <div className="flex items-center space-x-6">
               {photoPreview ? (
                 <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-border">
-                  <img
+                  <Image
                     src={photoPreview}
                     alt={t('photo')}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    unoptimized
                   />
                 </div>
               ) : (

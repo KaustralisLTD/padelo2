@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 
 const Machines = () => {
   const t = useTranslations('Machines');
@@ -48,11 +49,12 @@ const Machines = () => {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="aspect-video bg-background-secondary rounded-lg border border-gray-800 overflow-hidden">
-              <img
+            <div className="aspect-video bg-background-secondary rounded-lg border border-gray-800 overflow-hidden relative">
+              <Image
                 src="/images/machines/machine-main.jpg"
                 alt="AI-Powered Training Machine"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';

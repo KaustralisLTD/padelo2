@@ -64,12 +64,14 @@ export default function AdminLogsContent() {
       .catch(() => {
         router.push(`/${locale}/login`);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   useEffect(() => {
     if (token) {
       fetchLogs();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, filters]);
 
   const fetchUsers = async () => {

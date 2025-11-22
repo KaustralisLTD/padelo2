@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import InvestmentModal from '@/components/modals/InvestmentModal';
 
@@ -16,10 +17,11 @@ const Investments = () => {
       <section ref={ref} className="py-20 bg-background relative overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-10">
-          <img
+          <Image
             src="/images/investments/investment-hero.jpg"
             alt=""
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = 'none';
             }}

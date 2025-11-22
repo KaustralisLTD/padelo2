@@ -104,6 +104,7 @@ export default function TournamentBracket({ tournamentId }: TournamentBracketPro
   useEffect(() => {
     checkAuth();
     fetchBracket();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId]);
 
   useEffect(() => {

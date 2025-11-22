@@ -75,6 +75,7 @@ export function ParticipantWalletContent() {
         setError(err.message || t('errorLoadingWallet'));
       })
       .finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   if (loading) {

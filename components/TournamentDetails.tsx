@@ -44,6 +44,7 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
 
   useEffect(() => {
     fetchTournamentDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId]);
 
   const fetchTournamentDetails = async () => {

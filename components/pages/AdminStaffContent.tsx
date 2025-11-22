@@ -90,6 +90,7 @@ export default function AdminStaffContent() {
       .catch(() => {
         router.push(`/${locale}/login`);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   const fetchData = async () => {

@@ -63,6 +63,7 @@ function TournamentScheduleContentInner({ tournamentId }: TournamentScheduleCont
     }
 
     fetchData(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId, locale, router]);
 
   const fetchData = async (token: string) => {

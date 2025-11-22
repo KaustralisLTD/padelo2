@@ -4,6 +4,7 @@ import { useEffect, useState, FormEvent, type SVGProps } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   TournamentRegistrationSettings,
   RegistrationCustomField,
@@ -133,6 +134,7 @@ export default function AdminTournamentsContent() {
       .catch(() => {
         router.push(`/${locale}/login`);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 
   const fetchTournaments = async () => {
@@ -1523,10 +1525,12 @@ export default function AdminTournamentsContent() {
                   {formData.bannerImageData ? (
                     <div className="mb-4">
                       <div className="relative w-full h-48 rounded-lg overflow-hidden border border-border mb-2">
-                        <img
+                        <Image
                           src={formData.bannerImageData}
                           alt="Tournament banner"
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
+                          unoptimized
                         />
                       </div>
                       <button

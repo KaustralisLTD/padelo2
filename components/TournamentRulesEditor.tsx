@@ -19,6 +19,7 @@ export default function TournamentRulesEditor({ tournamentId }: TournamentRulesE
   useEffect(() => {
     checkAuth();
     fetchRules();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId]);
 
   const checkAuth = async () => {

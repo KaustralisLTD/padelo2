@@ -56,6 +56,7 @@ export default function TournamentSchedule({
 
   useEffect(() => {
     fetchSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId, category, groupId]);
 
   const fetchSchedule = async () => {

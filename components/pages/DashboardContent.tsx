@@ -47,6 +47,7 @@ export default function DashboardContent() {
       localStorage.setItem('tournament_token', token);
       fetchRegistration(token);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchAllRegistrations = async () => {
@@ -1158,10 +1159,12 @@ export default function DashboardContent() {
           {selectedRegistration.userPhoto?.data && (
             <div className="mb-4">
               <div className="relative w-32 h-32 rounded-lg overflow-hidden border border-border">
-                <img
+                <Image
                   src={selectedRegistration.userPhoto.data}
                   alt="User photo"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
             </div>
