@@ -81,6 +81,10 @@ export default function TournamentParticipantsPage() {
   // Состояния для выбора партнера (из списка или вручную) для каждой категории
   const [partnerManualMode, setPartnerManualMode] = useState<Record<string, boolean>>({});
   const [selectedPartnerRegistrationId, setSelectedPartnerRegistrationId] = useState<Record<string, string>>({});
+  
+  // Состояния для множественного выбора участников
+  const [selectedParticipants, setSelectedParticipants] = useState<Set<number>>(new Set());
+  const [isSelectAll, setIsSelectAll] = useState(false);
 
   // Функция для копирования в буфер обмена
   const copyToClipboard = async (text: string, fieldId: string) => {
@@ -454,45 +458,99 @@ export default function TournamentParticipantsPage() {
   };
 
   const handleSendEmail = async () => {
-    if (!token || !emailParticipant || !selectedEmailTemplate) return;
+    if (!token || !selectedEmailTemplate) return;
 
     try {
       setSendingEmail(true);
       setError(null);
       
-      const response = await fetch(`/api/admin/tournaments/${tournamentId}/participants/${emailParticipant.id}/send-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          template: selectedEmailTemplate,
-          locale: emailParticipant.locale || locale,
-        }),
+      // Определяем список участников для отправки
+      let participantIds: number[] = [];
+      if (emailParticipant?.id) {
+        participantIds = [emailParticipant.id];
+      } else if (selectedParticipants.size > 0) {
+        participantIds = Array.from(selectedParticipants);
+      } else {
+        setError('Не выбран ни один участник');
+        return;
+      }
+
+      // Отправляем email всем выбранным участникам
+      const promises = participantIds.map(async (participantId) => {
+        const participant = participants.find(p => p.id === participantId);
+        const participantLocale = participant?.locale || locale;
+
+        const response = await fetch(`/api/admin/tournaments/${tournamentId}/participants/${participantId}/send-email`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            template: selectedEmailTemplate,
+            locale: participantLocale,
+          }),
+        });
+
+        const data = await response.json();
+        return { response, data, participantId, ok: response.ok };
       });
 
-      const data = await response.json();
+      const results = await Promise.allSettled(promises);
+      const successful = results.filter(r => r.status === 'fulfilled' && r.value.ok).length;
+      const failed = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.ok));
 
-      if (response.ok) {
-        setSuccess(t('participants.emailSent') || 'Email sent successfully');
-        setEmailParticipant(null);
-        setSelectedEmailTemplate('');
-        setTimeout(() => setSuccess(null), 3000);
-      } else {
-        // Формируем детальное сообщение об ошибке
-        let errorMessage = data.error || t('participants.emailSendError') || 'Failed to send email';
-        
-        if (data.message) {
-          errorMessage = data.message;
-        } else if (data.missingFields && Array.isArray(data.missingFields)) {
-          errorMessage = `Шаблон требует дополнительных данных:\n\nОтсутствующие поля:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
-          if (data.requiredData) {
-            errorMessage += `\n\nТребуемая структура данных:\n${JSON.stringify(data.requiredData, null, 2)}`;
+      if (successful > 0) {
+        setSuccess(`Email отправлен ${successful} участнику(ам)`);
+        if (failed.length > 0) {
+          // Проверяем первую ошибку для детального сообщения
+          const firstFailed = failed.find(r => r.status === 'fulfilled');
+          if (firstFailed && firstFailed.status === 'fulfilled') {
+            const { data } = firstFailed.value;
+            let errorMessage = data.error || t('participants.emailSendError') || 'Failed to send email';
+            
+            if (data.message) {
+              errorMessage = data.message;
+            } else if (data.missingFields && Array.isArray(data.missingFields)) {
+              errorMessage = `Шаблон требует дополнительных данных:\n\nОтсутствующие поля:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
+              if (data.requiredData) {
+                errorMessage += `\n\nТребуемая структура данных:\n${JSON.stringify(data.requiredData, null, 2)}`;
+              }
+            }
+            
+            setError(`Не удалось отправить ${failed.length} участнику(ам):\n${errorMessage}`);
+          } else {
+            setError(`Не удалось отправить ${failed.length} участнику(ам)`);
           }
         }
-        
-        setError(errorMessage);
+        setEmailParticipant(null);
+        setSelectedEmailTemplate('');
+        setSelectedParticipants(new Set());
+        setIsSelectAll(false);
+        setTimeout(() => {
+          setSuccess(null);
+          setError(null);
+        }, 5000);
+      } else {
+        // Все отправки провалились
+        const firstResult = results.find(r => r.status === 'fulfilled');
+        if (firstResult && firstResult.status === 'fulfilled') {
+          const { data } = firstResult.value;
+          let errorMessage = data.error || t('participants.emailSendError') || 'Failed to send email';
+          
+          if (data.message) {
+            errorMessage = data.message;
+          } else if (data.missingFields && Array.isArray(data.missingFields)) {
+            errorMessage = `Шаблон требует дополнительных данных:\n\nОтсутствующие поля:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
+            if (data.requiredData) {
+              errorMessage += `\n\nТребуемая структура данных:\n${JSON.stringify(data.requiredData, null, 2)}`;
+            }
+          }
+          
+          setError(errorMessage);
+        } else {
+          setError(t('participants.emailSendError') || 'Failed to send email');
+        }
       }
     } catch (err) {
       setError(t('participants.emailSendError') || 'Failed to send email');
@@ -840,9 +898,86 @@ export default function TournamentParticipantsPage() {
 
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
+            {/* Панель групповых действий */}
+            {selectedParticipants.size > 0 && (
+              <div className="mb-4 bg-gradient-to-r from-primary/10 via-purple-500/10 to-primary/10 border border-primary/30 rounded-xl p-4 backdrop-blur-sm">
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-text font-poppins font-bold text-base">
+                        Выбрано участников: {selectedParticipants.size}
+                      </h3>
+                      <p className="text-text-secondary text-sm">Выберите действие для выбранных участников</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={handleBulkMarkAsPaid}
+                      className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg font-poppins font-semibold text-sm hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Отметить как оплачено
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Открываем модальное окно для отправки email выбранным участникам
+                        setEmailParticipant({ id: 0 } as Participant);
+                      }}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-poppins font-semibold text-sm hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Отправить email ({selectedParticipants.size})
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedParticipants(new Set());
+                        setIsSelectAll(false);
+                      }}
+                      className="px-4 py-2 bg-background-secondary border border-border text-text rounded-lg font-poppins font-semibold text-sm hover:bg-background transition-colors"
+                    >
+                      Отменить выбор
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <table className="w-full border-collapse min-w-[1400px]">
               <thead>
                 <tr className="border-b border-border bg-background">
+                  <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-12">
+                    <input
+                      type="checkbox"
+                      checked={isSelectAll}
+                      onChange={(e) => {
+                        setIsSelectAll(e.target.checked);
+                        if (e.target.checked) {
+                          const allIds = participants.map(p => p.id);
+                          setSelectedParticipants(new Set(allIds));
+                        } else {
+                          setSelectedParticipants(new Set());
+                        }
+                      }}
+                      className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                      style={{
+                        backgroundImage: isSelectAll
+                          ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
+                          : 'none',
+                        backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                      }}
+                    />
+                  </th>
                   <th className="px-3 py-2 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap min-w-[60px]">
                     {tTournaments('participantOrder')}
                   </th>
@@ -878,7 +1013,7 @@ export default function TournamentParticipantsPage() {
               <tbody>
                 {participants.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="px-4 py-8 text-center text-text-secondary">
+                    <td colSpan={11} className="px-4 py-8 text-center text-text-secondary">
                       {tTournaments('noParticipants')}
                     </td>
                   </tr>
@@ -937,11 +1072,37 @@ export default function TournamentParticipantsPage() {
                     
                     return filtered.map((participant) => {
                       const isDuplicate = duplicateCheck(participant);
+                      const isSelected = selectedParticipants.has(participant.id);
                       return (
                     <tr 
                       key={participant.id} 
-                      className={`border-b border-border hover:bg-background/50 ${isDuplicate ? 'bg-red-500/10 border-red-500/50' : ''}`}
+                      className={`border-b border-border hover:bg-background/50 transition-colors ${isDuplicate ? 'bg-red-500/10 border-red-500/50' : ''} ${isSelected ? 'bg-primary/10 border-primary/30' : ''}`}
                     >
+                      <td className="px-3 py-2 text-center">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={(e) => {
+                            const newSelected = new Set(selectedParticipants);
+                            if (e.target.checked) {
+                              newSelected.add(participant.id);
+                            } else {
+                              newSelected.delete(participant.id);
+                            }
+                            setSelectedParticipants(newSelected);
+                            setIsSelectAll(newSelected.size === participants.length);
+                          }}
+                          className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                          style={{
+                            backgroundImage: isSelected
+                              ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
+                              : 'none',
+                            backgroundSize: 'contain',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                          }}
+                        />
+                      </td>
                       <td className="px-3 py-2 text-xs text-text text-center">
                         {participant.orderNumber ?? '—'}
                       </td>
