@@ -1109,6 +1109,8 @@
       "categories": "Categories",
       "categoriesManagement": "Categories Management",
       "categoriesDescription": "Manage tournament categories. You can add, rename, or remove categories.",
+      "kidsCategorySpecial": "Special Category",
+      "kidsCategoryDescription": "Children cannot register themselves. Parents must provide child information during registration.",
       "addCategory": "Add Category",
       "categoryName": "Category Name",
       "categoryNamePlaceholder": "e.g., Male 3, Female A",

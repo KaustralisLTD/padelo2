@@ -225,6 +225,7 @@ export default function AdminTournamentsContent() {
           registrationSettings: formData.registrationSettings,
           customCategories: formData.customCategories,
           categoryPrices: formData.categoryPrices,
+          kidsCategoryEnabled: formData.kidsCategoryEnabled,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
         }),
@@ -280,6 +281,7 @@ export default function AdminTournamentsContent() {
           registrationSettings: formData.registrationSettings,
           customCategories: formData.customCategories,
           categoryPrices: formData.categoryPrices,
+          kidsCategoryEnabled: formData.kidsCategoryEnabled,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
         }),
@@ -560,6 +562,7 @@ export default function AdminTournamentsContent() {
         mixed2: 'Mixed 2',
       }) as Record<string, string>,
       categoryPrices: (tournament.categoryPrices || {}) as Record<string, number>,
+      kidsCategoryEnabled: tournament.kidsCategoryEnabled || false,
       bannerImageName: tournament.bannerImageName || null,
       bannerImageData: tournament.bannerImageData || null,
     });
@@ -1583,9 +1586,91 @@ export default function AdminTournamentsContent() {
                     </p>
                   </div>
 
+                  {/* KIDS Category Toggle */}
+                  <div className="mb-4 p-4 bg-background border border-border rounded-lg">
+                    <label className="flex items-center justify-between cursor-pointer">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-lg font-poppins font-semibold text-text">KIDS</span>
+                          <span className="text-xs text-text-tertiary bg-primary/10 text-primary px-2 py-0.5 rounded">
+                            {t('tournaments.kidsCategorySpecial') || 'Special Category'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-text-tertiary">
+                          {t('tournaments.kidsCategoryDescription') || 'Children cannot register themselves. Parents must provide child information during registration.'}
+                        </p>
+                      </div>
+                      <div className="ml-4">
+                        <label className="relative inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.kidsCategoryEnabled || false}
+                            onChange={(e) => {
+                              const enabled = e.target.checked;
+                              setFormData({
+                                ...formData,
+                                kidsCategoryEnabled: enabled,
+                                customCategories: enabled
+                                  ? {
+                                      ...formData.customCategories,
+                                      kids: formData.customCategories?.kids || 'KIDS',
+                                    }
+                                  : (() => {
+                                      const newCategories = { ...formData.customCategories };
+                                      delete newCategories.kids;
+                                      return newCategories;
+                                    })(),
+                                categoryPrices: enabled
+                                  ? {
+                                      ...(formData.categoryPrices || {}),
+                                      kids: formData.categoryPrices?.kids || 0,
+                                    }
+                                  : (() => {
+                                      const newPrices = { ...(formData.categoryPrices || {}) };
+                                      delete newPrices.kids;
+                                      return newPrices;
+                                    })(),
+                              });
+                            }}
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        </label>
+                      </div>
+                    </label>
+                    {formData.kidsCategoryEnabled && (
+                      <div className="mt-3 pt-3 border-t border-border">
+                        <label className="block text-xs font-poppins text-text-tertiary mb-1">
+                          Price (EUR)
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={formData.categoryPrices?.kids || ''}
+                          onChange={(e) => {
+                            const price = e.target.value ? parseFloat(e.target.value) : undefined;
+                            setFormData({
+                              ...formData,
+                              categoryPrices: {
+                                ...(formData.categoryPrices || {}),
+                                kids: price !== undefined ? price : 0,
+                              },
+                            });
+                          }}
+                          onWheel={(e) => {
+                            e.currentTarget.blur();
+                          }}
+                          placeholder="0.00"
+                          className="w-full px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                        />
+                      </div>
+                    )}
+                  </div>
+
                   {/* Existing Categories */}
                   <div className="space-y-3">
-                    {Object.entries(formData.customCategories || {}).map(([code, name]) => (
+                    {Object.entries(formData.customCategories || {}).filter(([code]) => code !== 'kids').map(([code, name]) => (
                       <div key={code} className="flex items-center gap-3 p-3 bg-background border border-border rounded-lg">
                         <div className="flex-1">
                           <label className="block text-xs font-poppins text-text-tertiary mb-1">
