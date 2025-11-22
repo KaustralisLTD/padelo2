@@ -32,6 +32,7 @@ export default function DashboardContent() {
   const [childData, setChildData] = useState<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null } | null>(null);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [tournamentStartDate, setTournamentStartDate] = useState<string | null>(null);
+  const [editCategoryPartners, setEditCategoryPartners] = useState<Record<string, any>>({});
 
   useEffect(() => {
     // Get token from URL or localStorage
