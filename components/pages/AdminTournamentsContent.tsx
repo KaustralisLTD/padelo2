@@ -217,6 +217,7 @@ export default function AdminTournamentsContent() {
           status: formData.status,
           registrationSettings: formData.registrationSettings,
           customCategories: formData.customCategories,
+          categoryPrices: formData.categoryPrices,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
         }),
@@ -271,6 +272,7 @@ export default function AdminTournamentsContent() {
           status: formData.status,
           registrationSettings: formData.registrationSettings,
           customCategories: formData.customCategories,
+          categoryPrices: formData.categoryPrices,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
         }),
@@ -550,6 +552,7 @@ export default function AdminTournamentsContent() {
         mixed1: 'Mixed 1',
         mixed2: 'Mixed 2',
       }) as Record<string, string>,
+      categoryPrices: (tournament.categoryPrices || {}) as Record<string, number>,
       bannerImageName: tournament.bannerImageName || null,
       bannerImageData: tournament.bannerImageData || null,
     });
