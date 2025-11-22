@@ -190,6 +190,8 @@ export async function POST(
             locationAddress: tournament.locationAddress || undefined,
             locationCoordinates: tournament.locationCoordinates || undefined,
             eventSchedule: tournament.eventSchedule || undefined,
+            priceSingleCategory: tournament.priceSingleCategory || undefined,
+            priceDoubleCategory: tournament.priceDoubleCategory || undefined,
             description: tournament.description || undefined,
             bannerImageData: tournament.bannerImageData || undefined,
             translations: tournament.translations || undefined,
