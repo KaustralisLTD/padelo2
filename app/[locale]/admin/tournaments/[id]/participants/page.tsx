@@ -67,6 +67,7 @@ export default function TournamentParticipantsPage() {
   const [emailParticipant, setEmailParticipant] = useState<Participant | null>(null);
   const [selectedEmailTemplate, setSelectedEmailTemplate] = useState<string>('');
   const [sendingEmail, setSendingEmail] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   
   // Фильтры и поиск
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -471,7 +472,7 @@ export default function TournamentParticipantsPage() {
       } else if (selectedParticipants.size > 0) {
         participantIds = Array.from(selectedParticipants);
       } else {
-        setError('Не выбран ни один участник');
+        setError(t('participants.noParticipantSelected') || 'No participant selected');
         return;
       }
 
@@ -501,7 +502,7 @@ export default function TournamentParticipantsPage() {
       const failed = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.ok));
 
       if (successful > 0) {
-        setSuccess(`Email отправлен ${successful} участнику(ам)`);
+        setSuccess(t('participants.emailSentTo', { count: successful }) || `Email sent to ${successful} participant(s)`);
         if (failed.length > 0) {
           // Проверяем первую ошибку для детального сообщения
           const firstFailed = failed.find(r => r.status === 'fulfilled');
@@ -512,17 +513,21 @@ export default function TournamentParticipantsPage() {
             if (data.message) {
               errorMessage = data.message;
             } else if (data.missingFields && Array.isArray(data.missingFields)) {
-              errorMessage = `Шаблон требует дополнительных данных:\n\nОтсутствующие поля:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
+              const missingFieldsText = t('participants.templateRequiresAdditionalData') || 'Template requires additional data';
+              const missingFieldsList = t('participants.missingFields') || 'Missing fields';
+              const requiredDataStructure = t('participants.requiredDataStructure') || 'Required data structure';
+              errorMessage = `${missingFieldsText}:\n\n${missingFieldsList}:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
               if (data.requiredData) {
-                errorMessage += `\n\nТребуемая структура данных:\n${JSON.stringify(data.requiredData, null, 2)}`;
+                errorMessage += `\n\n${requiredDataStructure}:\n${JSON.stringify(data.requiredData, null, 2)}`;
               }
             }
             
-            setError(`Не удалось отправить ${failed.length} участнику(ам):\n${errorMessage}`);
+            setError(t('participants.failedToSendTo', { count: failed.length }) + ':\n' + errorMessage);
           } else {
             setError(`Не удалось отправить ${failed.length} участнику(ам)`);
           }
         }
+        setShowEmailModal(false);
         setEmailParticipant(null);
         setSelectedEmailTemplate('');
         setSelectedParticipants(new Set());
@@ -541,9 +546,12 @@ export default function TournamentParticipantsPage() {
           if (data.message) {
             errorMessage = data.message;
           } else if (data.missingFields && Array.isArray(data.missingFields)) {
-            errorMessage = `Шаблон требует дополнительных данных:\n\nОтсутствующие поля:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
+            const missingFieldsText = t('participants.templateRequiresAdditionalData') || 'Template requires additional data';
+            const missingFieldsList = t('participants.missingFields') || 'Missing fields';
+            const requiredDataStructure = t('participants.requiredDataStructure') || 'Required data structure';
+            errorMessage = `${missingFieldsText}:\n\n${missingFieldsList}:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
             if (data.requiredData) {
-              errorMessage += `\n\nТребуемая структура данных:\n${JSON.stringify(data.requiredData, null, 2)}`;
+              errorMessage += `\n\n${requiredDataStructure}:\n${JSON.stringify(data.requiredData, null, 2)}`;
             }
           }
           
@@ -957,9 +965,9 @@ export default function TournamentParticipantsPage() {
                     </div>
                     <div>
                       <h3 className="text-text font-poppins font-bold text-base">
-                        Выбрано участников: {selectedParticipants.size}
+                        {t('participants.selectedParticipants') || 'Selected Participants'}: {selectedParticipants.size}
                       </h3>
-                      <p className="text-text-secondary text-sm">Выберите действие для выбранных участников</p>
+                      <p className="text-text-secondary text-sm">{t('participants.selectActionForSelected') || 'Select action for selected participants'}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
@@ -970,19 +978,19 @@ export default function TournamentParticipantsPage() {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Отметить как оплачено
+                      {t('participants.markAsPaid') || 'Mark as Paid'}
                     </button>
                     <button
                       onClick={() => {
                         // Открываем модальное окно для отправки email выбранным участникам
-                        setEmailParticipant({ id: 0 } as Participant);
+                        setShowEmailModal(true);
                       }}
                       className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-poppins font-semibold text-sm hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
-                      Отправить email ({selectedParticipants.size})
+                      {t('participants.sendEmail') || 'Send Email'} ({selectedParticipants.size})
                     </button>
                     <button
                       onClick={() => {
@@ -991,7 +999,7 @@ export default function TournamentParticipantsPage() {
                       }}
                       className="px-4 py-2 bg-background-secondary border border-border text-text rounded-lg font-poppins font-semibold text-sm hover:bg-background transition-colors"
                     >
-                      Отменить выбор
+                      {t('participants.cancelSelection') || 'Cancel Selection'}
                     </button>
                   </div>
                 </div>
@@ -1695,7 +1703,7 @@ export default function TournamentParticipantsPage() {
         )}
 
         {/* Send Email Modal */}
-        {(emailParticipant || selectedParticipants.size > 0) && (
+        {showEmailModal && (emailParticipant || selectedParticipants.size > 0) && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
               <div className="p-6 border-b border-border flex justify-between items-center">
@@ -1705,13 +1713,14 @@ export default function TournamentParticipantsPage() {
                   </h3>
                   {selectedParticipants.size > 0 && (
                     <p className="text-sm text-text-secondary mt-1">
-                      Будет отправлено {selectedParticipants.size} участнику(ам)
+                      {t('participants.willBeSentTo', { count: selectedParticipants.size }) || `Will be sent to ${selectedParticipants.size} participant(s)`}
                     </p>
                   )}
                 </div>
                 <button
                   type="button"
                   onClick={() => {
+                    setShowEmailModal(false);
                     setEmailParticipant(null);
                     setSelectedEmailTemplate('');
                   }}
@@ -1742,10 +1751,10 @@ export default function TournamentParticipantsPage() {
                       {t('participants.sendEmailTo') || 'Send email to:'}
                     </p>
                     <p className="text-text font-poppins font-semibold">
-                      {selectedParticipants.size} выбранных участников
+                      {t('participants.selectedCount', { count: selectedParticipants.size }) || `${selectedParticipants.size} selected participants`}
                     </p>
                     <p className="text-text-secondary font-poppins text-sm">
-                      Email будет отправлен каждому выбранному участнику на его языке
+                      {t('participants.emailWillBeSentToEach') || 'Email will be sent to each selected participant in their language'}
                     </p>
                   </div>
                 ) : null}
@@ -1804,6 +1813,7 @@ export default function TournamentParticipantsPage() {
                   <button
                     type="button"
                     onClick={() => {
+                      setShowEmailModal(false);
                       setEmailParticipant(null);
                       setSelectedEmailTemplate('');
                     }}
