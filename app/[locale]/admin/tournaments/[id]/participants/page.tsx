@@ -1297,6 +1297,7 @@ export default function TournamentParticipantsPage() {
                             onClick={() => {
                               setEmailParticipant(participant);
                               setSelectedEmailTemplate('');
+                              setShowEmailModal(true);
                             }}
                             className="p-1.5 bg-cyan-500/20 text-cyan-400 rounded hover:bg-cyan-500/30 transition-colors"
                             title={t('participants.sendEmail') || 'Send Email'}
