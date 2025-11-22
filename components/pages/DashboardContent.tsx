@@ -141,17 +141,28 @@ export default function DashboardContent() {
 
   const handleEdit = () => {
     if (!selectedRegistration) return;
+    const categoryPartners = selectedRegistration.categoryPartners || {};
+    setEditCategoryPartners(categoryPartners);
+    // Разворачиваем блоки партнеров для mixed категорий
+    const expanded: Record<string, boolean> = {};
+    (selectedRegistration.categories || []).forEach((cat: string) => {
+      if (cat.startsWith('mixed') && categoryPartners[cat]) {
+        expanded[cat] = true;
+      }
+    });
+    setExpandedCategoryPartners(expanded);
+    
     setEditData({
       firstName: selectedRegistration.firstName,
       lastName: selectedRegistration.lastName,
       email: selectedRegistration.email,
       phone: selectedRegistration.phone,
-      telegram: selectedRegistration.telegram || '',
-      tshirtSize: selectedRegistration.tshirtSize || '',
-      message: selectedRegistration.message || '',
+      telegram: selectedRegistration.telegram || '';
+      tshirtSize: selectedRegistration.tshirtSize || '';
+      message: selectedRegistration.message || '';
       categories: [...(selectedRegistration.categories || [])],
       partner: selectedRegistration.partner ? { ...selectedRegistration.partner } : null,
-      categoryPartners: selectedRegistration.categoryPartners ? { ...selectedRegistration.categoryPartners } : {},
+      categoryPartners: categoryPartners,
       childData: selectedRegistration.childData ? { ...selectedRegistration.childData } : null,
     });
     setIsEditing(true);
