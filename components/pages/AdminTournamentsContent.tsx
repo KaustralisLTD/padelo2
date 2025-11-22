@@ -41,6 +41,7 @@ interface Tournament {
   demoParticipantsCount?: number | null;
   customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
   categoryPrices?: Record<string, number>; // key: category code (e.g., "male1"), value: price in EUR
+  kidsCategoryEnabled?: boolean; // Включена ли категория KIDS
   bannerImageName?: string | null;
   bannerImageData?: string | null;
 }
@@ -77,6 +78,7 @@ export default function AdminTournamentsContent() {
       mixed2: 'Mixed 2',
     } as Record<string, string>,
     categoryPrices: {} as Record<string, number>,
+    kidsCategoryEnabled: false,
     bannerImageName: null as string | null,
     bannerImageData: null as string | null,
   });
@@ -1623,6 +1625,10 @@ export default function AdminTournamentsContent() {
                                   [code]: price !== undefined ? price : 0,
                                 },
                               });
+                            }}
+                            onWheel={(e) => {
+                              // Предотвращаем изменение значения при скролле
+                              e.currentTarget.blur();
                             }}
                             placeholder="0.00"
                             className="w-full px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"

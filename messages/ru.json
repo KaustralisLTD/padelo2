@@ -337,7 +337,8 @@
       "photoHint": "Максимум 5МБ. Форматы JPG, PNG.",
       "removeFile": "Удалить",
       "registrationReceived": "Регистрация получена!",
-      "registrationReceivedMessage": "Мы получили вашу заявку на регистрацию в турнире {tournamentName}. Пожалуйста, проверьте вашу электронную почту и перейдите по ссылке подтверждения для завершения регистрации.",
+      "registrationReceivedMessage": "Спасибо за регистрацию на турнир {tournamentName}! Мы получили вашу заявку. Детали подтверждения отправлены на вашу почту.",
+      "registrationReceivedMessageUnverified": "Спасибо за регистрацию на турнир {tournamentName}! Мы получили вашу заявку. Пожалуйста, проверьте вашу почту и перейдите по ссылке для подтверждения, чтобы завершить регистрацию.",
       "checkEmail": "Пожалуйста, проверьте вашу почту для получения ссылки подтверждения.",
       "emailInstructions": "Если вы не видите письмо, пожалуйста, проверьте папку со спамом. Ссылка подтверждения будет действительна в течение 7 дней.",
       "resendVerificationEmail": "Отправить письмо подтверждения повторно"
@@ -373,7 +374,8 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Выберите турнир"
     },
     "tournamentDetails": {
       "title": "Детали турнира",

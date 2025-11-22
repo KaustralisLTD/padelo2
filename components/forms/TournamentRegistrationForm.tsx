@@ -1206,15 +1206,26 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   ? t('form.registrationReceivedMessage', { tournamentName })
                   : t('form.registrationReceivedMessageUnverified', { tournamentName })}
               </p>
-              <div className="bg-background/50 rounded-lg p-3 border border-primary/20">
-                <p className="text-text font-semibold text-sm mb-1 flex items-center gap-2">
-                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  {t('form.checkEmail')}
-                </p>
-                <p className="text-text-secondary text-xs leading-relaxed">{t('form.emailInstructions')}</p>
-              </div>
+              {!emailVerified && (
+                <div className="bg-background/50 rounded-lg p-3 border border-primary/20">
+                  <p className="text-text font-semibold text-sm mb-1 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    {t('form.checkEmail')}
+                  </p>
+                  <p className="text-text-secondary text-xs leading-relaxed mb-2">{t('form.emailInstructions')}</p>
+                  <button
+                    onClick={async () => {
+                      // TODO: Implement resend verification email
+                      alert(t('form.resendVerificationEmail') || 'Resend verification email functionality coming soon');
+                    }}
+                    className="text-primary hover:text-accent text-xs font-semibold underline"
+                  >
+                    {t('form.resendVerificationEmail')}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
