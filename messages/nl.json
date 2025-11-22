@@ -712,6 +712,24 @@
       "error": "Error sending message. Please try again."
     }
   },
+  "ForgotPassword": {
+    "title": "Wachtwoord vergeten",
+    "description": "Voer uw e-mailadres in en we sturen u een link om uw wachtwoord opnieuw in te stellen.",
+    "email": "E-mailadres",
+    "emailPlaceholder": "uw.email@voorbeeld.com",
+    "hint": "We sturen een link om het wachtwoord opnieuw in te stellen naar dit e-mailadres als een account bestaat.",
+    "submit": "Link verzenden",
+    "submitting": "Verzenden...",
+    "backToLogin": "Terug naar inloggen",
+    "success": {
+      "title": "Controleer uw e-mail",
+      "message": "Als een account met dit e-mailadres bestaat, hebben we een link voor het opnieuw instellen van het wachtwoord verzonden. Controleer uw inbox en volg de instructies."
+    },
+    "errors": {
+      "failed": "Kan reset-e-mail niet verzenden. Probeer het opnieuw.",
+      "generic": "Er is een fout opgetreden. Probeer het opnieuw."
+    }
+  },
   "WhatsApp": {
     "button": "Chat op WhatsApp",
     "message": "Hallo! Ik ben geïnteresseerd in meer informatie over uw padel diensten.",

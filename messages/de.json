@@ -712,6 +712,24 @@
       "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
     }
   },
+  "ForgotPassword": {
+    "title": "Passwort vergessen",
+    "description": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "ihre.email@beispiel.com",
+    "hint": "Wir senden einen Link zum Zurücksetzen des Passworts an diese E-Mail-Adresse, falls ein Konto existiert.",
+    "submit": "Link senden",
+    "submitting": "Wird gesendet...",
+    "backToLogin": "Zurück zur Anmeldung",
+    "success": {
+      "title": "Überprüfen Sie Ihre E-Mail",
+      "message": "Wenn ein Konto mit dieser E-Mail existiert, haben wir einen Link zum Zurücksetzen des Passworts gesendet. Bitte überprüfen Sie Ihren Posteingang und folgen Sie den Anweisungen."
+    },
+    "errors": {
+      "failed": "Fehler beim Senden der E-Mail zum Zurücksetzen. Bitte versuchen Sie es erneut.",
+      "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    }
+  },
   "WhatsApp": {
     "button": "Auf WhatsApp chatten",
     "message": "Hallo! Ich interessiere mich für weitere Informationen über Ihre Padel-Dienste.",

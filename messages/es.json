@@ -734,6 +734,24 @@
       "error": "Error sending message. Please try again."
     }
   },
+  "ForgotPassword": {
+    "title": "Olvidé mi contraseña",
+    "description": "Ingresa tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+    "email": "Dirección de correo electrónico",
+    "emailPlaceholder": "tu.email@ejemplo.com",
+    "hint": "Enviaremos un enlace para restablecer la contraseña a esta dirección de correo electrónico si existe una cuenta.",
+    "submit": "Enviar enlace",
+    "submitting": "Enviando...",
+    "backToLogin": "Volver al inicio de sesión",
+    "success": {
+      "title": "Revisa tu correo",
+      "message": "Si existe una cuenta con este correo electrónico, hemos enviado un enlace para restablecer la contraseña. Por favor, revisa tu bandeja de entrada y sigue las instrucciones."
+    },
+    "errors": {
+      "failed": "Error al enviar el correo de restablecimiento. Por favor, inténtalo de nuevo.",
+      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo."
+    }
+  },
   "WhatsApp": {
     "button": "Chatear en WhatsApp",
     "message": "¡Hola! Me interesa conocer más sobre sus servicios de pádel.",

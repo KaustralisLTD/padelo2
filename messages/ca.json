@@ -1620,6 +1620,24 @@
       "error": "Error sending message. Please try again."
     }
   },
+  "ForgotPassword": {
+    "title": "He oblidat la contrasenya",
+    "description": "Introdueix la teva adreça de correu electrònic i t'enviarem un enllaç per restablir la teva contrasenya.",
+    "email": "Adreça de correu electrònic",
+    "emailPlaceholder": "el.teu.email@exemple.com",
+    "hint": "Enviarem un enllaç per restablir la contrasenya a aquesta adreça de correu electrònic si existeix un compte.",
+    "submit": "Enviar enllaç",
+    "submitting": "Enviant...",
+    "backToLogin": "Tornar a l'inici de sessió",
+    "success": {
+      "title": "Revisa el teu correu",
+      "message": "Si existeix un compte amb aquest correu electrònic, hem enviat un enllaç per restablir la contrasenya. Si us plau, revisa la teva safata d'entrada i segueix les instruccions."
+    },
+    "errors": {
+      "failed": "Error en enviar el correu de restabliment. Si us plau, torna-ho a intentar.",
+      "generic": "S'ha produït un error. Si us plau, torna-ho a intentar."
+    }
+  },
   "WhatsApp": {
     "button": "Chat on WhatsApp",
     "message": "Hello! I'm interested in learning more about your padel services.",

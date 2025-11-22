@@ -712,6 +712,24 @@
       "error": "Fejl ved afsendelse af besked. Prøv venligst igen."
     }
   },
+  "ForgotPassword": {
+    "title": "Glemt adgangskode",
+    "description": "Indtast din e-mailadresse, og vi sender dig et link til at nulstille din adgangskode.",
+    "email": "E-mailadresse",
+    "emailPlaceholder": "din.email@eksempel.com",
+    "hint": "Vi sender et link til at nulstille adgangskoden til denne e-mailadresse, hvis en konto findes.",
+    "submit": "Send link",
+    "submitting": "Sender...",
+    "backToLogin": "Tilbage til login",
+    "success": {
+      "title": "Tjek din e-mail",
+      "message": "Hvis en konto med denne e-mail findes, har vi sendt et link til at nulstille adgangskoden. Tjek venligst din indbakke og følg instruktionerne."
+    },
+    "errors": {
+      "failed": "Kunne ikke sende nulstillings-e-mail. Prøv venligst igen.",
+      "generic": "Der opstod en fejl. Prøv venligst igen."
+    }
+  },
   "WhatsApp": {
     "button": "Chat på WhatsApp",
     "message": "Hej! Jeg er interesseret i at lære mere om jeres padel tjenester.",

@@ -712,6 +712,24 @@
       "error": "Erreur lors de l'envoi du message. Veuillez réessayer."
     }
   },
+  "ForgotPassword": {
+    "title": "Mot de passe oublié",
+    "description": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "email": "Adresse e-mail",
+    "emailPlaceholder": "votre.email@exemple.com",
+    "hint": "Nous enverrons un lien de réinitialisation du mot de passe à cette adresse e-mail si un compte existe.",
+    "submit": "Envoyer le lien",
+    "submitting": "Envoi...",
+    "backToLogin": "Retour à la connexion",
+    "success": {
+      "title": "Vérifiez votre e-mail",
+      "message": "Si un compte avec cet e-mail existe, nous avons envoyé un lien de réinitialisation du mot de passe. Veuillez vérifier votre boîte de réception et suivre les instructions."
+    },
+    "errors": {
+      "failed": "Échec de l'envoi de l'e-mail de réinitialisation. Veuillez réessayer.",
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    }
+  },
   "WhatsApp": {
     "button": "Discuter sur WhatsApp",
     "message": "Bonjour! Je suis intéressé par vos services de padel.",

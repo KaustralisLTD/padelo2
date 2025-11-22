@@ -712,6 +712,24 @@
       "error": "Fel vid sändning av meddelande. Försök igen."
     }
   },
+  "ForgotPassword": {
+    "title": "Glömt lösenord",
+    "description": "Ange din e-postadress så skickar vi dig en länk för att återställa ditt lösenord.",
+    "email": "E-postadress",
+    "emailPlaceholder": "din.email@exempel.com",
+    "hint": "Vi skickar en länk för att återställa lösenordet till denna e-postadress om ett konto finns.",
+    "submit": "Skicka länk",
+    "submitting": "Skickar...",
+    "backToLogin": "Tillbaka till inloggning",
+    "success": {
+      "title": "Kontrollera din e-post",
+      "message": "Om ett konto med denna e-post finns har vi skickat en länk för att återställa lösenordet. Kontrollera din inkorg och följ instruktionerna."
+    },
+    "errors": {
+      "failed": "Kunde inte skicka återställnings-e-post. Försök igen.",
+      "generic": "Ett fel uppstod. Försök igen."
+    }
+  },
   "WhatsApp": {
     "button": "Chatta på WhatsApp",
     "message": "Hej! Jag är intresserad av att lära mig mer om era padel-tjänster.",

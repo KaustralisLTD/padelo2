@@ -712,6 +712,24 @@
       "error": "Feil ved sending av melding. Prøv igjen."
     }
   },
+  "ForgotPassword": {
+    "title": "Glemt passord",
+    "description": "Skriv inn din e-postadresse, så sender vi deg en lenke for å tilbakestille passordet ditt.",
+    "email": "E-postadresse",
+    "emailPlaceholder": "din.email@eksempel.com",
+    "hint": "Vi sender en lenke for å tilbakestille passordet til denne e-postadressen hvis en konto finnes.",
+    "submit": "Send lenke",
+    "submitting": "Sender...",
+    "backToLogin": "Tilbake til innlogging",
+    "success": {
+      "title": "Sjekk e-posten din",
+      "message": "Hvis en konto med denne e-posten finnes, har vi sendt en lenke for å tilbakestille passordet. Sjekk innboksen din og følg instruksjonene."
+    },
+    "errors": {
+      "failed": "Kunne ikke sende tilbakestillings-e-post. Prøv igjen.",
+      "generic": "En feil oppstod. Prøv igjen."
+    }
+  },
   "WhatsApp": {
     "button": "Chat på WhatsApp",
     "message": "Hei! Jeg er interessert i å lære mer om deres padel-tjenester.",
