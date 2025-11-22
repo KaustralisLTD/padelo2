@@ -36,6 +36,8 @@ interface Participant {
   paymentStatus?: 'pending' | 'paid' | 'refunded';
   paymentDate?: string;
   locale?: string;
+  parentUserId?: string | null; // ID родителя для детей
+  parentName?: string | null; // Имя родителя для детей
 }
 
 export default function TournamentParticipantsPage() {
@@ -1187,11 +1189,18 @@ export default function TournamentParticipantsPage() {
                       </td>
                       <td className="px-3 py-2 text-xs text-text">
                         <CopyableField 
-                          value={`${participant.firstName} ${participant.lastName}`} 
+                          value={`${participant.firstName} ${participant.lastName}${participant.parentName ? ` (${participant.parentName}, ${participant.userId || 'N/A'})` : ''}`}
                           fieldId={`name-${participant.id}`}
                         >
                           <div className="flex items-center gap-2">
-                            <span>{participant.firstName} {participant.lastName}</span>
+                            <span>
+                              {participant.firstName} {participant.lastName}
+                              {participant.parentName && (
+                                <span className="text-xs text-text-tertiary ml-2">
+                                  ({participant.parentName}, ID: {participant.parentUserId || 'N/A'})
+                                </span>
+                              )}
+                            </span>
                             {participant.isDemo && (
                               <span className="px-1.5 py-0.5 bg-yellow-500/20 text-yellow-500 rounded text-xs whitespace-nowrap">
                                 Demo

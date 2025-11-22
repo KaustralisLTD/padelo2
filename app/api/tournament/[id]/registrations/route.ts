@@ -97,6 +97,9 @@ export async function GET(
         tr.partner_email,
         tr.partner_phone,
         tr.partner_tshirt_size,
+        tr.parent_user_id,
+        parent.first_name as parent_first_name,
+        parent.last_name as parent_last_name,
         ${categoryPartnersSelect}
         tr.categories,
         tr.confirmed,
@@ -105,6 +108,7 @@ export async function GET(
         tr.payment_date,
         tr.created_at
       FROM tournament_registrations tr
+      LEFT JOIN tournament_registrations parent ON tr.parent_user_id = parent.user_id
       WHERE tr.tournament_id = ?
       ORDER BY tr.created_at ASC`,
       [tournamentId]
@@ -161,6 +165,10 @@ export async function GET(
         telegram: reg.telegram,
         tshirtSize: reg.tshirt_size,
         message: reg.message,
+        parentUserId: reg.parent_user_id || null,
+        parentName: reg.parent_first_name && reg.parent_last_name 
+          ? `${reg.parent_first_name} ${reg.parent_last_name}` 
+          : null,
         partnerName: reg.partner_name,
         partnerEmail: reg.partner_email,
         partnerPhone: reg.partner_phone,

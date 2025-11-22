@@ -301,6 +301,21 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
         }
       }
       
+      // Безопасный парсинг child_data
+      let childData: any = undefined;
+      if (row.child_data) {
+        try {
+          if (typeof row.child_data === 'string') {
+            childData = JSON.parse(row.child_data);
+          } else if (typeof row.child_data === 'object') {
+            childData = row.child_data;
+          }
+        } catch (e) {
+          console.warn(`[getRegistration] Failed to parse child_data as JSON: ${row.child_data}`);
+          childData = undefined;
+        }
+      }
+      
       return {
         tournamentId: row.tournament_id,
         tournamentName: row.tournament_name,
@@ -327,6 +342,8 @@ export async function getRegistration(token: string): Promise<TournamentRegistra
           data: row.user_photo_data,
           name: row.user_photo_name,
         } : undefined,
+        childData,
+        parentUserId: row.parent_user_id || undefined,
         token: row.token,
         createdAt: row.created_at.toISOString(),
         confirmed: !!row.confirmed,
