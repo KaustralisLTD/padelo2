@@ -132,18 +132,33 @@ export async function POST(
           
           let categories: string[] = [];
           try {
-            categories = JSON.parse(registration.categories || '[]');
-            if (!Array.isArray(categories)) {
-              categories = [];
+            // Категории могут быть уже массивом (если БД возвращает JSON как объект) или строкой JSON
+            if (Array.isArray(registration.categories)) {
+              categories = registration.categories;
+            } else if (typeof registration.categories === 'string') {
+              if (registration.categories.trim().startsWith('[') || registration.categories.trim().startsWith('{')) {
+                // Это JSON строка
+                const parsed = JSON.parse(registration.categories);
+                categories = Array.isArray(parsed) ? parsed : (typeof parsed === 'string' ? [parsed] : []);
+              } else {
+                // Это простая строка, возможно разделенная запятыми
+                categories = registration.categories.split(',').map(c => c.trim()).filter(c => c);
+              }
             }
+            
+            // Фильтруем пустые значения и приводим к строке
+            categories = categories.filter(c => c && (typeof c === 'string' ? c.trim() : String(c))).map(c => String(c).trim());
+            
             console.log('[send-email] Parsed categories:', {
               raw: registration.categories,
+              rawType: typeof registration.categories,
               parsed: categories,
               participantId: registrationId,
             });
           } catch (e) {
             console.error('[send-email] Error parsing categories:', e, {
               raw: registration.categories,
+              rawType: typeof registration.categories,
               participantId: registrationId,
             });
             categories = [];

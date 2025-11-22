@@ -42,24 +42,36 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
   
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
-  const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => {
-        const localized = getLocalizedCategoryName(cat, locale);
-        // Если локализация вернула оригинальное значение (не найдено), используем его
-        // Если локализация вернула пустую строку, используем оригинальное значение
-        const result = localized && localized.trim() !== '' ? localized : cat;
-        // Логируем для отладки
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[email-template] Category localization:', {
-            original: cat,
-            localized: localized,
-            result: result,
-            locale: locale,
-          });
-        }
-        return result;
-      }).filter(cat => cat && cat.trim() !== '')
-    : [];
+  let localizedCategories: string[] = [];
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.map(cat => {
+      if (!cat || typeof cat !== 'string') return cat;
+      const normalized = cat.trim();
+      if (!normalized) return cat;
+      
+      const localized = getLocalizedCategoryName(normalized, locale);
+      // Если локализация вернула оригинальное значение (не найдено), используем его
+      // Если локализация вернула пустую строку, используем оригинальное значение
+      const result = localized && localized.trim() !== '' && localized !== normalized ? localized : normalized;
+      
+      // Логируем для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[email-template] Category localization:', {
+          original: cat,
+          normalized: normalized,
+          localized: localized,
+          result: result,
+          locale: locale,
+        });
+      }
+      return result;
+    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+  }
+  
+  // Если локализация не дала результатов, используем оригинальные категории
+  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+  }
 
   // Получаем переведенное расписание событий из БД
   let eventScheduleToDisplay = tournament.eventSchedule || [];
@@ -519,7 +531,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${(categories && Array.isArray(categories) && categories.length > 0) ? (localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')) : 'N/A'}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row" style="border-bottom: none;">
@@ -661,24 +673,36 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
-  const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => {
-        const localized = getLocalizedCategoryName(cat, locale);
-        // Если локализация вернула оригинальное значение (не найдено), используем его
-        // Если локализация вернула пустую строку, используем оригинальное значение
-        const result = localized && localized.trim() !== '' ? localized : cat;
-        // Логируем для отладки
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[email-template] Category localization:', {
-            original: cat,
-            localized: localized,
-            result: result,
-            locale: locale,
-          });
-        }
-        return result;
-      }).filter(cat => cat && cat.trim() !== '')
-    : [];
+  let localizedCategories: string[] = [];
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.map(cat => {
+      if (!cat || typeof cat !== 'string') return cat;
+      const normalized = cat.trim();
+      if (!normalized) return cat;
+      
+      const localized = getLocalizedCategoryName(normalized, locale);
+      // Если локализация вернула оригинальное значение (не найдено), используем его
+      // Если локализация вернула пустую строку, используем оригинальное значение
+      const result = localized && localized.trim() !== '' && localized !== normalized ? localized : normalized;
+      
+      // Логируем для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[email-template] Category localization:', {
+          original: cat,
+          normalized: normalized,
+          localized: localized,
+          result: result,
+          locale: locale,
+        });
+      }
+      return result;
+    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+  }
+  
+  // Если локализация не дала результатов, используем оригинальные категории
+  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+  }
 
   // Получаем переведенное расписание событий
   let eventScheduleToDisplay = tournament.eventSchedule || [];
@@ -1186,7 +1210,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${(categories && Array.isArray(categories) && categories.length > 0) ? (localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')) : 'N/A'}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                       </div>
 
@@ -1330,24 +1354,36 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
   
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
-  const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => {
-        const localized = getLocalizedCategoryName(cat, locale);
-        // Если локализация вернула оригинальное значение (не найдено), используем его
-        // Если локализация вернула пустую строку, используем оригинальное значение
-        const result = localized && localized.trim() !== '' ? localized : cat;
-        // Логируем для отладки
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[email-template] Category localization:', {
-            original: cat,
-            localized: localized,
-            result: result,
-            locale: locale,
-          });
-        }
-        return result;
-      }).filter(cat => cat && cat.trim() !== '')
-    : [];
+  let localizedCategories: string[] = [];
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.map(cat => {
+      if (!cat || typeof cat !== 'string') return cat;
+      const normalized = cat.trim();
+      if (!normalized) return cat;
+      
+      const localized = getLocalizedCategoryName(normalized, locale);
+      // Если локализация вернула оригинальное значение (не найдено), используем его
+      // Если локализация вернула пустую строку, используем оригинальное значение
+      const result = localized && localized.trim() !== '' && localized !== normalized ? localized : normalized;
+      
+      // Логируем для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[email-template] Category localization:', {
+          original: cat,
+          normalized: normalized,
+          localized: localized,
+          result: result,
+          locale: locale,
+        });
+      }
+      return result;
+    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+  }
+  
+  // Если локализация не дала результатов, используем оригинальные категории
+  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+  }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {
@@ -1852,24 +1888,36 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
   
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
-  const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => {
-        const localized = getLocalizedCategoryName(cat, locale);
-        // Если локализация вернула оригинальное значение (не найдено), используем его
-        // Если локализация вернула пустую строку, используем оригинальное значение
-        const result = localized && localized.trim() !== '' ? localized : cat;
-        // Логируем для отладки
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[email-template] Category localization:', {
-            original: cat,
-            localized: localized,
-            result: result,
-            locale: locale,
-          });
-        }
-        return result;
-      }).filter(cat => cat && cat.trim() !== '')
-    : [];
+  let localizedCategories: string[] = [];
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.map(cat => {
+      if (!cat || typeof cat !== 'string') return cat;
+      const normalized = cat.trim();
+      if (!normalized) return cat;
+      
+      const localized = getLocalizedCategoryName(normalized, locale);
+      // Если локализация вернула оригинальное значение (не найдено), используем его
+      // Если локализация вернула пустую строку, используем оригинальное значение
+      const result = localized && localized.trim() !== '' && localized !== normalized ? localized : normalized;
+      
+      // Логируем для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[email-template] Category localization:', {
+          original: cat,
+          normalized: normalized,
+          localized: localized,
+          result: result,
+          locale: locale,
+        });
+      }
+      return result;
+    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+  }
+  
+  // Если локализация не дала результатов, используем оригинальные категории
+  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+  }
 
   // Расчет цены
   const categoryCount = categories.length;
@@ -2327,7 +2375,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${(categories && Array.isArray(categories) && categories.length > 0) ? (localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')) : 'N/A'}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row" style="border-bottom: none;">
@@ -2450,24 +2498,36 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
   
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
-  const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => {
-        const localized = getLocalizedCategoryName(cat, locale);
-        // Если локализация вернула оригинальное значение (не найдено), используем его
-        // Если локализация вернула пустую строку, используем оригинальное значение
-        const result = localized && localized.trim() !== '' ? localized : cat;
-        // Логируем для отладки
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[email-template] Category localization:', {
-            original: cat,
-            localized: localized,
-            result: result,
-            locale: locale,
-          });
-        }
-        return result;
-      }).filter(cat => cat && cat.trim() !== '')
-    : [];
+  let localizedCategories: string[] = [];
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.map(cat => {
+      if (!cat || typeof cat !== 'string') return cat;
+      const normalized = cat.trim();
+      if (!normalized) return cat;
+      
+      const localized = getLocalizedCategoryName(normalized, locale);
+      // Если локализация вернула оригинальное значение (не найдено), используем его
+      // Если локализация вернула пустую строку, используем оригинальное значение
+      const result = localized && localized.trim() !== '' && localized !== normalized ? localized : normalized;
+      
+      // Логируем для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[email-template] Category localization:', {
+          original: cat,
+          normalized: normalized,
+          localized: localized,
+          result: result,
+          locale: locale,
+        });
+      }
+      return result;
+    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+  }
+  
+  // Если локализация не дала результатов, используем оригинальные категории
+  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+  }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {
@@ -2907,7 +2967,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${(categories && Array.isArray(categories) && categories.length > 0) ? (localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')) : 'N/A'}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row">
@@ -3043,24 +3103,36 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
   
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
-  const localizedCategories = categories && categories.length > 0 
-    ? categories.map(cat => {
-        const localized = getLocalizedCategoryName(cat, locale);
-        // Если локализация вернула оригинальное значение (не найдено), используем его
-        // Если локализация вернула пустую строку, используем оригинальное значение
-        const result = localized && localized.trim() !== '' ? localized : cat;
-        // Логируем для отладки
-        if (process.env.NODE_ENV === 'development') {
-          console.log('[email-template] Category localization:', {
-            original: cat,
-            localized: localized,
-            result: result,
-            locale: locale,
-          });
-        }
-        return result;
-      }).filter(cat => cat && cat.trim() !== '')
-    : [];
+  let localizedCategories: string[] = [];
+  if (categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.map(cat => {
+      if (!cat || typeof cat !== 'string') return cat;
+      const normalized = cat.trim();
+      if (!normalized) return cat;
+      
+      const localized = getLocalizedCategoryName(normalized, locale);
+      // Если локализация вернула оригинальное значение (не найдено), используем его
+      // Если локализация вернула пустую строку, используем оригинальное значение
+      const result = localized && localized.trim() !== '' && localized !== normalized ? localized : normalized;
+      
+      // Логируем для отладки
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[email-template] Category localization:', {
+          original: cat,
+          normalized: normalized,
+          localized: localized,
+          result: result,
+          locale: locale,
+        });
+      }
+      return result;
+    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+  }
+  
+  // Если локализация не дала результатов, используем оригинальные категории
+  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
+    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+  }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {
@@ -3464,7 +3536,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${(categories && Array.isArray(categories) && categories.length > 0) ? (localizedCategories.length > 0 ? localizedCategories.join(', ') : categories.join(', ')) : 'N/A'}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row">
