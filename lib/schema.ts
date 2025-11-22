@@ -29,6 +29,19 @@ export interface EventSchema {
     url: string;
   };
   image?: string;
+  eventStatus?: string;
+  offers?: {
+    url?: string;
+    price?: string | number;
+    priceCurrency?: string;
+    availability?: string;
+    validFrom?: string;
+    validThrough?: string;
+  };
+  performer?: {
+    name: string;
+    '@type'?: string;
+  };
 }
 
 export interface BreadcrumbSchema {
@@ -78,29 +91,101 @@ export function generateEventSchema(
   locale: string,
   event: EventSchema
 ): object {
-  return {
+  // Calculate default dates if not provided (next month for start, +3 days for end)
+  const defaultStartDate = event.startDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const defaultEndDate = event.endDate || new Date(new Date(defaultStartDate).getTime() + 3 * 24 * 60 * 60 * 1000).toISOString();
+  
+  const schema: any = {
     '@context': 'https://schema.org',
     '@type': 'SportsEvent',
     name: event.name,
     description: event.description,
-    startDate: event.startDate,
-    endDate: event.endDate,
-    location: event.location ? {
+    startDate: defaultStartDate, // Required field
+    endDate: defaultEndDate, // Required field
+    sport: 'Padel',
+  };
+
+  // Location is required - use default if not provided
+  if (event.location) {
+    schema.location = {
       '@type': 'Place',
       name: event.location.name,
       address: event.location.address ? {
         '@type': 'PostalAddress',
         addressLocality: event.location.address,
-      } : undefined,
-    } : undefined,
-    organizer: event.organizer ? {
+      } : {
+        '@type': 'PostalAddress',
+        addressLocality: 'Worldwide',
+      },
+    };
+  } else {
+    // Default location
+    schema.location = {
+      '@type': 'Place',
+      name: 'Various Locations',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Worldwide',
+      },
+    };
+  }
+
+  // Organizer
+  if (event.organizer) {
+    schema.organizer = {
       '@type': 'Organization',
       name: event.organizer.name,
       url: event.organizer.url,
-    } : undefined,
-    image: event.image,
-    sport: 'Padel',
-  };
+    };
+  }
+
+  // Image
+  if (event.image) {
+    schema.image = event.image;
+  }
+
+  // Event status (default to EventScheduled if not provided)
+  schema.eventStatus = event.eventStatus || 'https://schema.org/EventScheduled';
+
+  // Offers (required for some event types)
+  if (event.offers) {
+    schema.offers = {
+      '@type': 'Offer',
+      url: event.offers.url || `${baseUrl}/${locale}/tournaments`,
+      price: event.offers.price || '0',
+      priceCurrency: event.offers.priceCurrency || 'EUR',
+      availability: event.offers.availability || 'https://schema.org/InStock',
+      validFrom: event.offers.validFrom || new Date().toISOString(),
+      validThrough: event.offers.validThrough || defaultEndDate,
+    };
+  } else {
+    // Default offers
+    schema.offers = {
+      '@type': 'Offer',
+      url: `${baseUrl}/${locale}/tournaments`,
+      price: '0',
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      validFrom: new Date().toISOString(),
+      validThrough: defaultEndDate,
+    };
+  }
+
+  // Performer (optional but recommended)
+  if (event.performer) {
+    schema.performer = {
+      '@type': event.performer['@type'] || 'SportsTeam',
+      name: event.performer.name,
+    };
+  } else {
+    // Default performer
+    schema.performer = {
+      '@type': 'SportsTeam',
+      name: 'Padel Players',
+    };
+  }
+
+  return schema;
 }
 
 // Generate BreadcrumbList schema
@@ -272,7 +357,7 @@ export function generateProductSchema(
       '@type': 'Offer',
       availability: product.offers.availability || 'https://schema.org/PreOrder',
       priceCurrency: product.offers.priceCurrency || 'EUR',
-      price: product.offers.price || '0', // Required field - using '0' as default for PreOrder
+      price: typeof product.offers.price === 'number' ? product.offers.price.toString() : (product.offers.price || '0'), // Required field - using '0' as default for PreOrder
       priceValidUntil: priceValidUntil, // Required field
     };
 

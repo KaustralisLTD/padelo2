@@ -33,14 +33,37 @@ export default async function TournamentsPage({ params }: { params: Promise<{ lo
   const t = await getTranslations({ locale, namespace: 'Tournaments' });
   
   // Generate Event schema for tournaments page
+  // Calculate default dates (next month for start, +3 days for end)
+  const defaultStartDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const defaultEndDate = new Date(new Date(defaultStartDate).getTime() + 3 * 24 * 60 * 60 * 1000).toISOString();
+  
   const eventSchema = generateEventSchema(locale, {
     name: t('title'),
     description: t('subhead') || t('body'),
+    startDate: defaultStartDate,
+    endDate: defaultEndDate,
+    location: {
+      name: 'Various Locations Worldwide',
+      address: 'Worldwide',
+    },
     organizer: {
       name: 'PadelO₂',
       url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale}`,
     },
     image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-hero.png`,
+    eventStatus: 'https://schema.org/EventScheduled',
+    offers: {
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale}/tournaments`,
+      price: '0',
+      priceCurrency: 'EUR',
+      availability: 'https://schema.org/InStock',
+      validFrom: new Date().toISOString(),
+      validThrough: defaultEndDate,
+    },
+    performer: {
+      name: 'Padel Players',
+      '@type': 'SportsTeam',
+    },
   });
   
   return (
