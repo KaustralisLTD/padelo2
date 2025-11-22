@@ -767,6 +767,29 @@ export async function initDatabase() {
       if (!e.message.includes('Duplicate column name')) throw e;
     }
 
+    // Добавляем поля для подтверждения результатов от обеих пар
+    const resultConfirmationColumns = [
+      'pair1_result_reported_by VARCHAR(36) DEFAULT NULL',
+      'pair1_result_reported_at DATETIME DEFAULT NULL',
+      'pair1_result_pair1_games INT(11) DEFAULT NULL',
+      'pair1_result_pair2_games INT(11) DEFAULT NULL',
+      'pair2_result_reported_by VARCHAR(36) DEFAULT NULL',
+      'pair2_result_reported_at DATETIME DEFAULT NULL',
+      'pair2_result_pair1_games INT(11) DEFAULT NULL',
+      'pair2_result_pair2_games INT(11) DEFAULT NULL',
+      'result_confirmed BOOLEAN DEFAULT FALSE',
+      'result_confirmed_at DATETIME DEFAULT NULL',
+    ];
+    
+    for (const col of resultConfirmationColumns) {
+      try {
+        const [colName] = col.split(' ');
+        await pool.execute(`ALTER TABLE tournament_matches ADD COLUMN ${col}`);
+      } catch (e: any) {
+        if (!e.message.includes('Duplicate column name')) throw e;
+      }
+    }
+
     // Create user_wallets table (балансы пользователей)
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS user_wallets (

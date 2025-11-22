@@ -1495,5 +1495,55 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "TournamentConfirm": {
+    "title": "Confirm Your Participation",
+    "description": "Payment information for tournament participation",
+    "loading": "Loading...",
+    "tournamentNotFound": "Tournament not found",
+    "backToTournaments": "Back to Tournaments",
+    "paymentMethods": "Payment Methods",
+    "onSitePayment": "On-Site Payment",
+    "onSitePaymentDescription": "You can pay for your participation directly at the tournament venue by contacting the organizers.",
+    "onlinePayment": "Online Payment",
+    "onlinePaymentDescription": "Online payment option is currently being developed and will be available soon.",
+    "inDevelopment": "In Development",
+    "contactOrganizers": "Contact Organizers",
+    "contactDescription": "If you have any questions about payment or participation, please contact our team.",
+    "contactUs": "Contact Us",
+    "backToDashboard": "Back to Dashboard",
+    "viewTournaments": "View Tournaments"
+  },
+  "TournamentSchedule": {
+    "title": "Tournament Schedule",
+    "description": "View and manage tournament match schedule",
+    "loading": "Loading schedule...",
+    "backToDashboard": "Back to Dashboard",
+    "today": "Today",
+    "noMatches": "No matches scheduled for this date",
+    "court": "Court",
+    "confirmed": "Confirmed",
+    "pair1": "Pair 1",
+    "pair2": "Pair 2",
+    "games": "Games",
+    "time": "Time",
+    "submitResult": "Submit Result",
+    "pair1Games": "Pair 1 Games",
+    "pair2Games": "Pair 2 Games",
+    "setsOptional": "Sets (Optional)",
+    "resultConfirmationNote": "Note: The result will be confirmed only after both pairs submit matching results.",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "submitting": "Submitting..."
+  },
+  "NotFound": {
+    "title": "Page Under Development",
+    "description": "This page is currently under development. Please check back later or use the links below to navigate to other sections of our website.",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "tournaments": "Tournaments",
+    "academy": "Academy",
+    "contact": "Contact",
+    "goHome": "Go Home"
   }
 }
