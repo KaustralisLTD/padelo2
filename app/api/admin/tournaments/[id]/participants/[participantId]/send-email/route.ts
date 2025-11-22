@@ -416,11 +416,35 @@ export async function POST(
         try {
           let categories: string[] = [];
           try {
-            categories = JSON.parse(registration.categories || '[]');
-            if (!Array.isArray(categories)) {
-              categories = [];
+            // Категории могут быть уже массивом (если БД возвращает JSON как объект) или строкой JSON
+            if (Array.isArray(registration.categories)) {
+              categories = registration.categories;
+            } else if (typeof registration.categories === 'string') {
+              if (registration.categories.trim().startsWith('[') || registration.categories.trim().startsWith('{')) {
+                // Это JSON строка
+                const parsed = JSON.parse(registration.categories);
+                categories = Array.isArray(parsed) ? parsed : (typeof parsed === 'string' ? [parsed] : []);
+              } else {
+                // Это простая строка, возможно разделенная запятыми
+                categories = registration.categories.split(',').map((c: string) => c.trim()).filter((c: string) => c);
+              }
             }
+            
+            // Фильтруем пустые значения и приводим к строке
+            categories = categories.filter((c: any) => c && (typeof c === 'string' ? c.trim() : String(c))).map((c: any) => String(c).trim());
+            
+            console.log('[send-email] Payment received - Parsed categories:', {
+              raw: registration.categories,
+              rawType: typeof registration.categories,
+              parsed: categories,
+              participantId: registrationId,
+            });
           } catch (e) {
+            console.error('[send-email] Payment received - Error parsing categories:', e, {
+              raw: registration.categories,
+              rawType: typeof registration.categories,
+              participantId: registrationId,
+            });
             categories = [];
           }
 
@@ -432,6 +456,22 @@ export async function POST(
             : categoryCount > 1
             ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
             : tournament.priceSingleCategory || 0;
+          
+          console.log('[send-email] Payment received - Payment calculation:', {
+            categoryCount,
+            priceSingleCategory: tournament.priceSingleCategory,
+            priceDoubleCategory: tournament.priceDoubleCategory,
+            paymentAmount,
+            participantId: registrationId,
+          });
+
+          console.log('[send-email] Payment received - Sending email with data:', {
+            categories,
+            categoryCount: categories.length,
+            paymentAmount,
+            participantId: registrationId,
+            participantEmail: registration.email,
+          });
 
           const html = getPaymentReceivedEmailTemplate({
             firstName: registration.first_name || undefined,
@@ -484,11 +524,35 @@ export async function POST(
         try {
           let categories: string[] = [];
           try {
-            categories = JSON.parse(registration.categories || '[]');
-            if (!Array.isArray(categories)) {
-              categories = [];
+            // Категории могут быть уже массивом (если БД возвращает JSON как объект) или строкой JSON
+            if (Array.isArray(registration.categories)) {
+              categories = registration.categories;
+            } else if (typeof registration.categories === 'string') {
+              if (registration.categories.trim().startsWith('[') || registration.categories.trim().startsWith('{')) {
+                // Это JSON строка
+                const parsed = JSON.parse(registration.categories);
+                categories = Array.isArray(parsed) ? parsed : (typeof parsed === 'string' ? [parsed] : []);
+              } else {
+                // Это простая строка, возможно разделенная запятыми
+                categories = registration.categories.split(',').map((c: string) => c.trim()).filter((c: string) => c);
+              }
             }
+            
+            // Фильтруем пустые значения и приводим к строке
+            categories = categories.filter((c: any) => c && (typeof c === 'string' ? c.trim() : String(c))).map((c: any) => String(c).trim());
+            
+            console.log('[send-email] Payment failed - Parsed categories:', {
+              raw: registration.categories,
+              rawType: typeof registration.categories,
+              parsed: categories,
+              participantId: registrationId,
+            });
           } catch (e) {
+            console.error('[send-email] Payment failed - Error parsing categories:', e, {
+              raw: registration.categories,
+              rawType: typeof registration.categories,
+              participantId: registrationId,
+            });
             categories = [];
           }
 
@@ -500,9 +564,25 @@ export async function POST(
             : categoryCount > 1
             ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
             : tournament.priceSingleCategory || 0;
+          
+          console.log('[send-email] Payment failed - Payment calculation:', {
+            categoryCount,
+            priceSingleCategory: tournament.priceSingleCategory,
+            priceDoubleCategory: tournament.priceDoubleCategory,
+            paymentAmount,
+            participantId: registrationId,
+          });
 
           const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
           const retryUrl = `${siteUrl}/${participantLocale}/dashboard`;
+
+          console.log('[send-email] Payment failed - Sending email with data:', {
+            categories,
+            categoryCount: categories.length,
+            paymentAmount,
+            participantId: registrationId,
+            participantEmail: registration.email,
+          });
 
           const html = getPaymentFailedEmailTemplate({
             firstName: registration.first_name || undefined,
