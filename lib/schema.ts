@@ -191,6 +191,46 @@ export function generateProductSchema(
       priceCurrency?: string;
       price?: string | number;
       priceValidUntil?: string;
+      hasMerchantReturnPolicy?: {
+        '@type': string;
+        applicableCountry: string;
+        returnPolicyCategory: string;
+        merchantReturnDays: number;
+        returnMethod: string;
+        returnFees: string;
+      };
+      shippingDetails?: {
+        '@type': string;
+        shippingRate?: {
+          '@type': string;
+          value: string;
+          currency: string;
+        };
+        shippingDestination?: {
+          '@type': string;
+          addressCountry: string;
+        };
+        deliveryTime?: {
+          '@type': string;
+          businessDays: {
+            '@type': string;
+            dayOfWeek: string[];
+          };
+          cutoffTime?: string;
+          handlingTime?: {
+            '@type': string;
+            minValue: number;
+            maxValue: number;
+            unitCode: string;
+          };
+          transitTime?: {
+            '@type': string;
+            minValue: number;
+            maxValue: number;
+            unitCode: string;
+          };
+        };
+      };
     };
     aggregateRating?: {
       ratingValue: number;
@@ -235,6 +275,59 @@ export function generateProductSchema(
       price: product.offers.price || '0', // Required field - using '0' as default for PreOrder
       priceValidUntil: priceValidUntil, // Required field
     };
+
+    // Add hasMerchantReturnPolicy if provided or use default
+    if (product.offers.hasMerchantReturnPolicy) {
+      schema.offers.hasMerchantReturnPolicy = product.offers.hasMerchantReturnPolicy;
+    } else {
+      // Default return policy
+      schema.offers.hasMerchantReturnPolicy = {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'Worldwide',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 30,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      };
+    }
+
+    // Add shippingDetails if provided or use default
+    if (product.offers.shippingDetails) {
+      schema.offers.shippingDetails = product.offers.shippingDetails;
+    } else {
+      // Default shipping details
+      schema.offers.shippingDetails = {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: 'EUR',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'Worldwide',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          businessDays: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+          },
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 3,
+            maxValue: 5,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 7,
+            maxValue: 14,
+            unitCode: 'DAY',
+          },
+        },
+      };
+    }
   }
 
   // Add aggregateRating if provided
