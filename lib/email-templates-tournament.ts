@@ -65,12 +65,12 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
         });
       }
       return result;
-    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
   // Получаем переведенное расписание событий из БД
@@ -696,12 +696,12 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
         });
       }
       return result;
-    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
   // Получаем переведенное расписание событий
@@ -1377,12 +1377,12 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
         });
       }
       return result;
-    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
@@ -1911,12 +1911,12 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
         });
       }
       return result;
-    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
   // Расчет цены
@@ -2521,12 +2521,12 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
         });
       }
       return result;
-    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
@@ -3126,12 +3126,12 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
         });
       }
       return result;
-    }).filter(cat => cat && typeof cat === 'string' && cat.trim() !== '');
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter(cat => cat && typeof cat === 'string' && cat.trim() !== '').map(cat => cat.trim());
+    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
   }
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {

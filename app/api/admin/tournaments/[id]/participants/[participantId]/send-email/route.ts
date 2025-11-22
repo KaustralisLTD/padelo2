@@ -142,12 +142,12 @@ export async function POST(
                 categories = Array.isArray(parsed) ? parsed : (typeof parsed === 'string' ? [parsed] : []);
               } else {
                 // Это простая строка, возможно разделенная запятыми
-                categories = registration.categories.split(',').map(c => c.trim()).filter(c => c);
+                categories = registration.categories.split(',').map((c: string) => c.trim()).filter((c: string) => c);
               }
             }
             
             // Фильтруем пустые значения и приводим к строке
-            categories = categories.filter(c => c && (typeof c === 'string' ? c.trim() : String(c))).map(c => String(c).trim());
+            categories = categories.filter((c: any) => c && (typeof c === 'string' ? c.trim() : String(c))).map((c: any) => String(c).trim());
             
             console.log('[send-email] Parsed categories:', {
               raw: registration.categories,
