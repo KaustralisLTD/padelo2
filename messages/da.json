@@ -626,9 +626,9 @@
       "participantsLoadError": "Fejl ved indlæsning af deltagere.",
       "participantCategoryUpdated": "Deltagerkategori opdateret med succes.",
       "participantCategoryUpdateError": "Fejl ved opdatering af deltagerkategori.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Vælg fra deltagere",
+      "selectPartner": "Vælg partner",
+      "byCategories": "efter kategorier"
     },
     "pair": "par",
     "backToTournaments": "Tilbage til Turneringer",

@@ -626,9 +626,9 @@
       "participantsLoadError": "Échec du chargement des participants.",
       "participantCategoryUpdated": "Catégorie du participant mise à jour avec succès.",
       "participantCategoryUpdateError": "Échec de la mise à jour de la catégorie du participant.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Sélectionner parmi les participants",
+      "selectPartner": "Sélectionner un partenaire",
+      "byCategories": "par catégories"
     },
     "pair": "paires",
     "backToTournaments": "Retour aux Tournois",

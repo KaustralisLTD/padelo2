@@ -626,9 +626,9 @@
       "participantsLoadError": "Fehler beim Laden der Teilnehmer.",
       "participantCategoryUpdated": "Teilnehmerkategorie erfolgreich aktualisiert.",
       "participantCategoryUpdateError": "Fehler beim Aktualisieren der Teilnehmerkategorie.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Aus Teilnehmern auswählen",
+      "selectPartner": "Partner auswählen",
+      "byCategories": "nach Kategorien"
     },
     "pair": "Paare",
     "backToTournaments": "Zurück zu Turnieren",

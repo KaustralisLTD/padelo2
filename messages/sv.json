@@ -626,9 +626,9 @@
       "participantsLoadError": "Fel vid laddning av deltagare.",
       "participantCategoryUpdated": "Deltagarkategori uppdaterad framgångsrikt.",
       "participantCategoryUpdateError": "Fel vid uppdatering av deltagarkategori.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Välj från deltagare",
+      "selectPartner": "Välj partner",
+      "byCategories": "efter kategorier"
     },
     "pair": "par",
     "backToTournaments": "Tillbaka till Turneringar",

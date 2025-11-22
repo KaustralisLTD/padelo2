@@ -626,9 +626,9 @@
       "participantsLoadError": "Fout bij het laden van deelnemers.",
       "participantCategoryUpdated": "Deelnemercategorie succesvol bijgewerkt.",
       "participantCategoryUpdateError": "Fout bij het bijwerken van deelnemercategorie.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Selecteren uit deelnemers",
+      "selectPartner": "Partner selecteren",
+      "byCategories": "per categorie"
     },
     "pair": "paren",
     "backToTournaments": "Terug naar Toernooien",

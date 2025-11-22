@@ -783,9 +783,9 @@
       "participantsLoadError": "Error en carregar participants.",
       "participantCategoryUpdated": "Categoria de participant actualitzada amb èxit.",
       "participantCategoryUpdateError": "Error en actualitzar categoria de participant.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Seleccionar de participants",
+      "selectPartner": "Seleccionar parella",
+      "byCategories": "per categories"
     },
     "pair": "parelles",
     "title": "Tournaments",

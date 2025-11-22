@@ -626,9 +626,9 @@
       "participantsLoadError": "加载参与者失败。",
       "participantCategoryUpdated": "参与者类别更新成功。",
       "participantCategoryUpdateError": "更新参与者类别失败。",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "从参与者中选择",
+      "selectPartner": "选择合作伙伴",
+      "byCategories": "按类别"
     },
     "pair": "对",
     "backToTournaments": "返回锦标赛",

@@ -650,9 +650,9 @@
       "participantsLoadError": "Не вдалося завантажити учасників.",
       "participantCategoryUpdated": "Категорію учасника успішно оновлено.",
       "participantCategoryUpdateError": "Не вдалося оновити категорію учасника.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Обрати з учасників",
+      "selectPartner": "Обрати партнера",
+      "byCategories": "за категоріями"
     },
     "pair": "пар",
     "backToTournaments": "Повернутися до турнірів",

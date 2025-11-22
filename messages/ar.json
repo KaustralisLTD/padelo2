@@ -626,9 +626,9 @@
       "participantsLoadError": "فشل تحميل المشاركين.",
       "participantCategoryUpdated": "تم تحديث فئة المشارك بنجاح.",
       "participantCategoryUpdateError": "فشل تحديث فئة المشارك.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "اختر من المشاركين",
+      "selectPartner": "اختر الشريك",
+      "byCategories": "حسب الفئات"
     },
     "pair": "أزواج",
     "backToTournaments": "العودة إلى البطولات",

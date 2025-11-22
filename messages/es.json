@@ -652,9 +652,9 @@
       "confirmDeleteParticipant": "¿Está seguro de que desea eliminar al participante {name}? Esta acción no se puede deshacer.",
       "participantDeleted": "Participante eliminado exitosamente.",
       "participantDeleteError": "Error al eliminar participante.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Seleccionar de participantes",
+      "selectPartner": "Seleccionar pareja",
+      "byCategories": "por categorías"
     },
     "pair": "pares",
     "backToTournaments": "Volver a Torneos",

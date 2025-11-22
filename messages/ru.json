@@ -630,9 +630,9 @@
       "paymentStatusUpdateError": "Не удалось обновить статус оплаты.",
       "participantCategoryUpdated": "Категория участника успешно обновлена.",
       "participantCategoryUpdateError": "Не удалось обновить категорию участника.",
-      "selectFromParticipants": "Select from participants",
-      "selectPartner": "Select partner",
-      "byCategories": "by categories"
+      "selectFromParticipants": "Выбрать из участников",
+      "selectPartner": "Выбрать партнера",
+      "byCategories": "по категориям"
     },
     "pair": "пар",
     "backToTournaments": "← Назад к турнирам",
