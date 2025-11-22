@@ -301,6 +301,9 @@ export default function DashboardContent() {
     setShowLeaveModal(true);
   };
 
+  const confirmLeaveTournament = async () => {
+    if (!selectedRegistration) return;
+    
     try {
       setLeavingTournament(true);
       const authToken = localStorage.getItem('auth_token');
@@ -319,6 +322,7 @@ export default function DashboardContent() {
         // Успешно покинули турнир
         setSelectedRegistration(null);
         setRegistrations(registrations.filter(r => r.id !== selectedRegistration.id));
+        setShowLeaveModal(false);
         // Перенаправляем на страницу турниров или dashboard
         window.location.href = `/${locale}/tournaments`;
       } else {
