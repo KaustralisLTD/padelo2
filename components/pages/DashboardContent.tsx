@@ -559,7 +559,7 @@ export default function DashboardContent() {
                   {Object.entries(customCategories).map(([code, name]) => {
                     const isSelected = editData.categories?.includes(code);
                     const isMixed = code.startsWith('mixed');
-                    const partnerRequired = isMixed && registrationSettings.partnerRequiredForMixed;
+                    const partnerRequired = isMixed && registrationSettings.partner.required;
                     
                     return (
                       <label
@@ -620,7 +620,7 @@ export default function DashboardContent() {
               {editData.categories?.filter((cat: string) => cat.startsWith('mixed')).map((category: string) => {
                 const partner = editCategoryPartners[category] || { name: '', email: '', phone: '', tshirtSize: '' };
                 const isExpanded = expandedCategoryPartners[category];
-                const partnerRequired = registrationSettings.partnerRequiredForMixed;
+                const partnerRequired = registrationSettings.partner.required;
                 
                 return (
                   <div key={category} className="border border-gray-700 rounded-lg p-4">
