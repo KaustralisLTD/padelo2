@@ -555,11 +555,79 @@ export default function DashboardContent() {
                 <label className="block text-sm font-poppins text-text-secondary mb-2">
                   {t('form.categories')} *
                 </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {Object.entries(customCategories).map(([code, name]) => {
+                
+                {/* Row 1: Male 1 and Male 2 */}
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  {['male1', 'male2'].map((code) => {
+                    if (!customCategories[code]) return null;
                     const isSelected = editData.categories?.includes(code);
-                    const isMixed = code.startsWith('mixed');
-                    const partnerRequired = isMixed && registrationSettings.partner.required;
+                    return (
+                      <label
+                        key={code}
+                        className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          isSelected
+                            ? 'border-primary bg-primary/10'
+                            : 'border-gray-700 bg-background hover:border-gray-600'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={(e) => {
+                            const newCategories = e.target.checked
+                              ? [...(editData.categories || []), code]
+                              : (editData.categories || []).filter((c: string) => c !== code);
+                            setEditData({ ...editData, categories: newCategories });
+                          }}
+                          className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 cursor-pointer"
+                        />
+                        <span className={`text-sm font-poppins ${isSelected ? 'text-primary font-semibold' : 'text-text'}`}>
+                          {customCategories[code]}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                {/* Row 2: Female 1 and Female 2 */}
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  {['female1', 'female2'].map((code) => {
+                    if (!customCategories[code]) return null;
+                    const isSelected = editData.categories?.includes(code);
+                    return (
+                      <label
+                        key={code}
+                        className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                          isSelected
+                            ? 'border-primary bg-primary/10'
+                            : 'border-gray-700 bg-background hover:border-gray-600'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={(e) => {
+                            const newCategories = e.target.checked
+                              ? [...(editData.categories || []), code]
+                              : (editData.categories || []).filter((c: string) => c !== code);
+                            setEditData({ ...editData, categories: newCategories });
+                          }}
+                          className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 cursor-pointer"
+                        />
+                        <span className={`text-sm font-poppins ${isSelected ? 'text-primary font-semibold' : 'text-text'}`}>
+                          {customCategories[code]}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                {/* Row 3: Mixed 1 and Mixed 2 */}
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  {['mixed1', 'mixed2'].map((code) => {
+                    if (!customCategories[code]) return null;
+                    const isSelected = editData.categories?.includes(code);
+                    const partnerRequired = registrationSettings.partner.required;
                     
                     return (
                       <label
@@ -581,7 +649,7 @@ export default function DashboardContent() {
                             setEditData({ ...editData, categories: newCategories });
                             
                             // Если добавляется mixed категория и партнер обязателен
-                            if (e.target.checked && isMixed && partnerRequired) {
+                            if (e.target.checked && partnerRequired) {
                               if (!editCategoryPartners[code]) {
                                 setEditCategoryPartners({
                                   ...editCategoryPartners,
@@ -605,19 +673,251 @@ export default function DashboardContent() {
                           className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 cursor-pointer"
                         />
                         <span className={`text-sm font-poppins ${isSelected ? 'text-primary font-semibold' : 'text-text'}`}>
-                          {name}
+                          {customCategories[code]}
                         </span>
                       </label>
                     );
                   })}
                 </div>
+
+                {/* Row 4: KIDS */}
+                {kidsCategoryEnabled && (
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <label
+                      className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                        editData.categories?.includes('kids')
+                          ? 'border-primary bg-primary/10'
+                          : 'border-gray-700 bg-background hover:border-gray-600'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={editData.categories?.includes('kids')}
+                        onChange={(e) => {
+                          const newCategories = e.target.checked
+                            ? [...(editData.categories || []), 'kids']
+                            : (editData.categories || []).filter((c: string) => c !== 'kids');
+                          setEditData({ ...editData, categories: newCategories });
+                          if (!e.target.checked) {
+                            setChildData(null);
+                          } else if (!childData) {
+                            setChildData({ firstName: '', lastName: '', photoData: null, photoName: null });
+                          }
+                        }}
+                        className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 cursor-pointer"
+                      />
+                      <span className={`text-sm font-poppins ${editData.categories?.includes('kids') ? 'text-primary font-semibold' : 'text-text'}`}>
+                        {t('categories.kids') || 'KIDS'}
+                      </span>
+                    </label>
+                  </div>
+                )}
+                
                 <p className="text-xs text-text-secondary mt-2 font-poppins">
                   {t('form.selectMultiple')}
                 </p>
               </div>
 
-              {/* Category Partners for Mixed Categories */}
-              {editData.categories?.filter((cat: string) => cat.startsWith('mixed')).map((category: string) => {
+              {/* Partner for Mixed 1 */}
+              {editData.categories?.includes('mixed1') && (() => {
+                const category = 'mixed1';
+                const partner = editCategoryPartners[category] || { name: '', email: '', phone: '', tshirtSize: '' };
+                const isExpanded = expandedCategoryPartners[category];
+                const partnerRequired = registrationSettings.partner.required;
+                
+                return (
+                  <div key={category} className="border border-gray-700 rounded-lg p-4">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedCategoryPartners({
+                        ...expandedCategoryPartners,
+                        [category]: !isExpanded
+                      })}
+                      className="w-full flex items-center justify-between mb-2"
+                    >
+                      <h4 className="text-sm font-orbitron font-semibold text-text">
+                        {t('form.partnerForCategory', { category: customCategories[category] })}
+                        {partnerRequired && <span className="text-red-400 ml-1">*</span>}
+                      </h4>
+                      <svg
+                        className={`w-5 h-5 text-text-secondary transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {isExpanded && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerName')} {partnerRequired && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="text"
+                            value={partner.name}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, name: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerEmail')} {partnerRequired && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="email"
+                            value={partner.email}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, email: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerPhone')} {partnerRequired && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="tel"
+                            value={partner.phone}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, phone: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerTshirtSize')}
+                          </label>
+                          <select
+                            value={partner.tshirtSize}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, tshirtSize: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          >
+                            <option value="">{t('form.selectSize')}</option>
+                            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+                              <option key={size} value={size}>{size}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Partner for Mixed 2 */}
+              {editData.categories?.includes('mixed2') && (() => {
+                const category = 'mixed2';
+                const partner = editCategoryPartners[category] || { name: '', email: '', phone: '', tshirtSize: '' };
+                const isExpanded = expandedCategoryPartners[category];
+                const partnerRequired = registrationSettings.partner.required;
+                
+                return (
+                  <div key={category} className="border border-gray-700 rounded-lg p-4">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedCategoryPartners({
+                        ...expandedCategoryPartners,
+                        [category]: !isExpanded
+                      })}
+                      className="w-full flex items-center justify-between mb-2"
+                    >
+                      <h4 className="text-sm font-orbitron font-semibold text-text">
+                        {t('form.partnerForCategory', { category: customCategories[category] })}
+                        {partnerRequired && <span className="text-red-400 ml-1">*</span>}
+                      </h4>
+                      <svg
+                        className={`w-5 h-5 text-text-secondary transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {isExpanded && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerName')} {partnerRequired && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="text"
+                            value={partner.name}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, name: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerEmail')} {partnerRequired && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="email"
+                            value={partner.email}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, email: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerPhone')} {partnerRequired && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="tel"
+                            value={partner.phone}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, phone: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.partnerTshirtSize')}
+                          </label>
+                          <select
+                            value={partner.tshirtSize}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              [category]: { ...partner, tshirtSize: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          >
+                            <option value="">{t('form.selectSize')}</option>
+                            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+                              <option key={size} value={size}>{size}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* KIDS Category - Child Data */}
+              {kidsCategoryEnabled && editData.categories?.includes('kids') && (
                 const partner = editCategoryPartners[category] || { name: '', email: '', phone: '', tshirtSize: '' };
                 const isExpanded = expandedCategoryPartners[category];
                 const partnerRequired = registrationSettings.partner.required;
@@ -727,6 +1027,7 @@ export default function DashboardContent() {
                       </label>
                       <input
                         type="text"
+                        required
                         value={childData?.firstName || ''}
                         onChange={(e) => setChildData({
                           ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
@@ -741,6 +1042,7 @@ export default function DashboardContent() {
                       </label>
                       <input
                         type="text"
+                        required
                         value={childData?.lastName || ''}
                         onChange={(e) => setChildData({
                           ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
@@ -748,6 +1050,37 @@ export default function DashboardContent() {
                         })}
                         className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                       />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-poppins text-text-secondary mb-2">
+                        {t('form.childPhoto') || 'Child Photo (Optional)'}
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            if (file.size > 5 * 1024 * 1024) {
+                              alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+                              return;
+                            }
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              setChildData({
+                                ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
+                                photoData: reader.result as string,
+                                photoName: file.name
+                              });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                      />
+                      {childData?.photoName && (
+                        <p className="text-xs text-text-tertiary mt-1">{childData.photoName}</p>
+                      )}
                     </div>
                   </div>
                 </div>
