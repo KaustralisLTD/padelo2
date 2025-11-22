@@ -937,6 +937,38 @@
       "description": "Assign roles and manage staff members",
       "comingSoon": "Staff management interface coming soon..."
     },
+    "participants": {
+      "sendEmail": "إرسال بريد إلكتروني",
+      "sendEmailTo": "إرسال بريد إلكتروني إلى:",
+      "selectEmailTemplate": "اختر قالب البريد الإلكتروني",
+      "selectTemplate": "-- اختر قالب --",
+      "categoryRegistration": "📋 التسجيل والتأكيد",
+      "categoryPayment": "💳 الدفع",
+      "categorySchedule": "📅 الجدول والتذكيرات",
+      "categoryResults": "🏆 النتائج وما بعد الحدث",
+      "categoryCancellation": "⚠️ الإلغاء والتأجيل",
+      "templateEmailVerification": "التحقق من البريد الإلكتروني",
+      "templateWelcome": "مرحبًا بك في PadelO₂.com",
+      "templateTournamentRegistration": "تسجيل البطولة - لقد استلمنا تسجيلك",
+      "templateTournamentConfirmed": "تسجيل البطولة - مؤكد",
+      "templateWaitingList": "تسجيل البطولة - قائمة الانتظار",
+      "templateSpotConfirmed": "تم تأكيد المكان (من قائمة الانتظار)",
+      "templatePaymentReceived": "تم استلام الدفع / تم دفع رسوم البطولة",
+      "templatePaymentFailed": "فشل الدفع / إعادة المحاولة",
+      "templateSchedulePublished": "تم نشر جدول البطولة",
+      "templateMatchReminder1Day": "تذكير بالمباراة - قبل يوم واحد",
+      "templateMatchReminderSameDay": "تذكير بالمباراة - نفس اليوم",
+      "templateScheduleChange": "تغيير في الجدول / تغيير الملعب",
+      "templateGroupStageResults": "نتائج مرحلة المجموعات / التصفيات",
+      "templateFinalsWinners": "النهائيات والفائزون - تهانينا",
+      "templatePostTournamentRecap": "ملخص البطولة والصور",
+      "templateTournamentFeedback": "ملاحظات البطولة / NPS",
+      "templateTournamentCancelled": "تم إلغاء البطولة / تأجيلها",
+      "send": "إرسال",
+      "sending": "جاري الإرسال...",
+      "emailSent": "تم إرسال البريد الإلكتروني بنجاح",
+      "emailSendError": "فشل إرسال البريد الإلكتروني"
+    },
     "logs": {
       "title": "سجلات التدقيق",
       "description": "عرض جميع إجراءات النظام والأخطاء وأنشطة المستخدمين",

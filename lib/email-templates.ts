@@ -1525,6 +1525,7 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): str
         border-radius: 8px;
         margin: 20px 0;
       }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body {
           padding: 0 18px 20px 18px !important;
@@ -1535,6 +1536,8 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): str
         .center-mobile {
           text-align: center !important;
         }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
   </head>
@@ -1546,10 +1549,28 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): str
           <table role="presentation" class="main">
             <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
 
@@ -1866,10 +1887,13 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
       .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
       .warning-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body { padding: 0 18px 20px 18px !important; }
         .p-footer { padding: 14px 18px 24px 18px !important; }
         .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
   </head>
@@ -1878,13 +1902,34 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       <tr>
         <td align="center">
           <table role="presentation" class="main">
+            <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
+
+            <!-- TOP DIVIDER -->
             <tr>
               <td align="center">
                 <table role="presentation" width="100%">
@@ -1894,6 +1939,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
                 </table>
               </td>
             </tr>
+
+            <!-- BODY -->
             <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">
@@ -2230,10 +2277,13 @@ export function getNewDeviceLoginEmailTemplate(data: NewDeviceLoginEmailData): s
       .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .warning-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body { padding: 0 18px 20px 18px !important; }
         .p-footer { padding: 14px 18px 24px 18px !important; }
         .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
   </head>
@@ -2242,13 +2292,34 @@ export function getNewDeviceLoginEmailTemplate(data: NewDeviceLoginEmailData): s
       <tr>
         <td align="center">
           <table role="presentation" class="main">
+            <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
+
+            <!-- TOP DIVIDER -->
             <tr>
               <td align="center">
                 <table role="presentation" width="100%">
@@ -2258,6 +2329,8 @@ export function getNewDeviceLoginEmailTemplate(data: NewDeviceLoginEmailData): s
                 </table>
               </td>
             </tr>
+
+            <!-- BODY -->
             <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">
@@ -2550,13 +2623,34 @@ export function getChangeEmailOldAddressEmailTemplate(data: ChangeEmailOldAddres
       <tr>
         <td align="center">
           <table role="presentation" class="main">
+            <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
+
+            <!-- TOP DIVIDER -->
             <tr>
               <td align="center">
                 <table role="presentation" width="100%">
@@ -2566,6 +2660,8 @@ export function getChangeEmailOldAddressEmailTemplate(data: ChangeEmailOldAddres
                 </table>
               </td>
             </tr>
+
+            <!-- BODY -->
             <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">
@@ -2865,13 +2961,34 @@ export function getChangeEmailNewAddressEmailTemplate(data: ChangeEmailNewAddres
       <tr>
         <td align="center">
           <table role="presentation" class="main">
+            <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
+
+            <!-- TOP DIVIDER -->
             <tr>
               <td align="center">
                 <table role="presentation" width="100%">
@@ -2881,6 +2998,8 @@ export function getChangeEmailNewAddressEmailTemplate(data: ChangeEmailNewAddres
                 </table>
               </td>
             </tr>
+
+            <!-- BODY -->
             <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">
@@ -3185,10 +3304,13 @@ export function getAccountDeletionConfirmEmailTemplate(data: AccountDeletionConf
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
       .btn-primary { background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ffffff !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(239, 68, 68, 0.35); }
       .warning-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body { padding: 0 18px 20px 18px !important; }
         .p-footer { padding: 14px 18px 24px 18px !important; }
         .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
   </head>
@@ -3197,13 +3319,34 @@ export function getAccountDeletionConfirmEmailTemplate(data: AccountDeletionConf
       <tr>
         <td align="center">
           <table role="presentation" class="main">
+            <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
+
+            <!-- TOP DIVIDER -->
             <tr>
               <td align="center">
                 <table role="presentation" width="100%">
@@ -3213,6 +3356,8 @@ export function getAccountDeletionConfirmEmailTemplate(data: AccountDeletionConf
                 </table>
               </td>
             </tr>
+
+            <!-- BODY -->
             <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">
@@ -3501,10 +3646,13 @@ export function getAccountDeletedEmailTemplate(data: AccountDeletedEmailData): s
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .hide-mobile { display: table-cell; }
       @media screen and (max-width: 600px) {
         .p-body { padding: 0 18px 20px 18px !important; }
         .p-footer { padding: 14px 18px 24px 18px !important; }
         .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
       }
     </style>
   </head>
@@ -3513,13 +3661,34 @@ export function getAccountDeletedEmailTemplate(data: AccountDeletedEmailData): s
       <tr>
         <td align="center">
           <table role="presentation" class="main">
+            <!-- HEADER -->
             <tr>
-              <td style="padding: 22px 30px 12px 30px;">
-                <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
-                  PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
-                </div>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        Breathe &amp; live padel
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
+
+            <!-- TOP DIVIDER -->
             <tr>
               <td align="center">
                 <table role="presentation" width="100%">
@@ -3529,6 +3698,8 @@ export function getAccountDeletedEmailTemplate(data: AccountDeletedEmailData): s
                 </table>
               </td>
             </tr>
+
+            <!-- BODY -->
             <tr>
               <td class="p-body" style="padding: 20px 30px 10px 30px;">
                 <table role="presentation" width="100%">

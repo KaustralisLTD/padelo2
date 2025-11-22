@@ -1510,10 +1510,43 @@ export default function TournamentParticipantsPage() {
                     className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
                   >
                     <option value="">{t('participants.selectTemplate') || '-- Select Template --'}</option>
-                    <option value="tournament_registration">{t('participants.templateTournamentRegistration') || 'Tournament Registration - We got your registration'}</option>
-                    <option value="tournament_confirmed">{t('participants.templateTournamentConfirmed') || 'Tournament Registration - Confirmed'}</option>
-                    <option value="welcome">{t('participants.templateWelcome') || 'Welcome to PadelO₂.com'}</option>
-                    <option value="email_verification">{t('participants.templateEmailVerification') || 'Email Verification'}</option>
+                    
+                    {/* Регистрация и подтверждение */}
+                    <optgroup label={t('participants.categoryRegistration') || '📋 Registration & Confirmation'}>
+                      <option value="email_verification">{t('participants.templateEmailVerification') || 'Email Verification'}</option>
+                      <option value="welcome">{t('participants.templateWelcome') || 'Welcome to PadelO₂.com'}</option>
+                      <option value="tournament_registration">{t('participants.templateTournamentRegistration') || 'Tournament Registration - We got your registration'}</option>
+                      <option value="tournament_confirmed">{t('participants.templateTournamentConfirmed') || 'Tournament Registration - Confirmed'}</option>
+                      <option value="tournament_waiting_list">{t('participants.templateWaitingList') || 'Tournament Registration - Waiting List'}</option>
+                      <option value="tournament_spot_confirmed">{t('participants.templateSpotConfirmed') || 'Tournament Spot Confirmed (from waiting list)'}</option>
+                    </optgroup>
+
+                    {/* Оплата */}
+                    <optgroup label={t('participants.categoryPayment') || '💳 Payment'}>
+                      <option value="payment_received">{t('participants.templatePaymentReceived') || 'Payment Received / Tournament Entry Paid'}</option>
+                      <option value="payment_failed">{t('participants.templatePaymentFailed') || 'Payment Failed / Retry'}</option>
+                    </optgroup>
+
+                    {/* Расписание и напоминания */}
+                    <optgroup label={t('participants.categorySchedule') || '📅 Schedule & Reminders'}>
+                      <option value="tournament_schedule_published">{t('participants.templateSchedulePublished') || 'Tournament Schedule Published'}</option>
+                      <option value="match_reminder_1day">{t('participants.templateMatchReminder1Day') || 'Match Reminder - 1 Day Before'}</option>
+                      <option value="match_reminder_sameday">{t('participants.templateMatchReminderSameDay') || 'Match Reminder - Same Day'}</option>
+                      <option value="schedule_change">{t('participants.templateScheduleChange') || 'Change in Schedule / Court Change'}</option>
+                    </optgroup>
+
+                    {/* Результаты и пост-ивенты */}
+                    <optgroup label={t('participants.categoryResults') || '🏆 Results & Post-Event'}>
+                      <option value="group_stage_results">{t('participants.templateGroupStageResults') || 'Group Stage Results / Qualification Results'}</option>
+                      <option value="finals_winners">{t('participants.templateFinalsWinners') || 'Finals & Winners - Congrats'}</option>
+                      <option value="post_tournament_recap">{t('participants.templatePostTournamentRecap') || 'Post-Tournament Recap & Photos'}</option>
+                      <option value="tournament_feedback">{t('participants.templateTournamentFeedback') || 'Tournament Feedback / NPS'}</option>
+                    </optgroup>
+
+                    {/* Отмена/перенос */}
+                    <optgroup label={t('participants.categoryCancellation') || '⚠️ Cancellation & Postponement'}>
+                      <option value="tournament_cancelled">{t('participants.templateTournamentCancelled') || 'Tournament Cancelled / Postponed'}</option>
+                    </optgroup>
                   </select>
                 </div>
 
