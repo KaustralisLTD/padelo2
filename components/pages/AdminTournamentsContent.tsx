@@ -40,6 +40,7 @@ interface Tournament {
   registrationSettings?: TournamentRegistrationSettings;
   demoParticipantsCount?: number | null;
   customCategories?: Record<string, string>; // key: category code (e.g., "male1"), value: category name (e.g., "Мужская 1")
+  categoryPrices?: Record<string, number>; // key: category code (e.g., "male1"), value: price in EUR
   bannerImageName?: string | null;
   bannerImageData?: string | null;
 }
@@ -75,6 +76,7 @@ export default function AdminTournamentsContent() {
       mixed1: 'Mixed 1',
       mixed2: 'Mixed 2',
     } as Record<string, string>,
+    categoryPrices: {} as Record<string, number>,
     bannerImageName: null as string | null,
     bannerImageData: null as string | null,
   });
@@ -1496,14 +1498,40 @@ export default function AdminTournamentsContent() {
                             className="w-full px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
                           />
                         </div>
+                        <div className="w-32">
+                          <label className="block text-xs font-poppins text-text-tertiary mb-1">
+                            Price (EUR)
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            value={formData.categoryPrices?.[code] || ''}
+                            onChange={(e) => {
+                              const price = e.target.value ? parseFloat(e.target.value) : undefined;
+                              setFormData({
+                                ...formData,
+                                categoryPrices: {
+                                  ...(formData.categoryPrices || {}),
+                                  [code]: price !== undefined ? price : 0,
+                                },
+                              });
+                            }}
+                            placeholder="0.00"
+                            className="w-full px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                          />
+                        </div>
                         <button
                           type="button"
                           onClick={() => {
                             const newCategories = { ...formData.customCategories };
+                            const newPrices = { ...(formData.categoryPrices || {}) };
                             delete newCategories[code];
+                            delete newPrices[code];
                             setFormData({
                               ...formData,
                               customCategories: newCategories,
+                              categoryPrices: newPrices,
                             });
                           }}
                           className="px-3 py-2 text-sm font-poppins font-semibold rounded-lg border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
@@ -1526,6 +1554,10 @@ export default function AdminTournamentsContent() {
                           customCategories: {
                             ...formData.customCategories,
                             [newCode]: '',
+                          },
+                          categoryPrices: {
+                            ...(formData.categoryPrices || {}),
+                            [newCode]: 0,
                           },
                         });
                       }}
