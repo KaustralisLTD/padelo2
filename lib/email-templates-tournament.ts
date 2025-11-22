@@ -644,6 +644,8 @@ export interface TournamentRegistrationConfirmedEmailData {
     locationAddress?: string;
     locationCoordinates?: { lat: number; lng: number };
     eventSchedule?: Array<{ title: string; date: string; time: string; description?: string }>;
+    priceSingleCategory?: number;
+    priceDoubleCategory?: number;
     description?: string;
     bannerImageData?: string;
     translations?: {
@@ -1867,6 +1869,7 @@ export interface TournamentSpotConfirmedEmailData {
     location?: string;
     locationAddress?: string;
     priceSingleCategory?: number;
+    priceDoubleCategory?: number;
   };
   categories: string[];
   confirmUrl: string;
