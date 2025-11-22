@@ -531,7 +531,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row" style="border-bottom: none;">
@@ -1210,7 +1210,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                       </div>
 
@@ -2375,7 +2375,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row" style="border-bottom: none;">
@@ -2967,7 +2967,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row">
@@ -3536,7 +3536,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter(c => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
                         </div>
                         
                         <div class="detail-row">
