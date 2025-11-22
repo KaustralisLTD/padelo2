@@ -560,20 +560,279 @@ export async function POST(
         break;
       }
 
-      case 'match_reminder_1day':
-      case 'match_reminder_sameday':
-      case 'schedule_change':
-      case 'group_stage_results':
-      case 'finals_winners':
-      case 'post_tournament_recap':
-      case 'tournament_feedback':
-      case 'tournament_cancelled': {
-        // Эти шаблоны требуют дополнительных данных (матчи, результаты, медиа и т.д.)
-        // Пока возвращаем информативное сообщение
+      case 'match_reminder_1day': {
+        const missingFields = [
+          'match.date (дата матча)',
+          'match.time (время матча)',
+          'match.courtNumber (номер корта)',
+          'match.opponent (соперник)',
+          'match.format (формат игры)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            match: {
+              date: 'string (дата матча, например: 2025-12-20)',
+              time: 'string (время матча, например: 18:00)',
+              courtNumber: 'number (номер корта)',
+              opponent: 'string (имя соперника)',
+              format: 'string (формат игры, например: "Men\'s Doubles")',
+            },
+          },
+        });
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data (match info, results, media links, etc.) that is not available in the current context. Please use this template from the appropriate tournament management section.`
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              match: {
+                date: 'string (дата матча)',
+                time: 'string (время матча)',
+                courtNumber: 'number (номер корта)',
+                opponent: 'string (имя соперника)',
+                format: 'string (формат игры)',
+              },
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'match_reminder_sameday': {
+        const missingFields = [
+          'match.date (дата матча)',
+          'match.time (время матча)',
+          'match.courtNumber (номер корта)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            match: {
+              date: 'string (дата матча, например: 2025-12-20)',
+              time: 'string (время матча, например: 18:00)',
+              courtNumber: 'number (номер корта)',
+            },
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              match: {
+                date: 'string (дата матча)',
+                time: 'string (время матча)',
+                courtNumber: 'number (номер корта)',
+              },
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'schedule_change': {
+        const missingFields = [
+          'oldMatch.date (старая дата матча)',
+          'oldMatch.time (старое время матча)',
+          'oldMatch.courtNumber (старый номер корта)',
+          'newMatch.date (новая дата матча)',
+          'newMatch.time (новое время матча)',
+          'newMatch.courtNumber (новый номер корта)',
+          'reason (причина изменения)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            oldMatch: {
+              date: 'string (старая дата)',
+              time: 'string (старое время)',
+              courtNumber: 'number (старый номер корта)',
+            },
+            newMatch: {
+              date: 'string (новая дата)',
+              time: 'string (новое время)',
+              courtNumber: 'number (новый номер корта)',
+            },
+            reason: 'string (причина изменения)',
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              oldMatch: {
+                date: 'string (старая дата)',
+                time: 'string (старое время)',
+                courtNumber: 'number (старый номер корта)',
+              },
+              newMatch: {
+                date: 'string (новая дата)',
+                time: 'string (новое время)',
+                courtNumber: 'number (новый номер корта)',
+              },
+              reason: 'string (причина изменения)',
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'group_stage_results': {
+        const missingFields = [
+          'resultsUrl (ссылка на результаты)',
+          'nextStage (информация о следующем этапе)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            resultsUrl: 'string (URL страницы с результатами)',
+            nextStage: 'string (информация о следующем этапе)',
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              resultsUrl: 'string (URL страницы с результатами)',
+              nextStage: 'string (информация о следующем этапе)',
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'finals_winners': {
+        const missingFields = [
+          'position (позиция участника)',
+          'prize (приз, если есть)',
+          'finalStandingsUrl (ссылка на финальную таблицу)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            position: 'number (позиция участника, например: 1, 2, 3)',
+            prize: 'string (приз, опционально)',
+            finalStandingsUrl: 'string (URL финальной таблицы)',
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              position: 'number (позиция участника)',
+              prize: 'string (приз, опционально)',
+              finalStandingsUrl: 'string (URL финальной таблицы)',
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'post_tournament_recap': {
+        const missingFields = [
+          'mediaUrl (ссылка на фото/видео)',
+          'recapText (текст рекапа)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            mediaUrl: 'string (URL страницы с медиа)',
+            recapText: 'string (текст рекапа турнира)',
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              mediaUrl: 'string (URL страницы с медиа)',
+              recapText: 'string (текст рекапа турнира)',
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'tournament_feedback': {
+        const missingFields = [
+          'feedbackUrl (ссылка на форму обратной связи)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            feedbackUrl: 'string (URL формы обратной связи)',
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              feedbackUrl: 'string (URL формы обратной связи)',
+            },
+          },
+          { status: 400 }
+        );
+      }
+
+      case 'tournament_cancelled': {
+        const missingFields = [
+          'reason (причина отмены)',
+          'refundInfo (информация о возврате)',
+          'newDates (новые даты, если турнир перенесен)',
+        ];
+        console.error(`[send-email] Template "${template}" requires additional data:`, {
+          template,
+          participantId: registrationId,
+          tournamentId,
+          missingFields,
+          requiredData: {
+            reason: 'string (причина отмены/переноса)',
+            refundInfo: 'string (информация о возврате средств)',
+            newDates: 'string (новые даты, если турнир перенесен, опционально)',
+          },
+        });
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            missingFields,
+            requiredData: {
+              reason: 'string (причина отмены/переноса)',
+              refundInfo: 'string (информация о возврате средств)',
+              newDates: 'string (новые даты, если турнир перенесен, опционально)',
+            },
           },
           { status: 400 }
         );
