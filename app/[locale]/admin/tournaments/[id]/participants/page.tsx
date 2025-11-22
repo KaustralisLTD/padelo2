@@ -1648,13 +1648,20 @@ export default function TournamentParticipantsPage() {
         )}
 
         {/* Send Email Modal */}
-        {emailParticipant && (
+        {(emailParticipant || selectedParticipants.size > 0) && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
               <div className="p-6 border-b border-border flex justify-between items-center">
-                <h3 className="text-2xl font-poppins font-bold gradient-text">
-                  {t('participants.sendEmail') || 'Send Email'}
-                </h3>
+                <div>
+                  <h3 className="text-2xl font-poppins font-bold gradient-text">
+                    {t('participants.sendEmail') || 'Send Email'}
+                  </h3>
+                  {selectedParticipants.size > 0 && (
+                    <p className="text-sm text-text-secondary mt-1">
+                      Будет отправлено {selectedParticipants.size} участнику(ам)
+                    </p>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={() => {
@@ -1670,17 +1677,31 @@ export default function TournamentParticipantsPage() {
               </div>
 
               <div className="p-6 space-y-4">
-                <div>
-                  <p className="text-sm text-text-secondary font-poppins mb-2">
-                    {t('participants.sendEmailTo') || 'Send email to:'}
-                  </p>
-                  <p className="text-text font-poppins font-semibold">
-                    {emailParticipant.firstName} {emailParticipant.lastName}
-                  </p>
-                  <p className="text-text-secondary font-poppins text-sm">
-                    {emailParticipant.email}
-                  </p>
-                </div>
+                {emailParticipant && emailParticipant.id && !selectedParticipants.has(emailParticipant.id) ? (
+                  <div>
+                    <p className="text-sm text-text-secondary font-poppins mb-2">
+                      {t('participants.sendEmailTo') || 'Send email to:'}
+                    </p>
+                    <p className="text-text font-poppins font-semibold">
+                      {emailParticipant.firstName} {emailParticipant.lastName}
+                    </p>
+                    <p className="text-text-secondary font-poppins text-sm">
+                      {emailParticipant.email}
+                    </p>
+                  </div>
+                ) : selectedParticipants.size > 0 ? (
+                  <div>
+                    <p className="text-sm text-text-secondary font-poppins mb-2">
+                      {t('participants.sendEmailTo') || 'Send email to:'}
+                    </p>
+                    <p className="text-text font-poppins font-semibold">
+                      {selectedParticipants.size} выбранных участников
+                    </p>
+                    <p className="text-text-secondary font-poppins text-sm">
+                      Email будет отправлен каждому выбранному участнику на его языке
+                    </p>
+                  </div>
+                ) : null}
 
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
