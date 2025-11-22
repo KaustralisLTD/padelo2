@@ -34,7 +34,13 @@ export default function TournamentsContent() {
           const publicTournaments = (data.tournaments || []).filter(
             (t: Tournament) => t.status === 'open' || t.status === 'soon'
           );
-          setTournaments(publicTournaments);
+          // Сортируем: сначала 'open', потом 'soon'
+          const sortedTournaments = publicTournaments.sort((a: Tournament, b: Tournament) => {
+            if (a.status === 'open' && b.status === 'soon') return -1;
+            if (a.status === 'soon' && b.status === 'open') return 1;
+            return 0;
+          });
+          setTournaments(sortedTournaments);
         }
       } catch (error) {
         console.error('Failed to fetch tournaments:', error);
