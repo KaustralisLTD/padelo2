@@ -424,9 +424,13 @@ export async function POST(
             categories = [];
           }
 
+          // Calculate payment amount based on number of categories
+          // If single category: priceSingleCategory, if multiple: priceDoubleCategory * count
           const categoryCount = categories.length;
-          const paymentAmount = categoryCount > 0 
-            ? (tournament.priceSingleCategory || 0) * categoryCount 
+          const paymentAmount = categoryCount === 1
+            ? (tournament.priceSingleCategory || 0)
+            : categoryCount > 1
+            ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
             : tournament.priceSingleCategory || 0;
 
           const html = getPaymentReceivedEmailTemplate({
@@ -488,9 +492,13 @@ export async function POST(
             categories = [];
           }
 
+          // Calculate payment amount based on number of categories
+          // If single category: priceSingleCategory, if multiple: priceDoubleCategory * count
           const categoryCount = categories.length;
-          const paymentAmount = categoryCount > 0 
-            ? (tournament.priceSingleCategory || 0) * categoryCount 
+          const paymentAmount = categoryCount === 1
+            ? (tournament.priceSingleCategory || 0)
+            : categoryCount > 1
+            ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
             : tournament.priceSingleCategory || 0;
 
           const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
@@ -611,18 +619,28 @@ export async function POST(
             },
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              match: {
+                date: 'string (дата матча, например: 2025-12-20)',
+                time: 'string (время матча, например: 18:00)',
+                courtNumber: 'number (номер корта)',
+                opponent: 'string (имя соперника)',
+                format: 'string (формат игры, например: "Men\'s Doubles")',
+              },
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
               match: {
-                date: 'string (дата матча)',
-                time: 'string (время матча)',
+                date: 'string (дата матча, например: 2025-12-20)',
+                time: 'string (время матча, например: 18:00)',
                 courtNumber: 'number (номер корта)',
                 opponent: 'string (имя соперника)',
-                format: 'string (формат игры)',
+                format: 'string (формат игры, например: "Men\'s Doubles")',
               },
             },
           },
@@ -649,15 +667,23 @@ export async function POST(
             },
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              match: {
+                date: 'string (дата матча, например: 2025-12-20)',
+                time: 'string (время матча, например: 18:00)',
+                courtNumber: 'number (номер корта)',
+              },
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
               match: {
-                date: 'string (дата матча)',
-                time: 'string (время матча)',
+                date: 'string (дата матча, например: 2025-12-20)',
+                time: 'string (время матча, например: 18:00)',
                 courtNumber: 'number (номер корта)',
               },
             },
@@ -695,20 +721,34 @@ export async function POST(
             reason: 'string (причина изменения)',
           },
         });
-        return NextResponse.json(
-          { 
-            error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
-            missingFields,
-            requiredData: {
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
               oldMatch: {
-                date: 'string (старая дата)',
-                time: 'string (старое время)',
+                date: 'string (старая дата, например: 2025-12-20)',
+                time: 'string (старое время, например: 18:00)',
                 courtNumber: 'number (старый номер корта)',
               },
               newMatch: {
-                date: 'string (новая дата)',
-                time: 'string (новое время)',
+                date: 'string (новая дата, например: 2025-12-21)',
+                time: 'string (новое время, например: 19:00)',
+                courtNumber: 'number (новый номер корта)',
+              },
+              reason: 'string (причина изменения)',
+            }, null, 2)}`;
+        
+        return NextResponse.json(
+          { 
+            error: 'Template requires additional data',
+            message: detailedMessage,
+            missingFields,
+            requiredData: {
+              oldMatch: {
+                date: 'string (старая дата, например: 2025-12-20)',
+                time: 'string (старое время, например: 18:00)',
+                courtNumber: 'number (старый номер корта)',
+              },
+              newMatch: {
+                date: 'string (новая дата, например: 2025-12-21)',
+                time: 'string (новое время, например: 19:00)',
                 courtNumber: 'number (новый номер корта)',
               },
               reason: 'string (причина изменения)',
@@ -733,10 +773,15 @@ export async function POST(
             nextStage: 'string (информация о следующем этапе)',
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              resultsUrl: 'string (URL страницы с результатами)',
+              nextStage: 'string (информация о следующем этапе)',
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
               resultsUrl: 'string (URL страницы с результатами)',
@@ -764,13 +809,19 @@ export async function POST(
             finalStandingsUrl: 'string (URL финальной таблицы)',
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              position: 'number (позиция участника, например: 1, 2, 3)',
+              prize: 'string (приз, опционально)',
+              finalStandingsUrl: 'string (URL финальной таблицы)',
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
-              position: 'number (позиция участника)',
+              position: 'number (позиция участника, например: 1, 2, 3)',
               prize: 'string (приз, опционально)',
               finalStandingsUrl: 'string (URL финальной таблицы)',
             },
@@ -794,10 +845,15 @@ export async function POST(
             recapText: 'string (текст рекапа турнира)',
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              mediaUrl: 'string (URL страницы с медиа)',
+              recapText: 'string (текст рекапа турнира)',
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
               mediaUrl: 'string (URL страницы с медиа)',
@@ -821,10 +877,14 @@ export async function POST(
             feedbackUrl: 'string (URL формы обратной связи)',
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              feedbackUrl: 'string (URL формы обратной связи)',
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
               feedbackUrl: 'string (URL формы обратной связи)',
@@ -851,10 +911,16 @@ export async function POST(
             newDates: 'string (новые даты, если турнир перенесен, опционально)',
           },
         });
+        const detailedMessage = `Шаблон "${template}" требует дополнительных данных:\n\nОтсутствующие поля:\n${missingFields.map(field => `  • ${field}`).join('\n')}\n\nТребуемая структура данных:\n${JSON.stringify({
+              reason: 'string (причина отмены/переноса)',
+              refundInfo: 'string (информация о возврате средств)',
+              newDates: 'string (новые даты, если турнир перенесен, опционально)',
+            }, null, 2)}`;
+        
         return NextResponse.json(
           { 
             error: 'Template requires additional data',
-            message: `Template "${template}" requires additional data that is not available in the current context.`,
+            message: detailedMessage,
             missingFields,
             requiredData: {
               reason: 'string (причина отмены/переноса)',

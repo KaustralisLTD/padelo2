@@ -480,7 +480,19 @@ export default function TournamentParticipantsPage() {
         setSelectedEmailTemplate('');
         setTimeout(() => setSuccess(null), 3000);
       } else {
-        setError(data.error || t('participants.emailSendError') || 'Failed to send email');
+        // Формируем детальное сообщение об ошибке
+        let errorMessage = data.error || t('participants.emailSendError') || 'Failed to send email';
+        
+        if (data.message) {
+          errorMessage = data.message;
+        } else if (data.missingFields && Array.isArray(data.missingFields)) {
+          errorMessage = `Шаблон требует дополнительных данных:\n\nОтсутствующие поля:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
+          if (data.requiredData) {
+            errorMessage += `\n\nТребуемая структура данных:\n${JSON.stringify(data.requiredData, null, 2)}`;
+          }
+        }
+        
+        setError(errorMessage);
       }
     } catch (err) {
       setError(t('participants.emailSendError') || 'Failed to send email');
@@ -620,14 +632,23 @@ export default function TournamentParticipantsPage() {
         </div>
 
         {error && (
-          <div className="mb-4 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-6 backdrop-blur-sm">
-            <div className="flex items-center justify-center gap-3">
-              <div className="w-10 h-10 bg-gradient-danger rounded-full flex items-center justify-center">
-                <svg className="w-6 h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+          <div className="mb-6 bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-red-500/10 border border-amber-500/30 rounded-xl p-5 backdrop-blur-sm shadow-lg">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-amber-500/30">
+                <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <p className="text-text font-poppins font-semibold text-lg">{error}</p>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-text font-poppins font-bold text-base mb-2 flex items-center gap-2">
+                  <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+                    Требуется дополнительная информация
+                  </span>
+                </h3>
+                <pre className="text-text-secondary font-mono text-sm leading-relaxed whitespace-pre-wrap break-words bg-background/50 rounded-lg p-4 border border-border/50">
+                  {error}
+                </pre>
+              </div>
             </div>
           </div>
         )}
