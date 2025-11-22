@@ -262,7 +262,8 @@
           "female1": "Femení 1",
           "female2": "Femení 2",
           "mixed1": "Mixt 1",
-          "mixed2": "Mixt 2"
+          "mixed2": "Mixt 2",
+          "kids": "NENS"
         },
         "form": {
           "firstName": "Nom",
@@ -485,7 +486,8 @@
           "female1": "Dones 1",
           "female2": "Dones 2",
           "mixed1": "Mixt 1",
-          "mixed2": "Mixt 2"
+          "mixed2": "Mixt 2",
+          "kids": "NENS"
         },
         "confirmedAt": "Confirmat",
         "status": {

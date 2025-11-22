@@ -266,7 +266,8 @@
       "female1": "女子1组",
       "female2": "女子2组",
       "mixed1": "混合1组",
-      "mixed2": "混合2组"
+      "mixed2": "混合2组",
+      "kids": "儿童组"
     },
     "form": {
       "firstName": "名",

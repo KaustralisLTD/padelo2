@@ -266,7 +266,8 @@
       "female1": "Dam 1",
       "female2": "Dam 2",
       "mixed1": "Mixed 1",
-      "mixed2": "Mixed 2"
+      "mixed2": "Mixed 2",
+      "kids": "BARN"
     },
     "form": {
       "firstName": "Förnamn",
@@ -1299,7 +1300,8 @@
       "female1": "Damer 1",
       "female2": "Damer 2",
       "mixed1": "Mixed 1",
-      "mixed2": "Mixed 2"
+      "mixed2": "Mixed 2",
+      "kids": "BARN"
     },
     "confirmedAt": "Bekräftad",
     "status": {

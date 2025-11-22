@@ -288,7 +288,8 @@
       "female1": "Femenino 1",
       "female2": "Femenino 2",
       "mixed1": "Mixto 1",
-      "mixed2": "Mixto 2"
+      "mixed2": "Mixto 2",
+      "kids": "NIÑOS"
     },
     "delete": "Eliminar",
     "form": {
@@ -1273,7 +1274,8 @@
       "female1": "Mujeres 1",
       "female2": "Mujeres 2",
       "mixed1": "Mixto 1",
-      "mixed2": "Mixto 2"
+      "mixed2": "Mixto 2",
+      "kids": "NIÑOS"
     },
     "confirmedAt": "Confirmado",
     "status": {

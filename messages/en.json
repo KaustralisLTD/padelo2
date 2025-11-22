@@ -307,7 +307,8 @@
       "female1": "Women's 1",
       "female2": "Women's 2",
       "mixed1": "Mixed 1",
-      "mixed2": "Mixed 2"
+      "mixed2": "Mixed 2",
+      "kids": "KIDS"
     },
     "delete": "Delete",
     "backToTournaments": "Back to Tournaments",
@@ -1389,7 +1390,8 @@
       "female1": "Women 1",
       "female2": "Women 2",
       "mixed1": "Mixed 1",
-      "mixed2": "Mixed 2"
+      "mixed2": "Mixed 2",
+      "kids": "KIDS"
     },
     "confirmedAt": "Confirmed",
     "status": {
