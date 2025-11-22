@@ -189,10 +189,31 @@ export function generateProductSchema(
     offers?: {
       availability?: string;
       priceCurrency?: string;
+      price?: string | number;
+      priceValidUntil?: string;
     };
+    aggregateRating?: {
+      ratingValue: number;
+      reviewCount: number;
+      bestRating?: number;
+      worstRating?: number;
+    };
+    review?: Array<{
+      author: string;
+      datePublished?: string;
+      reviewBody: string;
+      reviewRating: {
+        ratingValue: number;
+        bestRating?: number;
+        worstRating?: number;
+      };
+    }>;
   }
 ): object {
-  return {
+  // Calculate priceValidUntil (1 year from now if not provided)
+  const priceValidUntil = product.offers?.priceValidUntil || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  
+  const schema: any = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
@@ -203,12 +224,50 @@ export function generateProductSchema(
     category: product.category,
     description: product.description,
     image: product.image ? [product.image] : undefined,
-    offers: product.offers ? {
+  };
+
+  // Add offers with required fields
+  if (product.offers) {
+    schema.offers = {
       '@type': 'Offer',
       availability: product.offers.availability || 'https://schema.org/PreOrder',
       priceCurrency: product.offers.priceCurrency || 'EUR',
-    } : undefined,
-  };
+      price: product.offers.price || '0', // Required field - using '0' as default for PreOrder
+      priceValidUntil: priceValidUntil, // Required field
+    };
+  }
+
+  // Add aggregateRating if provided
+  if (product.aggregateRating) {
+    schema.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: product.aggregateRating.ratingValue,
+      reviewCount: product.aggregateRating.reviewCount,
+      bestRating: product.aggregateRating.bestRating || 5,
+      worstRating: product.aggregateRating.worstRating || 1,
+    };
+  }
+
+  // Add reviews if provided
+  if (product.review && product.review.length > 0) {
+    schema.review = product.review.map((rev) => ({
+      '@type': 'Review',
+      author: {
+        '@type': 'Person',
+        name: rev.author,
+      },
+      datePublished: rev.datePublished || new Date().toISOString(),
+      reviewBody: rev.reviewBody,
+      reviewRating: {
+        '@type': 'Rating',
+        ratingValue: rev.reviewRating.ratingValue,
+        bestRating: rev.reviewRating.bestRating || 5,
+        worstRating: rev.reviewRating.worstRating || 1,
+      },
+    }));
+  }
+
+  return schema;
 }
 
 // Generate Service schema for court construction (enhanced)
