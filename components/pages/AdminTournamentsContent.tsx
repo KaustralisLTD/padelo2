@@ -100,6 +100,11 @@ export default function AdminTournamentsContent() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [editingStatusId, setEditingStatusId] = useState<number | null>(null);
+  
+  // Фильтры для таблицы турниров
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterLocation, setFilterLocation] = useState<string>('');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
   const registrationSettings = normalizeRegistrationSettings(formData.registrationSettings);
@@ -694,14 +699,71 @@ export default function AdminTournamentsContent() {
             </button>
           </div>
         ) : (
-          <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-background border-b border-border">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                      {t('tournaments.name')}
-                    </th>
+          <div className="space-y-4">
+            {/* Фильтры */}
+            <div className="bg-background-secondary rounded-lg border border-border p-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    Поиск
+                  </label>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Поиск по названию, локации..."
+                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    Статус
+                  </label>
+                  <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+                  >
+                    <option value="all">Все</option>
+                    <option value="draft">Черновик</option>
+                    <option value="open">Открыт</option>
+                    <option value="closed">Закрыт</option>
+                    <option value="in_progress">В процессе</option>
+                    <option value="completed">Завершен</option>
+                    <option value="demo">Демо</option>
+                    <option value="archived">Архив</option>
+                    <option value="soon">Скоро</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    Локация
+                  </label>
+                  <input
+                    type="text"
+                    value={filterLocation}
+                    onChange={(e) => setFilterLocation(e.target.value)}
+                    placeholder="Фильтр по локации"
+                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-background border-b border-border">
+                    <tr>
+                      <th className="px-4 py-4 text-left text-sm font-poppins font-semibold text-text w-16">
+                        №
+                      </th>
+                      <th className="px-4 py-4 text-left text-sm font-poppins font-semibold text-text">
+                        Дата создания
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                        {t('tournaments.name')}
+                      </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                       {t('tournaments.startDate')}
                     </th>
