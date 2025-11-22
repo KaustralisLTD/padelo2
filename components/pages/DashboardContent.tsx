@@ -157,9 +157,9 @@ export default function DashboardContent() {
       lastName: selectedRegistration.lastName,
       email: selectedRegistration.email,
       phone: selectedRegistration.phone,
-      telegram: selectedRegistration.telegram || '';
-      tshirtSize: selectedRegistration.tshirtSize || '';
-      message: selectedRegistration.message || '';
+      telegram: selectedRegistration.telegram || '',
+      tshirtSize: selectedRegistration.tshirtSize || '',
+      message: selectedRegistration.message || '',
       categories: [...(selectedRegistration.categories || [])],
       partner: selectedRegistration.partner ? { ...selectedRegistration.partner } : null,
       categoryPartners: categoryPartners,
