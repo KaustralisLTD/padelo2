@@ -590,6 +590,28 @@ export async function initDatabase() {
     }
   }
 
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      ADD COLUMN category_prices JSON DEFAULT NULL COMMENT "Prices for each category: {categoryCode: priceInEUR}"
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  try {
+    await pool.execute(`
+      ALTER TABLE tournaments
+      ADD COLUMN kids_category_enabled BOOLEAN DEFAULT FALSE COMMENT "Whether KIDS category is enabled for this tournament"
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
   // Обновляем статусы, которые могли сохраниться как пустые строки после невалидного значения
   await pool.execute(`
     UPDATE tournaments
