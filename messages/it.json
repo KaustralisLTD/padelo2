@@ -350,7 +350,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Seleziona Torneo",
+      "leaveTournament": "Lascia Torneo",
+      "confirmLeaveTournament": "Sei sicuro di voler lasciare il torneo?",
+      "leaveTournamentWarning": "Puoi lasciare il torneo solo almeno 7 giorni prima dell'inizio. Dopo, lasciare non è più possibile.",
+      "leaveTournamentTooLate": "È troppo tardi per lasciare il torneo. Puoi lasciarlo solo almeno 7 giorni prima dell'inizio del torneo.",
+      "leaveTournamentConfirm": "Sì, Lascia Torneo",
+      "leaveTournamentCancel": "Annulla",
+      "leaveTournamentError": "Errore nel lasciare il torneo"
     },
     "tournamentDetails": {
       "title": "Dettagli del Torneo",

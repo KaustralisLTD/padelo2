@@ -350,7 +350,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "选择锦标赛",
+      "leaveTournament": "离开锦标赛",
+      "confirmLeaveTournament": "您确定要离开锦标赛吗？",
+      "leaveTournamentWarning": "您只能在锦标赛开始前至少7天离开。之后无法离开。",
+      "leaveTournamentTooLate": "离开锦标赛为时已晚。您只能在锦标赛开始前至少7天离开。",
+      "leaveTournamentConfirm": "是的，离开锦标赛",
+      "leaveTournamentCancel": "取消",
+      "leaveTournamentError": "离开锦标赛失败"
     },
     "tournamentDetails": {
       "title": "锦标赛详情",

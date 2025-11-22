@@ -350,7 +350,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Vælg Turnering",
+      "leaveTournament": "Forlad Turnering",
+      "confirmLeaveTournament": "Er du sikker på, at du vil forlade turneringen?",
+      "leaveTournamentWarning": "Du kan kun forlade turneringen mindst 7 dage før den starter. Efter det er det ikke muligt at forlade.",
+      "leaveTournamentTooLate": "Det er for sent at forlade turneringen. Du kan kun forlade mindst 7 dage før turneringen starter.",
+      "leaveTournamentConfirm": "Ja, Forlad Turnering",
+      "leaveTournamentCancel": "Annuller",
+      "leaveTournamentError": "Fejl ved at forlade turneringen"
     },
     "tournamentDetails": {
       "title": "Turneringsdetaljer",

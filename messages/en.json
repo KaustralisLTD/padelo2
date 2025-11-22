@@ -435,6 +435,14 @@
       "goToDashboard": "Go to Dashboard"
     },
     "dashboard": {
+      "selectTournament": "Select Tournament",
+      "leaveTournament": "Leave Tournament",
+      "confirmLeaveTournament": "Are you sure you want to leave the tournament?",
+      "leaveTournamentWarning": "You can only leave the tournament at least 7 days before it starts. After that, leaving is not possible.",
+      "leaveTournamentTooLate": "It's too late to leave the tournament. You can only leave at least 7 days before the tournament starts.",
+      "leaveTournamentConfirm": "Yes, Leave Tournament",
+      "leaveTournamentCancel": "Cancel",
+      "leaveTournamentError": "Failed to leave tournament",
       "title": "Tournament Participant Dashboard",
       "description": "Your tournament registration dashboard",
       "loading": "Loading your dashboard...",

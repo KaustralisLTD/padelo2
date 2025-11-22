@@ -376,7 +376,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Вибрати турнір",
+      "leaveTournament": "Покинути турнір",
+      "confirmLeaveTournament": "Ви впевнені, що хочете покинути турнір?",
+      "leaveTournamentWarning": "Ви можете покинути турнір не менше ніж за 7 днів до його початку. Після цього вихід неможливий.",
+      "leaveTournamentTooLate": "Занадто пізно покидати турнір. Ви можете покинути його не менше ніж за 7 днів до початку.",
+      "leaveTournamentConfirm": "Так, покинути турнір",
+      "leaveTournamentCancel": "Скасувати",
+      "leaveTournamentError": "Не вдалося покинути турнір"
     },
     "tournamentDetails": {
       "title": "Деталі турніру",

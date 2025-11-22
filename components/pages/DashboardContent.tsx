@@ -30,6 +30,8 @@ export default function DashboardContent() {
   const [kidsCategoryEnabled, setKidsCategoryEnabled] = useState(false);
   const [expandedCategoryPartners, setExpandedCategoryPartners] = useState<Record<string, boolean>>({});
   const [childData, setChildData] = useState<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null } | null>(null);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [tournamentStartDate, setTournamentStartDate] = useState<string | null>(null);
 
   useEffect(() => {
     // Get token from URL or localStorage
@@ -98,6 +100,7 @@ export default function DashboardContent() {
               if (tournamentResponse.ok) {
                 const tournamentData = await tournamentResponse.json();
                 if (tournamentData.tournament) {
+                  setTournamentStartDate(tournamentData.tournament.startDate);
                   const settings = tournamentData.tournament.registrationSettings;
                   setRegistrationSettings(normalizeRegistrationSettings(settings));
                   setCustomCategories(tournamentData.tournament.customCategories || {});
@@ -275,15 +278,10 @@ export default function DashboardContent() {
     }
   };
 
-  const handleLeaveTournament = async () => {
+  const handleLeaveTournament = () => {
     if (!selectedRegistration) return;
-    
-    const confirmMessage = t('dashboard.confirmLeaveTournament') || 
-      `Вы уверены, что хотите покинуть турнир "${selectedRegistration.tournamentName}"? Это действие нельзя отменить.`;
-    
-    if (!window.confirm(confirmMessage)) {
-      return;
-    }
+    setShowLeaveModal(true);
+  };
 
     try {
       setLeavingTournament(true);
@@ -759,6 +757,46 @@ export default function DashboardContent() {
           </div>
         )}
           </>
+        )}
+
+        {/* Leave Tournament Modal */}
+        {showLeaveModal && selectedRegistration && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-background-secondary rounded-xl border border-primary/30 max-w-md w-full shadow-2xl">
+              <div className="p-6">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-orbitron font-bold text-center mb-4 gradient-text">
+                  {t('dashboard.confirmLeaveTournament') || 'Leave Tournament?'}
+                </h3>
+                <p className="text-text-secondary text-center mb-2 font-poppins">
+                  {t('dashboard.leaveTournamentWarning') || 'You can only leave the tournament at least 7 days before it starts. After that, leaving is not possible.'}
+                </p>
+                <p className="text-text font-poppins font-semibold text-center mb-6">
+                  {selectedRegistration.tournamentName}
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowLeaveModal(false)}
+                    className="flex-1 px-6 py-3 bg-background border border-border text-text font-poppins font-semibold rounded-lg hover:bg-background-hover transition-colors"
+                  >
+                    {t('dashboard.leaveTournamentCancel') || 'Cancel'}
+                  </button>
+                  <button
+                    onClick={confirmLeaveTournament}
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
+                  >
+                    {t('dashboard.leaveTournamentConfirm') || 'Yes, Leave Tournament'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
         </>
       </div>

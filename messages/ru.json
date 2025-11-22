@@ -375,7 +375,14 @@
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
       "registrationUpdateError": "Error updating registration. Please try again.",
-      "selectTournament": "Выберите турнир"
+      "selectTournament": "Выбрать турнир",
+      "leaveTournament": "Покинуть турнир",
+      "confirmLeaveTournament": "Вы уверены, что хотите покинуть турнир?",
+      "leaveTournamentWarning": "Вы можете покинуть турнир не менее чем за 7 дней до его начала. После этого выход невозможен.",
+      "leaveTournamentTooLate": "Слишком поздно покидать турнир. Вы можете покинуть его не менее чем за 7 дней до начала.",
+      "leaveTournamentConfirm": "Да, покинуть турнир",
+      "leaveTournamentCancel": "Отмена",
+      "leaveTournamentError": "Не удалось покинуть турнир"
     },
     "tournamentDetails": {
       "title": "Детали турнира",

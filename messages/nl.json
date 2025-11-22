@@ -350,7 +350,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Toernooi Selecteren",
+      "leaveTournament": "Toernooi Verlaten",
+      "confirmLeaveTournament": "Weet u zeker dat u het toernooi wilt verlaten?",
+      "leaveTournamentWarning": "U kunt het toernooi alleen verlaten ten minste 7 dagen voor het begint. Daarna is verlaten niet meer mogelijk.",
+      "leaveTournamentTooLate": "Het is te laat om het toernooi te verlaten. U kunt het alleen verlaten ten minste 7 dagen voor het toernooi begint.",
+      "leaveTournamentConfirm": "Ja, Toernooi Verlaten",
+      "leaveTournamentCancel": "Annuleren",
+      "leaveTournamentError": "Fout bij verlaten van toernooi"
     },
     "tournamentDetails": {
       "title": "Toernooi Details",

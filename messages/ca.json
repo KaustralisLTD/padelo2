@@ -912,7 +912,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Seleccionar Torneig",
+      "leaveTournament": "Deixar Torneig",
+      "confirmLeaveTournament": "Esteu segur que voleu deixar el torneig?",
+      "leaveTournamentWarning": "Només podeu deixar el torneig almenys 7 dies abans que comenci. Després d'això, sortir no és possible.",
+      "leaveTournamentTooLate": "És massa tard per deixar el torneig. Només podeu sortir almenys 7 dies abans que comenci el torneig.",
+      "leaveTournamentConfirm": "Sí, Deixar Torneig",
+      "leaveTournamentCancel": "Cancel·lar",
+      "leaveTournamentError": "Error en deixar el torneig"
     },
     "backToTournaments": "Tornar als Tornejos",
     "participants": "Participants",

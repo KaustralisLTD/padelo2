@@ -350,7 +350,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "اختر البطولة",
+      "leaveTournament": "مغادرة البطولة",
+      "confirmLeaveTournament": "هل أنت متأكد أنك تريد مغادرة البطولة؟",
+      "leaveTournamentWarning": "يمكنك مغادرة البطولة فقط قبل 7 أيام على الأقل من بدايتها. بعد ذلك، المغادرة غير ممكنة.",
+      "leaveTournamentTooLate": "من الأواني مغادرة البطولة. يمكنك المغادرة فقط قبل 7 أيام على الأقل من بداية البطولة.",
+      "leaveTournamentConfirm": "نعم، مغادرة البطولة",
+      "leaveTournamentCancel": "إلغاء",
+      "leaveTournamentError": "فشل مغادرة البطولة"
     },
     "tournamentDetails": {
       "title": "تفاصيل البطولة",

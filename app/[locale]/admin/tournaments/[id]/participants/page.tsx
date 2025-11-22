@@ -1077,14 +1077,24 @@ export default function TournamentParticipantsPage() {
                     // Фильтрация участников
                     let filtered = participants;
                     
-                    // Поиск по имени участника и партнера
+                    // Поиск по имени участника, партнера, email и телефону
                     if (searchQuery) {
                       const query = searchQuery.toLowerCase();
                       filtered = filtered.filter(p => {
                         const fullName = `${p.firstName} ${p.lastName}`.toLowerCase();
                         const partnerName = (p.partnerName || '').toLowerCase();
+                        const email = (p.email || '').toLowerCase();
+                        const phone = (p.phone || '').toLowerCase();
                         const categoryPartners = Object.values(p.categoryPartners || {}).map(cp => cp.name.toLowerCase()).join(' ');
-                        return fullName.includes(query) || partnerName.includes(query) || categoryPartners.includes(query);
+                        const categoryPartnersEmails = Object.values(p.categoryPartners || {}).map(cp => (cp.email || '').toLowerCase()).join(' ');
+                        const categoryPartnersPhones = Object.values(p.categoryPartners || {}).map(cp => (cp.phone || '').toLowerCase()).join(' ');
+                        return fullName.includes(query) || 
+                               partnerName.includes(query) || 
+                               email.includes(query) || 
+                               phone.includes(query) ||
+                               categoryPartners.includes(query) ||
+                               categoryPartnersEmails.includes(query) ||
+                               categoryPartnersPhones.includes(query);
                       });
                     }
                     

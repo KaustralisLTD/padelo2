@@ -350,7 +350,15 @@
       "saveChanges": "Save Changes",
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
-      "registrationUpdateError": "Error updating registration. Please try again."
+      "registrationUpdateError": "Error updating registration. Please try again.",
+      "selectTournament": "Välj Turnering",
+      "leaveTournament": "Lämna Turnering",
+      "confirmLeaveTournament": "Är du säker på att du vill lämna turneringen?",
+      "leaveTournamentWarning": "Du kan bara lämna turneringen minst 7 dagar innan den börjar. Efter det är det inte möjligt att lämna.",
+      "leaveTournamentTooLate": "Det är för sent att lämna turneringen. Du kan bara lämna minst 7 dagar innan turneringen börjar.",
+      "leaveTournamentConfirm": "Ja, Lämna Turnering",
+      "leaveTournamentCancel": "Avbryt",
+      "leaveTournamentError": "Fel vid lämnande av turnering"
     },
     "tournamentDetails": {
       "title": "Turneringsdetaljer",
