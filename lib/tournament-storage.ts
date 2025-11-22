@@ -1,6 +1,8 @@
 // Tournament registration storage
 // Uses database in production, in-memory storage in development
 
+import crypto from 'crypto';
+
 interface TournamentRegistration {
   tournamentId: number;
   userId?: string | null;
@@ -34,6 +36,13 @@ interface TournamentRegistration {
     data: string | null;
     name: string | null;
   };
+  childData?: {
+    firstName: string;
+    lastName: string;
+    photoName?: string | null;
+    photoData?: string | null;
+  } | null;
+  parentUserId?: string | null; // Для регистраций детей - ID родителя
   token: string;
   createdAt: string;
   confirmed: boolean;
@@ -68,7 +77,6 @@ export async function saveRegistration(token: string, registration: TournamentRe
       
       // Проверяем, какие поля есть в таблице, и строим запрос динамически
       // Используем NOW() для created_at вместо передачи Date объекта
-      // Подсчет: 24 поля, 23 параметра (confirmed = false) + NOW() для created_at
       const [result] = await pool.execute(
         `INSERT INTO tournament_registrations (
           token, tournament_id, user_id, tournament_name, locale,
@@ -77,8 +85,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           partner_name, partner_email, partner_phone,
           partner_tshirt_size, partner_photo_name, partner_photo_data,
           category_partners, user_photo_name, user_photo_data,
+          child_data, parent_user_id,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
         [
           token,
           registration.tournamentId,
@@ -102,8 +111,73 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.categoryPartners ? JSON.stringify(registration.categoryPartners) : null,
           registration.userPhoto?.name || null,
           registration.userPhoto?.data || null,
+          registration.childData ? JSON.stringify(registration.childData) : null,
+          registration.parentUserId || null,
         ]
       ) as any;
+      
+      // Если есть данные ребенка (childData) с firstName и lastName, создаем отдельную запись для ребенка
+      if (registration.childData && registration.childData.firstName && registration.childData.lastName && registration.userId) {
+        const childToken = crypto.randomBytes(32).toString('hex');
+        const childCategories = categoriesArray.filter(c => c === 'kids'); // Только категория kids для ребенка
+        
+        if (childCategories.length > 0) {
+          const childRegistration = {
+            ...registration,
+            token: childToken,
+            firstName: registration.childData.firstName,
+            lastName: registration.childData.lastName,
+            email: registration.email, // Email родителя
+            phone: registration.phone, // Телефон родителя
+            categories: childCategories,
+            userId: null, // У ребенка нет своего user_id
+            parentUserId: registration.userId, // Связь с родителем
+            childData: null, // У ребенка нет своих детей
+            partner: null,
+            categoryPartners: undefined,
+            userPhoto: registration.childData.photoData ? {
+              data: registration.childData.photoData,
+              name: registration.childData.photoName || null,
+            } : undefined,
+          };
+          
+          await pool.execute(
+            `INSERT INTO tournament_registrations (
+              token, tournament_id, user_id, tournament_name, locale,
+              first_name, last_name, email, telegram, phone,
+              categories, tshirt_size, message,
+              partner_name, partner_email, partner_phone,
+              partner_tshirt_size, partner_photo_name, partner_photo_data,
+              category_partners, user_photo_name, user_photo_data,
+              child_data, parent_user_id,
+              confirmed, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
+            [
+              childToken,
+              registration.tournamentId,
+              null, // user_id для ребенка
+              registration.tournamentName,
+              registration.locale,
+              childRegistration.firstName,
+              childRegistration.lastName,
+              childRegistration.email,
+              null, // telegram для ребенка
+              childRegistration.phone,
+              JSON.stringify(childCategories),
+              '', // tshirt_size для ребенка
+              null, // message для ребенка
+              null, null, null, null, null, null, // partner fields
+              null, // category_partners
+              childRegistration.userPhoto?.name || null,
+              childRegistration.userPhoto?.data || null,
+              null, // child_data для ребенка
+              registration.userId, // parent_user_id
+            ]
+          );
+          
+          console.log(`[saveRegistration] Child registration created for ${childRegistration.firstName} ${childRegistration.lastName} (parent: ${registration.userId})`);
+        }
+      }
       
       console.log(`[saveRegistration] Registration saved to database with ID: ${result.insertId}, token: ${token.substring(0, 8)}... (full length: ${token.length})`);
       

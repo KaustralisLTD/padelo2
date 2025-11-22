@@ -282,6 +282,30 @@ export async function initDatabase() {
     }
   }
 
+  // Add child_data column for storing child information (for KIDS category)
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN child_data JSON DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
+  // Add parent_user_id column for child registrations (to link child to parent)
+  try {
+    await pool.execute(`
+      ALTER TABLE tournament_registrations
+      ADD COLUMN parent_user_id VARCHAR(36) DEFAULT NULL
+    `);
+  } catch (e: any) {
+    if (!e.message?.toLowerCase().includes('duplicate column name')) {
+      throw e;
+    }
+  }
+
   // Add category_partners column for storing partners per category
   try {
     await pool.execute(`
