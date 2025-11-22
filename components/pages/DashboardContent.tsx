@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  TournamentRegistrationSettings,
+  getDefaultRegistrationSettings,
+  normalizeRegistrationSettings,
+} from '@/lib/registration-settings';
 
 export default function DashboardContent() {
   const t = useTranslations('Tournaments');
@@ -18,6 +23,13 @@ export default function DashboardContent() {
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [leavingTournament, setLeavingTournament] = useState(false);
+  const [registrationSettings, setRegistrationSettings] = useState<TournamentRegistrationSettings>(
+    () => getDefaultRegistrationSettings()
+  );
+  const [customCategories, setCustomCategories] = useState<Record<string, string>>({});
+  const [kidsCategoryEnabled, setKidsCategoryEnabled] = useState(false);
+  const [expandedCategoryPartners, setExpandedCategoryPartners] = useState<Record<string, boolean>>({});
+  const [childData, setChildData] = useState<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null } | null>(null);
 
   useEffect(() => {
     // Get token from URL or localStorage
