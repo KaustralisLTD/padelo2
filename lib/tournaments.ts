@@ -41,6 +41,8 @@ export interface Tournament {
     description?: Record<string, string>;
     eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
   };
+  categoryPrices?: Record<string, number>; // key: category code (e.g., "male1"), value: price in EUR
+  kidsCategoryEnabled?: boolean; // Включена ли категория KIDS
 }
 
 export interface TournamentGroup {
