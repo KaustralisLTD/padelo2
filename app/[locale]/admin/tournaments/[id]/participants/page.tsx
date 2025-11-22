@@ -601,6 +601,53 @@ export default function TournamentParticipantsPage() {
     }
   };
 
+  // Групповые действия
+  const handleBulkMarkAsPaid = async () => {
+    if (!token || selectedParticipants.size === 0) return;
+
+    try {
+      setError(null);
+      const participantIds = Array.from(selectedParticipants);
+      
+      // Отмечаем всех выбранных участников как оплачено
+      const promises = participantIds.map(participantId =>
+        fetch(`/api/tournament/${tournamentId}/registrations/${participantId}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            paymentStatus: 'paid',
+            paymentDate: new Date().toISOString(),
+          }),
+        })
+      );
+
+      const results = await Promise.allSettled(promises);
+      const successful = results.filter(r => r.status === 'fulfilled').length;
+      const failed = results.filter(r => r.status === 'rejected').length;
+
+      if (successful > 0) {
+        setSuccess(`Успешно обновлено: ${successful} участник(ов)`);
+        if (failed > 0) {
+          setError(`Не удалось обновить: ${failed} участник(ов)`);
+        }
+        setSelectedParticipants(new Set());
+        setIsSelectAll(false);
+        fetchParticipants();
+        setTimeout(() => {
+          setSuccess(null);
+          setError(null);
+        }, 3000);
+      } else {
+        setError('Не удалось обновить статус оплаты');
+      }
+    } catch (err) {
+      setError('Ошибка при обновлении статуса оплаты');
+    }
+  };
+
   const handleDelete = async (participantId: number, firstName: string, lastName: string) => {
     if (!token) return;
 
