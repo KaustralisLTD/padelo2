@@ -24,7 +24,6 @@ export default function LoginContent() {
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   const [emailNotVerified, setEmailNotVerified] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   // Обработка OAuth callback
   useEffect(() => {
