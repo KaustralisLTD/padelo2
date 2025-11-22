@@ -1188,7 +1188,20 @@
       "send": "Відправити",
       "sending": "Відправка...",
       "emailSent": "Email успішно відправлено",
-      "emailSendError": "Не вдалося відправити email"
+      "emailSendError": "Не вдалося відправити email",
+      "selectedParticipants": "Вибрано учасників",
+      "selectActionForSelected": "Виберіть дію для вибраних учасників",
+      "markAsPaid": "Відзначити як оплачено",
+      "cancelSelection": "Скасувати вибір",
+      "willBeSentTo": "Буде відправлено {count} учаснику(ам)",
+      "selectedCount": "{count} вибраних учасників",
+      "emailWillBeSentToEach": "Email буде відправлено кожному вибраному учаснику його мовою",
+      "noParticipantSelected": "Не вибрано жодного учасника",
+      "emailSentTo": "Email відправлено {count} учаснику(ам)",
+      "failedToSendTo": "Не вдалося відправити {count} учаснику(ам)",
+      "templateRequiresAdditionalData": "Шаблон потребує додаткових даних",
+      "missingFields": "Відсутні поля",
+      "requiredDataStructure": "Потрібна структура даних"
     },
     "logs": {
       "title": "Журнал Аудиту",

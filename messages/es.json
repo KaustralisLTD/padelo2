@@ -1142,7 +1142,20 @@
       "send": "Enviar",
       "sending": "Enviando...",
       "emailSent": "Email enviado exitosamente",
-      "emailSendError": "Error al enviar email"
+      "emailSendError": "Error al enviar email",
+      "selectedParticipants": "Participantes Seleccionados",
+      "selectActionForSelected": "Seleccione una acción para los participantes seleccionados",
+      "markAsPaid": "Marcar como Pagado",
+      "cancelSelection": "Cancelar Selección",
+      "willBeSentTo": "Se enviará a {count} participante(s)",
+      "selectedCount": "{count} participantes seleccionados",
+      "emailWillBeSentToEach": "El email se enviará a cada participante seleccionado en su idioma",
+      "noParticipantSelected": "No se ha seleccionado ningún participante",
+      "emailSentTo": "Email enviado a {count} participante(s)",
+      "failedToSendTo": "Error al enviar a {count} participante(s)",
+      "templateRequiresAdditionalData": "La plantilla requiere datos adicionales",
+      "missingFields": "Campos faltantes",
+      "requiredDataStructure": "Estructura de datos requerida"
     },
     "logs": {
       "title": "Registros de auditoría",
