@@ -693,6 +693,7 @@
   "Contact": {
     "title": "Contactez-Nous",
     "description": "Vous avez des questions ? Nous aimerions vous entendre.",
+    "followUs": "Suivez-Nous",
     "form": {
       "name": "Nom",
       "email": "Email",

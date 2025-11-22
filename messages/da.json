@@ -693,6 +693,7 @@
   "Contact": {
     "title": "Kontakt Os",
     "description": "Har du spørgsmål? Vi vil gerne høre fra dig.",
+    "followUs": "Følg Os",
     "form": {
       "name": "Navn",
       "email": "E-mail",

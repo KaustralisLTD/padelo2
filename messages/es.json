@@ -715,6 +715,7 @@
   "Contact": {
     "title": "Contáctanos",
     "description": "¿Tienes preguntas? Nos encantaría saber de ti.",
+    "followUs": "Síguenos",
     "form": {
       "name": "Nombre",
       "email": "Correo Electrónico",

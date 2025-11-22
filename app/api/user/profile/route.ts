@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 // GET - получить профиль пользователя
 export async function GET(request: NextRequest) {
   try {

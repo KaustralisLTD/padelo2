@@ -1601,6 +1601,7 @@
   "Contact": {
     "title": "Get in Touch",
     "description": "Have questions? We'd love to hear from you.",
+    "followUs": "Segueix-nos",
     "form": {
       "name": "Name",
       "email": "Email",

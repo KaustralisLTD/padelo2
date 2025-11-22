@@ -649,6 +649,7 @@
   "Contact": {
     "title": "Get in Touch",
     "description": "Have questions? We'd love to hear from you.",
+    "followUs": "Follow Us",
     "form": {
       "name": "Name",
       "email": "Email",

@@ -693,6 +693,7 @@
   "Contact": {
     "title": "Neem Contact Op",
     "description": "Heeft u vragen? We horen graag van u.",
+    "followUs": "Volg Ons",
     "form": {
       "name": "Naam",
       "email": "E-mail",
