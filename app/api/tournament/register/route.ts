@@ -445,6 +445,16 @@ export async function PATCH(request: NextRequest) {
       values.push(JSON.stringify(body.categoryPartners));
     }
     
+    // Обновление данных о ребенке (для категории KIDS)
+    if (body.childData !== undefined) {
+      if (body.childData === null) {
+        updates.push('child_data = NULL');
+      } else {
+        updates.push('child_data = ?');
+        values.push(JSON.stringify(body.childData));
+      }
+    }
+    
     // Обновление фото пользователя
     if (body.userPhoto !== undefined) {
       if (body.userPhoto === null) {

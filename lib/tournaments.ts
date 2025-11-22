@@ -274,6 +274,8 @@ export async function getTournament(id: number): Promise<Tournament | null> {
         bannerImageName: row.banner_image_name ?? null,
         bannerImageData: row.banner_image_data ?? null,
         translations,
+        categoryPrices: row.category_prices ? (typeof row.category_prices === 'string' ? JSON.parse(row.category_prices) : row.category_prices) : undefined,
+        kidsCategoryEnabled: row.kids_category_enabled ? !!row.kids_category_enabled : false,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
@@ -403,6 +405,14 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if (tournament.bannerImageData !== undefined) {
     updates.push('banner_image_data = ?');
     values.push(tournament.bannerImageData || null);
+  }
+  if ((tournament as any).categoryPrices !== undefined) {
+    updates.push('category_prices = ?');
+    values.push((tournament as any).categoryPrices ? JSON.stringify((tournament as any).categoryPrices) : null);
+  }
+  if ((tournament as any).kidsCategoryEnabled !== undefined) {
+    updates.push('kids_category_enabled = ?');
+    values.push((tournament as any).kidsCategoryEnabled ? 1 : 0);
   }
   
   if (updates.length === 0) {

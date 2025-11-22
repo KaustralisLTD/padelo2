@@ -25,6 +25,10 @@ interface Tournament {
   priceSingleCategory?: number | null;
   priceDoubleCategory?: number | null;
   status: string;
+  translations?: {
+    description?: Record<string, string>;
+    eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+  };
 }
 
 interface TournamentDetailsProps {
@@ -91,7 +95,7 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
       {tournament.description && (
         <div className="mb-4">
           <p className="text-text-secondary font-poppins whitespace-pre-line">
-            {tournament.description}
+            {tournament.translations?.description?.[locale] || tournament.description}
           </p>
         </div>
       )}
@@ -251,43 +255,47 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
               {showEventSchedule ? t('tournamentDetails.hideEvents') : t('tournamentDetails.showEvents')}
             </button>
           </div>
-          {showEventSchedule && (
-            <div className="space-y-4">
-              {tournament.eventSchedule.map((event, index) => (
-                <div
-                  key={index}
-                  className="p-4 bg-background rounded-lg border border-border hover:border-primary/50 transition-colors"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-poppins font-semibold text-text">
-                      {event.title}
-                    </h4>
-                    <div className="text-right">
-                      {event.date && (
-                        <div className="text-sm text-text-secondary font-poppins">
-                          {new Date(event.date).toLocaleDateString(locale, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                          })}
-                        </div>
-                      )}
-                      {event.time && (
-                        <div className="text-sm text-text-secondary font-poppins">
-                          {event.time}
-                        </div>
-                      )}
+          {showEventSchedule && (() => {
+            // Используем переведенное расписание, если доступно, иначе оригинальное
+            const schedule = tournament.translations?.eventSchedule?.[locale] || tournament.eventSchedule || [];
+            return (
+              <div className="space-y-4">
+                {schedule.map((event, index) => (
+                  <div
+                    key={index}
+                    className="p-4 bg-background rounded-lg border border-border hover:border-primary/50 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <h4 className="font-poppins font-semibold text-text">
+                        {event.title}
+                      </h4>
+                      <div className="text-right">
+                        {event.date && (
+                          <div className="text-sm text-text-secondary font-poppins">
+                            {new Date(event.date).toLocaleDateString(locale, {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })}
+                          </div>
+                        )}
+                        {event.time && (
+                          <div className="text-sm text-text-secondary font-poppins">
+                            {event.time}
+                          </div>
+                        )}
+                      </div>
                     </div>
+                    {event.description && (
+                      <p className="text-text-secondary font-poppins text-sm">
+                        {event.description}
+                      </p>
+                    )}
                   </div>
-                  {event.description && (
-                    <p className="text-text-secondary font-poppins text-sm">
-                      {event.description}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            );
+          })()}
         </div>
       )}
 

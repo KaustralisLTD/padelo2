@@ -57,6 +57,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   // Фото пользователя
   const [userPhoto, setUserPhoto] = useState<{ data: string | null; name: string | null }>({ data: null, name: null });
   const [userPhotoError, setUserPhotoError] = useState<string | null>(null);
+  // Категория KIDS
+  const [kidsCategoryEnabled, setKidsCategoryEnabled] = useState(false);
+  const [childData, setChildData] = useState<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null } | null>(null);
 
   const categoryGroups = {
     male: [
@@ -133,6 +136,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           const data = await response.json();
           const settings = data.tournament?.registrationSettings;
           setRegistrationSettings(normalizeRegistrationSettings(settings));
+          setKidsCategoryEnabled(data.tournament?.kidsCategoryEnabled || false);
         }
       } catch (error) {
         console.error('Error fetching tournament settings:', error);
@@ -482,6 +486,20 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       }
     }
 
+    // Валидация данных ребенка для категории KIDS
+    if (formData.categories.includes('kids')) {
+      if (!childData || !childData.firstName?.trim()) {
+        const errorMsg = t('form.childFirstName') + ' is required' || 'Child first name is required';
+        alert(errorMsg);
+        return;
+      }
+      if (!childData.lastName?.trim()) {
+        const errorMsg = t('form.childLastName') + ' is required' || 'Child last name is required';
+        alert(errorMsg);
+        return;
+      }
+    }
+
     // Валидация партнера
     const partnerSectionVisible = partnerRequired || showPartner;
 
@@ -590,6 +608,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           customFields: enabledCustomFieldsPayload,
           partner: partnerPayload,
           categoryPartners: Object.keys(categoryPartnersPayload).length > 0 ? categoryPartnersPayload : undefined,
+          childData: formData.categories.includes('kids') && childData ? childData : undefined,
           userPhoto: userPhoto.data ? { data: userPhoto.data, name: userPhoto.name } : undefined,
         }),
       });
@@ -1131,6 +1150,75 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </option>
             ))}
           </select>
+        </div>
+      )}
+
+      {/* KIDS Category - Child Data */}
+      {kidsCategoryEnabled && formData.categories.includes('kids') && (
+        <div className="border border-gray-700 rounded-lg p-4">
+          <h4 className="text-sm font-orbitron font-semibold text-text mb-4">
+            {t('form.childInfo') || 'Child Information'}
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('form.childFirstName') || 'Child First Name'} *
+              </label>
+              <input
+                type="text"
+                required
+                value={childData?.firstName || ''}
+                onChange={(e) => setChildData({
+                  ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
+                  firstName: e.target.value
+                })}
+                className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('form.childLastName') || 'Child Last Name'} *
+              </label>
+              <input
+                type="text"
+                required
+                value={childData?.lastName || ''}
+                onChange={(e) => setChildData({
+                  ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
+                  lastName: e.target.value
+                })}
+                className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+              />
+            </div>
+          </div>
+          <div className="mt-4">
+            <label className="block text-sm font-poppins text-text-secondary mb-2">
+              {t('form.childPhoto') || 'Child Photo'} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  if (file.size > 5 * 1024 * 1024) {
+                    alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+                    return;
+                  }
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setChildData({
+                      ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
+                      photoData: reader.result as string,
+                      photoName: file.name
+                    });
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
+              className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
+            />
+          </div>
         </div>
       )}
 
