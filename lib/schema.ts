@@ -353,13 +353,28 @@ export function generateProductSchema(
 
   // Add offers with required fields
   if (product.offers) {
+    const isPreOrder = (product.offers.availability || 'https://schema.org/PreOrder') === 'https://schema.org/PreOrder';
+    const priceValue = product.offers.price || '0';
+    
     schema.offers = {
       '@type': 'Offer',
       availability: product.offers.availability || 'https://schema.org/PreOrder',
       priceCurrency: product.offers.priceCurrency || 'EUR',
-      price: typeof product.offers.price === 'number' ? product.offers.price.toString() : (product.offers.price || '0'), // Required field - using '0' as default for PreOrder
       priceValidUntil: priceValidUntil, // Required field
     };
+
+    // For PreOrder, use priceSpecification instead of price
+    if (isPreOrder && priceValue === '0') {
+      schema.offers.priceSpecification = {
+        '@type': 'UnitPriceSpecification',
+        price: '0',
+        priceCurrency: product.offers.priceCurrency || 'EUR',
+        valueAddedTaxIncluded: true,
+      };
+    } else {
+      // For regular offers, use price
+      schema.offers.price = typeof priceValue === 'number' ? priceValue.toString() : priceValue;
+    }
 
     // Add hasMerchantReturnPolicy if provided or use default
     if (product.offers.hasMerchantReturnPolicy) {
