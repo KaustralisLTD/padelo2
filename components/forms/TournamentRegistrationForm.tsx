@@ -1231,29 +1231,43 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             <label className="block text-sm font-poppins text-text-secondary mb-2">
               {t('form.childPhoto') || 'Child Photo'} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  if (file.size > 5 * 1024 * 1024) {
-                    alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
-                    return;
+            <div className="relative">
+              <input
+                type="file"
+                accept="image/*"
+                id="child-photo-input"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                      alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+                      return;
+                    }
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setChildData({
+                        ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
+                        photoData: reader.result as string,
+                        photoName: file.name
+                      });
+                    };
+                    reader.readAsDataURL(file);
                   }
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setChildData({
-                      ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                      photoData: reader.result as string,
-                      photoName: file.name
-                    });
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }}
-              className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
-            />
+                }}
+                className="hidden"
+              />
+              <label
+                htmlFor="child-photo-input"
+                className="flex items-center justify-center w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text-secondary hover:border-primary transition-colors cursor-pointer"
+              >
+                <span className="mr-2">{t('form.chooseFile') || 'Choose File'}</span>
+                {childData?.photoName ? (
+                  <span className="text-text text-sm">{childData.photoName}</span>
+                ) : (
+                  <span className="text-text-tertiary text-sm">{t('form.fileNotSelected') || 'No file selected'}</span>
+                )}
+              </label>
+            </div>
           </div>
         </div>
       )}

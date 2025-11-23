@@ -437,7 +437,40 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -462,11 +495,11 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -1107,7 +1140,40 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -1138,11 +1204,11 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -1675,7 +1741,40 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -1706,11 +1805,11 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -2272,7 +2371,40 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -2304,11 +2436,11 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -2877,7 +3009,40 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -2908,11 +3073,11 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -3439,7 +3604,40 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -3472,11 +3670,11 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -3851,7 +4049,40 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -3878,11 +4109,11 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -4264,7 +4495,40 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -4293,11 +4557,11 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -4683,7 +4947,40 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -4713,11 +5010,11 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -5130,7 +5427,40 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -5160,11 +5490,11 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -5551,7 +5881,40 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -5579,11 +5942,11 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -5968,7 +6331,40 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -5999,11 +6395,11 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -6404,7 +6800,40 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -6433,11 +6862,11 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -6760,7 +7189,40 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -6787,11 +7249,11 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -7177,7 +7639,40 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      body { margin: 0; padding: 0; background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%); }
+      :root {
+        color-scheme: light dark;
+      }
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc !important;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #020617 !important;
+          background: #020617 !important;
+        }
+        .wrapper {
+          background-color: #020617 !important;
+        }
+        .main {
+          background-color: #1e293b !important;
+        }
+        .email-container {
+          background-color: #1e293b !important;
+          color: #e5e7eb !important;
+        }
+        .text-primary {
+          color: #e5e7eb !important;
+        }
+        .text-secondary {
+          color: #9ca3af !important;
+        }
+        td {
+          color: #e5e7eb !important;
+        }
+      }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
@@ -7207,11 +7702,11 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">

@@ -335,6 +335,7 @@
       "photoSizeError": "Размер фото должен быть менее 5МБ",
       "partnerRequiredForCategory": "Партнер обязателен для {category}",
       "chooseFile": "Выбрать файл",
+      "fileNotSelected": "Файл не выбран",
       "photoHint": "Максимум 5МБ. Форматы JPG, PNG.",
       "removeFile": "Удалить",
       "registrationReceived": "Регистрация получена!",

@@ -536,11 +536,11 @@ export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
     </style>
   </head>
 
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -1086,11 +1086,11 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
     </style>
   </head>
 
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -1542,11 +1542,11 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): str
     </style>
   </head>
 
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -1897,11 +1897,11 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -2287,11 +2287,11 @@ export function getNewDeviceLoginEmailTemplate(data: NewDeviceLoginEmailData): s
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -2618,11 +2618,11 @@ export function getChangeEmailOldAddressEmailTemplate(data: ChangeEmailOldAddres
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -2956,11 +2956,11 @@ export function getChangeEmailNewAddressEmailTemplate(data: ChangeEmailNewAddres
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -3314,11 +3314,11 @@ export function getAccountDeletionConfirmEmailTemplate(data: AccountDeletionConf
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
@@ -3656,11 +3656,11 @@ export function getAccountDeletedEmailTemplate(data: AccountDeletedEmailData): s
       }
     </style>
   </head>
-  <body class="font-default">
-    <table role="presentation" class="wrapper" width="100%">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
       <tr>
-        <td align="center">
-          <table role="presentation" class="main">
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
             <!-- HEADER -->
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">

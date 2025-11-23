@@ -338,6 +338,7 @@
     "childFirstName": "Child First Name",
     "childLastName": "Child Last Name",
     "childPhoto": "Child Photo (Optional)",
+    "fileNotSelected": "No file selected",
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
