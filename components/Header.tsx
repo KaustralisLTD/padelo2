@@ -41,42 +41,17 @@ const Header = () => {
         setShowMobileMenu(true);
         setMenuItemsOverflow(false);
       } else {
-        // На десктопе проверяем, помещается ли меню
-        // Используем requestAnimationFrame для корректного измерения после рендера
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            if (navRef.current) {
-              const nav = navRef.current;
-              const navItems = nav.querySelector('.nav-items-container') as HTMLElement;
-              if (!navItems) {
-                setShowMobileMenu(false);
-                return;
-              }
-              const navWidth = nav.offsetWidth;
-              const itemsWidth = navItems.offsetWidth || 0;
-              const logoWidth = nav.querySelector('.logo-container')?.clientWidth || 0;
-              const languageSelectorWidth = 120; // Примерная ширина селектора языка
-              const padding = 64; // px-4 с обеих сторон = 32px * 2
-              const availableWidth = navWidth - logoWidth - languageSelectorWidth - padding;
-              
-              // Добавляем небольшой запас (20px) для уверенности
-              const overflow = itemsWidth > (availableWidth - 20);
-              setMenuItemsOverflow(overflow);
-              setShowMobileMenu(overflow);
-            } else {
-              setShowMobileMenu(false);
-            }
-          });
-        });
+        // На десктопе всегда показываем десктопное меню (компактное меню должно помещаться)
+        setShowMobileMenu(false);
+        setMenuItemsOverflow(false);
       }
     };
 
-    // Сначала устанавливаем false для десктопа, чтобы меню показывалось сразу
-    if (window.innerWidth >= 1024) {
-      setShowMobileMenu(false);
-    }
+    // Устанавливаем начальное состояние сразу
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+    setShowMobileMenu(isMobile);
     
-    checkMenuOverflow();
+    // Проверяем только при изменении размера окна
     window.addEventListener('resize', checkMenuOverflow);
     return () => window.removeEventListener('resize', checkMenuOverflow);
   }, [isAuthenticated, locale]);
