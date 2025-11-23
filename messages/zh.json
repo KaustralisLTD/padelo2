@@ -303,14 +303,16 @@
       },
       "photoInstructions": {
         "title": "照片上传说明",
-        "text": "请上传您的锦标赛照片。照片将用于您的球员资料和锦标赛材料。",
-        "filename": "文件名格式",
-        "filenameExample": "名_姓.jpg（例如：张三.jpg）"
+        "text": "请上传您的锦标赛照片。照片将用于您的球员资料和锦标赛材料。"
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
       "customFieldFallback": "Custom Field",
       "partnerForCategory": "合作伙伴",
       "userPhoto": "您的照片",
+      "childInfo": "儿童信息",
+      "childFirstName": "儿童名字",
+      "childLastName": "儿童姓氏",
+      "childPhoto": "儿童照片（可选）",
       "photoSizeError": "照片大小必须小于15MB",
       "partnerRequiredForCategory": "{category} 需要合作伙伴",
       "chooseFile": "选择文件",

@@ -303,14 +303,16 @@
       },
       "photoInstructions": {
         "title": "Instructions de Téléchargement de Photo",
-        "text": "Veuillez télécharger votre photo pour le tournoi. La photo sera utilisée pour votre profil de joueur et les matériaux du tournoi.",
-        "filename": "Format du nom de fichier",
-        "filenameExample": "Prénom_Nom.jpg (ex: Jean_Dupont.jpg)"
+        "text": "Veuillez télécharger votre photo pour le tournoi. La photo sera utilisée pour votre profil de joueur et les matériaux du tournoi."
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
       "customFieldFallback": "Custom Field",
       "partnerForCategory": "Partenaire pour",
       "userPhoto": "Votre photo",
+      "childInfo": "Informations sur l'Enfant",
+      "childFirstName": "Prénom de l'Enfant",
+      "childLastName": "Nom de l'Enfant",
+      "childPhoto": "Photo de l'Enfant (Optionnel)",
       "photoSizeError": "La taille de la photo doit être inférieure à 15 Mo",
       "partnerRequiredForCategory": "Partenaire requis pour {category}",
       "chooseFile": "Choisir un fichier",

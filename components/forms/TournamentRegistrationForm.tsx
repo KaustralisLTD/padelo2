@@ -1401,9 +1401,6 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           <p className="text-sm font-poppins text-text-secondary">
             {t('form.photoInstructions.text')}
           </p>
-          <p className="text-sm font-poppins text-text-secondary mt-2">
-            <strong>{t('form.photoInstructions.filename')}:</strong> {t('form.photoInstructions.filenameExample')}
-          </p>
         </div>
       )}
 

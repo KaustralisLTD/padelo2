@@ -305,12 +305,14 @@
       },
       "photoInstructions": {
         "title": "Foto Upload Instructies",
-        "text": "Upload uw foto voor het toernooi. De foto wordt gebruikt voor uw spelerprofiel en toernooimateriaal.",
-        "filename": "Bestandsnaam formaat",
-        "filenameExample": "Voornaam_Achternaam.jpg (bijv: Jan_Jansen.jpg)"
+        "text": "Upload uw foto voor het toernooi. De foto wordt gebruikt voor uw spelerprofiel en toernooimateriaal."
       },
       "partnerForCategory": "Partner voor",
       "userPhoto": "Uw foto",
+      "childInfo": "Kind Informatie",
+      "childFirstName": "Voornaam Kind",
+      "childLastName": "Achternaam Kind",
+      "childPhoto": "Foto Kind (Optioneel)",
       "photoSizeError": "De fotogrootte moet minder zijn dan 15 MB",
       "partnerRequiredForCategory": "Partner vereist voor {category}",
       "chooseFile": "Kies bestand",

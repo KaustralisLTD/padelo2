@@ -303,14 +303,16 @@
       },
       "photoInstructions": {
         "title": "Istruzioni per Caricare Foto",
-        "text": "Si prega di caricare la tua foto per il torneo. La foto sarà utilizzata per il tuo profilo giocatore e i materiali del torneo.",
-        "filename": "Formato nome file",
-        "filenameExample": "Nome_Cognome.jpg (es: Mario_Rossi.jpg)"
+        "text": "Si prega di caricare la tua foto per il torneo. La foto sarà utilizzata per il tuo profilo giocatore e i materiali del torneo."
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
       "customFieldFallback": "Custom Field",
       "partnerForCategory": "Partner per",
       "userPhoto": "La tua foto",
+      "childInfo": "Informazioni Bambino",
+      "childFirstName": "Nome del Bambino",
+      "childLastName": "Cognome del Bambino",
+      "childPhoto": "Foto del Bambino (Opzionale)",
       "photoSizeError": "La dimensione della foto deve essere inferiore a 15 MB",
       "partnerRequiredForCategory": "Partner richiesto per {category}",
       "chooseFile": "Scegli file",

@@ -305,12 +305,14 @@
       },
       "photoInstructions": {
         "title": "تعليمات تحميل الصورة",
-        "text": "يرجى تحميل صورتك للبطولة. ستُستخدم الصورة لملف اللاعب ومواد البطولة.",
-        "filename": "تنسيق اسم الملف",
-        "filenameExample": "الاسم_اللقب.jpg (مثال: أحمد_محمد.jpg)"
+        "text": "يرجى تحميل صورتك للبطولة. ستُستخدم الصورة لملف اللاعب ومواد البطولة."
       },
       "partnerForCategory": "شريك ل",
       "userPhoto": "صورتك",
+      "childInfo": "معلومات الطفل",
+      "childFirstName": "اسم الطفل الأول",
+      "childLastName": "اسم عائلة الطفل",
+      "childPhoto": "صورة الطفل (اختياري)",
       "photoSizeError": "يجب أن يكون حجم الصورة أقل من 15 ميجابايت",
       "partnerRequiredForCategory": "شريك مطلوب لـ {category}",
       "chooseFile": "اختر الملف",

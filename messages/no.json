@@ -305,12 +305,14 @@
       },
       "photoInstructions": {
         "title": "Instruksjoner for Foto Opplasting",
-        "text": "Last opp ditt foto for turneringen. Fotoet vil bli brukt til din spillerprofil og turneringsmaterialer.",
-        "filename": "Filnavn format",
-        "filenameExample": "Fornavn_Etternavn.jpg (f.eks: Ole_Hansen.jpg)"
+        "text": "Last opp ditt foto for turneringen. Fotoet vil bli brukt til din spillerprofil og turneringsmaterialer."
       },
       "partnerForCategory": "Partner for",
       "userPhoto": "Ditt foto",
+      "childInfo": "Barn Informasjon",
+      "childFirstName": "Barns Fornavn",
+      "childLastName": "Barns Etternavn",
+      "childPhoto": "Barns Foto (Valgfritt)",
       "photoSizeError": "Fotoets størrelse må være mindre enn 15 MB",
       "partnerRequiredForCategory": "Partner påkrevd for {category}",
       "chooseFile": "Velg fil",

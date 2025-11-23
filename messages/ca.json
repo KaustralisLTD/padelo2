@@ -301,9 +301,7 @@
           },
           "photoInstructions": {
             "title": "Instruccions per Pujar Foto",
-            "text": "Si us plau, puja la teva foto per al torneig. La foto s'usarà per al teu perfil de jugador i materials del torneig.",
-            "filename": "Format del nom de l'arxiu",
-            "filenameExample": "Nom_Cognom.jpg (ex: Joan_Perez.jpg)"
+            "text": "Si us plau, puja la teva foto per al torneig. La foto s'usarà per al teu perfil de jugador i materials del torneig."
           }
         },
         "confirmation": {
@@ -876,12 +874,14 @@
       },
       "photoInstructions": {
         "title": "Photo Upload Instructions",
-        "text": "Please upload your photo for the tournament. The photo will be used for your player profile and tournament materials.",
-        "filename": "File name format",
-        "filenameExample": "FirstName_LastName.jpg (e.g., John_Doe.jpg)"
+        "text": "Please upload your photo for the tournament. The photo will be used for your player profile and tournament materials."
       },
       "partnerForCategory": "Parella per",
       "userPhoto": "La teva foto",
+      "childInfo": "Informació del Nen",
+      "childFirstName": "Nom del Nen",
+      "childLastName": "Cognom del Nen",
+      "childPhoto": "Foto del Nen (Opcional)",
       "photoSizeError": "La mida de la foto ha de ser inferior a 15 MB",
       "partnerRequiredForCategory": "Parella requerida per {category}",
       "chooseFile": "Tria fitxer",

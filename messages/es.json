@@ -326,14 +326,16 @@
       },
       "photoInstructions": {
         "title": "Instrucciones para Subir Foto",
-        "text": "Por favor, sube tu foto para el torneo. La foto se usará para tu perfil de jugador y materiales del torneo.",
-        "filename": "Formato del nombre del archivo",
-        "filenameExample": "Nombre_Apellido.jpg (ej: Juan_Perez.jpg)"
+        "text": "Por favor, sube tu foto para el torneo. La foto se usará para tu perfil de jugador y materiales del torneo."
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
       "customFieldFallback": "Custom Field",
       "partnerForCategory": "Pareja para",
       "userPhoto": "Tu foto",
+      "childInfo": "Información del Niño",
+      "childFirstName": "Nombre del Niño",
+      "childLastName": "Apellido del Niño",
+      "childPhoto": "Foto del Niño (Opcional)",
       "photoSizeError": "El tamaño de la foto debe ser menor a 15MB",
       "partnerRequiredForCategory": "Se requiere pareja para {category}",
       "chooseFile": "Elegir archivo",

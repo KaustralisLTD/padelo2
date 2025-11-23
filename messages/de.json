@@ -303,14 +303,16 @@
       },
       "photoInstructions": {
         "title": "Foto-Upload-Anweisungen",
-        "text": "Bitte laden Sie Ihr Foto für das Turnier hoch. Das Foto wird für Ihr Spielerprofil und Turniermaterialien verwendet.",
-        "filename": "Dateinamen-Format",
-        "filenameExample": "Vorname_Nachname.jpg (z.B: Max_Müller.jpg)"
+        "text": "Bitte laden Sie Ihr Foto für das Turnier hoch. Das Foto wird für Ihr Spielerprofil und Turniermaterialien verwendet."
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
       "customFieldFallback": "Custom Field",
       "partnerForCategory": "Partner für",
       "userPhoto": "Ihr Foto",
+      "childInfo": "Kinderinformationen",
+      "childFirstName": "Vorname des Kindes",
+      "childLastName": "Nachname des Kindes",
+      "childPhoto": "Foto des Kindes (Optional)",
       "photoSizeError": "Die Foto-Größe muss weniger als 15 MB betragen",
       "partnerRequiredForCategory": "Partner erforderlich für {category}",
       "chooseFile": "Datei auswählen",

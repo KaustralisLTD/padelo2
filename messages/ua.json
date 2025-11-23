@@ -326,9 +326,7 @@
       },
       "photoInstructions": {
         "title": "Інструкції з завантаження фото",
-        "text": "Будь ласка, завантажте ваше фото для турніру. Фото буде використано для вашого профілю гравця та матеріалів турніру.",
-        "filename": "Формат імені файлу",
-        "filenameExample": "Ім'я_Прізвище.jpg (наприклад, Іван_Іванов.jpg)"
+        "text": "Будь ласка, завантажте ваше фото для турніру. Фото буде використано для вашого профілю гравця та матеріалів турніру."
       },
       "partnerRequiredNotice": "Partner information is required for this tournament.",
       "customFieldFallback": "Custom Field",
