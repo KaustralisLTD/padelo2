@@ -1096,38 +1096,38 @@ export default function DashboardContent() {
                       className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                     />
                   </div>
-                    <div>
-                      <label className="block text-sm font-poppins text-text-secondary mb-2">
-                        {t('form.partnerPhone')}
-                      </label>
-                      <input
-                        type="tel"
-                        value={editData.partner.phone || ''}
-                        onChange={(e) => setEditData({ 
-                          ...editData, 
-                          partner: { ...editData.partner, phone: e.target.value }
-                        })}
-                        className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-poppins text-text-secondary mb-2">
-                        {t('form.partnerTshirtSize')}
-                      </label>
-                      <select
-                        value={editData.partner.tshirtSize || ''}
-                        onChange={(e) => setEditData({ 
-                          ...editData, 
-                          partner: { ...editData.partner, tshirtSize: e.target.value }
-                        })}
-                        className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                      >
-                        <option value="">{t('form.selectSize')}</option>
-                        {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
-                          <option key={size} value={size}>{size}</option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {t('form.partnerPhone')}
+                    </label>
+                    <input
+                      type="tel"
+                      value={editData.partner.phone || ''}
+                      onChange={(e) => setEditData({ 
+                        ...editData, 
+                        partner: { ...editData.partner, phone: e.target.value }
+                      })}
+                      className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {t('form.partnerTshirtSize')}
+                    </label>
+                    <select
+                      value={editData.partner.tshirtSize || ''}
+                      onChange={(e) => setEditData({ 
+                        ...editData, 
+                        partner: { ...editData.partner, tshirtSize: e.target.value }
+                      })}
+                      className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                    >
+                      <option value="">{t('form.selectSize')}</option>
+                      {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+                        <option key={size} value={size}>{size}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               )}
 
