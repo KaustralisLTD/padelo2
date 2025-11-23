@@ -296,8 +296,20 @@ const Header = () => {
               e.preventDefault();
               setIsMobileMenuOpen(false);
             }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] lg:hidden"
-            style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
+            className="fixed inset-0 bg-black/60 z-[90] lg:hidden"
+            style={{ 
+              WebkitTapHighlightColor: 'transparent', 
+              touchAction: 'manipulation',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 90,
+              visibility: 'visible',
+              display: 'block',
+              opacity: 1
+            }}
           />
           
             {/* Меню */}
@@ -315,7 +327,7 @@ const Header = () => {
                 // Предотвращаем закрытие меню при клике внутри
                 e.stopPropagation();
               }}
-              className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[100] ${
+              className={`lg:hidden ${
                 theme === 'light' 
                   ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
                   : 'bg-background-secondary shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
@@ -323,12 +335,24 @@ const Header = () => {
                 theme === 'light' ? 'border-gray-200' : 'border-border'
               } overflow-y-auto`}
               style={{ 
+                position: 'fixed',
+                top: '73px',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: '100%',
+                height: 'calc(100vh - 73px)',
                 maxHeight: 'calc(100vh - 73px)',
                 WebkitOverflowScrolling: 'touch',
-                position: 'fixed',
                 zIndex: 100,
                 touchAction: 'pan-y',
-                WebkitTapHighlightColor: 'transparent'
+                WebkitTapHighlightColor: 'transparent',
+                visibility: 'visible',
+                display: 'block',
+                opacity: 1,
+                willChange: 'transform, opacity',
+                transform: 'translateZ(0)',
+                WebkitTransform: 'translateZ(0)'
               }}
             >
               <div className="container mx-auto px-4 py-4">
