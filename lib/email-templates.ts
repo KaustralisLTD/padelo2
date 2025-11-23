@@ -636,18 +636,22 @@ export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
                       <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 6px 0 18px 0;">
                         <tr>
                           <td align="left" class="center-mobile">
-                            <a href="${confirmationUrl}" class="btn-primary">${t.confirmButton}</a>
+                            <a href="${confirmationUrl}" class="btn-primary" style="text-decoration: none;">${t.confirmButton}</a>
                           </td>
                         </tr>
                       </table>
 
-                      <p class="muted" style="margin: 0 0 18px 0; font-size: 13px; line-height: 1.6;">
-                        ${t.ifButtonDoesntWork}<br />
-                        <a href="${confirmationUrl}" style="word-break: break-all; color: #0369a1; text-decoration: underline;">${confirmationUrl}</a>
-                      </p>
-                      <p class="muted" style="margin: 12px 0 0 0; font-size: 12px; color: #6b7280;">
-                        ${locale === 'ru' || locale === 'ua' ? 'Эта ссылка действительна в течение 7 дней.' : locale === 'en' ? 'This link is valid for 7 days.' : 'This link is valid for 7 days.'}
-                      </p>
+                      <div class="info-box" style="margin: 20px 0;">
+                        <p class="muted" style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.6; color: #0c4a6e;">
+                          ${t.ifButtonDoesntWork}
+                        </p>
+                        <p class="muted" style="margin: 0; font-size: 12px; word-break: break-all;">
+                          <a href="${confirmationUrl}" style="color: #0284c7; text-decoration: underline;">${confirmationUrl}</a>
+                        </p>
+                        <p class="muted" style="margin: 8px 0 0 0; font-size: 12px; color: #6b7280;">
+                          ${locale === 'ru' || locale === 'ua' ? 'Эта ссылка действительна в течение 7 дней. Если вы не регистрировались на турнир, проигнорируйте это письмо.' : locale === 'en' ? 'This link is valid for 7 days. If you did not register for this tournament, please ignore this email.' : 'This link is valid for 7 days. If you did not register for this tournament, please ignore this email.'}
+                        </p>
+                      </div>
                     </td>
                   </tr>
                 </table>
