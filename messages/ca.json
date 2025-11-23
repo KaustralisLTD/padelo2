@@ -1223,6 +1223,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Cartera"
+    },
+    "logs": {
+      "title": "Registres"
+    },
+    "dbMonitor": {
+      "title": "Monitor de BD"
+    },
     "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",
