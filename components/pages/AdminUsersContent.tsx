@@ -517,8 +517,8 @@ export default function AdminUsersContent() {
           </div>
         )}
 
-        {/* Вкладки */}
-        <div className="mb-6 flex gap-2 border-b border-border">
+      {/* Вкладки */}
+      <div className="mb-6 flex gap-2 border-b border-border">
           <button
             onClick={() => {
               setActiveTab('list');
@@ -598,8 +598,8 @@ export default function AdminUsersContent() {
           )}
         </div>
 
-        {/* Контент вкладок */}
-        {activeTab === 'list' && (
+      {/* Контент вкладок */}
+      {activeTab === 'list' && (
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">

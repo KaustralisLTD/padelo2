@@ -657,47 +657,47 @@ export default function AdminTournamentsContent() {
       {/* Status Messages */}
       {success && (
         <div className="mb-6 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-lg p-5 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <p className="text-text font-poppins font-semibold">{success}</p>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
             </div>
+            <p className="text-text font-poppins font-semibold">{success}</p>
           </div>
-        )}
-        {error && (
-          <div className="mb-6 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-5 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-              <p className="text-text font-poppins font-semibold">{error}</p>
+        </div>
+      )}
+      {error && (
+        <div className="mb-6 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-5 backdrop-blur-sm">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </div>
+            <p className="text-text font-poppins font-semibold">{error}</p>
           </div>
+        </div>
       )}
 
       {/* Tournaments Table */}
       {tournaments.length === 0 ? (
-          <div className="bg-background-secondary p-12 rounded-lg border border-border text-center">
-            <p className="text-text-secondary font-poppins text-lg mb-4">
-              {t('tournaments.noTournaments')}
-            </p>
-            <button
-              onClick={() => {
-                resetForm();
-                setShowCreateModal(true);
-              }}
-              className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
-            >
-              {t('tournaments.createTournament')}
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-4">
+        <div className="bg-background-secondary p-12 rounded-lg border border-border text-center">
+          <p className="text-text-secondary font-poppins text-lg mb-4">
+            {t('tournaments.noTournaments')}
+          </p>
+          <button
+            onClick={() => {
+              resetForm();
+              setShowCreateModal(true);
+            }}
+            className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
+            {t('tournaments.createTournament')}
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
             {/* Фильтры */}
             <div className="bg-background-secondary rounded-lg border border-border p-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
