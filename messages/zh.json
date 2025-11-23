@@ -835,6 +835,11 @@
     "termsOfService": "服务条款"
   },
   "Admin": {
+    "loading": "加载中...",
+    "backToDashboard": "返回仪表板",
+    "dashboard": {
+      "title": "仪表板"
+    },
     "tournaments": {
       "title": "管理锦标赛",
       "description": "描述",

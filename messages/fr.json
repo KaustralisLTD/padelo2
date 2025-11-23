@@ -835,6 +835,11 @@
     "termsOfService": "Conditions d'utilisation"
   },
   "Admin": {
+    "loading": "Chargement...",
+    "backToDashboard": "Retour au tableau de bord",
+    "dashboard": {
+      "title": "Tableau de bord"
+    },
     "tournaments": {
       "title": "Gérer les Tournois",
       "description": "Description",

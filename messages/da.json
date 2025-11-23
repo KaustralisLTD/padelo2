@@ -835,6 +835,11 @@
     "termsOfService": "Servicevilkårene"
   },
   "Admin": {
+    "loading": "Indlæser...",
+    "backToDashboard": "Tilbage til dashboard",
+    "dashboard": {
+      "title": "Dashboard"
+    },
     "tournaments": {
       "title": "Administrer Turneringer",
       "description": "Beskrivelse",

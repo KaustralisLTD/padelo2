@@ -835,6 +835,11 @@
     "termsOfService": "Användarvillkor"
   },
   "Admin": {
+    "loading": "Laddar...",
+    "backToDashboard": "Tillbaka till dashboard",
+    "dashboard": {
+      "title": "Dashboard"
+    },
     "tournaments": {
       "title": "Hantera Turneringar",
       "description": "Beskrivning",

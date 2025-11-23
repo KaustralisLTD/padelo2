@@ -788,6 +788,11 @@
     "userId": "Benutzer-ID"
   },
   "Admin": {
+    "loading": "Laden...",
+    "backToDashboard": "Zurück zum Dashboard",
+    "dashboard": {
+      "title": "Dashboard"
+    },
     "tournaments": {
       "title": "Turniere Verwalten",
       "description": "Beschreibung",

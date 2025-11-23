@@ -784,6 +784,11 @@
     "userId": "Gebruikers-ID"
   },
   "Admin": {
+    "loading": "Laden...",
+    "backToDashboard": "Terug naar dashboard",
+    "dashboard": {
+      "title": "Dashboard"
+    },
     "tournaments": {
       "title": "Toernooien Beheren",
       "description": "Beschrijving",

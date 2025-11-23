@@ -835,6 +835,11 @@
     "termsOfService": "Termini di Servizio"
   },
   "Admin": {
+    "loading": "Caricamento...",
+    "backToDashboard": "Torna alla dashboard",
+    "dashboard": {
+      "title": "Dashboard"
+    },
     "tournaments": {
       "title": "Gestisci Tornei",
       "description": "Descrizione",

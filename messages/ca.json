@@ -1072,6 +1072,11 @@
     }
   },
   "Admin": {
+    "loading": "Carregant...",
+    "backToDashboard": "Tornar al tauler",
+    "dashboard": {
+      "title": "Tauler de control"
+    },
     "tournaments": {
       "title": "Gestionar Torneigs",
       "description": "Descripció",

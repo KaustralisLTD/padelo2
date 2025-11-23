@@ -826,6 +826,11 @@
     "removeFile": "إزالة"
   },
   "Admin": {
+    "loading": "جاري التحميل...",
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "dashboard": {
+      "title": "لوحة التحكم"
+    },
     "tournaments": {
       "title": "إدارة البطولات",
       "description": "الوصف",
