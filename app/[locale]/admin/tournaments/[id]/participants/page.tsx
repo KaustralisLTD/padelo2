@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 
@@ -88,6 +89,11 @@ export default function TournamentParticipantsPage() {
   // Состояния для множественного выбора участников
   const [selectedParticipants, setSelectedParticipants] = useState<Set<number>>(new Set());
   const [isSelectAll, setIsSelectAll] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; participantId: number | null; name: string }>({
+    isOpen: false,
+    participantId: null,
+    name: '',
+  });
 
   // Функция для копирования в буфер обмена
   const copyToClipboard = async (text: string, fieldId: string) => {
@@ -658,20 +664,20 @@ export default function TournamentParticipantsPage() {
     }
   };
 
-  const handleDelete = async (participantId: number, firstName: string, lastName: string) => {
-    if (!token) return;
+  const handleDeleteClick = (participantId: number, firstName: string, lastName: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      participantId,
+      name: `${firstName} ${lastName}`,
+    });
+  };
 
-    const confirmMessage = tTournaments('confirmDeleteParticipant', { 
-      name: `${firstName} ${lastName}` 
-    }) || `Вы уверены, что хотите удалить участника ${firstName} ${lastName}? Это действие нельзя отменить.`;
-
-    if (!window.confirm(confirmMessage)) {
-      return;
-    }
+  const handleDeleteConfirm = async () => {
+    if (!token || !deleteConfirm.participantId) return;
 
     try {
       setError(null);
-      const response = await fetch(`/api/tournament/${tournamentId}/registrations/${participantId}`, {
+      const response = await fetch(`/api/tournament/${tournamentId}/registrations/${deleteConfirm.participantId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -688,6 +694,8 @@ export default function TournamentParticipantsPage() {
       }
     } catch (err) {
       setError(tTournaments('participantDeleteError') || 'Ошибка при удалении участника');
+    } finally {
+      setDeleteConfirm({ isOpen: false, participantId: null, name: '' });
     }
   };
 
@@ -1335,7 +1343,7 @@ export default function TournamentParticipantsPage() {
                             </svg>
                           </button>
                           <button
-                            onClick={() => handleDelete(participant.id, participant.firstName, participant.lastName)}
+                            onClick={() => handleDeleteClick(participant.id, participant.firstName, participant.lastName)}
                             className="p-1.5 bg-red-500/20 text-red-400 rounded hover:bg-red-500/30 transition-colors"
                             title={tTournaments('delete')}
                           >
@@ -1854,6 +1862,18 @@ export default function TournamentParticipantsPage() {
             </div>
           </div>
         )}
+
+        {/* Delete Confirmation Dialog */}
+        <ConfirmDialog
+          isOpen={deleteConfirm.isOpen}
+          title={tTournaments('delete') || 'Delete Participant'}
+          message={tTournaments('confirmDeleteParticipant', { name: deleteConfirm.name }) || `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`}
+          confirmText={tTournaments('delete') || 'Delete'}
+          cancelText={tTournaments('cancel') || 'Cancel'}
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => setDeleteConfirm({ isOpen: false, participantId: null, name: '' })}
+          variant="danger"
+        />
       </div>
     </div>
   );

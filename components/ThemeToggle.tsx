@@ -1,16 +1,18 @@
 'use client';
 
 import { useTheme } from '@/contexts/ThemeContext';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
   const t = useTranslations('Common');
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasDragged, setHasDragged] = useState(false);
   const x = useMotionValue(0);
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // Загружаем состояние из localStorage при монтировании
   useEffect(() => {
@@ -31,28 +33,59 @@ const ThemeToggle = () => {
     return Math.max(0, Math.min(100, value));
   });
 
+  const handleDragStart = () => {
+    setIsDragging(true);
+    setHasDragged(false);
+    // Очищаем таймаут клика если был
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+      clickTimeoutRef.current = null;
+    }
+  };
+
+  const handleDrag = () => {
+    if (x.get() > 5) {
+      setHasDragged(true);
+    }
+  };
+
   const handleDragEnd = () => {
     setIsDragging(false);
     // Если перетянули больше чем на 50px вправо - скрываем
     if (x.get() > 50) {
       setIsCollapsed(true);
-      x.set(100);
+      animate(x, 100, { type: 'spring', stiffness: 300, damping: 30 });
     } else {
       // Иначе возвращаем обратно
       setIsCollapsed(false);
-      x.set(0);
+      animate(x, 0, { type: 'spring', stiffness: 300, damping: 30 });
     }
+    // Сбрасываем флаг перетягивания через небольшую задержку
+    setTimeout(() => {
+      setHasDragged(false);
+    }, 100);
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    // Если только что перетягивали - игнорируем клик
+    if (hasDragged || isDragging) {
+      return;
+    }
+
     if (isCollapsed) {
       // Если скрыт - показываем обратно
       setIsCollapsed(false);
-      x.set(0);
+      animate(x, 0, { type: 'spring', stiffness: 300, damping: 30 });
     } else {
       // Если виден - переключаем тему
       toggleTheme();
     }
+  };
+
+  const handleCloseClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsCollapsed(true);
+    animate(x, 100, { type: 'spring', stiffness: 300, damping: 30 });
   };
 
   return (
@@ -71,64 +104,92 @@ const ThemeToggle = () => {
         />
       )}
 
-      <motion.button
-        onClick={handleClick}
+      <motion.div
         drag="x"
         dragConstraints={{ left: 0, right: 100 }}
         dragElastic={0.2}
-        onDragStart={() => setIsDragging(true)}
+        onDragStart={handleDragStart}
+        onDrag={handleDrag}
         onDragEnd={handleDragEnd}
         style={{ 
           x: constrainedX,
           right: isCollapsed ? -60 : 24,
         }}
-        className={`fixed top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 rounded-full bg-background-secondary border border-border hover:border-primary transition-all shadow-lg hover:shadow-xl ${
+        className={`fixed top-1/2 -translate-y-1/2 z-50 ${
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
         }`}
-        whileHover={!isDragging ? { scale: 1.1 } : {}}
-        whileTap={!isDragging ? { scale: 0.9 } : {}}
-        aria-label={theme === 'dark' ? t('darkMode') : t('lightMode')}
       >
-        {theme === 'dark' ? (
-          <>
-            <svg
-              className="w-5 h-5 md:w-6 md:h-6 text-primary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <motion.button
+          onClick={handleClick}
+          className="flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 rounded-full bg-background-secondary border border-border hover:border-primary transition-all shadow-lg hover:shadow-xl relative"
+          whileHover={!isDragging ? { scale: 1.1 } : {}}
+          whileTap={!isDragging ? { scale: 0.9 } : {}}
+          aria-label={theme === 'dark' ? t('darkMode') : t('lightMode')}
+        >
+          {/* Крестик для закрытия */}
+          {!isCollapsed && (
+            <button
+              onClick={handleCloseClick}
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center transition-colors z-10"
+              aria-label="Close"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-              />
-            </svg>
-            <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
-              {t('darkMode')}
-            </span>
-          </>
-        ) : (
-          <>
-            <svg
-              className="w-5 h-5 md:w-6 md:h-6 text-primary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-              />
-            </svg>
-            <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
-              {t('lightMode')}
-            </span>
-          </>
-        )}
-      </motion.button>
+              <svg
+                className="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
+          
+          {theme === 'dark' ? (
+            <>
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
+                {t('darkMode')}
+              </span>
+            </>
+          ) : (
+            <>
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+              <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
+                {t('lightMode')}
+              </span>
+            </>
+          )}
+        </motion.button>
+      </motion.div>
     </>
   );
 };
