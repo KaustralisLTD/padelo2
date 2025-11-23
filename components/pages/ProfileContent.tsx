@@ -256,6 +256,12 @@ export default function ProfileContent() {
           {t('description')}
         </p>
 
+        {error && (
+          <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm font-poppins mb-6">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Photo Upload */}
           <div className="bg-background-secondary p-6 rounded-lg border border-border">
