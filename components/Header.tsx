@@ -305,35 +305,35 @@ const Header = () => {
                 zIndex: 100
               }}
             >
-              {/* Кнопка закрытия меню */}
-              <div className="sticky top-0 z-10 flex justify-end p-4 bg-transparent">
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`p-2 rounded-lg transition-all duration-200 hover:bg-primary/10 active:scale-95 ${
-                    theme === 'light'
-                      ? 'text-gray-800 hover:bg-gray-100'
-                      : 'text-text-secondary hover:bg-white/10'
-                  }`}
-                  aria-label="Close menu"
-                >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              <div className="container mx-auto px-4 py-4">
+                {/* Кнопка закрытия меню */}
+                <div className="flex justify-end mb-2">
+                  <button
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`p-2 rounded-lg transition-all duration-200 hover:bg-primary/10 active:scale-95 ${
+                      theme === 'light'
+                        ? 'text-gray-800 hover:bg-gray-100'
+                        : 'text-text-secondary hover:bg-white/10'
+                    }`}
+                    aria-label="Close menu"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="container mx-auto px-4 pb-6">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 {/* Навигационные пункты */}
-                <nav className="space-y-1 mb-6">
+                <nav className="space-y-0.5 mb-4">
                   {authenticatedNavItems.map((item, index) => (
                     <motion.div
                       key={item.key}
@@ -349,7 +349,7 @@ const Header = () => {
                       <Link
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-poppins group ${
+                        className={`flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-200 font-poppins group ${
                           pathname === item.href
                             ? theme === 'light'
                               ? 'text-primary bg-primary/15 font-semibold shadow-sm'
@@ -359,7 +359,7 @@ const Header = () => {
                               : 'text-text-secondary hover:text-primary hover:bg-white/5 active:bg-white/10'
                         }`}
                       >
-                        <span className="text-base font-medium">{t(item.key)}</span>
+                        <span className="text-sm font-medium">{t(item.key)}</span>
                         {pathname === item.href ? (
                           <motion.div
                             layoutId="activeIndicator"
@@ -402,7 +402,7 @@ const Header = () => {
                     <Link
                       href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-poppins group ${
+                      className={`flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-200 font-poppins group ${
                         (pathname === `/${locale}/login` || pathname === `/${locale}/profile`)
                           ? theme === 'light'
                             ? 'text-primary bg-primary/15 font-semibold shadow-sm'
@@ -412,7 +412,7 @@ const Header = () => {
                             : 'text-text-secondary hover:text-primary hover:bg-white/5 active:bg-white/10'
                       }`}
                     >
-                      <span className="text-base font-medium">{isAuthenticated ? t('account') : t('login')}</span>
+                      <span className="text-sm font-medium">{isAuthenticated ? t('account') : t('login')}</span>
                       {(pathname === `/${locale}/login` || pathname === `/${locale}/profile`) ? (
                         <motion.div
                           layoutId="activeIndicator"

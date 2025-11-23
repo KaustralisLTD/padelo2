@@ -138,6 +138,8 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     
     // ТОЧНО ТА ЖЕ логика как в письмах
     let descriptionToDisplay = tournament.description;
+    
+    // Сначала пробуем точное совпадение локали
     if (tournament.translations?.description?.[locale]) {
       descriptionToDisplay = tournament.translations.description[locale];
     }
@@ -145,13 +147,27 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     else if (locale === 'ua' && tournament.translations?.description?.['uk']) {
       descriptionToDisplay = tournament.translations.description['uk'];
     }
+    // Fallback для 'uk': пробуем 'ua' если 'uk' не найден
+    else if (locale === 'uk' && tournament.translations?.description?.['ua']) {
+      descriptionToDisplay = tournament.translations.description['ua'];
+    }
     // Fallback на русский для украинских пользователей
-    else if (locale === 'ua' && tournament.translations?.description?.['ru']) {
+    else if ((locale === 'ua' || locale === 'uk') && tournament.translations?.description?.['ru']) {
       descriptionToDisplay = tournament.translations.description['ru'];
     }
     // Fallback на английский
     else if (tournament.translations?.description?.['en']) {
       descriptionToDisplay = tournament.translations.description['en'];
+    }
+    
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[TournamentDetails] Description translation:', {
+        locale,
+        hasTranslation: !!tournament.translations?.description?.[locale],
+        availableKeys: tournament.translations?.description ? Object.keys(tournament.translations.description) : [],
+        using: descriptionToDisplay !== tournament.description ? 'translated' : 'original',
+      });
     }
     
     return descriptionToDisplay;
@@ -166,6 +182,8 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     
     // ТОЧНО ТА ЖЕ логика как в письмах
     let eventScheduleToDisplay = tournament.eventSchedule;
+    
+    // Сначала пробуем точное совпадение локали
     if (tournament.translations?.eventSchedule?.[locale]) {
       eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
     }
@@ -173,13 +191,29 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     else if (locale === 'ua' && tournament.translations?.eventSchedule?.['uk']) {
       eventScheduleToDisplay = tournament.translations.eventSchedule['uk'];
     }
+    // Fallback для 'uk': пробуем 'ua' если 'uk' не найден
+    else if (locale === 'uk' && tournament.translations?.eventSchedule?.['ua']) {
+      eventScheduleToDisplay = tournament.translations.eventSchedule['ua'];
+    }
     // Fallback на русский для украинских пользователей
-    else if (locale === 'ua' && tournament.translations?.eventSchedule?.['ru']) {
+    else if ((locale === 'ua' || locale === 'uk') && tournament.translations?.eventSchedule?.['ru']) {
       eventScheduleToDisplay = tournament.translations.eventSchedule['ru'];
     }
     // Fallback на английский
     else if (tournament.translations?.eventSchedule?.['en']) {
       eventScheduleToDisplay = tournament.translations.eventSchedule['en'];
+    }
+    
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[TournamentDetails] EventSchedule translation:', {
+        locale,
+        hasTranslation: !!tournament.translations?.eventSchedule?.[locale],
+        availableKeys: tournament.translations?.eventSchedule ? Object.keys(tournament.translations.eventSchedule) : [],
+        originalCount: tournament.eventSchedule.length,
+        translatedCount: eventScheduleToDisplay.length,
+        using: eventScheduleToDisplay !== tournament.eventSchedule ? 'translated' : 'original',
+      });
     }
     
     return eventScheduleToDisplay;
