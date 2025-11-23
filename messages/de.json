@@ -940,6 +940,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Geldbörse"
+    },
+    "logs": {
+      "title": "Protokolle"
+    },
+    "dbMonitor": {
+      "title": "DB-Monitor"
+    },
     "staff": {
       "assignAccess": "Zugriff Zuweisen",
       "editAccess": "Zugriff Bearbeiten",
