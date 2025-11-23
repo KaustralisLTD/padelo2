@@ -458,14 +458,6 @@ export default function AdminUsersContent() {
 
   return (
     <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <Link
-            href={`/${locale}/dashboard`}
-            className="text-text-secondary hover:text-primary font-poppins transition-colors"
-          >
-            ← {t('backToDashboard')}
-          </Link>
-        </div>
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
