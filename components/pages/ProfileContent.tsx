@@ -410,9 +410,9 @@ export default function ProfileContent() {
                   {tshirtSizes.map((size) => {
                     const measurements = tshirtSizesData[size];
                     return (
-                      <option key={size} value={size}>
+                    <option key={size} value={size}>
                         {size} ({t('tshirtWidth')}: {measurements.ancho}cm, {t('tshirtLength')}: {measurements.largo}cm)
-                      </option>
+                    </option>
                     );
                   })}
                 </select>

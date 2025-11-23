@@ -1186,9 +1186,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     {tshirtSizes.map((size) => {
                       const measurements = tshirtSizesData[size];
                       return (
-                        <option key={size} value={size}>
+                      <option key={size} value={size}>
                           {size} ({t('form.tshirtWidth')}: {measurements.ancho}cm, {t('form.tshirtLength')}: {measurements.largo}cm)
-                        </option>
+                      </option>
                       );
                     })}
                   </select>
@@ -1265,9 +1265,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             {tshirtSizes.map((size) => {
               const measurements = tshirtSizesData[size];
               return (
-                <option key={size} value={size}>
+              <option key={size} value={size}>
                   {size} ({t('form.tshirtWidth')}: {measurements.ancho}cm, {t('form.tshirtLength')}: {measurements.largo}cm)
-                </option>
+              </option>
               );
             })}
           </select>

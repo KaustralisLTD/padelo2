@@ -58,33 +58,33 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
     // Import email template and sendEmail function
     const { getConfirmationEmailTemplate } = await import('@/lib/email-templates');
     const { sendEmail } = await import('@/lib/email');
-    
-    const translations: Record<string, string> = {
-      en: `Confirm your registration for ${tournamentName}`,
-      ru: `Подтвердите регистрацию на ${tournamentName}`,
-      ua: `Підтвердіть реєстрацію на ${tournamentName}`,
-      es: `Confirma tu registro para ${tournamentName}`,
-      fr: `Confirmez votre inscription pour ${tournamentName}`,
-      de: `Bestätigen Sie Ihre Anmeldung für ${tournamentName}`,
-      it: `Conferma la tua registrazione per ${tournamentName}`,
-      ca: `Confirma el teu registre per a ${tournamentName}`,
-      nl: `Bevestig uw registratie voor ${tournamentName}`,
-      da: `Bekræft din registrering for ${tournamentName}`,
-      sv: `Bekräfta din registrering för ${tournamentName}`,
-      no: `Bekreft din registrering for ${tournamentName}`,
-      ar: `أكد تسجيلك لـ ${tournamentName}`,
-      zh: `确认您对 ${tournamentName} 的注册`
-    };
-    
-    const subject = translations[locale] || translations.en;
-    const html = getConfirmationEmailTemplate({
-      tournamentName,
-      confirmationUrl,
-      firstName,
-      lastName,
-      locale,
-    });
-    
+      
+      const translations: Record<string, string> = {
+        en: `Confirm your registration for ${tournamentName}`,
+        ru: `Подтвердите регистрацию на ${tournamentName}`,
+        ua: `Підтвердіть реєстрацію на ${tournamentName}`,
+        es: `Confirma tu registro para ${tournamentName}`,
+        fr: `Confirmez votre inscription pour ${tournamentName}`,
+        de: `Bestätigen Sie Ihre Anmeldung für ${tournamentName}`,
+        it: `Conferma la tua registrazione per ${tournamentName}`,
+        ca: `Confirma el teu registre per a ${tournamentName}`,
+        nl: `Bevestig uw registratie voor ${tournamentName}`,
+        da: `Bekræft din registrering for ${tournamentName}`,
+        sv: `Bekräfta din registrering för ${tournamentName}`,
+        no: `Bekreft din registrering for ${tournamentName}`,
+        ar: `أكد تسجيلك لـ ${tournamentName}`,
+        zh: `确认您对 ${tournamentName} 的注册`
+      };
+      
+      const subject = translations[locale] || translations.en;
+      const html = getConfirmationEmailTemplate({
+        tournamentName,
+        confirmationUrl,
+        firstName,
+        lastName,
+        locale,
+      });
+      
     // Generate plain text version
     const text = html
       .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
@@ -100,11 +100,11 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
       .trim();
     
     await sendEmail({
-      to: email,
-      subject,
-      html,
+        to: email,
+        subject,
+        html,
       text,
-    });
+      });
     
     console.log(`[sendConfirmationEmail] Email sent to ${email}`);
   } catch (error) {

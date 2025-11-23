@@ -38,13 +38,13 @@ export async function GET(request: NextRequest) {
     const pool = getDbPool();
     let locale = 'en'; // Default fallback
     
-    try {
-      const [users] = await pool.execute(
-        'SELECT preferred_language FROM users WHERE id = ?',
-        [result.user.id]
-      ) as any[];
-      if (users.length > 0 && users[0].preferred_language) {
-        locale = users[0].preferred_language;
+      try {
+        const [users] = await pool.execute(
+          'SELECT preferred_language FROM users WHERE id = ?',
+          [result.user.id]
+        ) as any[];
+        if (users.length > 0 && users[0].preferred_language) {
+          locale = users[0].preferred_language;
         console.log(`[verify-email] Using user preferred language: ${locale}`);
       } else {
         // Fallback: try URL locale

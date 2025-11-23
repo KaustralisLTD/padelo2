@@ -241,43 +241,43 @@ export default function DashboardContent() {
     try {
       // Compress image before converting to base64
       const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
-      const fileName = `${selectedRegistration.firstName}_${selectedRegistration.lastName}.${file.name.split('.').pop()}`;
+          const fileName = `${selectedRegistration.firstName}_${selectedRegistration.lastName}.${file.name.split('.').pop()}`;
 
-      const token = localStorage.getItem('tournament_token');
-      if (!token) {
-        setPhotoError('Token not found');
-        setUploadingPhoto(false);
-        return;
-      }
+          const token = localStorage.getItem('tournament_token');
+          if (!token) {
+            setPhotoError('Token not found');
+            setUploadingPhoto(false);
+            return;
+          }
 
-      const response = await fetch(`/api/tournament/register?token=${token}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userPhoto: {
-            name: fileName,
+          const response = await fetch(`/api/tournament/register?token=${token}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userPhoto: {
+                name: fileName,
             data: compressedBase64,
-          },
-        }),
-      });
+              },
+            }),
+          });
 
-      if (response.ok) {
-        const data = await response.json();
-        setSelectedRegistration(data.registration);
-        // Refresh registration data
-        setTimeout(() => {
-          fetchRegistration(token);
-        }, 500);
-      } else {
-        const errorData = await response.json().catch(() => ({ error: 'Failed to upload photo' }));
-        setPhotoError(errorData.error || 'Failed to upload photo');
-      }
-    } catch (error) {
-      console.error('Error uploading photo:', error);
+          if (response.ok) {
+            const data = await response.json();
+            setSelectedRegistration(data.registration);
+            // Refresh registration data
+            setTimeout(() => {
+              fetchRegistration(token);
+            }, 500);
+          } else {
+            const errorData = await response.json().catch(() => ({ error: 'Failed to upload photo' }));
+            setPhotoError(errorData.error || 'Failed to upload photo');
+          }
+        } catch (error) {
+          console.error('Error uploading photo:', error);
       setPhotoError('Failed to upload photo. Please try another file.');
-    } finally {
-      setUploadingPhoto(false);
-      // Reset input
+        } finally {
+          setUploadingPhoto(false);
+          // Reset input
       e.target.value = '';
     }
   };

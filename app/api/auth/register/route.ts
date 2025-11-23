@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       emailVerificationToken: verificationToken,
       preferredLanguage: locale,
     });
-
+    
     console.log(`[POST /api/auth/register] Sending verification email to ${email} with locale ${locale}`);
     const emailSent = await sendEmailVerification(email, firstName, verificationToken, locale);
     if (!emailSent) {
