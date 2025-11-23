@@ -5,6 +5,7 @@ interface EmailOptions {
   to: string | string[];
   subject: string;
   html: string;
+  text?: string; // Plain text version for better deliverability
   from?: string;
   replyTo?: string;
 }
@@ -13,14 +14,34 @@ interface EmailOptions {
  * Send email using Resend service
  * Falls back to console.log if Resend is not configured
  */
+// Helper function to strip HTML and create plain text version
+function htmlToText(html: string): string {
+  return html
+    .replace(/<style[^>]*>.*?<\/style>/gis, '')
+    .replace(/<script[^>]*>.*?<\/script>/gis, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
-  const { to, subject, html, from, replyTo } = options;
+  const { to, subject, html, text, from, replyTo } = options;
   // Используем верифицированный домен из переменной окружения или padelo2.com по умолчанию
   const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'padelo2.com';
   const fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
   // Format: "PadelO2 <email@domain.com>" - используем обычный текст без специальных символов для совместимости
   const fromName = `PadelO2 <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
+  
+  // Generate plain text version if not provided
+  const plainText = text || htmlToText(html);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
 
   try {
     if (process.env.RESEND_API_KEY) {
@@ -37,11 +58,19 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
         to: recipients,
         subject,
         html,
+        text: plainText, // Add plain text version for better deliverability
         reply_to: replyTo || fromEmail,
         headers: {
-          'List-Unsubscribe': `<${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/unsubscribe>`,
+          'List-Unsubscribe': `<${siteUrl}/unsubscribe>`,
           'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          'X-Entity-Ref-ID': `${Date.now()}-${Math.random().toString(36).substring(7)}`, // Unique message ID
+          'Precedence': 'bulk', // Indicates transactional email
+          'X-Auto-Response-Suppress': 'All', // Suppress auto-responses
         },
+        tags: [
+          { name: 'category', value: 'transactional' },
+          { name: 'type', value: 'tournament-registration' },
+        ],
       });
       
       if (result.error) {
@@ -994,6 +1023,9 @@ export async function sendTournamentRegistrationEmail(data: {
     locale: data.locale || 'en',
   });
 
+  // Generate plain text version
+  const text = htmlToText(html);
+
   // Get subject with tournament name
   const subjectTranslations: Record<string, (name: string) => string> = {
     en: (name: string) => `We got your registration for ${name} - PadelO₂`,
@@ -1015,27 +1047,11 @@ export async function sendTournamentRegistrationEmail(data: {
   const getSubject = subjectTranslations[data.locale || 'en'] || subjectTranslations.en;
   const subject = getSubject(data.tournament.name);
 
-  const translations: Record<string, string> = {
-    en: 'We got your registration - PadelO₂',
-    ru: 'Мы получили вашу регистрацию - PadelO₂',
-    ua: 'Ми отримали вашу реєстрацію - PadelO₂',
-    es: 'Recibimos tu registro - PadelO₂',
-    fr: 'Nous avons reçu votre inscription - PadelO₂',
-    de: 'Wir haben Ihre Anmeldung erhalten - PadelO₂',
-    it: 'Abbiamo ricevuto la tua registrazione - PadelO₂',
-    ca: 'Hem rebut el teu registre - PadelO₂',
-    nl: 'We hebben uw registratie ontvangen - PadelO₂',
-    da: 'Vi har modtaget din registrering - PadelO₂',
-    sv: 'Vi har mottagit din registrering - PadelO₂',
-    no: 'Vi har mottatt din registrering - PadelO₂',
-    ar: 'لقد استلمنا تسجيلك - PadelO₂',
-    zh: '我们已收到您的注册 - PadelO₂'
-  };
-
   return await sendEmail({
     to: data.email,
     subject: subject,
     html,
+    text,
   });
 }
 

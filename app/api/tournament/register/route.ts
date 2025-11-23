@@ -51,49 +51,59 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
 // Helper function to send confirmation email
 async function sendConfirmationEmail(email: string, confirmationUrl: string, tournamentName: string, locale: string = 'en', firstName?: string, lastName?: string) {
   try {
-    // Import email template
+    // Import email template and sendEmail function
     const { getConfirmationEmailTemplate } = await import('@/lib/email-templates');
+    const { sendEmail } = await import('@/lib/email');
     
-    // Try Resend first
-    if (process.env.RESEND_API_KEY) {
-      const { Resend } = await import('resend');
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      
-      const translations: Record<string, string> = {
-        en: `Confirm your registration for ${tournamentName}`,
-        ru: `Подтвердите регистрацию на ${tournamentName}`,
-        ua: `Підтвердіть реєстрацію на ${tournamentName}`,
-        es: `Confirma tu registro para ${tournamentName}`,
-        fr: `Confirmez votre inscription pour ${tournamentName}`,
-        de: `Bestätigen Sie Ihre Anmeldung für ${tournamentName}`,
-        it: `Conferma la tua registrazione per ${tournamentName}`,
-        ca: `Confirma el teu registre per a ${tournamentName}`,
-        nl: `Bevestig uw registratie voor ${tournamentName}`,
-        da: `Bekræft din registrering for ${tournamentName}`,
-        sv: `Bekräfta din registrering för ${tournamentName}`,
-        no: `Bekreft din registrering for ${tournamentName}`,
-        ar: `أكد تسجيلك لـ ${tournamentName}`,
-        zh: `确认您对 ${tournamentName} 的注册`
-      };
-      
-      const subject = translations[locale] || translations.en;
-      const html = getConfirmationEmailTemplate({
-        tournamentName,
-        confirmationUrl,
-        firstName,
-        lastName,
-        locale,
-      });
-      
-      await resend.emails.send({
-        from: process.env.SMTP_FROM || 'PadelO₂ <hello@padelO2.com>',
-        to: email,
-        subject,
-        html,
-      });
-      console.log(`[sendConfirmationEmail] Email sent via Resend to ${email}`);
-      return;
-    }
+    const translations: Record<string, string> = {
+      en: `Confirm your registration for ${tournamentName}`,
+      ru: `Подтвердите регистрацию на ${tournamentName}`,
+      ua: `Підтвердіть реєстрацію на ${tournamentName}`,
+      es: `Confirma tu registro para ${tournamentName}`,
+      fr: `Confirmez votre inscription pour ${tournamentName}`,
+      de: `Bestätigen Sie Ihre Anmeldung für ${tournamentName}`,
+      it: `Conferma la tua registrazione per ${tournamentName}`,
+      ca: `Confirma el teu registre per a ${tournamentName}`,
+      nl: `Bevestig uw registratie voor ${tournamentName}`,
+      da: `Bekræft din registrering for ${tournamentName}`,
+      sv: `Bekräfta din registrering för ${tournamentName}`,
+      no: `Bekreft din registrering for ${tournamentName}`,
+      ar: `أكد تسجيلك لـ ${tournamentName}`,
+      zh: `确认您对 ${tournamentName} 的注册`
+    };
+    
+    const subject = translations[locale] || translations.en;
+    const html = getConfirmationEmailTemplate({
+      tournamentName,
+      confirmationUrl,
+      firstName,
+      lastName,
+      locale,
+    });
+    
+    // Generate plain text version
+    const text = html
+      .replace(/<style[^>]*>.*?<\/style>/gis, '')
+      .replace(/<script[^>]*>.*?<\/script>/gis, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    await sendEmail({
+      to: email,
+      subject,
+      html,
+      text,
+    });
+    
+    console.log(`[sendConfirmationEmail] Email sent to ${email}`);
+    return;
     
     // Try SendGrid
     if (process.env.SENDGRID_API_KEY) {
