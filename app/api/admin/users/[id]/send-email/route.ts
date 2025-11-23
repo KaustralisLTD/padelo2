@@ -50,7 +50,7 @@ async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boo
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ userId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const access = await checkAdminAccess(request);
@@ -61,7 +61,7 @@ export async function POST(
       );
     }
 
-    const { userId } = await params;
+    const { id: userId } = await params;
     const body = await request.json();
     const { template, locale = 'en' } = body;
 
