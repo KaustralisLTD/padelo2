@@ -18,6 +18,26 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
     
     if (existingUsers.length > 0) {
       const userId = existingUsers[0].id;
+      
+      // Проверяем, есть ли у пользователя temporary_password
+      const [userData] = await pool.execute(
+        'SELECT temporary_password FROM users WHERE id = ?',
+        [userId]
+      ) as any[];
+      
+      // Если у пользователя нет temporary_password, создаем новый
+      if (!userData[0]?.temporary_password) {
+        // Генерируем более читаемый временный пароль (12 символов: буквы и цифры)
+        const defaultPassword = crypto.randomBytes(8).toString('base64').replace(/[+/=]/g, '').substring(0, 12) + 
+                               crypto.randomInt(100, 999).toString(); // Добавляем 3 цифры для надежности
+        
+        await pool.execute(
+          'UPDATE users SET temporary_password = ?, updated_at = NOW() WHERE id = ?',
+          [defaultPassword, userId]
+        );
+        console.log(`[getOrCreateUserByEmail] Generated temporary password for existing user ${userId}`);
+      }
+      
       // Если передан токен верификации и у пользователя его нет, обновляем
       if (verificationToken && !existingUsers[0].email_verification_token) {
         await pool.execute(
