@@ -226,14 +226,13 @@ export async function POST(request: NextRequest) {
     try {
       if (!emailVerified) {
         // Если email НЕ верифицирован - отправляем письмо с верификацией
-        confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/tournament/confirmation?token=${token}`;
-        await sendConfirmationEmail(
-          body.email, 
-          confirmationUrl, 
-          body.tournamentName, 
-          body.locale || 'en',
-          body.firstName,
-          body.lastName
+        confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/verify-email?token=${token}`;
+        const { sendEmailVerification } = await import('@/lib/email');
+        await sendEmailVerification(
+          body.email,
+          body.firstName || 'User',
+          token,
+          body.locale || 'en'
         );
         console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email}`);
       } else {

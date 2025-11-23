@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyEmail } from '@/lib/users';
 import { sendWelcomeEmail } from '@/lib/email';
 import { createSession } from '@/lib/users';
+import { getDbPool } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,12 +34,35 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Send welcome email - extract locale from URL
+    // Send welcome email - try to get locale from user's preferred language or URL
     const url = new URL(request.url);
     const localeFromUrl = url.pathname.split('/')[1];
-    const locale = localeFromUrl && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(localeFromUrl)
+    let locale = localeFromUrl && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(localeFromUrl)
       ? localeFromUrl
-      : request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+      : null;
+    
+    // If no locale from URL, try to get from user's email verification token locale or accept-language header
+    if (!locale) {
+      // Try to get locale from verification token (stored during registration)
+      const pool = getDbPool();
+      try {
+        const [users] = await pool.execute(
+          'SELECT preferred_language FROM users WHERE id = ?',
+          [result.user.id]
+        ) as any[];
+        if (users.length > 0 && users[0].preferred_language) {
+          locale = users[0].preferred_language;
+        }
+      } catch (e) {
+        console.error('[verify-email] Error getting user preferred language:', e);
+      }
+    }
+    
+    // Fallback to accept-language header or default to 'en'
+    if (!locale) {
+      locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    }
+    
     await sendWelcomeEmail(result.user.email, result.user.firstName, locale);
 
     // Create session for verified user
