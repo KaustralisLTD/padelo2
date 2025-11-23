@@ -384,6 +384,11 @@ export async function initDatabase() {
 
   // Add new columns if they don't exist (for existing tables)
   try {
+    await pool.execute('ALTER TABLE users ADD COLUMN preferred_language VARCHAR(10) DEFAULT NULL');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
+  try {
     await pool.execute('ALTER TABLE users ADD COLUMN phone VARCHAR(50) DEFAULT NULL');
   } catch (e: any) {
     if (!e.message.includes('Duplicate column name')) throw e;

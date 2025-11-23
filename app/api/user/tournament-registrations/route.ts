@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
     const userEmail = userRows[0].email;
     
     // Получаем все регистрации пользователя
+    // Исключаем регистрации детей (parent_user_id IS NOT NULL) - они отображаются как часть регистрации родителя
     const [registrations] = await pool.execute(`
       SELECT 
         tr.id,
@@ -47,7 +48,8 @@ export async function GET(request: NextRequest) {
         t.status
       FROM tournament_registrations tr
       JOIN tournaments t ON tr.tournament_id = t.id
-      WHERE tr.user_id = ? OR tr.email = ?
+      WHERE (tr.user_id = ? OR tr.email = ?)
+        AND tr.parent_user_id IS NULL
       ORDER BY t.start_date DESC, tr.created_at DESC
     `, [session.userId, userEmail]) as any[];
 

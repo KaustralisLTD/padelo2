@@ -53,7 +53,12 @@ export async function POST(request: NextRequest) {
     // Generate email verification token
     const verificationToken = crypto.randomBytes(32).toString('hex');
     
-    // Create new user (default role: participant) with verification token
+    // Get locale from request body or headers
+    const locale = bodyLocale && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(bodyLocale)
+      ? bodyLocale
+      : request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+    
+    // Create new user (default role: participant) with verification token and preferred language
     const user = await createUser({
       email,
       password,
@@ -61,13 +66,9 @@ export async function POST(request: NextRequest) {
       lastName,
       role: 'participant',
       emailVerificationToken: verificationToken,
+      preferredLanguage: locale,
     });
 
-    // Send email verification - get locale from request body or headers
-    const locale = bodyLocale && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(bodyLocale)
-      ? bodyLocale
-      : request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
-    
     console.log(`[POST /api/auth/register] Sending verification email to ${email} with locale ${locale}`);
     const emailSent = await sendEmailVerification(email, firstName, verificationToken, locale);
     if (!emailSent) {

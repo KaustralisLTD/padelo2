@@ -35,10 +35,14 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
     // Хешируем пароль (используем простой хеш для демо, в продакшене используйте bcrypt)
     const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
     
+    // Получаем locale из body (передается при регистрации на турнир)
+    // Это будет использовано для сохранения preferred_language
+    const locale = (global as any).currentRegistrationLocale || null;
+    
     await pool.execute(
-      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, created_at)
-       VALUES (?, ?, ?, ?, ?, 'participant', ?, NOW())`,
-      [userId, email, passwordHash, firstName, lastName, verificationToken || null]
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, preferred_language, created_at)
+       VALUES (?, ?, ?, ?, ?, 'participant', ?, ?, NOW())`,
+      [userId, email, passwordHash, firstName, lastName, verificationToken || null, locale]
     );
     
     return userId;
@@ -208,11 +212,30 @@ export async function POST(request: NextRequest) {
     
     // Если пользователь не залогинен, получаем или создаем user_id по email
     if (!userId && body.email) {
+      // Сохраняем locale в глобальной переменной для использования в getOrCreateUserByEmail
+      (global as any).currentRegistrationLocale = body.locale || 'en';
       userId = await getOrCreateUserByEmail(body.email, body.firstName || '', body.lastName || '', verificationToken);
+      delete (global as any).currentRegistrationLocale;
+      
+      // Сохраняем preferred_language пользователя, если он еще не установлен
+      if (userId && body.locale) {
+        try {
+          const pool = getDbPool();
+          await pool.execute(
+            'UPDATE users SET preferred_language = ? WHERE id = ? AND (preferred_language IS NULL OR preferred_language = "")',
+            [body.locale, userId]
+          );
+        } catch (e) {
+          console.error('[POST /api/tournament/register] Error updating preferred_language:', e);
+        }
+      }
     }
     
     // Generate a unique token for tournament registration confirmation
     const token = crypto.randomBytes(32).toString('hex');
+    
+    // Проверяем, верифицирован ли email пользователя
+    const emailVerified = body.email ? await isUserEmailVerified(body.email) : false;
     
     // Store registration data
     const registrationData = {
@@ -220,13 +243,13 @@ export async function POST(request: NextRequest) {
       userId,
       token,
       createdAt: new Date().toISOString(),
-      confirmed: false,
+      confirmed: emailVerified, // Если email уже подтвержден, регистрация сразу подтверждена
     };
     
     // Сохраняем регистрацию в БД
     try {
       await saveRegistration(token, registrationData);
-      console.log(`[POST /api/tournament/register] Registration saved successfully for token: ${token.substring(0, 8)}...`);
+      console.log(`[POST /api/tournament/register] Registration saved successfully for token: ${token.substring(0, 8)}... (confirmed: ${emailVerified})`);
     } catch (saveError: any) {
       console.error('[POST /api/tournament/register] Error saving registration:', saveError);
       return NextResponse.json(
@@ -234,9 +257,6 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-    
-    // Проверяем, верифицирован ли email пользователя
-    const emailVerified = body.email ? await isUserEmailVerified(body.email) : false;
     
     // Получаем детали турнира для отправки детального письма
     let tournament = null;
@@ -253,17 +273,21 @@ export async function POST(request: NextRequest) {
     try {
       if (!emailVerified) {
         // Если email НЕ верифицирован - отправляем письмо с верификацией
-        confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/verify-email?token=${verificationToken}`;
+        // Используем более понятный URL вместо длинного токена в query string
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+        const locale = body.locale || 'en';
+        // Используем короткий путь для лучшей доставляемости
+        confirmationUrl = `${siteUrl}/${locale}/verify-email?token=${verificationToken}`;
         const { sendEmailVerification } = await import('@/lib/email');
         await sendEmailVerification(
           body.email,
           body.firstName || 'User',
           verificationToken,
-          body.locale || 'en'
+          locale
         );
         console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email} with token: ${verificationToken.substring(0, 8)}...`);
       } else {
-        // Если email верифицирован - отправляем детальное письмо о турнире
+        // Если email верифицирован - отправляем детальное письмо о турнире и благодарим за регистрацию
         const { sendTournamentRegistrationEmail } = await import('@/lib/email');
         const tournamentData = tournament ? {
           id: tournament.id,
@@ -298,7 +322,7 @@ export async function POST(request: NextRequest) {
           categories: body.categories || [],
           locale: body.locale || 'en',
         });
-        console.log(`[POST /api/tournament/register] Tournament registration email sent to: ${body.email}`);
+        console.log(`[POST /api/tournament/register] Tournament registration email sent to: ${body.email} (registration already confirmed)`);
       }
     } catch (emailError: any) {
       console.error('[POST /api/tournament/register] Error sending email:', emailError);

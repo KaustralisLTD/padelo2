@@ -34,35 +34,38 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Send welcome email - try to get locale from user's preferred language or URL
-    const url = new URL(request.url);
-    const localeFromUrl = url.pathname.split('/')[1];
-    let locale = localeFromUrl && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(localeFromUrl)
-      ? localeFromUrl
-      : null;
+    // Send welcome email - get locale from user's preferred_language (saved during registration)
+    const pool = getDbPool();
+    let locale = 'en'; // Default fallback
     
-    // If no locale from URL, try to get from user's email verification token locale or accept-language header
-    if (!locale) {
-      // Try to get locale from verification token (stored during registration)
-      const pool = getDbPool();
-      try {
-        const [users] = await pool.execute(
-          'SELECT preferred_language FROM users WHERE id = ?',
-          [result.user.id]
-        ) as any[];
-        if (users.length > 0 && users[0].preferred_language) {
-          locale = users[0].preferred_language;
+    try {
+      const [users] = await pool.execute(
+        'SELECT preferred_language FROM users WHERE id = ?',
+        [result.user.id]
+      ) as any[];
+      if (users.length > 0 && users[0].preferred_language) {
+        locale = users[0].preferred_language;
+        console.log(`[verify-email] Using user preferred language: ${locale}`);
+      } else {
+        // Fallback: try URL locale
+        const url = new URL(request.url);
+        const localeFromUrl = url.pathname.split('/')[1];
+        if (localeFromUrl && ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'].includes(localeFromUrl)) {
+          locale = localeFromUrl;
+          console.log(`[verify-email] Using URL locale: ${locale}`);
+        } else {
+          // Final fallback: accept-language header
+          locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
+          console.log(`[verify-email] Using accept-language header: ${locale}`);
         }
-      } catch (e) {
-        console.error('[verify-email] Error getting user preferred language:', e);
       }
-    }
-    
-    // Fallback to accept-language header or default to 'en'
-    if (!locale) {
+    } catch (e) {
+      console.error('[verify-email] Error getting user preferred language:', e);
+      // Fallback to accept-language header
       locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
     }
     
+    console.log(`[verify-email] Sending welcome email to ${result.user.email} with locale: ${locale}`);
     await sendWelcomeEmail(result.user.email, result.user.firstName, locale);
 
     // Create session for verified user

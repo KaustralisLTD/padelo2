@@ -641,9 +641,12 @@ export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
                         </tr>
                       </table>
 
-                      <p class="muted" style="margin: 0 0 18px 0;">
+                      <p class="muted" style="margin: 0 0 18px 0; font-size: 13px; line-height: 1.6;">
                         ${t.ifButtonDoesntWork}<br />
-                        <span style="word-break: break-all; color: #0369a1;">${confirmationUrl}</span>
+                        <a href="${confirmationUrl}" style="word-break: break-all; color: #0369a1; text-decoration: underline;">${confirmationUrl}</a>
+                      </p>
+                      <p class="muted" style="margin: 12px 0 0 0; font-size: 12px; color: #6b7280;">
+                        ${locale === 'ru' || locale === 'ua' ? 'Эта ссылка действительна в течение 7 дней.' : locale === 'en' ? 'This link is valid for 7 days.' : 'This link is valid for 7 days.'}
                       </p>
                     </td>
                   </tr>

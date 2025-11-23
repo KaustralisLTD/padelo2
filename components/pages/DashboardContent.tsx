@@ -1143,6 +1143,73 @@ export default function DashboardContent() {
           </div>
         )}
 
+        {/* Category Partners (for Mixed categories) */}
+        {selectedRegistration.categoryPartners && Object.keys(selectedRegistration.categoryPartners).length > 0 && (
+          <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
+            <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+              {t('dashboard.categoryPartners') || 'Partners by Category'}
+            </h2>
+            {Object.entries(selectedRegistration.categoryPartners).map(([category, partner]: [string, any]) => (
+              <div key={category} className="mb-6 last:mb-0 border-b border-gray-700 pb-6 last:border-b-0">
+                <h3 className="text-lg font-orbitron font-semibold mb-3 text-primary">
+                  {customCategories[category] || category}
+                </h3>
+                <div className="space-y-2 text-text-secondary font-poppins">
+                  <p><strong className="text-text">{t('form.partnerName')}:</strong> {partner.name}</p>
+                  <p><strong className="text-text">{t('form.partnerEmail')}:</strong> {partner.email}</p>
+                  <p><strong className="text-text">{t('form.partnerPhone')}:</strong> {partner.phone}</p>
+                  {partner.tshirtSize && (
+                    <p><strong className="text-text">{t('form.partnerTshirtSize')}:</strong> {partner.tshirtSize}</p>
+                  )}
+                  {partner.photoName && (
+                    <p><strong className="text-text">{t('form.partnerPhoto')}:</strong> {partner.photoName}</p>
+                  )}
+                  {partner.photoData && (
+                    <div className="mt-4">
+                      <Image
+                        src={partner.photoData}
+                        alt={partner.name}
+                        width={220}
+                        height={220}
+                        className="rounded-lg border border-gray-700 object-cover"
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Child Data (if exists) */}
+        {selectedRegistration.childData && selectedRegistration.childData.firstName && (
+          <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
+            <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">
+              {t('form.childInfo') || 'Child Information'}
+            </h2>
+            <div className="space-y-2 text-text-secondary font-poppins">
+              <p><strong className="text-text">{t('form.childFirstName')}:</strong> {selectedRegistration.childData.firstName}</p>
+              <p><strong className="text-text">{t('form.childLastName')}:</strong> {selectedRegistration.childData.lastName}</p>
+              {selectedRegistration.childData.photoName && (
+                <p><strong className="text-text">{t('form.childPhoto')}:</strong> {selectedRegistration.childData.photoName}</p>
+              )}
+              {selectedRegistration.childData.photoData && (
+                <div className="mt-4">
+                  <Image
+                    src={selectedRegistration.childData.photoData}
+                    alt={`${selectedRegistration.childData.firstName} ${selectedRegistration.childData.lastName}`}
+                    width={220}
+                    height={220}
+                    className="rounded-lg border border-gray-700 object-cover"
+                    unoptimized
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Photo Upload */}
         <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
           <h2 className="text-xl font-orbitron font-semibold mb-4 text-text">

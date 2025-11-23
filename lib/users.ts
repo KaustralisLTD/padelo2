@@ -15,6 +15,7 @@ export interface UserCreateData {
   lastName: string;
   role?: UserRole;
   emailVerificationToken?: string;
+  preferredLanguage?: string; // Locale for emails and UI
 }
 
 export interface UserUpdateData {
@@ -300,9 +301,9 @@ export async function createUser(data: UserCreateData): Promise<User> {
   try {
     const pool = getDbPool();
     await pool.execute(
-      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, email_verified) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [userId, data.email, passwordHash, data.firstName, data.lastName, role, data.emailVerificationToken || null, false]
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, email_verified, preferred_language) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [userId, data.email, passwordHash, data.firstName, data.lastName, role, data.emailVerificationToken || null, false, data.preferredLanguage || null]
     );
 
     return {
