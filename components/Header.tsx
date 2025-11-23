@@ -160,12 +160,12 @@ const Header = () => {
           )}
         </Link>
 
-          <div className="nav-items-container flex items-center space-x-2 xl:space-x-3 2xl:space-x-4 justify-end">
+          <div className="nav-items-container flex items-center space-x-4 xl:space-x-6 2xl:space-x-8 justify-end">
           {authenticatedNavItems.map((item) => (
             <Link
               key={item.key}
               href={item.href}
-                className={`text-xs xl:text-sm font-poppins transition-all duration-200 hover:text-primary whitespace-nowrap px-1.5 xl:px-2 py-1 rounded-md hover:bg-primary/10 ${
+                className={`text-xs xl:text-sm font-poppins transition-all duration-200 hover:text-primary whitespace-nowrap px-2 py-1 rounded-md hover:bg-primary/10 ${
                 pathname === item.href 
                     ? 'text-primary font-semibold' 
                   : theme === 'light'
@@ -178,7 +178,7 @@ const Header = () => {
           ))}
           <Link
             href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
-              className={`text-xs xl:text-sm font-poppins transition-all duration-200 hover:text-primary whitespace-nowrap px-1.5 xl:px-2 py-1 rounded-md hover:bg-primary/10 ${
+              className={`text-xs xl:text-sm font-poppins transition-all duration-200 hover:text-primary whitespace-nowrap px-2 py-1 rounded-md hover:bg-primary/10 ${
               theme === 'light'
                 ? 'text-white/90'
                 : 'text-text-secondary'
