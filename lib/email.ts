@@ -540,13 +540,16 @@ export async function sendEmailVerification(
 export async function sendWelcomeEmail(
   email: string,
   firstName: string,
-  locale: string = 'en'
+  locale: string = 'en',
+  temporaryPassword?: string
 ): Promise<boolean> {
   const { getWelcomeEmailTemplate } = await import('@/lib/email-templates');
   
   const html = getWelcomeEmailTemplate({
     firstName,
     locale,
+    email,
+    temporaryPassword,
   });
 
   const translations: Record<string, string> = {

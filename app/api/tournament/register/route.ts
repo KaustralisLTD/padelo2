@@ -30,19 +30,22 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
     
     // Создаем нового пользователя с ролью 'participant'
     const userId = crypto.randomUUID();
-    const defaultPassword = crypto.randomBytes(32).toString('hex'); // Временный пароль, пользователь сможет установить свой через восстановление
+    // Генерируем более читаемый временный пароль (12 символов: буквы и цифры)
+    const defaultPassword = crypto.randomBytes(8).toString('base64').replace(/[+/=]/g, '').substring(0, 12) + 
+                           crypto.randomInt(100, 999).toString(); // Добавляем 3 цифры для надежности
     
-    // Хешируем пароль (используем простой хеш для демо, в продакшене используйте bcrypt)
-    const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
+    // Хешируем пароль используя bcrypt (как в lib/users.ts)
+    const bcrypt = require('bcryptjs');
+    const passwordHash = await bcrypt.hash(defaultPassword, 10);
     
     // Получаем locale из body (передается при регистрации на турнир)
     // Это будет использовано для сохранения preferred_language
     const locale = (global as any).currentRegistrationLocale || null;
     
     await pool.execute(
-      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, preferred_language, created_at)
-       VALUES (?, ?, ?, ?, ?, 'participant', ?, ?, NOW())`,
-      [userId, email, passwordHash, firstName, lastName, verificationToken || null, locale]
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, preferred_language, temporary_password, created_at)
+       VALUES (?, ?, ?, ?, ?, 'participant', ?, ?, ?, NOW())`,
+      [userId, email, passwordHash, firstName, lastName, verificationToken || null, locale, defaultPassword]
     );
     
     return userId;

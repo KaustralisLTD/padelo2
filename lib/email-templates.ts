@@ -796,6 +796,8 @@ export interface WelcomeEmailData {
   firstName?: string;
   lastName?: string;
   locale?: string;
+  email?: string;
+  temporaryPassword?: string;
 }
 
 export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
@@ -811,6 +813,10 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
       welcomeTo: 'welcome to',
       message: 'Your email has been verified successfully! You\'re now part of the PadelO₂ community.',
       description: 'You can now access all features, register for tournaments, track your matches, and connect with other players.',
+      accountInfo: 'Your account credentials:',
+      loginLabel: 'Email (Login):',
+      passwordLabel: 'Password:',
+      passwordNote: 'Please save this password. You can change it later in your profile settings.',
       button: 'Go to Dashboard',
       footer: 'Welcome to the court',
       team: 'PadelO₂ Team',
@@ -824,6 +830,10 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
       welcomeTo: 'добро пожаловать на',
       message: 'Ваш email успешно подтвержден! Теперь вы часть сообщества PadelO₂.',
       description: 'Теперь вы можете получить доступ ко всем функциям, регистрироваться на турниры, отслеживать свои матчи и общаться с другими игроками.',
+      accountInfo: 'Данные для входа в аккаунт:',
+      loginLabel: 'Email (Логин):',
+      passwordLabel: 'Пароль:',
+      passwordNote: 'Пожалуйста, сохраните этот пароль. Вы сможете изменить его позже в настройках профиля.',
       button: 'Перейти в Панель',
       footer: 'Добро пожаловать на корт',
       team: 'Команда PadelO₂',
@@ -837,6 +847,10 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
       welcomeTo: 'ласкаво просимо на',
       message: 'Ваш email успішно підтверджено! Тепер ви частина спільноти PadelO₂.',
       description: 'Тепер ви можете отримати доступ до всіх функцій, реєструватися на турніри, відстежувати свої матчі та спілкуватися з іншими гравцями.',
+      accountInfo: 'Дані для входу в акаунт:',
+      loginLabel: 'Email (Логін):',
+      passwordLabel: 'Пароль:',
+      passwordNote: 'Будь ласка, збережіть цей пароль. Ви зможете змінити його пізніше в налаштуваннях профілю.',
       button: 'Перейти до Панелі',
       footer: 'Ласкаво просимо на корт',
       team: 'Команда PadelO₂',
@@ -1189,6 +1203,31 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
                       <p class="lead" style="margin: 0 0 18px 0;">
                         ${t.description}
                       </p>
+
+                      ${data.temporaryPassword ? `
+                      <div style="background: #f0f9ff; border: 2px solid #0284c7; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                        <p class="lead" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e;">
+                          ${t.accountInfo}
+                        </p>
+                        <table role="presentation" width="100%" style="margin: 8px 0;">
+                          <tr>
+                            <td style="padding: 8px 0; border-bottom: 1px solid #bae6fd;">
+                              <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">${t.loginLabel}</p>
+                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace;">${data.email || ''}</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding: 8px 0;">
+                              <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">${t.passwordLabel}</p>
+                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: 1px;">${data.temporaryPassword}</p>
+                            </td>
+                          </tr>
+                        </table>
+                        <p style="margin: 12px 0 0 0; font-size: 12px; color: #64748b; line-height: 1.5;">
+                          ${t.passwordNote}
+                        </p>
+                      </div>
+                      ` : ''}
 
                       <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 6px 0 18px 0;">
                         <tr>

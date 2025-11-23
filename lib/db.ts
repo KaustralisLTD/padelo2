@@ -453,6 +453,12 @@ export async function initDatabase() {
   } catch (e: any) {
     if (!e.message.includes('Duplicate column name')) throw e;
   }
+  
+  try {
+    await pool.execute('ALTER TABLE users ADD COLUMN temporary_password VARCHAR(255) DEFAULT NULL COMMENT "Temporary password for new users created during tournament registration"');
+  } catch (e: any) {
+    if (!e.message.includes('Duplicate column name')) throw e;
+  }
   try {
     await pool.execute('ALTER TABLE users MODIFY password_hash VARCHAR(255) DEFAULT NULL');
   } catch (e: any) {

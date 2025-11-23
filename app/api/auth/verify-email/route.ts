@@ -34,19 +34,28 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Send welcome email - get locale from user's preferred_language (saved during registration)
+    // Send welcome email - get locale and temporary password from user's data
     const pool = getDbPool();
     let locale = 'en'; // Default fallback
+    let temporaryPassword: string | null = null;
     
-      try {
-        const [users] = await pool.execute(
-          'SELECT preferred_language FROM users WHERE id = ?',
-          [result.user.id]
-        ) as any[];
-        if (users.length > 0 && users[0].preferred_language) {
+    try {
+      const [users] = await pool.execute(
+        'SELECT preferred_language, temporary_password FROM users WHERE id = ?',
+        [result.user.id]
+      ) as any[];
+      if (users.length > 0) {
+        if (users[0].preferred_language) {
           locale = users[0].preferred_language;
-        console.log(`[verify-email] Using user preferred language: ${locale}`);
-      } else {
+          console.log(`[verify-email] Using user preferred language: ${locale}`);
+        }
+        temporaryPassword = users[0].temporary_password || null;
+        if (temporaryPassword) {
+          console.log(`[verify-email] Found temporary password for user ${result.user.id}`);
+        }
+      }
+      
+      if (!locale || locale === 'en') {
         // Fallback: try URL locale
         const url = new URL(request.url);
         const localeFromUrl = url.pathname.split('/')[1];
@@ -60,13 +69,26 @@ export async function GET(request: NextRequest) {
         }
       }
     } catch (e) {
-      console.error('[verify-email] Error getting user preferred language:', e);
+      console.error('[verify-email] Error getting user data:', e);
       // Fallback to accept-language header
       locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
     }
     
-    console.log(`[verify-email] Sending welcome email to ${result.user.email} with locale: ${locale}`);
-    await sendWelcomeEmail(result.user.email, result.user.firstName, locale);
+    console.log(`[verify-email] Sending welcome email to ${result.user.email} with locale: ${locale}${temporaryPassword ? ' (with temporary password)' : ''}`);
+    await sendWelcomeEmail(result.user.email, result.user.firstName, locale, temporaryPassword || undefined);
+    
+    // Clear temporary password after sending welcome email
+    if (temporaryPassword) {
+      try {
+        await pool.execute(
+          'UPDATE users SET temporary_password = NULL WHERE id = ?',
+          [result.user.id]
+        );
+        console.log(`[verify-email] Cleared temporary password for user ${result.user.id}`);
+      } catch (e) {
+        console.error('[verify-email] Error clearing temporary password:', e);
+      }
+    }
 
     // Create session for verified user
     const sessionToken = await createSession(result.user.id, 7); // 7 days
