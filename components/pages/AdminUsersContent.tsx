@@ -708,8 +708,8 @@ export default function AdminUsersContent() {
       )}
 
       {/* Вкладки для выбранного пользователя */}
-        {selectedUserId && activeTab !== 'list' && (
-          <div className="bg-background-secondary rounded-lg border border-border p-6">
+      {selectedUserId && activeTab !== 'list' && (
+        <div className="bg-background-secondary rounded-lg border border-border p-6">
             {loadingTab ? (
               <div className="text-center py-8">
                 <p className="text-text-secondary font-poppins">{t('loading')}</p>
