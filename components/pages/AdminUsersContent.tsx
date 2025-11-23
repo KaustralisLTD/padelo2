@@ -457,6 +457,7 @@ export default function AdminUsersContent() {
   }
 
   return (
+    <>
     <div className="max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -1099,110 +1100,110 @@ export default function AdminUsersContent() {
             </div>
         </div>
       )}
+    </div>
 
-      {/* Send Email Modal */}
-        {showEmailModal && emailUser && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
-              <div className="p-6 border-b border-border flex justify-between items-center">
-                <div>
-                  <h3 className="text-2xl font-poppins font-bold gradient-text">
-                    {t('users.sendEmail') || 'Send Email'}
-                  </h3>
-                  <p className="text-text-secondary text-sm mt-1">
-                    {t('users.sendEmailTo') || 'Send email to:'} {emailUser.email}
-                  </p>
-                </div>
-                <button
-                  onClick={() => {
-                    setShowEmailModal(false);
-                    setEmailUser(null);
-                    setSelectedEmailTemplate('');
-                  }}
-                  className="text-text-secondary hover:text-text transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+    {/* Send Email Modal */}
+    {showEmailModal && emailUser && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
+          <div className="p-6 border-b border-border flex justify-between items-center">
+            <div>
+              <h3 className="text-2xl font-poppins font-bold gradient-text">
+                {t('users.sendEmail') || 'Send Email'}
+              </h3>
+              <p className="text-text-secondary text-sm mt-1">
+                {t('users.sendEmailTo') || 'Send email to:'} {emailUser.email}
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                setShowEmailModal(false);
+                setEmailUser(null);
+                setSelectedEmailTemplate('');
+              }}
+              className="text-text-secondary hover:text-text transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="p-6 space-y-4">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                <p className="text-red-400 text-sm font-poppins whitespace-pre-line">{error}</p>
               </div>
-              <div className="p-6 space-y-4">
-                {error && (
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
-                    <p className="text-red-400 text-sm font-poppins whitespace-pre-line">{error}</p>
-                  </div>
-                )}
+            )}
 
-                <div>
-                  <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('users.selectEmailTemplate') || 'Select Email Template'}
-                  </label>
-                  <select
-                    value={selectedEmailTemplate}
-                    onChange={(e) => setSelectedEmailTemplate(e.target.value)}
-                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
-                  >
-                    <option value="">{t('users.selectTemplate') || '-- Select Template --'}</option>
-                    
-                    {/* Account Management */}
-                    <optgroup label={t('users.categoryAccount') || '🔐 Account Management'}>
-                      <option value="email_verification">{t('users.templateEmailVerification') || 'Email Verification'}</option>
-                      <option value="welcome">{t('users.templateWelcome') || 'Welcome to PadelO₂.com'}</option>
-                      <option value="password_reset">{t('users.templatePasswordReset') || 'Password Reset'}</option>
-                      <option value="password_changed">{t('users.templatePasswordChanged') || 'Password Changed'}</option>
-                      <option value="change_email_old">{t('users.templateChangeEmailOld') || 'Change Email - Old Address'}</option>
-                      <option value="change_email_new">{t('users.templateChangeEmailNew') || 'Change Email - New Address'}</option>
-                      <option value="account_deleted">{t('users.templateAccountDeleted') || 'Account Deleted'}</option>
-                    </optgroup>
+            <div>
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('users.selectEmailTemplate') || 'Select Email Template'}
+              </label>
+              <select
+                value={selectedEmailTemplate}
+                onChange={(e) => setSelectedEmailTemplate(e.target.value)}
+                className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+              >
+                <option value="">{t('users.selectTemplate') || '-- Select Template --'}</option>
+                
+                {/* Account Management */}
+                <optgroup label={t('users.categoryAccount') || '🔐 Account Management'}>
+                  <option value="email_verification">{t('users.templateEmailVerification') || 'Email Verification'}</option>
+                  <option value="welcome">{t('users.templateWelcome') || 'Welcome to PadelO₂.com'}</option>
+                  <option value="password_reset">{t('users.templatePasswordReset') || 'Password Reset'}</option>
+                  <option value="password_changed">{t('users.templatePasswordChanged') || 'Password Changed'}</option>
+                  <option value="change_email_old">{t('users.templateChangeEmailOld') || 'Change Email - Old Address'}</option>
+                  <option value="change_email_new">{t('users.templateChangeEmailNew') || 'Change Email - New Address'}</option>
+                  <option value="account_deleted">{t('users.templateAccountDeleted') || 'Account Deleted'}</option>
+                </optgroup>
 
-                    {/* Tournament Templates - Note */}
-                    <optgroup label={t('users.categoryTournament') || '🏆 Tournament Templates (use tournament participants page)'}>
-                      <option value="tournament_registration" disabled>{t('users.templateTournamentRegistration') || 'Tournament Registration'}</option>
-                      <option value="tournament_confirmed" disabled>{t('users.templateTournamentConfirmed') || 'Tournament Confirmed'}</option>
-                      <option value="tournament_waiting_list" disabled>{t('users.templateWaitingList') || 'Waiting List'}</option>
-                      <option value="tournament_spot_confirmed" disabled>{t('users.templateSpotConfirmed') || 'Spot Confirmed'}</option>
-                      <option value="payment_received" disabled>{t('users.templatePaymentReceived') || 'Payment Received'}</option>
-                      <option value="payment_failed" disabled>{t('users.templatePaymentFailed') || 'Payment Failed'}</option>
-                      <option value="tournament_schedule_published" disabled>{t('users.templateSchedulePublished') || 'Schedule Published'}</option>
-                      <option value="match_reminder_1day" disabled>{t('users.templateMatchReminder1Day') || 'Match Reminder - 1 Day'}</option>
-                      <option value="match_reminder_sameday" disabled>{t('users.templateMatchReminderSameDay') || 'Match Reminder - Same Day'}</option>
-                      <option value="schedule_change" disabled>{t('users.templateScheduleChange') || 'Schedule Change'}</option>
-                      <option value="group_stage_results" disabled>{t('users.templateGroupStageResults') || 'Group Stage Results'}</option>
-                      <option value="finals_winners" disabled>{t('users.templateFinalsWinners') || 'Finals & Winners'}</option>
-                      <option value="post_tournament_recap" disabled>{t('users.templatePostTournamentRecap') || 'Post-Tournament Recap'}</option>
-                      <option value="tournament_feedback" disabled>{t('users.templateTournamentFeedback') || 'Tournament Feedback'}</option>
-                      <option value="tournament_cancelled" disabled>{t('users.templateTournamentCancelled') || 'Tournament Cancelled'}</option>
-                    </optgroup>
-                  </select>
-                </div>
+                {/* Tournament Templates - Note */}
+                <optgroup label={t('users.categoryTournament') || '🏆 Tournament Templates (use tournament participants page)'}>
+                  <option value="tournament_registration" disabled>{t('users.templateTournamentRegistration') || 'Tournament Registration'}</option>
+                  <option value="tournament_confirmed" disabled>{t('users.templateTournamentConfirmed') || 'Tournament Confirmed'}</option>
+                  <option value="tournament_waiting_list" disabled>{t('users.templateWaitingList') || 'Waiting List'}</option>
+                  <option value="tournament_spot_confirmed" disabled>{t('users.templateSpotConfirmed') || 'Spot Confirmed'}</option>
+                  <option value="payment_received" disabled>{t('users.templatePaymentReceived') || 'Payment Received'}</option>
+                  <option value="payment_failed" disabled>{t('users.templatePaymentFailed') || 'Payment Failed'}</option>
+                  <option value="tournament_schedule_published" disabled>{t('users.templateSchedulePublished') || 'Schedule Published'}</option>
+                  <option value="match_reminder_1day" disabled>{t('users.templateMatchReminder1Day') || 'Match Reminder - 1 Day'}</option>
+                  <option value="match_reminder_sameday" disabled>{t('users.templateMatchReminderSameDay') || 'Match Reminder - Same Day'}</option>
+                  <option value="schedule_change" disabled>{t('users.templateScheduleChange') || 'Schedule Change'}</option>
+                  <option value="group_stage_results" disabled>{t('users.templateGroupStageResults') || 'Group Stage Results'}</option>
+                  <option value="finals_winners" disabled>{t('users.templateFinalsWinners') || 'Finals & Winners'}</option>
+                  <option value="post_tournament_recap" disabled>{t('users.templatePostTournamentRecap') || 'Post-Tournament Recap'}</option>
+                  <option value="tournament_feedback" disabled>{t('users.templateTournamentFeedback') || 'Tournament Feedback'}</option>
+                  <option value="tournament_cancelled" disabled>{t('users.templateTournamentCancelled') || 'Tournament Cancelled'}</option>
+                </optgroup>
+              </select>
+            </div>
 
-                <div className="flex justify-end space-x-4 pt-4 border-t border-border">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowEmailModal(false);
-                      setEmailUser(null);
-                      setSelectedEmailTemplate('');
-                    }}
-                    className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
-                  >
-                    {t('users.cancel')}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSendEmail}
-                    disabled={!selectedEmailTemplate || sendingEmail}
-                    className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {sendingEmail ? (t('users.sending') || 'Sending...') : (t('users.send') || 'Send')}
-                  </button>
-                </div>
-              </div>
+            <div className="flex justify-end space-x-4 pt-4 border-t border-border">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowEmailModal(false);
+                  setEmailUser(null);
+                  setSelectedEmailTemplate('');
+                }}
+                className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
+              >
+                {t('users.cancel')}
+              </button>
+              <button
+                type="button"
+                onClick={handleSendEmail}
+                disabled={!selectedEmailTemplate || sendingEmail}
+                className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {sendingEmail ? (t('users.sending') || 'Sending...') : (t('users.send') || 'Send')}
+              </button>
             </div>
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    )}
+    </>
   );
 }
 
