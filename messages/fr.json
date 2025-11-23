@@ -841,8 +841,17 @@
       "title": "Tableau de bord"
     },
     "tournaments": {
-      "title": "Gérer les Tournois",
+      "title": "Tournois",
       "description": "Description",
+    "wallet": {
+      "title": "Portefeuille"
+    },
+    "logs": {
+      "title": "Journaux"
+    },
+    "dbMonitor": {
+      "title": "Moniteur de BD"
+    },
       "createTournament": "Créer un Tournoi",
       "editTournament": "Modifier le Tournoi",
       "name": "Nom",
