@@ -1,4 +1,10 @@
 // Script to check tournament translations in database
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+// Load .env.local file
+config({ path: resolve(__dirname, '../.env.local') });
+
 import { getDbPool } from '../lib/db';
 
 async function checkTournamentTranslations() {
