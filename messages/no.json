@@ -985,6 +985,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Lommebok"
+    },
+    "logs": {
+      "title": "Logger"
+    },
+    "dbMonitor": {
+      "title": "DB Monitor"
+    },
     "staff": {
       "assignAccess": "Tildel Tilgang",
       "editAccess": "Rediger Tilgang",

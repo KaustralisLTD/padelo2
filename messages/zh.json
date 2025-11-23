@@ -985,6 +985,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "钱包"
+    },
+    "logs": {
+      "title": "日志"
+    },
+    "dbMonitor": {
+      "title": "数据库监控"
+    },
     "staff": {
       "assignAccess": "分配访问权限",
       "editAccess": "编辑访问权限",

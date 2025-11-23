@@ -930,6 +930,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Portemonnee"
+    },
+    "logs": {
+      "title": "Logboeken"
+    },
+    "dbMonitor": {
+      "title": "DB Monitor"
+    },
     "staff": {
       "assignAccess": "Toegang Toewijzen",
       "editAccess": "Toegang Bewerken",

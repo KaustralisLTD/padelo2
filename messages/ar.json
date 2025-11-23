@@ -976,6 +976,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "المحفظة"
+    },
+    "logs": {
+      "title": "السجلات"
+    },
+    "dbMonitor": {
+      "title": "مراقب قاعدة البيانات"
+    },
     "staff": {
       "assignAccess": "تعيين الوصول",
       "editAccess": "تعديل الوصول",

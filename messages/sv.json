@@ -985,6 +985,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Plånbok"
+    },
+    "logs": {
+      "title": "Loggar"
+    },
+    "dbMonitor": {
+      "title": "DB Monitor"
+    },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",
       "editAccess": "Redigera Åtkomst",

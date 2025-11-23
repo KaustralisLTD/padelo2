@@ -985,6 +985,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Pung"
+    },
+    "logs": {
+      "title": "Logfiler"
+    },
+    "dbMonitor": {
+      "title": "DB Monitor"
+    },
     "staff": {
       "assignAccess": "Tildel Adgang",
       "editAccess": "Rediger Adgang",
