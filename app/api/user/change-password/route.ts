@@ -20,11 +20,11 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { currentPassword, newPassword } = body;
+    const { newPassword } = body;
 
-    if (!currentPassword || !newPassword) {
+    if (!newPassword) {
       return NextResponse.json(
-        { error: 'Current password and new password are required' },
+        { error: 'New password is required' },
         { status: 400 }
       );
     }
@@ -38,22 +38,14 @@ export async function POST(request: NextRequest) {
 
     const pool = getDbPool();
 
-    // Get current user and verify current password
+    // Get current user (no need to verify current password)
     const [users] = await pool.execute(
-      'SELECT password_hash FROM users WHERE id = ?',
+      'SELECT id FROM users WHERE id = ?',
       [session.userId]
     ) as any[];
 
     if (users.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    const isValid = await bcrypt.compare(currentPassword, users[0].password_hash);
-    if (!isValid) {
-      return NextResponse.json(
-        { error: 'Current password is incorrect' },
-        { status: 400 }
-      );
     }
 
     // Hash new password

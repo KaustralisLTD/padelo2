@@ -197,6 +197,14 @@ export default function DashboardContent() {
         return;
       }
 
+      // Конвертируем firstName/lastName в name для основного партнера
+      const partnerToSave = editData.partner
+        ? {
+            ...editData.partner,
+            name: `${editData.partner.firstName || ''} ${editData.partner.lastName || ''}`.trim(),
+          }
+        : null;
+
       // Конвертируем firstName/lastName в name для каждого партнера категории
       const convertedCategoryPartners: Record<string, any> = {};
       Object.entries(editCategoryPartners).forEach(([category, partner]: [string, any]) => {
@@ -213,6 +221,7 @@ export default function DashboardContent() {
 
       const dataToSend = {
         ...editData,
+        partner: partnerToSave,
         categoryPartners: convertedCategoryPartners,
         childData: childData,
       };
@@ -1030,37 +1039,54 @@ export default function DashboardContent() {
               {editData.partner && (
                 <div className="border-t border-gray-700 pt-4 mt-4">
                   <h3 className="text-lg font-orbitron font-semibold mb-4 text-text">
-                    {t('dashboard.partnerInfo')}
+                    {t('form.partnerInfo')}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-poppins text-text-secondary mb-2">
-                        {t('form.partnerName')}
+                        {t('form.firstName')} {registrationSettings.partner.required && <span className="text-red-400">*</span>}
                       </label>
                       <input
                         type="text"
-                        value={editData.partner.name || ''}
+                        required={registrationSettings.partner.required}
+                        value={editData.partner.firstName || ''}
                         onChange={(e) => setEditData({ 
                           ...editData, 
-                          partner: { ...editData.partner, name: e.target.value }
+                          partner: { ...editData.partner, firstName: e.target.value }
                         })}
                         className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-poppins text-text-secondary mb-2">
-                        {t('form.partnerEmail')}
+                        {t('form.lastName')}
                       </label>
                       <input
-                        type="email"
-                        value={editData.partner.email || ''}
+                        type="text"
+                        value={editData.partner.lastName || ''}
                         onChange={(e) => setEditData({ 
                           ...editData, 
-                          partner: { ...editData.partner, email: e.target.value }
+                          partner: { ...editData.partner, lastName: e.target.value }
                         })}
                         className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {t('form.partnerEmail')} {registrationSettings.partner.required && <span className="text-red-400">*</span>}
+                    </label>
+                    <input
+                      type="email"
+                      required={registrationSettings.partner.required}
+                      value={editData.partner.email || ''}
+                      onChange={(e) => setEditData({ 
+                        ...editData, 
+                        partner: { ...editData.partner, email: e.target.value }
+                      })}
+                      className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                    />
+                  </div>
                     <div>
                       <label className="block text-sm font-poppins text-text-secondary mb-2">
                         {t('form.partnerPhone')}

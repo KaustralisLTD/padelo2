@@ -74,7 +74,8 @@ export async function GET(request: NextRequest) {
       locale = request.headers.get('accept-language')?.split(',')[0]?.split('-')[0] || 'en';
     }
     
-    console.log(`[verify-email] Sending welcome email to ${result.user.email} with locale: ${locale}${temporaryPassword ? ' (with temporary password)' : ''}`);
+    console.log(`[verify-email] Sending welcome email to ${result.user.email} with locale: ${locale}${temporaryPassword ? ' (with temporary password)' : ' (NO temporary password)'}`);
+    console.log(`[verify-email] Temporary password value: ${temporaryPassword ? temporaryPassword.substring(0, 3) + '...' : 'null/undefined'}`);
     await sendWelcomeEmail(result.user.email, result.user.firstName, locale, temporaryPassword || undefined);
     
     // Clear temporary password after sending welcome email

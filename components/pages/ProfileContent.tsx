@@ -41,7 +41,6 @@ export default function ProfileContent() {
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [showChangeEmail, setShowChangeEmail] = useState(false);
   const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
@@ -446,7 +445,7 @@ export default function ProfileContent() {
                 onClick={() => {
                   setShowChangePassword(!showChangePassword);
                   if (showChangePassword) {
-                    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                    setPasswordData({ newPassword: '', confirmPassword: '' });
                     setPasswordStatus('idle');
                     setPasswordError(null);
                   }
@@ -458,17 +457,6 @@ export default function ProfileContent() {
             </div>
             {showChangePassword && (
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('currentPassword') || 'Current Password'} *
-                  </label>
-                  <input
-                    type="password"
-                    value={passwordData.currentPassword}
-                    onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
-                  />
-                </div>
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
                     {t('newPassword') || 'New Password'} *
@@ -505,7 +493,7 @@ export default function ProfileContent() {
                 <button
                   type="button"
                   onClick={async () => {
-                    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+                    if (!passwordData.newPassword || !passwordData.confirmPassword) {
                       setPasswordError(t('fillAllFields') || 'Please fill all fields');
                       return;
                     }
@@ -532,7 +520,6 @@ export default function ProfileContent() {
                           'Authorization': `Bearer ${token}`,
                         },
                         body: JSON.stringify({
-                          currentPassword: passwordData.currentPassword,
                           newPassword: passwordData.newPassword,
                         }),
                       });

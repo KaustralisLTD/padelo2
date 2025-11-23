@@ -1000,35 +1000,47 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           {(partnerRequired || showPartner) && (
             <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
               <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
-                {t('form.addPartner')}
+                {t('form.partnerInfo')}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('form.partnerName')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
+                    {t('form.firstName')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
                   </label>
                   <input
                     type="text"
                     required={partnerRequired || showPartner}
-                    name="partnerName"
-                    value={partner?.name || ''}
-                    onChange={(e) => setPartner({ ...partner!, name: e.target.value })}
+                    name="partnerFirstName"
+                    value={partner?.firstName || ''}
+                    onChange={(e) => updatePartnerField('firstName', e.target.value)}
                     className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('form.partnerEmail')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
+                    {t('form.lastName')}
                   </label>
                   <input
-                    type="email"
-                    required={partnerRequired || showPartner}
-                    name="partnerEmail"
-                    value={partner?.email || ''}
-                    onChange={(e) => setPartner({ ...partner!, email: e.target.value })}
+                    type="text"
+                    name="partnerLastName"
+                    value={partner?.lastName || ''}
+                    onChange={(e) => updatePartnerField('lastName', e.target.value)}
                     className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                   />
                 </div>
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.partnerEmail')} {(partnerRequired || showPartner) && <span className="text-red-400">*</span>}
+                </label>
+                <input
+                  type="email"
+                  required={partnerRequired || showPartner}
+                  name="partnerEmail"
+                  value={partner?.email || ''}
+                  onChange={(e) => updatePartnerField('email', e.target.value)}
+                  className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                />
               </div>
               <div>
                 <label className="block text-sm font-poppins text-text-secondary mb-2">
