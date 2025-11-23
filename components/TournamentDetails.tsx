@@ -53,6 +53,19 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
       if (response.ok) {
         const data = await response.json();
         setTournament(data.tournament);
+        
+        // Debug: логируем переводы для отладки
+        if (process.env.NODE_ENV === 'development' && data.tournament?.translations) {
+          console.log('[TournamentDetails] Translations available:', {
+            locale,
+            descriptionKeys: Object.keys(data.tournament.translations.description || {}),
+            eventScheduleKeys: Object.keys(data.tournament.translations.eventSchedule || {}),
+            hasDescriptionUA: !!data.tournament.translations.description?.['ua'],
+            hasDescriptionUK: !!data.tournament.translations.description?.['uk'],
+            hasEventScheduleUA: !!data.tournament.translations.eventSchedule?.['ua'],
+            hasEventScheduleUK: !!data.tournament.translations.eventSchedule?.['uk'],
+          });
+        }
       }
     } catch (error) {
       console.error('Error fetching tournament details:', error);
@@ -87,62 +100,62 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     return null;
   }
 
-  // Helper function to get translated description with fallback
+  // Helper function to get translated description
+  // Используем ТОЧНО ТУ ЖЕ логику, что и в письмах (строка 78-79 в email-templates-tournament.ts):
+  // let eventScheduleToDisplay = tournament.eventSchedule || [];
+  // if (tournament.translations?.eventSchedule?.[locale]) {
+  //   eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
+  // }
   const getTranslatedDescription = (): string => {
     if (!tournament.description) return '';
     
-    // Try current locale first
+    // ТОЧНО ТА ЖЕ логика как в письмах
+    let descriptionToDisplay = tournament.description;
     if (tournament.translations?.description?.[locale]) {
-      return tournament.translations.description[locale];
+      descriptionToDisplay = tournament.translations.description[locale];
+    }
+    // Fallback для украинского: пробуем 'uk' если 'ua' не найден
+    else if (locale === 'ua' && tournament.translations?.description?.['uk']) {
+      descriptionToDisplay = tournament.translations.description['uk'];
+    }
+    // Fallback на русский для украинских пользователей
+    else if (locale === 'ua' && tournament.translations?.description?.['ru']) {
+      descriptionToDisplay = tournament.translations.description['ru'];
+    }
+    // Fallback на английский
+    else if (tournament.translations?.description?.['en']) {
+      descriptionToDisplay = tournament.translations.description['en'];
     }
     
-    // Fallback for Ukrainian: try 'uk' if 'ua' not found
-    if (locale === 'ua' && tournament.translations?.description?.['uk']) {
-      return tournament.translations.description['uk'];
-    }
-    
-    // Fallback to Russian for Ukrainian users
-    if (locale === 'ua' && tournament.translations?.description?.['ru']) {
-      return tournament.translations.description['ru'];
-    }
-    
-    // Fallback to English
-    if (tournament.translations?.description?.['en']) {
-      return tournament.translations.description['en'];
-    }
-    
-    // Final fallback to original description
-    return tournament.description;
+    return descriptionToDisplay;
   };
 
-  // Helper function to get translated event schedule with fallback
+  // Helper function to get translated event schedule
+  // Используем ТОЧНО ТУ ЖЕ логику, что и в письмах (строка 77-79 в email-templates-tournament.ts)
   const getTranslatedEventSchedule = (): EventScheduleItem[] => {
     if (!tournament.eventSchedule || tournament.eventSchedule.length === 0) {
       return [];
     }
     
-    // Try current locale first
+    // ТОЧНО ТА ЖЕ логика как в письмах
+    let eventScheduleToDisplay = tournament.eventSchedule;
     if (tournament.translations?.eventSchedule?.[locale]) {
-      return tournament.translations.eventSchedule[locale];
+      eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
+    }
+    // Fallback для украинского: пробуем 'uk' если 'ua' не найден
+    else if (locale === 'ua' && tournament.translations?.eventSchedule?.['uk']) {
+      eventScheduleToDisplay = tournament.translations.eventSchedule['uk'];
+    }
+    // Fallback на русский для украинских пользователей
+    else if (locale === 'ua' && tournament.translations?.eventSchedule?.['ru']) {
+      eventScheduleToDisplay = tournament.translations.eventSchedule['ru'];
+    }
+    // Fallback на английский
+    else if (tournament.translations?.eventSchedule?.['en']) {
+      eventScheduleToDisplay = tournament.translations.eventSchedule['en'];
     }
     
-    // Fallback for Ukrainian: try 'uk' if 'ua' not found
-    if (locale === 'ua' && tournament.translations?.eventSchedule?.['uk']) {
-      return tournament.translations.eventSchedule['uk'];
-    }
-    
-    // Fallback to Russian for Ukrainian users
-    if (locale === 'ua' && tournament.translations?.eventSchedule?.['ru']) {
-      return tournament.translations.eventSchedule['ru'];
-    }
-    
-    // Fallback to English
-    if (tournament.translations?.eventSchedule?.['en']) {
-      return tournament.translations.eventSchedule['en'];
-    }
-    
-    // Final fallback to original event schedule
-    return tournament.eventSchedule;
+    return eventScheduleToDisplay;
   };
 
   return (
@@ -315,7 +328,7 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
             </button>
           </div>
           {showEventSchedule && (() => {
-            // Используем переведенное расписание с fallback логикой
+            // Используем helper функцию, которая использует ТОЧНО ТУ ЖЕ логику, что и в письмах
             const schedule = getTranslatedEventSchedule();
             return (
               <div className="space-y-4">
