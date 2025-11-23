@@ -1108,6 +1108,11 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   };
 
   const t = translations[locale] || translations.en;
+  const categoryCount = categories.length;
+  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceDoubleCategory * количество
+  const totalPrice = categoryCount === 1 
+    ? tournament.priceSingleCategory 
+    : tournament.priceDoubleCategory ? tournament.priceDoubleCategory * categoryCount : (tournament.priceSingleCategory ? tournament.priceSingleCategory * categoryCount : undefined);
   const subjectText = t.subject || 'Payment confirmed - Tournament registration - PadelO₂';
 
   return `
@@ -1231,6 +1236,11 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
                           <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                        </div>
+                        
+                        <div class="detail-row" style="border-bottom: none;">
+                          <div class="detail-label">${t.price || 'Price'}:</div>
+                          <div class="detail-value"><strong>${totalPrice && totalPrice > 0 ? totalPrice : (tournament.priceSingleCategory || 0)} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0} + ${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0}` : categoryCount + ' × ' + (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0)})` : ''}</div>
                         </div>
                       </div>
 
