@@ -3,6 +3,27 @@
 const SUPPORTED_LANGUAGES = ['en', 'ru', 'ua', 'es', 'fr', 'de', 'it', 'ca', 'nl', 'da', 'sv', 'no', 'ar', 'zh'];
 
 /**
+ * Map our locale codes to Google Translate API language codes
+ * Google Translate uses 'uk' for Ukrainian, not 'ua'
+ */
+const GOOGLE_TRANSLATE_LOCALE_MAP: Record<string, string> = {
+  'en': 'en',
+  'ru': 'ru',
+  'ua': 'uk', // КРИТИЧНО: Google Translate использует 'uk' для украинского, а не 'ua'!
+  'es': 'es',
+  'fr': 'fr',
+  'de': 'de',
+  'it': 'it',
+  'ca': 'ca',
+  'nl': 'nl',
+  'da': 'da',
+  'sv': 'sv',
+  'no': 'no',
+  'ar': 'ar',
+  'zh': 'zh',
+};
+
+/**
  * Translate text using Google Translate API or fallback
  * Requires GOOGLE_TRANSLATE_API_KEY environment variable
  */
@@ -10,6 +31,10 @@ async function translateText(text: string, targetLang: string, sourceLang: strin
   if (!text || text.trim() === '') return text;
   if (targetLang === sourceLang) return text;
   if (!SUPPORTED_LANGUAGES.includes(targetLang)) return text;
+
+  // Map our locale codes to Google Translate API codes
+  const googleTargetLang = GOOGLE_TRANSLATE_LOCALE_MAP[targetLang] || targetLang;
+  const googleSourceLang = GOOGLE_TRANSLATE_LOCALE_MAP[sourceLang] || sourceLang;
 
   // Try Google Translate API if available
   if (process.env.GOOGLE_TRANSLATE_API_KEY) {
@@ -23,8 +48,8 @@ async function translateText(text: string, targetLang: string, sourceLang: strin
           },
           body: JSON.stringify({
             q: text,
-            source: sourceLang,
-            target: targetLang,
+            source: googleSourceLang,
+            target: googleTargetLang, // Используем маппинг для правильного кода языка
             format: 'text',
           }),
         }
