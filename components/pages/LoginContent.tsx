@@ -87,8 +87,8 @@ export default function LoginContent() {
             // Используем детальное сообщение об ошибке, если оно есть
             const errorMessage = errorData.message || errorData.error || t('errors.invalidCredentials');
             setError(errorMessage);
-            // Сохраняем тип ошибки для отображения кнопки Forgot password
-            if (errorData.errorType === 'invalidPassword') {
+            // Показываем кнопку Forgot password для всех ошибок пароля
+            if (errorData.errorType === 'invalidPassword' || errorData.errorType === 'userNotFound') {
               setShowForgotPassword(true);
             } else {
               setShowForgotPassword(false);
@@ -355,6 +355,19 @@ export default function LoginContent() {
             {error && (
               <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm font-poppins">
                 {error}
+                {showForgotPassword && isLogin && (
+                  <div className="mt-3 pt-3 border-t border-red-500/30">
+                    <Link 
+                      href={`/${locale}/forgot-password`}
+                      className="text-primary hover:underline font-semibold inline-flex items-center gap-2"
+                    >
+                      <span>{t('forgotPassword') || 'Forgot password?'}</span>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
 

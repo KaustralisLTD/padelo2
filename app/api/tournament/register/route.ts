@@ -6,18 +6,26 @@ import { getDbPool } from '@/lib/db';
 import { getTournament } from '@/lib/tournaments';
 
 // Helper function to get or create user by email
-async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string): Promise<string | null> {
+async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string, verificationToken?: string): Promise<string | null> {
   try {
     const pool = getDbPool();
     
     // Ищем существующего пользователя по email
     const [existingUsers] = await pool.execute(
-      'SELECT id FROM users WHERE email = ?',
+      'SELECT id, email_verification_token FROM users WHERE email = ?',
       [email]
     ) as any[];
     
     if (existingUsers.length > 0) {
-      return existingUsers[0].id;
+      const userId = existingUsers[0].id;
+      // Если передан токен верификации и у пользователя его нет, обновляем
+      if (verificationToken && !existingUsers[0].email_verification_token) {
+        await pool.execute(
+          'UPDATE users SET email_verification_token = ?, updated_at = NOW() WHERE id = ?',
+          [verificationToken, userId]
+        );
+      }
+      return userId;
     }
     
     // Создаем нового пользователя с ролью 'participant'
@@ -28,9 +36,9 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
     const passwordHash = crypto.createHash('sha256').update(defaultPassword).digest('hex');
     
     await pool.execute(
-      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, created_at)
-       VALUES (?, ?, ?, ?, ?, 'participant', NOW())`,
-      [userId, email, passwordHash, firstName, lastName]
+      `INSERT INTO users (id, email, password_hash, first_name, last_name, role, email_verification_token, created_at)
+       VALUES (?, ?, ?, ?, ?, 'participant', ?, NOW())`,
+      [userId, email, passwordHash, firstName, lastName, verificationToken || null]
     );
     
     return userId;
@@ -151,7 +159,7 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
 
 // Configure runtime and increase body size limit
 export const runtime = 'nodejs';
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
@@ -160,9 +168,15 @@ export async function POST(request: NextRequest) {
     try {
       body = await request.json();
     } catch (error: any) {
-      if (error.message?.includes('PayloadTooLargeError') || error.message?.includes('413')) {
+      if (error.message?.includes('PayloadTooLargeError') || error.message?.includes('413') || error.name === 'PayloadTooLargeError') {
         return NextResponse.json(
-          { success: false, error: 'Request body too large. Please compress your images before uploading.' },
+          { 
+            success: false, 
+            error: 'Размер загружаемых фотографий слишком большой',
+            errorCode: 'PAYLOAD_TOO_LARGE',
+            message: 'Размер загружаемых фотографий превышает допустимый лимит. Пожалуйста, уменьшите размер фотографий или загрузите их позже из личного кабинета.',
+            solution: 'Если не удается загрузить фотографии сейчас, вы сможете сделать это позже из своего личного кабинета на странице турнира.'
+          },
           { status: 413 }
         );
       }
@@ -179,12 +193,15 @@ export async function POST(request: NextRequest) {
       }
     }
     
+    // Generate a unique token for email verification (if needed)
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    
     // Если пользователь не залогинен, получаем или создаем user_id по email
     if (!userId && body.email) {
-      userId = await getOrCreateUserByEmail(body.email, body.firstName || '', body.lastName || '');
+      userId = await getOrCreateUserByEmail(body.email, body.firstName || '', body.lastName || '', verificationToken);
     }
     
-    // Generate a unique token for confirmation
+    // Generate a unique token for tournament registration confirmation
     const token = crypto.randomBytes(32).toString('hex');
     
     // Store registration data
@@ -226,15 +243,15 @@ export async function POST(request: NextRequest) {
     try {
       if (!emailVerified) {
         // Если email НЕ верифицирован - отправляем письмо с верификацией
-        confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/verify-email?token=${token}`;
+        confirmationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${body.locale || 'en'}/verify-email?token=${verificationToken}`;
         const { sendEmailVerification } = await import('@/lib/email');
         await sendEmailVerification(
           body.email,
           body.firstName || 'User',
-          token,
+          verificationToken,
           body.locale || 'en'
         );
-        console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email}`);
+        console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email} with token: ${verificationToken.substring(0, 8)}...`);
       } else {
         // Если email верифицирован - отправляем детальное письмо о турнире
         const { sendTournamentRegistrationEmail } = await import('@/lib/email');

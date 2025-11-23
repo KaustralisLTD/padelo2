@@ -38,6 +38,10 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
         subject,
         html,
         reply_to: replyTo || fromEmail,
+        headers: {
+          'List-Unsubscribe': `<${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/unsubscribe>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
       });
       
       if (result.error) {

@@ -343,7 +343,9 @@
       "checkEmail": "Por favor, revisa tu bandeja de entrada para el enlace de confirmación.",
       "emailInstructions": "Si no ves el correo electrónico, por favor revisa tu carpeta de spam. El enlace de confirmación será válido por 7 días.",
       "resendVerificationEmail": "Reenviar Correo de Verificación",
-      "fileNotSelected": "No se ha seleccionado ningún archivo"
+      "fileNotSelected": "No se ha seleccionado ningún archivo",
+      "payloadTooLarge": "El tamaño de las fotos subidas excede el límite permitido",
+      "photoUploadSolution": "Si no puede subir fotos ahora, puede hacerlo más tarde desde su cuenta personal en la página del torneo."
     },
     "confirmation": {
       "title": "Registro Confirmado",

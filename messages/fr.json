@@ -320,7 +320,9 @@
       "emailInstructions": "Si vous ne voyez pas l'e-mail, veuillez vérifier votre dossier spam. Le lien de confirmation sera valide pendant 7 jours.",
       "resendVerificationEmail": "Renvoyer l'E-mail de Vérification",
       "fileNotSelected": "Aucun fichier sélectionné",
-      "registrationReceivedMessageUnverified": "Merci de vous être inscrit au tournoi {tournamentName} ! Nous avons reçu votre demande d'inscription. Veuillez vérifier votre e-mail et cliquer sur le lien de confirmation pour compléter votre inscription."
+      "registrationReceivedMessageUnverified": "Merci de vous être inscrit au tournoi {tournamentName} ! Nous avons reçu votre demande d'inscription. Veuillez vérifier votre e-mail et cliquer sur le lien de confirmation pour compléter votre inscription.",
+      "payloadTooLarge": "La taille des photos téléchargées dépasse la limite autorisée",
+      "photoUploadSolution": "Si vous ne pouvez pas télécharger de photos maintenant, vous pourrez le faire plus tard depuis votre compte personnel sur la page du tournoi."
     },
     "confirmation": {
       "title": "Inscription Confirmée",

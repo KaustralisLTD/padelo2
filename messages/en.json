@@ -428,7 +428,9 @@
         "text": "Please upload your photo for the tournament. The photo will be used for your player profile and tournament materials.",
         "filename": "File name format",
         "filenameExample": "FirstName_LastName.jpg (e.g., John_Doe.jpg)"
-      }
+      },
+      "payloadTooLarge": "The size of uploaded photos exceeds the allowed limit",
+      "photoUploadSolution": "If you cannot upload photos now, you can do so later from your personal account on the tournament page."
     },
     "confirmation": {
       "title": "Registration Confirmed",

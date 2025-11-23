@@ -891,7 +891,9 @@
       "emailInstructions": "Si no veus el correu electrònic, comprova la carpeta de correu brossa. L'enllaç de confirmació serà vàlid durant 7 dies.",
       "resendVerificationEmail": "Reenviar Correu de Verificació",
       "fileNotSelected": "Cap fitxer seleccionat",
-      "registrationReceivedMessageUnverified": "Gràcies per registrar-te al torneig {tournamentName}! Hem rebut la teva sol·licitud d'inscripció. Si us plau, comprova el teu correu electrònic i fes clic a l'enllaç de confirmació per completar la inscripció."
+      "registrationReceivedMessageUnverified": "Gràcies per registrar-te al torneig {tournamentName}! Hem rebut la teva sol·licitud d'inscripció. Si us plau, comprova el teu correu electrònic i fes clic a l'enllaç de confirmació per completar la inscripció.",
+      "payloadTooLarge": "La mida de les fotos pujades supera el límit permès",
+      "photoUploadSolution": "Si no podeu pujar fotos ara, podeu fer-ho més tard des del vostre compte personal a la pàgina del torneig."
     },
     "confirmation": {
       "title": "Registration Confirmed",

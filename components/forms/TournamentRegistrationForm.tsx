@@ -636,8 +636,19 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.error('[TournamentRegistrationForm] Registration failed:', errorData);
         setSubmitStatus('error');
-        setError(errorData.error || 'Failed to submit registration. Please try again.');
-        alert(errorData.error || 'Failed to submit registration. Please try again.');
+        
+        // Обработка ошибки 413 (Payload Too Large)
+        if (response.status === 413 || errorData.errorCode === 'PAYLOAD_TOO_LARGE') {
+          const errorMessage = errorData.message || t('form.payloadTooLarge') || 'Размер загружаемых фотографий превышает допустимый лимит.';
+          const solution = errorData.solution || t('form.photoUploadSolution') || 'Если не удается загрузить фотографии сейчас, вы сможете сделать это позже из своего личного кабинета на странице турнира.';
+          setError(`${errorMessage}\n\n${solution}`);
+          alert(`${errorMessage}\n\n${solution}`);
+        } else {
+          // Обработка других ошибок
+          const errorMessage = errorData.message || errorData.error || 'Не удалось отправить регистрацию. Пожалуйста, попробуйте еще раз.';
+          setError(errorMessage);
+          alert(errorMessage);
+        }
       }
     } catch (error: any) {
       console.error('[TournamentRegistrationForm] Registration error:', error);

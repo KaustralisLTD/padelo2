@@ -320,7 +320,9 @@
       "emailInstructions": "Hvis du ikke kan se e-mailen, tjek venligst din spam-mappe. Bekræftelseslinket vil være gyldigt i 7 dage.",
       "resendVerificationEmail": "Send Bekræftelses-E-mail Igen",
       "fileNotSelected": "Ingen fil valgt",
-      "registrationReceivedMessageUnverified": "Tak for din tilmelding til turneringen {tournamentName}! Vi har modtaget din tilmeldingsanmodning. Tjek venligst din e-mail og klik på bekræftelseslinket for at fuldføre din tilmelding."
+      "registrationReceivedMessageUnverified": "Tak for din tilmelding til turneringen {tournamentName}! Vi har modtaget din tilmeldingsanmodning. Tjek venligst din e-mail og klik på bekræftelseslinket for at fuldføre din tilmelding.",
+      "payloadTooLarge": "Størrelsen af de uploadede billeder overstiger den tilladte grænse",
+      "photoUploadSolution": "Hvis du ikke kan uploade billeder nu, kan du gøre det senere fra din personlige konto på turneringssiden."
     },
     "confirmation": {
       "title": "Registrering Bekræftet",

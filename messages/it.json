@@ -320,7 +320,9 @@
       "emailInstructions": "Se non vedi l'email, controlla la cartella spam. Il link di conferma sarà valido per 7 giorni.",
       "resendVerificationEmail": "Reinvia Email di Verifica",
       "fileNotSelected": "Nessun file selezionato",
-      "registrationReceivedMessageUnverified": "Grazie per esserti registrato al torneo {tournamentName}! Abbiamo ricevuto la tua richiesta di registrazione. Controlla la tua email e clicca sul link di conferma per completare la registrazione."
+      "registrationReceivedMessageUnverified": "Grazie per esserti registrato al torneo {tournamentName}! Abbiamo ricevuto la tua richiesta di registrazione. Controlla la tua email e clicca sul link di conferma per completare la registrazione.",
+      "payloadTooLarge": "La dimensione delle foto caricate supera il limite consentito",
+      "photoUploadSolution": "Se non puoi caricare le foto ora, puoi farlo più tardi dal tuo account personale sulla pagina del torneo."
     },
     "confirmation": {
       "title": "Registrazione Confermata",

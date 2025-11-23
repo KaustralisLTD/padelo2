@@ -320,7 +320,9 @@
       "emailInstructions": "如果您没有看到电子邮件，请检查您的垃圾邮件文件夹。确认链接将在7天内有效。",
       "resendVerificationEmail": "重新发送验证电子邮件",
       "fileNotSelected": "未选择文件",
-      "registrationReceivedMessageUnverified": "感谢您注册参加 {tournamentName} 锦标赛！我们已收到您的注册请求。请检查您的电子邮件并点击确认链接以完成注册。"
+      "registrationReceivedMessageUnverified": "感谢您注册参加 {tournamentName} 锦标赛！我们已收到您的注册请求。请检查您的电子邮件并点击确认链接以完成注册。",
+      "payloadTooLarge": "上传的照片大小超过允许的限制",
+      "photoUploadSolution": "如果您现在无法上传照片，您可以稍后从锦标赛页面上的个人帐户中执行此操作。"
     },
     "confirmation": {
       "title": "注册已确认",
