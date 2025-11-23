@@ -113,7 +113,7 @@ const ThemeToggle = () => {
         onDragEnd={handleDragEnd}
         style={{ 
           x: constrainedX,
-          right: isCollapsed ? -60 : 24,
+          right: isCollapsed ? -50 : 24,
         }}
         className={`fixed top-1/2 -translate-y-1/2 z-50 ${
           isDragging ? 'cursor-grabbing' : 'cursor-grab'
@@ -121,17 +121,19 @@ const ThemeToggle = () => {
       >
         <motion.button
           onClick={handleClick}
-          className="flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 rounded-full bg-background-secondary border border-border hover:border-primary transition-all shadow-lg hover:shadow-xl relative"
+          className={`flex flex-col items-center gap-1 md:gap-2 p-2 md:p-3 rounded-full bg-background-secondary border border-border hover:border-primary transition-all shadow-lg hover:shadow-xl relative ${
+            isCollapsed ? 'pr-3' : ''
+          }`}
           whileHover={!isDragging ? { scale: 1.1 } : {}}
           whileTap={!isDragging ? { scale: 0.9 } : {}}
           aria-label={theme === 'dark' ? t('darkMode') : t('lightMode')}
         >
-          {/* Крестик для закрытия */}
+          {/* Крестик для сворачивания - синий */}
           {!isCollapsed && (
             <button
               onClick={handleCloseClick}
-              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center transition-colors z-10"
-              aria-label="Close"
+              className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary/80 hover:bg-primary flex items-center justify-center transition-colors z-10"
+              aria-label="Collapse"
             >
               <svg
                 className="w-3 h-3 text-white"
@@ -149,10 +151,11 @@ const ThemeToggle = () => {
             </button>
           )}
           
+          {/* Иконка темы - всегда видна, даже когда свернуто */}
           {theme === 'dark' ? (
             <>
               <svg
-                className="w-5 h-5 md:w-6 md:h-6 text-primary"
+                className={`${isCollapsed ? 'w-4 h-4' : 'w-5 h-5 md:w-6 md:h-6'} text-primary`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -164,14 +167,16 @@ const ThemeToggle = () => {
                   d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
                 />
               </svg>
-              <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
-                {t('darkMode')}
-              </span>
+              {!isCollapsed && (
+                <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
+                  {t('darkMode')}
+                </span>
+              )}
             </>
           ) : (
             <>
               <svg
-                className="w-5 h-5 md:w-6 md:h-6 text-primary"
+                className={`${isCollapsed ? 'w-4 h-4' : 'w-5 h-5 md:w-6 md:h-6'} text-primary`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -183,9 +188,11 @@ const ThemeToggle = () => {
                   d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
                 />
               </svg>
-              <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
-                {t('lightMode')}
-              </span>
+              {!isCollapsed && (
+                <span className="hidden md:inline text-xs font-poppins text-text-secondary whitespace-nowrap">
+                  {t('lightMode')}
+                </span>
+              )}
             </>
           )}
         </motion.button>
