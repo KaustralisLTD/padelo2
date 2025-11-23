@@ -9,6 +9,7 @@ import {
   getDefaultRegistrationSettings,
   normalizeRegistrationSettings,
 } from '@/lib/registration-settings';
+import { compressImageToSize } from '@/lib/image-compression';
 
 export default function DashboardContent() {
   const t = useTranslations('Tournaments');
@@ -222,15 +223,15 @@ export default function DashboardContent() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setPhotoError(t('form.photoSizeError') || 'Photo size must be less than 5MB');
-      return;
-    }
-
     // Validate file type
     if (!file.type.startsWith('image/')) {
       setPhotoError('Please select an image file');
+      return;
+    }
+
+    // Check original size (before compression) - allow up to 20MB
+    if (file.size > 20 * 1024 * 1024) {
+      setPhotoError(t('form.photoSizeError') || 'Photo size must be less than 20MB');
       return;
     }
 
@@ -238,61 +239,45 @@ export default function DashboardContent() {
     setPhotoError(null);
 
     try {
-      // Read file as base64
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        try {
-          const base64Data = reader.result as string;
-          const fileName = `${selectedRegistration.firstName}_${selectedRegistration.lastName}.${file.name.split('.').pop()}`;
+      // Compress image before converting to base64
+      const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
+      const fileName = `${selectedRegistration.firstName}_${selectedRegistration.lastName}.${file.name.split('.').pop()}`;
 
-          const token = localStorage.getItem('tournament_token');
-          if (!token) {
-            setPhotoError('Token not found');
-            setUploadingPhoto(false);
-            return;
-          }
-
-          const response = await fetch(`/api/tournament/register?token=${token}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userPhoto: {
-                name: fileName,
-                data: base64Data,
-              },
-            }),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            setSelectedRegistration(data.registration);
-            // Refresh registration data
-            setTimeout(() => {
-              fetchRegistration(token);
-            }, 500);
-          } else {
-            const errorData = await response.json().catch(() => ({ error: 'Failed to upload photo' }));
-            setPhotoError(errorData.error || 'Failed to upload photo');
-          }
-        } catch (error) {
-          console.error('Error uploading photo:', error);
-          setPhotoError('Failed to upload photo');
-        } finally {
-          setUploadingPhoto(false);
-          // Reset input
-          e.target.value = '';
-        }
-      };
-      reader.onerror = () => {
-        setPhotoError('Failed to read file');
+      const token = localStorage.getItem('tournament_token');
+      if (!token) {
+        setPhotoError('Token not found');
         setUploadingPhoto(false);
-        e.target.value = '';
-      };
-      reader.readAsDataURL(file);
+        return;
+      }
+
+      const response = await fetch(`/api/tournament/register?token=${token}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userPhoto: {
+            name: fileName,
+            data: compressedBase64,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSelectedRegistration(data.registration);
+        // Refresh registration data
+        setTimeout(() => {
+          fetchRegistration(token);
+        }, 500);
+      } else {
+        const errorData = await response.json().catch(() => ({ error: 'Failed to upload photo' }));
+        setPhotoError(errorData.error || 'Failed to upload photo');
+      }
     } catch (error) {
-      console.error('Error handling photo upload:', error);
-      setPhotoError('Failed to upload photo');
+      console.error('Error uploading photo:', error);
+      setPhotoError('Failed to upload photo. Please try another file.');
+    } finally {
       setUploadingPhoto(false);
+      // Reset input
       e.target.value = '';
     }
   };
@@ -947,22 +932,34 @@ export default function DashboardContent() {
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => {
+                        onChange={async (e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            if (file.size > 5 * 1024 * 1024) {
-                              alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+                            // Validate file type
+                            if (!file.type.startsWith('image/')) {
+                              alert(t('form.error') || 'Please select an image file');
                               return;
                             }
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
+
+                            // Check original size (before compression)
+                            if (file.size > 20 * 1024 * 1024) {
+                              alert(t('form.photoSizeError') || 'Photo size must be less than 20MB');
+                              return;
+                            }
+
+                            try {
+                              // Compress image before converting to base64
+                              const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
+                              
                               setChildData({
                                 ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                                photoData: reader.result as string,
+                                photoData: compressedBase64,
                                 photoName: file.name
                               });
-                            };
-                            reader.readAsDataURL(file);
+                            } catch (error) {
+                              console.error('Error compressing image:', error);
+                              alert(t('form.error') || 'Error processing image. Please try another file.');
+                            }
                           }
                         }}
                         className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"

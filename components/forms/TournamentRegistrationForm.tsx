@@ -8,6 +8,7 @@ import {
   getDefaultRegistrationSettings,
   normalizeRegistrationSettings,
 } from '@/lib/registration-settings';
+import { compressImageToSize } from '@/lib/image-compression';
 
 interface Partner {
   name: string;
@@ -284,7 +285,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     });
   };
 
-  const handleCategoryPartnerPhotoChange = (category: string, event: ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryPartnerPhotoChange = async (category: string, event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
 
     if (!file) {
@@ -298,34 +299,40 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       return;
     }
 
-    if (file.size > 15 * 1024 * 1024) {
-      alert(t('form.photoSizeError') || 'Photo size must be less than 15MB');
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert(t('form.error') || 'Please select an image file');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    // Check original size (before compression)
+    if (file.size > 20 * 1024 * 1024) {
+      alert(t('form.photoSizeError') || 'Photo size must be less than 20MB');
+      return;
+    }
+
+    try {
+      // Compress image before converting to base64
+      const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
+      
       setCategoryPartners(prev => {
         const base = prev[category] ?? createEmptyPartner();
         return {
           ...prev,
           [category]: {
             ...base,
-            photoData: typeof reader.result === 'string' ? reader.result : null,
+            photoData: compressedBase64,
             photoName: file.name,
           },
         };
       });
-    };
-
-    reader.onerror = () => {
-      console.error('Error reading file');
-    };
-
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error compressing image:', error);
+      alert(t('form.error') || 'Error processing image. Please try another file.');
+    }
   };
 
-  const handleUserPhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleUserPhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
 
     if (!file) {
@@ -334,28 +341,36 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       return;
     }
 
-    if (file.size > 15 * 1024 * 1024) {
-      setUserPhotoError(t('form.photoSizeError') || 'Photo size must be less than 15MB');
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setUserPhotoError(t('form.error') || 'Please select an image file');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    // Check original size (before compression)
+    if (file.size > 20 * 1024 * 1024) {
+      setUserPhotoError(t('form.photoSizeError') || 'Photo size must be less than 20MB');
+      return;
+    }
+
+    setUserPhotoError(null);
+
+    try {
+      // Compress image before converting to base64
+      const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
+      
       setUserPhoto({
-        data: typeof reader.result === 'string' ? reader.result : null,
+        data: compressedBase64,
         name: file.name,
       });
       setUserPhotoError(null);
-    };
-
-    reader.onerror = () => {
-      setUserPhotoError(t('form.error') || 'Error reading file');
-    };
-
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error compressing image:', error);
+      setUserPhotoError(t('form.error') || 'Error processing image. Please try another file.');
+    }
   };
 
-  const handlePartnerPhotoChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handlePartnerPhotoChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
 
     if (!file) {
@@ -367,24 +382,37 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setPartnerPhotoError(t('form.error') || 'Please select an image file');
+      return;
+    }
+
+    // Check original size (before compression)
+    if (file.size > 20 * 1024 * 1024) {
+      setPartnerPhotoError(t('form.photoSizeError') || 'Photo size must be less than 20MB');
+      return;
+    }
+
+    setPartnerPhotoError(null);
+
+    try {
+      // Compress image before converting to base64
+      const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
+      
       setPartner(prev => {
         if (!prev) return prev;
         return {
           ...prev,
-          photoData: typeof reader.result === 'string' ? reader.result : null,
+          photoData: compressedBase64,
           photoName: file.name,
         };
       });
       setPartnerPhotoError(null);
-    };
-
-    reader.onerror = () => {
-      setPartnerPhotoError(t('form.error'));
-    };
-
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error compressing image:', error);
+      setPartnerPhotoError(t('form.error') || 'Error processing image. Please try another file.');
+    }
   };
 
   const scrollToElement = (elementId: string) => {
@@ -1306,22 +1334,34 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     type="file"
                     accept="image/*"
                     id="child-photo-input"
-                    onChange={(e) => {
+                    onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        if (file.size > 15 * 1024 * 1024) {
-                          alert(t('form.photoSizeError') || 'Photo size must be less than 15MB');
+                        // Validate file type
+                        if (!file.type.startsWith('image/')) {
+                          alert(t('form.error') || 'Please select an image file');
                           return;
                         }
-                        const reader = new FileReader();
-                        reader.onloadend = () => {
+
+                        // Check original size (before compression)
+                        if (file.size > 20 * 1024 * 1024) {
+                          alert(t('form.photoSizeError') || 'Photo size must be less than 20MB');
+                          return;
+                        }
+
+                        try {
+                          // Compress image before converting to base64
+                          const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
+                          
                           setChildData({
                             ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                            photoData: reader.result as string,
+                            photoData: compressedBase64,
                             photoName: file.name
                           });
-                        };
-                        reader.readAsDataURL(file);
+                        } catch (error) {
+                          console.error('Error compressing image:', error);
+                          alert(t('form.error') || 'Error processing image. Please try another file.');
+                        }
                       }
                     }}
                     className="hidden"
