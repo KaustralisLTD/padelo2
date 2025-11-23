@@ -28,8 +28,18 @@ export default function DashboardPageContent() {
         'Authorization': `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          // If response is not OK, remove token and redirect
+          localStorage.removeItem('auth_token');
+          router.push(`/${locale}/login`);
+          return null;
+        }
+        return res.json();
+      })
       .then((data) => {
+        if (!data) return; // Already handled error case
+        
         if (data.session) {
           setRole(data.session.role);
           setUser(data.session);
@@ -38,7 +48,8 @@ export default function DashboardPageContent() {
           router.push(`/${locale}/login`);
         }
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Error verifying session:', error);
         localStorage.removeItem('auth_token');
         router.push(`/${locale}/login`);
       })
