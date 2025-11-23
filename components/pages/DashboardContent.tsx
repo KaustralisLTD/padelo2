@@ -170,6 +170,15 @@ export default function DashboardContent() {
     });
     setExpandedCategoryPartners(expanded);
     
+    // Конвертируем name в firstName/lastName для основного партнера
+    const partnerForEdit = selectedRegistration.partner
+      ? {
+          ...selectedRegistration.partner,
+          firstName: selectedRegistration.partner.firstName || selectedRegistration.partner.name?.split(' ')[0] || '',
+          lastName: selectedRegistration.partner.lastName || selectedRegistration.partner.name?.split(' ').slice(1).join(' ') || '',
+        }
+      : null;
+
     setEditData({
       firstName: selectedRegistration.firstName,
       lastName: selectedRegistration.lastName,
@@ -179,7 +188,7 @@ export default function DashboardContent() {
       tshirtSize: selectedRegistration.tshirtSize || '',
       message: selectedRegistration.message || '',
       categories: [...(selectedRegistration.categories || [])],
-      partner: selectedRegistration.partner ? { ...selectedRegistration.partner } : null,
+      partner: partnerForEdit,
       categoryPartners: categoryPartners,
       childData: selectedRegistration.childData ? { ...selectedRegistration.childData } : null,
     });
