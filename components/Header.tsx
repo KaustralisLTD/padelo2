@@ -442,7 +442,7 @@ const Header = () => {
                   }`}>
                     Language
                   </div>
-                  <LanguageSelector />
+                  <LanguageSelector variant="menu" />
                 </motion.div>
             </div>
           </motion.div>

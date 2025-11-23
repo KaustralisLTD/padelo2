@@ -23,7 +23,11 @@ const languageNames: Record<string, string> = {
   ar: 'AR',
 };
 
-const LanguageSelector = () => {
+interface LanguageSelectorProps {
+  variant?: 'header' | 'menu';
+}
+
+const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const locale = useLocale();
   const router = useRouter();
@@ -53,7 +57,9 @@ const LanguageSelector = () => {
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center space-x-2 px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
           theme === 'light'
-            ? 'text-white/90 hover:text-primary border-white/30 hover:border-primary bg-white/10 backdrop-blur-sm'
+            ? variant === 'menu'
+              ? 'text-gray-800 hover:text-primary border-gray-300 hover:border-primary bg-white'
+              : 'text-white/90 hover:text-primary border-white/30 hover:border-primary bg-white/10 backdrop-blur-sm'
             : 'text-text-secondary hover:text-primary border-border'
         }`}
       >
@@ -76,7 +82,9 @@ const LanguageSelector = () => {
       {isOpen && (
         <div className={`absolute top-full right-0 mt-2 w-32 border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary ${
           theme === 'light'
-            ? 'bg-white/95 backdrop-blur-md border-white/30'
+            ? variant === 'menu'
+              ? 'bg-white border-gray-200 shadow-lg'
+              : 'bg-white/95 backdrop-blur-md border-white/30'
             : 'bg-background-secondary border-border scrollbar-track-background-secondary'
         }`}>
           <style jsx>{`
@@ -100,9 +108,9 @@ const LanguageSelector = () => {
               onClick={() => handleLanguageChange(loc)}
               className={`w-full text-left px-4 py-2 text-sm font-poppins transition-colors ${
                 locale === loc
-                  ? `text-primary ${theme === 'light' ? 'bg-primary/10' : 'bg-background'}`
+                  ? `text-primary ${theme === 'light' ? 'bg-primary/15 font-semibold' : 'bg-background'}`
                   : theme === 'light'
-                    ? 'text-primary hover:bg-primary/10'
+                    ? 'text-gray-800 hover:text-primary hover:bg-gray-50'
                     : 'text-text-secondary hover:bg-background'
               }`}
             >
