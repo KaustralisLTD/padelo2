@@ -160,7 +160,7 @@ const Header = () => {
           )}
         </Link>
 
-          <div className="nav-items-container flex items-center space-x-4 xl:space-x-6 2xl:space-x-8 flex-wrap justify-end">
+          <div className="nav-items-container flex items-center space-x-4 xl:space-x-6 2xl:space-x-8 justify-end">
           {authenticatedNavItems.map((item) => (
             <Link
               key={item.key}
@@ -280,32 +280,58 @@ const Header = () => {
             style={{ WebkitTapHighlightColor: 'transparent' }}
           />
           
-          {/* Меню */}
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ 
-              type: 'spring',
-              stiffness: 300,
-              damping: 30,
-              mass: 0.8
-            }}
-            className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[100] ${
-              theme === 'light' 
-                ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
-                : 'bg-background-secondary shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
-            } border-t ${
-              theme === 'light' ? 'border-gray-200' : 'border-border'
-            } overflow-y-auto`}
-            style={{ 
-              maxHeight: 'calc(100vh - 73px)',
-              WebkitOverflowScrolling: 'touch',
-              position: 'fixed',
-              zIndex: 100
-            }}
-          >
-              <div className="container mx-auto px-4 py-6">
+            {/* Меню */}
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ 
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+                mass: 0.8
+              }}
+              className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[100] ${
+                theme === 'light' 
+                  ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
+                  : 'bg-background-secondary shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
+              } border-t ${
+                theme === 'light' ? 'border-gray-200' : 'border-border'
+              } overflow-y-auto`}
+              style={{ 
+                maxHeight: 'calc(100vh - 73px)',
+                WebkitOverflowScrolling: 'touch',
+                position: 'fixed',
+                zIndex: 100
+              }}
+            >
+              {/* Кнопка закрытия меню */}
+              <div className="sticky top-0 z-10 flex justify-end p-4 bg-transparent">
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`p-2 rounded-lg transition-all duration-200 hover:bg-primary/10 active:scale-95 ${
+                    theme === 'light'
+                      ? 'text-gray-800 hover:bg-gray-100'
+                      : 'text-text-secondary hover:bg-white/10'
+                  }`}
+                  aria-label="Close menu"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="container mx-auto px-4 pb-6">
                 {/* Навигационные пункты */}
                 <nav className="space-y-1 mb-6">
                   {authenticatedNavItems.map((item, index) => (

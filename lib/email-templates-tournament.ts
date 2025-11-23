@@ -687,9 +687,28 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   // Локализуем категории
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
   let localizedCategories: string[] = [];
+  
+  // Сначала нормализуем категории - извлекаем строки из объектов или используем строки напрямую
+  let normalizedCategories: string[] = [];
   if (categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.map(cat => {
-      if (!cat || typeof cat !== 'string') return cat;
+    normalizedCategories = categories.map(cat => {
+      if (!cat) return null;
+      // Если это объект с полем name или value, извлекаем его
+      if (typeof cat === 'object' && cat !== null) {
+        return (cat as any).name || (cat as any).value || (cat as any).category || String(cat);
+      }
+      // Если это строка, используем её
+      if (typeof cat === 'string') {
+        return cat.trim();
+      }
+      // Иначе преобразуем в строку
+      return String(cat).trim();
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '') as string[];
+  }
+  
+  // Теперь локализуем нормализованные категории
+  if (normalizedCategories.length > 0) {
+    localizedCategories = normalizedCategories.map(cat => {
       const normalized = cat.trim();
       if (!normalized) return cat;
       
@@ -712,9 +731,9 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
     }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
   
-  // Если локализация не дала результатов, используем оригинальные категории
-  if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
+  // Если локализация не дала результатов, используем нормализованные категории
+  if (localizedCategories.length === 0 && normalizedCategories.length > 0) {
+    localizedCategories = normalizedCategories;
   }
 
   // Получаем переведенное расписание событий
