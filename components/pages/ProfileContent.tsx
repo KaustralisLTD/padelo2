@@ -38,6 +38,21 @@ export default function ProfileContent() {
   });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showChangeEmail, setShowChangeEmail] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [emailData, setEmailData] = useState({
+    newEmail: '',
+    password: '',
+  });
+  const [passwordStatus, setPasswordStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   // Размеры футболок с измерениями (ANCHO - ширина, LARGO - длина)
   const tshirtSizesData: Record<string, { ancho: number; largo: number }> = {
@@ -418,6 +433,256 @@ export default function ProfileContent() {
                 </select>
               </div>
             </div>
+          </div>
+
+          {/* Change Password */}
+          <div className="bg-background-secondary p-6 rounded-lg border border-border">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-poppins font-bold text-text">
+                {t('changePassword') || 'Change Password'}
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowChangePassword(!showChangePassword);
+                  if (showChangePassword) {
+                    setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                    setPasswordStatus('idle');
+                    setPasswordError(null);
+                  }
+                }}
+                className="px-4 py-2 bg-primary/20 text-primary font-poppins font-semibold rounded-lg hover:bg-primary/30 transition-colors"
+              >
+                {showChangePassword ? (t('cancel') || 'Cancel') : (t('changePassword') || 'Change Password')}
+              </button>
+            </div>
+            {showChangePassword && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('currentPassword') || 'Current Password'} *
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.currentPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('newPassword') || 'New Password'} *
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.newPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                  />
+                  <p className="text-xs text-text-tertiary mt-1">{t('passwordMinLength') || 'Password must be at least 8 characters long'}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('confirmPassword') || 'Confirm New Password'} *
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordData.confirmPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                {passwordError && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                    <p className="text-red-400 text-sm font-poppins">{passwordError}</p>
+                  </div>
+                )}
+                {passwordStatus === 'success' && (
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                    <p className="text-green-400 text-sm font-poppins">{t('passwordChangedSuccess') || 'Password changed successfully!'}</p>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+                      setPasswordError(t('fillAllFields') || 'Please fill all fields');
+                      return;
+                    }
+                    if (passwordData.newPassword.length < 8) {
+                      setPasswordError(t('passwordMinLength') || 'Password must be at least 8 characters long');
+                      return;
+                    }
+                    if (passwordData.newPassword !== passwordData.confirmPassword) {
+                      setPasswordError(t('passwordsDoNotMatch') || 'Passwords do not match');
+                      return;
+                    }
+
+                    const token = localStorage.getItem('auth_token');
+                    if (!token) {
+                      router.push(`/${locale}/login`);
+                      return;
+                    }
+
+                    try {
+                      const response = await fetch('/api/user/change-password', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                          currentPassword: passwordData.currentPassword,
+                          newPassword: passwordData.newPassword,
+                        }),
+                      });
+
+                      const data = await response.json();
+
+                      if (response.ok) {
+                        setPasswordStatus('success');
+                        setPasswordError(null);
+                        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                        setTimeout(() => {
+                          setShowChangePassword(false);
+                          setPasswordStatus('idle');
+                        }, 2000);
+                      } else {
+                        setPasswordStatus('error');
+                        setPasswordError(data.error || t('passwordChangeError') || 'Failed to change password');
+                      }
+                    } catch (error) {
+                      setPasswordStatus('error');
+                      setPasswordError(t('passwordChangeError') || 'Failed to change password');
+                    }
+                  }}
+                  className="px-6 py-2 bg-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  {t('savePassword') || 'Save New Password'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Change Email */}
+          <div className="bg-background-secondary p-6 rounded-lg border border-border">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-poppins font-bold text-text">
+                {t('changeEmail') || 'Change Email'}
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowChangeEmail(!showChangeEmail);
+                  if (showChangeEmail) {
+                    setEmailData({ newEmail: '', password: '' });
+                    setEmailStatus('idle');
+                    setEmailError(null);
+                  }
+                }}
+                className="px-4 py-2 bg-primary/20 text-primary font-poppins font-semibold rounded-lg hover:bg-primary/30 transition-colors"
+              >
+                {showChangeEmail ? (t('cancel') || 'Cancel') : (t('changeEmail') || 'Change Email')}
+              </button>
+            </div>
+            {showChangeEmail && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('newEmail') || 'New Email Address'} *
+                  </label>
+                  <input
+                    type="email"
+                    value={emailData.newEmail}
+                    onChange={(e) => setEmailData({ ...emailData, newEmail: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('currentPassword') || 'Current Password'} *
+                  </label>
+                  <input
+                    type="password"
+                    value={emailData.password}
+                    onChange={(e) => setEmailData({ ...emailData, password: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                  />
+                  <p className="text-xs text-text-tertiary mt-1">{t('emailChangeNote') || 'You will receive confirmation emails at both addresses'}</p>
+                </div>
+                {emailError && (
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                    <p className="text-red-400 text-sm font-poppins">{emailError}</p>
+                  </div>
+                )}
+                {emailStatus === 'success' && (
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                    <p className="text-green-400 text-sm font-poppins">{t('emailChangeRequestSent') || 'Email change request sent. Please check both email addresses for confirmation.'}</p>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!emailData.newEmail || !emailData.password) {
+                      setEmailError(t('fillAllFields') || 'Please fill all fields');
+                      return;
+                    }
+
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(emailData.newEmail)) {
+                      setEmailError(t('invalidEmail') || 'Invalid email format');
+                      return;
+                    }
+
+                    if (emailData.newEmail === profile?.email) {
+                      setEmailError(t('sameEmail') || 'New email must be different from current email');
+                      return;
+                    }
+
+                    const token = localStorage.getItem('auth_token');
+                    if (!token) {
+                      router.push(`/${locale}/login`);
+                      return;
+                    }
+
+                    try {
+                      const response = await fetch('/api/user/change-email', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                          newEmail: emailData.newEmail,
+                          password: emailData.password,
+                        }),
+                      });
+
+                      const data = await response.json();
+
+                      if (response.ok) {
+                        setEmailStatus('success');
+                        setEmailError(null);
+                        setEmailData({ newEmail: '', password: '' });
+                        setTimeout(() => {
+                          setShowChangeEmail(false);
+                          setEmailStatus('idle');
+                        }, 3000);
+                      } else {
+                        setEmailStatus('error');
+                        setEmailError(data.error || t('emailChangeError') || 'Failed to request email change');
+                      }
+                    } catch (error) {
+                      setEmailStatus('error');
+                      setEmailError(t('emailChangeError') || 'Failed to request email change');
+                    }
+                  }}
+                  className="px-6 py-2 bg-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  {t('requestEmailChange') || 'Request Email Change'}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Status Messages */}
