@@ -283,7 +283,11 @@ const Header = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className={`${showMobileMenu ? 'block' : 'lg:hidden'} fixed top-[73px] left-0 right-0 bottom-0 z-[70] bg-background-secondary border-t border-border overflow-y-auto`}
+              className={`${showMobileMenu ? 'block' : 'lg:hidden'} fixed top-[73px] left-0 right-0 bottom-0 z-[70] ${
+                theme === 'light' 
+                  ? 'bg-white shadow-2xl' 
+                  : 'bg-background-secondary'
+              } border-t border-border overflow-y-auto`}
             >
               <div className="container mx-auto px-4 py-6">
                 {/* Навигационные пункты */}
