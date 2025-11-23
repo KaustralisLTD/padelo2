@@ -1187,9 +1187,6 @@ export default function DashboardContent() {
             >
               {uploadingPhoto ? (t('dashboard.uploadingPhoto') || 'Uploading...') : t('dashboard.uploadPhoto')}
             </label>
-            <p className="text-text-secondary font-poppins text-xs mt-2">
-              {t('form.photoInstructions.filenameExample') || `${selectedRegistration.firstName}_${selectedRegistration.lastName}.jpg`}
-            </p>
             {photoError && (
               <p className="text-red-400 font-poppins text-sm mt-2">{photoError}</p>
             )}
