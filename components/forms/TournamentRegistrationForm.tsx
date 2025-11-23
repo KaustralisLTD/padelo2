@@ -77,7 +77,15 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     ],
   };
 
-  const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  // Размеры футболок с измерениями (ANCHO - ширина, LARGO - длина)
+  const tshirtSizesData: Record<string, { ancho: number; largo: number }> = {
+    'S': { ancho: 48, largo: 67 },
+    'M': { ancho: 51, largo: 69 },
+    'L': { ancho: 54, largo: 71 },
+    'XL': { ancho: 57, largo: 73 },
+    '2XL': { ancho: 60, largo: 75 },
+  };
+  const tshirtSizes = Object.keys(tshirtSizesData);
   const enabledCustomFields = registrationSettings.customFields.filter((field) => field.enabled);
   const partnerRequired = registrationSettings.partner.required;
   const tshirtFieldConfig = registrationSettings.tshirtField;
@@ -973,11 +981,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                 >
                   <option value="">{t('form.partnerSelectSize')}</option>
-                  {tshirtSizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
+                  {tshirtSizes.map((size) => {
+                    const measurements = tshirtSizesData[size];
+                    return (
+                      <option key={size} value={size}>
+                        {size} (ANCHO: {measurements.ancho}cm, LARGO: {measurements.largo}cm)
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div>
