@@ -35,7 +35,8 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   // Используем верифицированный домен из переменной окружения или padelo2.com по умолчанию
   const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'padelo2.com';
   const fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
-  // Format: "PadelO2 <email@domain.com>" - используем обычный текст без специальных символов для совместимости
+  // Правильный формат для Resend: "Display Name <email@domain.com>" или просто "email@domain.com"
+  // Используем простой формат без специальных символов для максимальной совместимости
   const fromName = `PadelO2 <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
   
@@ -61,11 +62,17 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
         text: plainText, // Add plain text version for better deliverability
         reply_to: replyTo || fromEmail,
         headers: {
+          // Unsubscribe headers для соответствия требованиям CAN-SPAM Act
           'List-Unsubscribe': `<${siteUrl}/unsubscribe>`,
           'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-          'X-Entity-Ref-ID': `${Date.now()}-${Math.random().toString(36).substring(7)}`, // Unique message ID
-          'Precedence': 'bulk', // Indicates transactional email
-          'X-Auto-Response-Suppress': 'All', // Suppress auto-responses
+          // Уникальный ID для трекинга (но не используем случайные значения, которые могут выглядеть как спам)
+          'X-Entity-Ref-ID': `${Date.now()}-${Math.random().toString(36).substring(7)}`,
+          // УБРАЛИ 'Precedence': 'bulk' - это плохо для транзакционных писем!
+          // 'Precedence': 'bulk' помечает письма как массовые, что снижает доставляемость
+          // Для транзакционных писем лучше не указывать этот заголовок
+          'X-Auto-Response-Suppress': 'All', // Подавляем автоответы
+          'X-Mailer': 'PadelO2', // Идентификатор отправителя
+          'X-Priority': '1', // Нормальный приоритет (не срочный, не низкий)
         },
         tags: [
           { name: 'category', value: 'transactional' },
