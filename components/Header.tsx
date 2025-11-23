@@ -34,18 +34,28 @@ const Header = () => {
   // Проверка, помещается ли меню на экране
   useEffect(() => {
     const checkMenuOverflow = () => {
-      if (navRef.current && window.innerWidth >= 1024) {
-        const nav = navRef.current;
-        const navItems = nav.querySelector('.nav-items-container') as HTMLElement;
-        const navWidth = nav.offsetWidth;
-        const itemsWidth = navItems?.offsetWidth || 0;
-        const logoWidth = nav.querySelector('.logo-container')?.clientWidth || 0;
-        const availableWidth = navWidth - logoWidth - 200; // 200px для отступов и других элементов
-        
-        setMenuItemsOverflow(itemsWidth > availableWidth);
-        setShowMobileMenu(itemsWidth > availableWidth);
+      const isMobile = window.innerWidth < 1024;
+      
+      if (isMobile) {
+        // На мобильных всегда показываем мобильное меню
+        setShowMobileMenu(true);
+        setMenuItemsOverflow(false);
       } else {
-        setShowMobileMenu(window.innerWidth < 1024);
+        // На десктопе проверяем, помещается ли меню
+        if (navRef.current) {
+          const nav = navRef.current;
+          const navItems = nav.querySelector('.nav-items-container') as HTMLElement;
+          const navWidth = nav.offsetWidth;
+          const itemsWidth = navItems?.offsetWidth || 0;
+          const logoWidth = nav.querySelector('.logo-container')?.clientWidth || 0;
+          const availableWidth = navWidth - logoWidth - 200; // 200px для отступов и других элементов
+          
+          const overflow = itemsWidth > availableWidth;
+          setMenuItemsOverflow(overflow);
+          setShowMobileMenu(overflow);
+        } else {
+          setShowMobileMenu(false);
+        }
       }
     };
 

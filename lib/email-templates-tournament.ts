@@ -449,12 +449,12 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .warning-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .detail-row { padding: 8px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
@@ -481,18 +481,18 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
-                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                      <table role="presentation" style="border-radius: 8px; background: #e0f2fe; padding: 1px;">
                         <tr>
-                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 8px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.05em; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
                           </td>
                         </tr>
                       </table>
@@ -505,7 +505,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -1149,12 +1149,12 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .success-box { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .detail-row { padding: 8px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
@@ -1187,10 +1187,10 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -1211,7 +1211,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -1729,12 +1729,12 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .warning-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .detail-row { padding: 8px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
@@ -1767,10 +1767,10 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -1791,7 +1791,7 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -2337,12 +2337,12 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .warning-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .success-box { background: #d1fae5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
@@ -2376,10 +2376,10 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -2400,7 +2400,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -2953,12 +2953,12 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .success-box { background: #d1fae5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .detail-row { padding: 8px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
@@ -2991,10 +2991,10 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -3015,7 +3015,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -3526,12 +3526,12 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .btn-secondary { background: linear-gradient(135deg, #f59e0b, #f97316); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ffffff !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(245, 158, 11, 0.35); margin-left: 10px; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .error-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
@@ -3566,10 +3566,10 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -3590,7 +3590,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -3950,12 +3950,12 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .success-box { background: #d1fae5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .hide-mobile { display: table-cell; }
       .social-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f1f5f9; border-radius: 999px; font-size: 11px; color: #475569; text-decoration: none; }
@@ -3984,10 +3984,10 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -4008,7 +4008,7 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -4375,7 +4375,7 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
@@ -4411,10 +4411,10 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -4435,7 +4435,7 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -4806,7 +4806,7 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
@@ -4843,10 +4843,10 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -4867,7 +4867,7 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -5265,7 +5265,7 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
@@ -5302,10 +5302,10 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -5326,7 +5326,7 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -5698,12 +5698,12 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .success-box { background: #d1fae5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .hide-mobile { display: table-cell; }
@@ -5733,10 +5733,10 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -5757,7 +5757,7 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -6127,12 +6127,12 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .success-box { background: #d1fae5; border-left: 4px solid #10b981; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .detail-row { padding: 8px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
@@ -6165,10 +6165,10 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -6189,7 +6189,7 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -6575,12 +6575,12 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .btn-secondary { background: linear-gradient(135deg, #f59e0b, #f97316); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ffffff !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(245, 158, 11, 0.35); margin-left: 10px; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .hide-mobile { display: table-cell; }
@@ -6611,10 +6611,10 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -6635,7 +6635,7 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -6943,12 +6943,12 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
       .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
-      .btn-primary { background: linear-gradient(135deg, #06b6d4, #22c55e); border-radius: 999px; font-size: 14px; font-weight: 600; color: #ecfdf5 !important; padding: 11px 30px; display: inline-block; box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35); }
+      .btn-primary { background: #06b6d4; border-radius: 8px; font-size: 14px; font-weight: 600; color: #ffffff; padding: 11px 30px; display: inline-block; text-decoration: none; }
       .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
       .hide-mobile { display: table-cell; }
       .social-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f1f5f9; border-radius: 999px; font-size: 11px; color: #475569; text-decoration: none; }
@@ -6977,10 +6977,10 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -7001,7 +7001,7 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
@@ -7373,7 +7373,7 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
       .wrapper { width: 100%; padding: 32px 10px; }
-      .main { width: 100%; max-width: 640px; margin: 0 auto; background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
       .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
       .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
       .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
@@ -7410,10 +7410,10 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
                   <tr>
                     <td class="font-default" valign="middle">
                       <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
-                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
-                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
                         Breathe &amp; live padel
                       </div>
                     </td>
@@ -7434,7 +7434,7 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
               <td align="center">
                 <table role="presentation" width="100%">
                   <tr>
-                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                    <td style="height: 3px; background: #06b6d4;"></td>
                   </tr>
                 </table>
               </td>
