@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import { formatLocalizedDate } from '@/lib/localization-utils';
 
 interface EventScheduleItem {
   title: string;
@@ -74,15 +75,41 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     }
   };
 
-  const formatDate = (dateString: string | null) => {
+  const formatDate = (dateString: string | null, includeTime: boolean = true) => {
     if (!dateString) return '-';
-    return new Date(dateString).toLocaleDateString(locale, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    try {
+      const date = new Date(dateString);
+      // Map locale codes to proper Intl locale strings
+      const localeMap: Record<string, string> = {
+        'en': 'en-US',
+        'ru': 'ru-RU',
+        'ua': 'uk-UA',
+        'es': 'es-ES',
+        'fr': 'fr-FR',
+        'de': 'de-DE',
+        'it': 'it-IT',
+        'ca': 'ca-ES',
+        'nl': 'nl-NL',
+        'da': 'da-DK',
+        'sv': 'sv-SE',
+        'no': 'no-NO',
+        'ar': 'ar-SA',
+        'zh': 'zh-CN',
+      };
+      const intlLocale = localeMap[locale] || locale;
+      const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      if (includeTime) {
+        options.hour = '2-digit';
+        options.minute = '2-digit';
+      }
+      return date.toLocaleDateString(intlLocale, options);
+    } catch {
+      return dateString;
+    }
   };
 
   if (loading) {
@@ -344,16 +371,12 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
                       <div className="text-right">
                         {event.date && (
                           <div className="text-sm text-text-secondary font-poppins">
-                            {new Date(event.date).toLocaleDateString(locale, {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                            })}
-                          </div>
-                        )}
-                        {event.time && (
-                          <div className="text-sm text-text-secondary font-poppins">
-                            {event.time}
+                            {formatLocalizedDate(event.date, locale)}
+                            {event.time && (
+                              <span className="ml-1">
+                                {locale === 'ua' || locale === 'ru' ? ' о' : ' at'} {event.time}
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
