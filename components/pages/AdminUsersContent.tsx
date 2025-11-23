@@ -952,10 +952,10 @@ export default function AdminUsersContent() {
                 )}
               </>
             )}
-          </div>
-        )}
+        </div>
+      )}
 
-        {/* Create/Edit Modal */}
+      {/* Create/Edit Modal */}
         {(showCreateModal || editingUser) && (
           <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
             <div className="bg-background-secondary border border-border rounded-lg p-8 max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -1097,10 +1097,10 @@ export default function AdminUsersContent() {
                 </div>
               </form>
             </div>
-          </div>
-        )}
+        </div>
+      )}
 
-        {/* Send Email Modal */}
+      {/* Send Email Modal */}
         {showEmailModal && emailUser && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
