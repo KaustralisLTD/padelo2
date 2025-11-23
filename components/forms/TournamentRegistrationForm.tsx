@@ -9,6 +9,7 @@ import {
   normalizeRegistrationSettings,
 } from '@/lib/registration-settings';
 import { compressImageToSize } from '@/lib/image-compression';
+import { getCategoryLevelExplanation } from '@/lib/localization-utils';
 
 interface Partner {
   name: string;
@@ -840,7 +841,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   onChange={() => handleCategoryChange(category.key)}
                   className="w-4 h-4 text-primary bg-background border-gray-600 rounded focus:ring-primary"
                 />
-                <span className="text-text font-poppins text-sm">{category.label}</span>
+                <span className="text-text font-poppins text-sm">
+                  {category.label}
+                  {category.key.endsWith('1') || category.key.endsWith('2') ? (
+                    <span className="text-text-tertiary text-xs ml-1">
+                      ({getCategoryLevelExplanation(category.key.slice(-1) as '1' | '2', locale)})
+                    </span>
+                  ) : null}
+                </span>
               </label>
             ))}
           </div>
@@ -865,7 +873,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   onChange={() => handleCategoryChange(category.key)}
                   className="w-4 h-4 text-primary bg-background border-gray-600 rounded focus:ring-primary"
                 />
-                <span className="text-text font-poppins text-sm">{category.label}</span>
+                <span className="text-text font-poppins text-sm">
+                  {category.label}
+                  {category.key.endsWith('1') || category.key.endsWith('2') ? (
+                    <span className="text-text-tertiary text-xs ml-1">
+                      ({getCategoryLevelExplanation(category.key.slice(-1) as '1' | '2', locale)})
+                    </span>
+                  ) : null}
+                </span>
               </label>
             ))}
           </div>
@@ -892,7 +907,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   onChange={() => handleCategoryChange(category.key)}
                   className="w-4 h-4 text-primary bg-background border-gray-600 rounded focus:ring-primary"
                 />
-                <span className="text-text font-poppins text-sm">{category.label}</span>
+                <span className="text-text font-poppins text-sm">
+                  {category.label}
+                  {category.key.endsWith('1') || category.key.endsWith('2') ? (
+                    <span className="text-text-tertiary text-xs ml-1">
+                      ({getCategoryLevelExplanation(category.key.slice(-1) as '1' | '2', locale)})
+                    </span>
+                  ) : null}
+                </span>
               </label>
             ))}
           </div>

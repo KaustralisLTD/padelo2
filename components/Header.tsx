@@ -201,9 +201,21 @@ const Header = () => {
               ? 'text-white'
               : 'text-text'
           }`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsMobileMenuOpen(!isMobileMenuOpen);
+          }}
+          onTouchStart={(e) => {
+            // Для Safari - предотвращаем двойной тап
+            e.currentTarget.style.opacity = '0.7';
+          }}
+          onTouchEnd={(e) => {
+            e.currentTarget.style.opacity = '1';
+          }}
           aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
+          type="button"
         >
             <motion.svg
             className="w-6 h-6"
@@ -275,9 +287,17 @@ const Header = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsMobileMenuOpen(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsMobileMenuOpen(false);
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              setIsMobileMenuOpen(false);
+            }}
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] lg:hidden"
-            style={{ WebkitTapHighlightColor: 'transparent' }}
+            style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
           />
           
             {/* Меню */}
@@ -291,6 +311,10 @@ const Header = () => {
                 damping: 30,
                 mass: 0.8
               }}
+              onClick={(e) => {
+                // Предотвращаем закрытие меню при клике внутри
+                e.stopPropagation();
+              }}
               className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[100] ${
                 theme === 'light' 
                   ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
@@ -302,7 +326,9 @@ const Header = () => {
                 maxHeight: 'calc(100vh - 73px)',
                 WebkitOverflowScrolling: 'touch',
                 position: 'fixed',
-                zIndex: 100
+                zIndex: 100,
+                touchAction: 'pan-y',
+                WebkitTapHighlightColor: 'transparent'
               }}
             >
               <div className="container mx-auto px-4 py-4">

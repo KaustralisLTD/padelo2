@@ -157,6 +157,77 @@ export function getLocalizedCategoryName(categoryCode: string, locale: string): 
 }
 
 /**
+ * Get category level explanation (1 = advanced, 2 = beginner)
+ */
+export function getCategoryLevelExplanation(level: '1' | '2', locale: string): string {
+  const explanations: Record<string, Record<string, string>> = {
+    en: {
+      '1': 'advanced level',
+      '2': 'beginner level',
+    },
+    ru: {
+      '1': 'продвинутый уровень',
+      '2': 'начальный уровень',
+    },
+    ua: {
+      '1': 'просунутий рівень',
+      '2': 'початковий рівень',
+    },
+    es: {
+      '1': 'nivel avanzado',
+      '2': 'nivel inicial',
+    },
+    fr: {
+      '1': 'niveau avancé',
+      '2': 'niveau débutant',
+    },
+    de: {
+      '1': 'Fortgeschrittenenniveau',
+      '2': 'Anfängerniveau',
+    },
+    it: {
+      '1': 'livello avanzato',
+      '2': 'livello principiante',
+    },
+    ca: {
+      '1': 'nivell avançat',
+      '2': 'nivell inicial',
+    },
+    nl: {
+      '1': 'gevorderd niveau',
+      '2': 'beginnend niveau',
+    },
+    da: {
+      '1': 'avanceret niveau',
+      '2': 'begynderniveau',
+    },
+    sv: {
+      '1': 'avancerad nivå',
+      '2': 'nybörjarnivå',
+    },
+    no: {
+      '1': 'avansert nivå',
+      '2': 'nybegynnernivå',
+    },
+    ar: {
+      '1': 'مستوى متقدم',
+      '2': 'مستوى المبتدئين',
+    },
+    zh: {
+      '1': '高级水平',
+      '2': '初级水平',
+    },
+    pl: {
+      '1': 'poziom zaawansowany',
+      '2': 'poziom początkujący',
+    },
+  };
+
+  const translations = explanations[locale] || explanations.en;
+  return translations[level] || '';
+}
+
+/**
  * Format date with localized month names
  */
 export function formatLocalizedDate(dateString: string, locale: string): string {
