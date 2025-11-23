@@ -126,6 +126,7 @@ const Header = () => {
     : navItems;
 
   return (
+    <>
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -263,44 +264,47 @@ const Header = () => {
           </div>
         </div>
       </nav>
+    </motion.header>
 
-      {/* Mobile/Tablet Menu - современная версия */}
-      <AnimatePresence mode="wait">
-        {isMobileMenuOpen && (
-          <>
-            {/* Overlay для закрытия меню */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
-              style={{ WebkitTapHighlightColor: 'transparent' }}
-            />
-            
-            {/* Меню */}
-            <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.98 }}
-              transition={{ 
-                type: 'spring',
-                stiffness: 300,
-                damping: 30,
-                mass: 0.8
-              }}
-              className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[70] ${
-                theme === 'light' 
-                  ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
-                  : 'bg-background-secondary shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
-              } border-t ${
-                theme === 'light' ? 'border-gray-200' : 'border-border'
-              } overflow-y-auto`}
-              style={{ 
-                maxHeight: 'calc(100vh - 73px)',
-                WebkitOverflowScrolling: 'touch'
-              }}
-            >
+    {/* Mobile/Tablet Menu - вынесено за пределы header для правильного z-index */}
+    <AnimatePresence mode="wait">
+      {isMobileMenuOpen && (
+        <>
+          {/* Overlay для закрытия меню */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[90] lg:hidden"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
+          />
+          
+          {/* Меню */}
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ 
+              type: 'spring',
+              stiffness: 300,
+              damping: 30,
+              mass: 0.8
+            }}
+            className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[100] ${
+              theme === 'light' 
+                ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
+                : 'bg-background-secondary shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
+            } border-t ${
+              theme === 'light' ? 'border-gray-200' : 'border-border'
+            } overflow-y-auto`}
+            style={{ 
+              maxHeight: 'calc(100vh - 73px)',
+              WebkitOverflowScrolling: 'touch',
+              position: 'fixed',
+              zIndex: 100
+            }}
+          >
               <div className="container mx-auto px-4 py-6">
                 {/* Навигационные пункты */}
                 <nav className="space-y-1 mb-6">
@@ -445,7 +449,7 @@ const Header = () => {
           </>
         )}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 };
 
