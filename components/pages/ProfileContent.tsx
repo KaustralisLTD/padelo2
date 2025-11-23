@@ -105,7 +105,7 @@ export default function ProfileContent() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        alert(t('photoSizeError'));
+        setError(t('photoSizeError'));
         return;
       }
       setPhotoFile(file);

@@ -361,11 +361,11 @@ export default function DashboardContent() {
         window.location.href = `/${locale}/tournaments`;
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Failed to leave tournament' }));
-        alert(errorData.error || t('dashboard.leaveTournamentError') || 'Failed to leave tournament');
+        setError(errorData.error || t('dashboard.leaveTournamentError') || 'Failed to leave tournament');
       }
     } catch (error) {
       console.error('Error leaving tournament:', error);
-      alert(t('dashboard.leaveTournamentError') || 'Failed to leave tournament');
+      setError(t('dashboard.leaveTournamentError') || 'Failed to leave tournament');
     } finally {
       setLeavingTournament(false);
     }
