@@ -705,9 +705,9 @@ export default function AdminUsersContent() {
             )}
           </div>
         </div>
-        )}
+      )}
 
-        {/* Вкладки для выбранного пользователя */}
+      {/* Вкладки для выбранного пользователя */}
         {selectedUserId && activeTab !== 'list' && (
           <div className="bg-background-secondary rounded-lg border border-border p-6">
             {loadingTab ? (

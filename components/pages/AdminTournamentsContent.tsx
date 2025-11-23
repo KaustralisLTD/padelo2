@@ -953,9 +953,9 @@ export default function AdminTournamentsContent() {
           </div>
         )}
 
-        {/* Create/Edit Modal */}
-        {showCreateModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      {/* Create/Edit Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <div className="bg-background-secondary rounded-lg border border-border max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b border-border flex justify-between items-center">
                 <h3 className="text-2xl font-poppins font-bold gradient-text">
