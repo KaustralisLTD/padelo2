@@ -743,7 +743,8 @@ export async function sendPasswordChangedEmail(
   email: string,
   firstName: string,
   locale: string = 'en',
-  timestamp?: string
+  timestamp?: string,
+  newPassword?: string
 ): Promise<boolean> {
   const { getPasswordChangedEmailTemplate } = await import('@/lib/email-templates');
 
@@ -751,6 +752,7 @@ export async function sendPasswordChangedEmail(
     firstName,
     locale,
     timestamp,
+    newPassword,
   });
 
   const translations: Record<string, string> = {

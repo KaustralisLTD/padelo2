@@ -1796,10 +1796,11 @@ export interface PasswordChangedEmailData {
   locale?: string;
   timestamp?: string;
   supportUrl?: string;
+  newPassword?: string;
 }
 
 export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData): string {
-  const { firstName, locale = 'en', timestamp, supportUrl } = data;
+  const { firstName, locale = 'en', timestamp, supportUrl, newPassword } = data;
   const firstNameOnly = firstName || 'User';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const supportLink = supportUrl || `${siteUrl}/${locale}/contact`;
@@ -1810,6 +1811,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hello',
       message: 'Your password was successfully changed.',
       timestamp: 'This change was made on',
+      newPasswordLabel: 'Your new password:',
+      passwordNote: 'Please save this password securely. If you didn\'t make this change, contact us immediately.',
       notYou: 'If you didn\'t make this change, please contact us immediately to secure your account.',
       button: 'Contact Support',
       footer: 'Stay secure',
@@ -1821,6 +1824,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Здравствуйте',
       message: 'Ваш пароль был успешно изменен.',
       timestamp: 'Это изменение было сделано',
+      newPasswordLabel: 'Ваш новый пароль:',
+      passwordNote: 'Пожалуйста, сохраните этот пароль в безопасном месте. Если вы не делали это изменение, свяжитесь с нами немедленно.',
       notYou: 'Если вы не делали это изменение, пожалуйста, свяжитесь с нами немедленно, чтобы защитить ваш аккаунт.',
       button: 'Связаться с поддержкой',
       footer: 'Оставайтесь в безопасности',
@@ -1832,6 +1837,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Вітаємо',
       message: 'Ваш пароль було успішно змінено.',
       timestamp: 'Це зміну було зроблено',
+      newPasswordLabel: 'Ваш новий пароль:',
+      passwordNote: 'Будь ласка, збережіть цей пароль у безпечному місці. Якщо ви не робили цю зміну, зв\'яжіться з нами негайно.',
       notYou: 'Якщо ви не робили цю зміну, будь ласка, зв\'яжіться з нами негайно, щоб захистити ваш акаунт.',
       button: 'Зв\'язатися з підтримкою',
       footer: 'Залишайтеся в безпеці',
@@ -1843,6 +1850,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hola',
       message: 'Tu contraseña fue cambiada exitosamente.',
       timestamp: 'Este cambio se realizó el',
+      newPasswordLabel: 'Tu nueva contraseña:',
+      passwordNote: 'Por favor, guarda esta contraseña de forma segura. Si no realizaste este cambio, contáctanos inmediatamente.',
       notYou: 'Si no realizaste este cambio, contáctanos inmediatamente para asegurar tu cuenta.',
       button: 'Contactar Soporte',
       footer: 'Mantente seguro',
@@ -1854,6 +1863,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Bonjour',
       message: 'Votre mot de passe a été modifié avec succès.',
       timestamp: 'Ce changement a été effectué le',
+      newPasswordLabel: 'Votre nouveau mot de passe:',
+      passwordNote: 'Veuillez conserver ce mot de passe en sécurité. Si vous n\'avez pas effectué ce changement, contactez-nous immédiatement.',
       notYou: 'Si vous n\'avez pas effectué ce changement, contactez-nous immédiatement pour sécuriser votre compte.',
       button: 'Contacter le Support',
       footer: 'Restez en sécurité',
@@ -1865,6 +1876,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hallo',
       message: 'Ihr Passwort wurde erfolgreich geändert.',
       timestamp: 'Diese Änderung wurde vorgenommen am',
+      newPasswordLabel: 'Ihr neues Passwort:',
+      passwordNote: 'Bitte bewahren Sie dieses Passwort sicher auf. Wenn Sie diese Änderung nicht vorgenommen haben, kontaktieren Sie uns bitte sofort.',
       notYou: 'Wenn Sie diese Änderung nicht vorgenommen haben, kontaktieren Sie uns bitte sofort, um Ihr Konto zu sichern.',
       button: 'Support kontaktieren',
       footer: 'Bleiben Sie sicher',
@@ -1876,6 +1889,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Ciao',
       message: 'La tua password è stata modificata con successo.',
       timestamp: 'Questa modifica è stata effettuata il',
+      newPasswordLabel: 'La tua nuova password:',
+      passwordNote: 'Si prega di conservare questa password in modo sicuro. Se non hai effettuato questa modifica, contattaci immediatamente.',
       notYou: 'Se non hai effettuato questa modifica, contattaci immediatamente per proteggere il tuo account.',
       button: 'Contatta il Supporto',
       footer: 'Resta al sicuro',
@@ -1887,6 +1902,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hola',
       message: 'La teva contrasenya ha estat canviada amb èxit.',
       timestamp: 'Aquest canvi es va fer el',
+      newPasswordLabel: 'La teva nova contrasenya:',
+      passwordNote: 'Si us plau, guarda aquesta contrasenya de forma segura. Si no has fet aquest canvi, contacta\'ns immediatament.',
       notYou: 'Si no has fet aquest canvi, contacta\'ns immediatament per assegurar el teu compte.',
       button: 'Contactar Suport',
       footer: 'Mantingues segur',
@@ -1898,6 +1915,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hallo',
       message: 'Uw wachtwoord is succesvol gewijzigd.',
       timestamp: 'Deze wijziging is gemaakt op',
+      newPasswordLabel: 'Uw nieuwe wachtwoord:',
+      passwordNote: 'Bewaar dit wachtwoord veilig. Als u deze wijziging niet heeft aangebracht, neem dan onmiddellijk contact met ons op.',
       notYou: 'Als u deze wijziging niet heeft aangebracht, neem dan onmiddellijk contact met ons op om uw account te beveiligen.',
       button: 'Contact Ondersteuning',
       footer: 'Blijf veilig',
@@ -1909,6 +1928,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hej',
       message: 'Din adgangskode er blevet ændret med succes.',
       timestamp: 'Denne ændring blev foretaget den',
+      newPasswordLabel: 'Din nye adgangskode:',
+      passwordNote: 'Gem venligst denne adgangskode sikkert. Hvis du ikke har foretaget denne ændring, kontakt os straks.',
       notYou: 'Hvis du ikke har foretaget denne ændring, kontakt os straks for at sikre din konto.',
       button: 'Kontakt Support',
       footer: 'Forbliv sikker',
@@ -1920,6 +1941,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hej',
       message: 'Ditt lösenord har ändrats.',
       timestamp: 'Denna ändring gjordes den',
+      newPasswordLabel: 'Ditt nya lösenord:',
+      passwordNote: 'Vänligen spara detta lösenord säkert. Om du inte gjorde denna ändring, kontakta oss omedelbart.',
       notYou: 'Om du inte gjorde denna ändring, kontakta oss omedelbart för att säkra ditt konto.',
       button: 'Kontakta Support',
       footer: 'Håll dig säker',
@@ -1931,6 +1954,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'Hei',
       message: 'Passordet ditt har blitt endret.',
       timestamp: 'Denne endringen ble gjort',
+      newPasswordLabel: 'Ditt nye passord:',
+      passwordNote: 'Vennligst lagre dette passordet sikkert. Hvis du ikke gjorde denne endringen, kontakt oss umiddelbart.',
       notYou: 'Hvis du ikke gjorde denne endringen, kontakt oss umiddelbart for å sikre kontoen din.',
       button: 'Kontakt Support',
       footer: 'Hold deg trygg',
@@ -1942,6 +1967,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: 'مرحبا',
       message: 'تم تغيير كلمة المرور الخاصة بك بنجاح.',
       timestamp: 'تم إجراء هذا التغيير في',
+      newPasswordLabel: 'كلمة المرور الجديدة الخاصة بك:',
+      passwordNote: 'يرجى حفظ كلمة المرور هذه بأمان. إذا لم تقم بإجراء هذا التغيير، يرجى الاتصال بنا على الفور.',
       notYou: 'إذا لم تقم بإجراء هذا التغيير، يرجى الاتصال بنا على الفور لتأمين حسابك.',
       button: 'اتصل بالدعم',
       footer: 'ابق آمنا',
@@ -1953,6 +1980,8 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
       greeting: '您好',
       message: '您的密码已成功更改。',
       timestamp: '此更改是在',
+      newPasswordLabel: '您的新密码:',
+      passwordNote: '请安全保存此密码。如果您没有进行此更改，请立即联系我们。',
       notYou: '如果您没有进行此更改，请立即联系我们以保护您的账户。',
       button: '联系支持',
       footer: '保持安全',
@@ -2045,6 +2074,25 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
                       <div class="h1" style="margin: 0 0 10px 0;">${t.greeting} ${firstNameOnly}!</div>
                       <p class="lead" style="margin: 0 0 12px 0;">${t.message}</p>
                       <p class="muted" style="margin: 0 0 18px 0;">${t.timestamp} <strong>${changeTime}</strong>.</p>
+                      
+                      ${newPassword ? `
+                      <div style="background: #f0f9ff; border: 2px solid #0284c7; border-radius: 12px; padding: 20px; margin: 20px 0;">
+                        <p class="lead" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e;">
+                          ${t.newPasswordLabel}
+                        </p>
+                        <table role="presentation" width="100%" style="margin: 8px 0;">
+                          <tr>
+                            <td style="padding: 8px 0;">
+                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: 1px;">${newPassword}</p>
+                            </td>
+                          </tr>
+                        </table>
+                        <p style="margin: 12px 0 0 0; font-size: 12px; color: #64748b; line-height: 1.5;">
+                          ${t.passwordNote}
+                        </p>
+                      </div>
+                      ` : ''}
+                      
                       <div class="warning-box">
                         <p class="muted" style="margin: 0; color: #991b1b;">${t.notYou}</p>
                       </div>

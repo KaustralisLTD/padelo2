@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import bcrypt from 'bcryptjs';
+import { sendPasswordChangedEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
 
@@ -38,15 +39,17 @@ export async function POST(request: NextRequest) {
 
     const pool = getDbPool();
 
-    // Get current user (no need to verify current password)
+    // Get current user data (no need to verify current password)
     const [users] = await pool.execute(
-      'SELECT id FROM users WHERE id = ?',
+      'SELECT id, email, first_name, preferred_language FROM users WHERE id = ?',
       [session.userId]
     ) as any[];
 
     if (users.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
+
+    const user = users[0];
 
     // Hash new password
     const passwordHash = await bcrypt.hash(newPassword, 10);
@@ -56,6 +59,21 @@ export async function POST(request: NextRequest) {
       'UPDATE users SET password_hash = ?, updated_at = NOW() WHERE id = ?',
       [passwordHash, session.userId]
     );
+
+    // Send password changed email with new password
+    try {
+      const timestamp = new Date().toLocaleString(user.preferred_language || 'en');
+      await sendPasswordChangedEmail(
+        user.email,
+        user.first_name || 'User',
+        user.preferred_language || 'en',
+        timestamp,
+        newPassword
+      );
+    } catch (emailError) {
+      console.error('Error sending password changed email:', emailError);
+      // Don't fail the request if email fails, password was already changed
+    }
 
     return NextResponse.json({
       success: true,
