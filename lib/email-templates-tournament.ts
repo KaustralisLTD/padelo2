@@ -437,39 +437,13 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -1141,39 +1115,13 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -1743,39 +1691,13 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -2374,39 +2296,13 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -3013,39 +2909,13 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -3609,39 +3479,13 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -4055,39 +3899,13 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
     <title>${subjectText}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -4502,39 +4320,13 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -4955,39 +4747,13 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -5436,39 +5202,13 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -5891,39 +5631,13 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -6342,39 +6056,13 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -6812,39 +6500,13 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -7202,39 +6864,13 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -7653,39 +7289,13 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
     <title>${t.subject}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-      :root {
-        color-scheme: light dark;
-      }
+      /* Убраны стили для темного режима - они могут вызывать проблемы с доставляемостью */
+      /* Email клиенты часто не поддерживают @media queries и помечают такие письма как спам */
       body { 
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc !important;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
-      }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #020617 !important;
-          background: #020617 !important;
-        }
-        .wrapper {
-          background-color: #020617 !important;
-        }
-        .main {
-          background-color: #1e293b !important;
-        }
-        .email-container {
-          background-color: #1e293b !important;
-          color: #e5e7eb !important;
-        }
-        .text-primary {
-          color: #e5e7eb !important;
-        }
-        .text-secondary {
-          color: #9ca3af !important;
-        }
-        td {
-          color: #e5e7eb !important;
-        }
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
