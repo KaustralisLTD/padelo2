@@ -978,10 +978,7 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional",
-      "confirmDeleteParticipant": "Är du säker på att du vill radera deltagaren {name}? Denna åtgärd kan inte ångras.",
-      "participantDeleted": "Deltagare raderad framgångsrikt.",
-      "participantDeleteError": "Fel vid radering av deltagare."
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "Tilldela Åtkomst",

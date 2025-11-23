@@ -923,10 +923,7 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional",
-      "confirmDeleteParticipant": "Weet u zeker dat u deelnemer {name} wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.",
-      "participantDeleted": "Deelnemer succesvol verwijderd.",
-      "participantDeleteError": "Fout bij het verwijderen van deelnemer."
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "Toegang Toewijzen",

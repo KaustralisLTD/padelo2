@@ -1216,10 +1216,7 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional",
-      "confirmDeleteParticipant": "Esteu segur que voleu eliminar el participant {name}? Aquesta acció no es pot desfer.",
-      "participantDeleted": "Participant eliminat amb èxit.",
-      "participantDeleteError": "Error en eliminar el participant."
+      "optional": "Optional"
     },
     "staff": {
       "title": "Manage Staff",

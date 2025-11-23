@@ -978,10 +978,7 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional",
-      "confirmDeleteParticipant": "您确定要删除参与者 {name} 吗？此操作无法撤销。",
-      "participantDeleted": "参与者已成功删除。",
-      "participantDeleteError": "删除参与者时出错。"
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "分配访问权限",

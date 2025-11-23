@@ -969,10 +969,7 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional",
-      "confirmDeleteParticipant": "هل أنت متأكد أنك تريد حذف المشارك {name}؟ لا يمكن التراجع عن هذا الإجراء.",
-      "participantDeleted": "تم حذف المشارك بنجاح.",
-      "participantDeleteError": "خطأ في حذف المشارك."
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "تعيين الوصول",

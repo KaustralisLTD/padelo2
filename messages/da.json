@@ -978,10 +978,7 @@
       "removeBanner": "Remove Banner",
       "bannerHint": "Maximum 5MB. JPG, PNG formats.",
       "bannerSizeError": "Banner size must be less than 5MB",
-      "optional": "Optional",
-      "confirmDeleteParticipant": "Er du sikker på, at du vil slette deltageren {name}? Denne handling kan ikke fortrydes.",
-      "participantDeleted": "Deltager slettet med succes.",
-      "participantDeleteError": "Fejl ved sletning af deltager."
+      "optional": "Optional"
     },
     "staff": {
       "assignAccess": "Tildel Adgang",
