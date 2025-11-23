@@ -87,8 +87,8 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
     
     // Generate plain text version
     const text = html
-      .replace(/<style[^>]*>.*?<\/style>/gis, '')
-      .replace(/<script[^>]*>.*?<\/script>/gis, '')
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
       .replace(/<[^>]+>/g, ' ')
       .replace(/&nbsp;/g, ' ')
       .replace(/&amp;/g, '&')
@@ -112,7 +112,7 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
     // Try SendGrid
     if (process.env.SENDGRID_API_KEY) {
       const sgMail = await import('@sendgrid/mail');
-      sgMail.default.setApiKey(process.env.SENDGRID_API_KEY);
+      sgMail.default.setApiKey(process.env.SENDGRID_API_KEY as string);
       
       await sgMail.default.send({
         from: process.env.SMTP_FROM || 'hello@padelO2.com',
