@@ -448,8 +448,8 @@ export default function AdminUsersContent() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-20 mt-20">
-        <div className="max-w-6xl mx-auto text-center">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center">
           <p className="text-text-secondary font-poppins">{t('loading')}</p>
         </div>
       </div>
@@ -457,8 +457,7 @@ export default function AdminUsersContent() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-20 mt-20">
-      <div className="max-w-6xl mx-auto">
+    <div className="max-w-7xl mx-auto">
         <div className="mb-6">
           <Link
             href={`/${locale}/dashboard`}

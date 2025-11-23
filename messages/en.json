@@ -900,6 +900,21 @@
   "Admin": {
     "loading": "Loading...",
     "backToDashboard": "Back to Dashboard",
+    "dashboard": {
+      "title": "Dashboard"
+    },
+    "tournaments": {
+      "title": "Tournaments"
+    },
+    "wallet": {
+      "title": "Wallet"
+    },
+    "logs": {
+      "title": "Logs"
+    },
+    "dbMonitor": {
+      "title": "Database Monitor"
+    },
     "users": {
       "title": "Manage Users",
       "description": "Create, edit, and manage all user accounts",
