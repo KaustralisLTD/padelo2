@@ -55,7 +55,9 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center space-x-2 px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
+        className={`flex items-center px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
+          locale === 'ar' ? 'flex-row-reverse gap-2' : 'space-x-2'
+        } ${
           theme === 'light'
             ? variant === 'menu'
               ? 'text-gray-800 hover:text-primary border-gray-300 hover:border-primary bg-white'
@@ -80,13 +82,19 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
       </button>
 
       {isOpen && (
-        <div className={`absolute top-full right-0 mt-2 w-32 border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary ${
-          theme === 'light'
-            ? variant === 'menu'
-              ? 'bg-white border-gray-200 shadow-lg'
-              : 'bg-white/95 backdrop-blur-md border-white/30'
-            : 'bg-background-secondary border-border scrollbar-track-background-secondary'
-        }`}>
+        <div 
+          className={`absolute top-full mt-2 w-40 border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary ${
+            locale === 'ar'
+              ? 'left-0 ml-2' // Для RTL языков позиционируем слева с отступом
+              : 'right-0' // Для LTR языков позиционируем справа
+          } ${
+            theme === 'light'
+              ? variant === 'menu'
+                ? 'bg-white border-gray-200 shadow-lg'
+                : 'bg-white/95 backdrop-blur-md border-white/30'
+              : 'bg-background-secondary border-border scrollbar-track-background-secondary'
+          }`}
+        >
           <style jsx>{`
             div::-webkit-scrollbar {
               width: 6px;
@@ -106,7 +114,9 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
             <button
               key={loc}
               onClick={() => handleLanguageChange(loc)}
-              className={`w-full text-left px-4 py-2 text-sm font-poppins transition-colors ${
+              className={`w-full px-4 py-2 text-sm font-poppins transition-colors ${
+                locale === 'ar' ? 'text-right' : 'text-left'
+              } ${
                 locale === loc
                   ? `text-primary ${theme === 'light' ? 'bg-primary/15 font-semibold' : 'bg-background'}`
                   : theme === 'light'
