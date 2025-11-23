@@ -3734,6 +3734,7 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
   const { firstName, lastName, tournament, scheduleUrl, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
 
   const translations: Record<string, Record<string, string | ((tournamentName: string) => string)>> = {
     en: {
@@ -4122,6 +4123,7 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
   const { firstName, lastName, tournament, match, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const { getLocalizedCategoryName, formatLocalizedDate } = require('@/lib/localization-utils');
   const matchDate = formatLocalizedDate(match.date, locale);
 
@@ -4566,6 +4568,7 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
   const { firstName, lastName, tournament, match, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const { formatLocalizedDate } = require('@/lib/localization-utils');
   const matchDate = formatLocalizedDate(match.date, locale);
 
@@ -4995,6 +4998,7 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
   const { firstName, lastName, tournament, match, reason, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const { formatLocalizedDate } = require('@/lib/localization-utils');
   const oldDate = match.oldDate ? formatLocalizedDate(match.oldDate, locale) : null;
   const newDate = formatLocalizedDate(match.newDate, locale);
@@ -5472,6 +5476,7 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
   const { firstName, lastName, tournament, resultsUrl, nextStage, qualified, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
 
   const translations: Record<string, Record<string, string>> = {
     en: {
@@ -5871,6 +5876,7 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
   const { firstName, lastName, tournament, position, prize, resultsUrl, finalStandings, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const isWinner = position !== undefined && position <= 3;
 
   const translations: Record<string, Record<string, string>> = {
@@ -6330,6 +6336,7 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
   const { firstName, lastName, tournament, mediaUrl, recap, nextEventUrl, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const { formatLocalizedDate } = require('@/lib/localization-utils');
   const startDate = formatLocalizedDate(tournament.startDate, locale);
   const endDate = formatLocalizedDate(tournament.endDate, locale);
@@ -6742,6 +6749,7 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
   const { firstName, lastName, tournament, feedbackUrl, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
 
   const translations: Record<string, Record<string, string>> = {
     en: {
@@ -7110,6 +7118,7 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
   const { firstName, lastName, tournament, reason, refundInfo, newDates, options, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Participant';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const { formatLocalizedDate } = require('@/lib/localization-utils');
   const newStartDate = newDates?.startDate ? formatLocalizedDate(newDates.startDate, locale) : null;
   const newEndDate = newDates?.endDate ? formatLocalizedDate(newDates.endDate, locale) : null;
