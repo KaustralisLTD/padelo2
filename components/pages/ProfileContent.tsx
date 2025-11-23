@@ -529,7 +529,7 @@ export default function ProfileContent() {
                       if (response.ok) {
                         setPasswordStatus('success');
                         setPasswordError(null);
-                        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+                        setPasswordData({ newPassword: '', confirmPassword: '' });
                         setTimeout(() => {
                           setShowChangePassword(false);
                           setPasswordStatus('idle');
