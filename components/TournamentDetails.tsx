@@ -146,57 +146,44 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
   const getTranslatedDescription = (): string => {
     if (!tournament.description) return '';
     
-    let descriptionToDisplay = tournament.description;
-    
     // Получаем все доступные ключи переводов
     const availableKeys = tournament.translations?.description ? Object.keys(tournament.translations.description) : [];
     
-    // Сначала пробуем точное совпадение локали
-    if (tournament.translations?.description?.[locale]) {
-      descriptionToDisplay = tournament.translations.description[locale];
+    // Определяем приоритетный порядок проверки ключей для текущей локали
+    let keysToTry: string[] = [locale];
+    
+    // Для украинского пробуем оба варианта
+    if (locale === 'ua') {
+      keysToTry = ['ua', 'uk', 'ru', 'en'];
+    } else if (locale === 'uk') {
+      keysToTry = ['uk', 'ua', 'ru', 'en'];
+    } else {
+      // Для других языков пробуем текущую локаль, затем английский
+      keysToTry = [locale, 'en'];
     }
-    // Для украинского: пробуем оба варианта 'ua' и 'uk'
-    else if (locale === 'ua') {
-      if (tournament.translations?.description?.['uk']) {
-        descriptionToDisplay = tournament.translations.description['uk'];
-      } else if (tournament.translations?.description?.['ua']) {
-        descriptionToDisplay = tournament.translations.description['ua'];
-      }
-    }
-    // Для 'uk': пробуем оба варианта
-    else if (locale === 'uk') {
-      if (tournament.translations?.description?.['ua']) {
-        descriptionToDisplay = tournament.translations.description['ua'];
-      } else if (tournament.translations?.description?.['uk']) {
-        descriptionToDisplay = tournament.translations.description['uk'];
-      }
-    }
-    // Fallback на русский для украинских пользователей
-    if (descriptionToDisplay === tournament.description && (locale === 'ua' || locale === 'uk')) {
-      if (tournament.translations?.description?.['ru']) {
-        descriptionToDisplay = tournament.translations.description['ru'];
-      }
-    }
-    // Fallback на английский
-    if (descriptionToDisplay === tournament.description) {
-      if (tournament.translations?.description?.['en']) {
-        descriptionToDisplay = tournament.translations.description['en'];
+    
+    // Пробуем найти перевод по приоритету
+    let descriptionToDisplay = tournament.description;
+    for (const key of keysToTry) {
+      if (tournament.translations?.description?.[key]) {
+        descriptionToDisplay = tournament.translations.description[key];
+        break;
       }
     }
     
     // Debug logging
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[TournamentDetails] Description translation:', {
-        locale,
-        availableKeys,
-        hasExactMatch: !!tournament.translations?.description?.[locale],
-        hasUA: !!tournament.translations?.description?.['ua'],
-        hasUK: !!tournament.translations?.description?.['uk'],
-        using: descriptionToDisplay !== tournament.description ? 'translated' : 'original',
-        originalLength: tournament.description.length,
-        translatedLength: descriptionToDisplay.length,
-      });
-    }
+    console.log('[TournamentDetails] Description translation:', {
+      locale,
+      availableKeys,
+      keysToTry,
+      foundKey: keysToTry.find(k => tournament.translations?.description?.[k]),
+      hasUA: !!tournament.translations?.description?.['ua'],
+      hasUK: !!tournament.translations?.description?.['uk'],
+      hasRU: !!tournament.translations?.description?.['ru'],
+      using: descriptionToDisplay !== tournament.description ? 'translated' : 'original',
+      originalPreview: tournament.description.substring(0, 50),
+      translatedPreview: descriptionToDisplay.substring(0, 50),
+    });
     
     return descriptionToDisplay;
   };
@@ -208,59 +195,48 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
       return [];
     }
     
-    let eventScheduleToDisplay = tournament.eventSchedule;
-    
     // Получаем все доступные ключи переводов
     const availableKeys = tournament.translations?.eventSchedule ? Object.keys(tournament.translations.eventSchedule) : [];
     
-    // Сначала пробуем точное совпадение локали
-    if (tournament.translations?.eventSchedule?.[locale]) {
-      eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
+    // Определяем приоритетный порядок проверки ключей для текущей локали
+    let keysToTry: string[] = [locale];
+    
+    // Для украинского пробуем оба варианта
+    if (locale === 'ua') {
+      keysToTry = ['ua', 'uk', 'ru', 'en'];
+    } else if (locale === 'uk') {
+      keysToTry = ['uk', 'ua', 'ru', 'en'];
+    } else {
+      // Для других языков пробуем текущую локаль, затем английский
+      keysToTry = [locale, 'en'];
     }
-    // Для украинского: пробуем оба варианта 'ua' и 'uk'
-    else if (locale === 'ua') {
-      if (tournament.translations?.eventSchedule?.['uk']) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule['uk'];
-      } else if (tournament.translations?.eventSchedule?.['ua']) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule['ua'];
-      }
-    }
-    // Для 'uk': пробуем оба варианта
-    else if (locale === 'uk') {
-      if (tournament.translations?.eventSchedule?.['ua']) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule['ua'];
-      } else if (tournament.translations?.eventSchedule?.['uk']) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule['uk'];
-      }
-    }
-    // Fallback на русский для украинских пользователей
-    if (eventScheduleToDisplay === tournament.eventSchedule && (locale === 'ua' || locale === 'uk')) {
-      if (tournament.translations?.eventSchedule?.['ru']) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule['ru'];
-      }
-    }
-    // Fallback на английский
-    if (eventScheduleToDisplay === tournament.eventSchedule) {
-      if (tournament.translations?.eventSchedule?.['en']) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule['en'];
+    
+    // Пробуем найти перевод по приоритету
+    let eventScheduleToDisplay = tournament.eventSchedule;
+    for (const key of keysToTry) {
+      if (tournament.translations?.eventSchedule?.[key]) {
+        eventScheduleToDisplay = tournament.translations.eventSchedule[key];
+        break;
       }
     }
     
     // Debug logging
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[TournamentDetails] EventSchedule translation:', {
-        locale,
-        availableKeys,
-        hasExactMatch: !!tournament.translations?.eventSchedule?.[locale],
-        hasUA: !!tournament.translations?.eventSchedule?.['ua'],
-        hasUK: !!tournament.translations?.eventSchedule?.['uk'],
-        originalCount: tournament.eventSchedule.length,
-        translatedCount: eventScheduleToDisplay.length,
-        using: eventScheduleToDisplay !== tournament.eventSchedule ? 'translated' : 'original',
-        firstEventOriginal: tournament.eventSchedule[0]?.title,
-        firstEventTranslated: eventScheduleToDisplay[0]?.title,
-      });
-    }
+    console.log('[TournamentDetails] EventSchedule translation:', {
+      locale,
+      availableKeys,
+      keysToTry,
+      foundKey: keysToTry.find(k => tournament.translations?.eventSchedule?.[k]),
+      hasUA: !!tournament.translations?.eventSchedule?.['ua'],
+      hasUK: !!tournament.translations?.eventSchedule?.['uk'],
+      hasRU: !!tournament.translations?.eventSchedule?.['ru'],
+      originalCount: tournament.eventSchedule.length,
+      translatedCount: eventScheduleToDisplay.length,
+      using: eventScheduleToDisplay !== tournament.eventSchedule ? 'translated' : 'original',
+      firstEventOriginal: tournament.eventSchedule[0]?.title,
+      firstEventTranslated: eventScheduleToDisplay[0]?.title,
+      allOriginalTitles: tournament.eventSchedule.map((e: any) => e.title),
+      allTranslatedTitles: eventScheduleToDisplay.map((e: any) => e.title),
+    });
     
     return eventScheduleToDisplay;
   };
