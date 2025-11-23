@@ -478,6 +478,12 @@ export default function DashboardContent() {
           </div>
         )}
 
+        {error && (
+          <div className="p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400 text-sm font-poppins mb-6">
+            {error}
+          </div>
+        )}
+
         {isEditing ? (
           <div className="bg-background-secondary p-6 rounded-lg border border-gray-800 mb-8">
             <h2 className="text-xl font-orbitron font-semibold mb-6 text-text">
