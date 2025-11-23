@@ -458,41 +458,41 @@ export default function AdminUsersContent() {
 
   return (
     <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
-              {t('users.title')}
-            </h1>
-            <p className="text-xl text-text-secondary font-poppins">
-              {t('users.description')}
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={() => {
-                setLoading(true);
-                fetchUsers();
-              }}
-              disabled={loading}
-              className="px-6 py-3 bg-background-secondary border border-border text-text font-orbitron font-semibold rounded-lg hover:bg-background hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-              title={t('users.refresh') || 'Refresh'}
-            >
-              <svg className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              {t('users.refresh') || 'Refresh'}
-            </button>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
-            >
-              {t('users.createUser')}
-            </button>
-          </div>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
+            {t('users.title')}
+          </h1>
+          <p className="text-xl text-text-secondary font-poppins">
+            {t('users.description')}
+          </p>
         </div>
+        <div className="flex gap-3">
+          <button
+            onClick={() => {
+              setLoading(true);
+              fetchUsers();
+            }}
+            disabled={loading}
+            className="px-6 py-3 bg-background-secondary border border-border text-text font-orbitron font-semibold rounded-lg hover:bg-background hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            title={t('users.refresh') || 'Refresh'}
+          >
+            <svg className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            {t('users.refresh') || 'Refresh'}
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-6 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
+            {t('users.createUser')}
+          </button>
+        </div>
+      </div>
 
-        {error && (
-          <div className="mb-4 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-5 backdrop-blur-sm">
+      {error && (
+        <div className="mb-4 bg-gradient-to-r from-red-500/10 via-orange-500/10 to-red-500/10 border border-red-500/30 rounded-lg p-5 backdrop-blur-sm">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-to-br from-red-500/20 to-orange-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -502,10 +502,10 @@ export default function AdminUsersContent() {
               <p className="text-text font-poppins font-semibold">{error}</p>
             </div>
           </div>
-        )}
+      )}
 
-        {success && (
-          <div className="mb-4 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-lg p-5 backdrop-blur-sm">
+      {success && (
+        <div className="mb-4 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 border border-cyan-500/30 rounded-lg p-5 backdrop-blur-sm">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
