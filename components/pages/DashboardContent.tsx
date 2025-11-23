@@ -1128,7 +1128,6 @@ export default function DashboardContent() {
                         ))}
                       </select>
                     </div>
-                  </div>
                 </div>
               )}
 
@@ -1369,8 +1368,6 @@ export default function DashboardContent() {
             </button>
           </div>
         )}
-          </>
-        )}
 
         {/* Leave Tournament Modal */}
         {showLeaveModal && selectedRegistration && (
@@ -1412,6 +1409,7 @@ export default function DashboardContent() {
           </div>
         )}
         </>
+        )}
       </div>
     </div>
   );
