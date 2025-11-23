@@ -985,6 +985,15 @@
       "bannerSizeError": "Banner size must be less than 5MB",
       "optional": "Optional"
     },
+    "wallet": {
+      "title": "Portafoglio"
+    },
+    "logs": {
+      "title": "Registri"
+    },
+    "dbMonitor": {
+      "title": "Monitor DB"
+    },
     "staff": {
       "assignAccess": "Assegna Accesso",
       "editAccess": "Modifica Accesso",
