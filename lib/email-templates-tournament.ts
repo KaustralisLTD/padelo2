@@ -443,7 +443,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -470,11 +470,11 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -1143,7 +1143,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -1176,11 +1176,11 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -1723,7 +1723,7 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -1756,11 +1756,11 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -2331,7 +2331,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -2365,11 +2365,11 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -2947,7 +2947,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -2980,11 +2980,11 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -3520,7 +3520,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -3555,11 +3555,11 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -3944,7 +3944,7 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -3973,11 +3973,11 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -4369,7 +4369,7 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -4400,11 +4400,11 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -4800,7 +4800,7 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -4832,11 +4832,11 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -5259,7 +5259,7 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -5291,11 +5291,11 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -5692,7 +5692,7 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -5722,11 +5722,11 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -6121,7 +6121,7 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -6154,11 +6154,11 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -6569,7 +6569,7 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -6600,11 +6600,11 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -6937,7 +6937,7 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -6966,11 +6966,11 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
@@ -7367,7 +7367,7 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
       body { 
         margin: 0; 
         padding: 0; 
-        background-color: #f8fafc !important;
+        background-color: #f8fafc;
         background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
@@ -7399,11 +7399,11 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
       }
     </style>
   </head>
-  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
-    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
       <tr>
-        <td align="center" style="background-color:#f8fafc !important;">
-          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
             <tr>
               <td class="p-hero" style="padding: 22px 30px 12px 30px;">
                 <table role="presentation" width="100%">
