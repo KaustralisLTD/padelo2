@@ -290,8 +290,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+    if (file.size > 15 * 1024 * 1024) {
+      alert(t('form.photoSizeError') || 'Photo size must be less than 15MB');
       return;
     }
 
@@ -326,8 +326,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      setUserPhotoError(t('form.photoSizeError') || 'Photo size must be less than 5MB');
+    if (file.size > 15 * 1024 * 1024) {
+      setUserPhotoError(t('form.photoSizeError') || 'Photo size must be less than 15MB');
       return;
     }
 
@@ -758,7 +758,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
               </button>
             )}
             <p className="text-xs text-text-tertiary mt-2">
-              {t('form.photoHint') || 'Maximum 5MB. JPG, PNG formats.'}
+              {t('form.photoHint') || 'Maximum 15MB. JPG, PNG formats.'}
             </p>
             {userPhotoError && (
               <p className="text-xs text-red-400 mt-2">{userPhotoError}</p>
@@ -997,20 +997,34 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     </div>
                   ) : null}
                   <div className="flex-1">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handlePartnerPhotoChange}
-                      className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
-                    />
-                    <p className="mt-2 text-xs text-text-secondary">
-                      {t('form.partnerPhotoOptional')}
-                    </p>
+                    <label className="cursor-pointer inline-block">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePartnerPhotoChange}
+                        className="hidden"
+                        id="partner-photo-upload"
+                      />
+                      <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                        {partner?.photoName || (t('form.chooseFile') || 'Choose File')}
+                      </span>
+                    </label>
                     {partner?.photoName && (
-                      <p className="mt-2 text-xs text-text-secondary">
-                        {partner.photoName}
-                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPartner(prev => prev ? { ...prev, photoData: null, photoName: null } : null);
+                          const input = document.getElementById('partner-photo-upload') as HTMLInputElement;
+                          if (input) input.value = '';
+                        }}
+                        className="ml-2 text-xs text-text-secondary hover:text-primary"
+                      >
+                        {t('form.removeFile') || 'Remove'}
+                      </button>
                     )}
+                    <p className="text-xs text-text-tertiary mt-2">
+                      {t('form.photoHint') || 'Maximum 15MB. JPG, PNG formats.'}
+                    </p>
                     {partnerPhotoError && (
                       <p className="mt-2 text-xs text-red-400">
                         {partnerPhotoError}
@@ -1143,20 +1157,35 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                       </div>
                     ) : null}
                     <div className="flex-1">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleCategoryPartnerPhotoChange(category, e)}
-                        className="block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-primary/10 file:text-primary hover:file:bg-primary/20 focus:outline-none"
-                      />
-                      <p className="mt-2 text-xs text-text-secondary">
-                        {t('form.partnerPhotoOptional')}
-                      </p>
+                      <label className="cursor-pointer inline-block">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleCategoryPartnerPhotoChange(category, e)}
+                          className="hidden"
+                          id={`category-partner-photo-${category}`}
+                        />
+                        <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                          {categoryPartner.photoName || (t('form.chooseFile') || 'Choose File')}
+                        </span>
+                      </label>
                       {categoryPartner.photoName && (
-                        <p className="mt-2 text-xs text-text-secondary">
-                          {categoryPartner.photoName}
-                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            updateCategoryPartnerField(category, 'photoData', null);
+                            updateCategoryPartnerField(category, 'photoName', null);
+                            const input = document.getElementById(`category-partner-photo-${category}`) as HTMLInputElement;
+                            if (input) input.value = '';
+                          }}
+                          className="ml-2 text-xs text-text-secondary hover:text-primary"
+                        >
+                          {t('form.removeFile') || 'Remove'}
+                        </button>
                       )}
+                      <p className="text-xs text-text-tertiary mt-2">
+                        {t('form.photoHint') || 'Maximum 15MB. JPG, PNG formats.'}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1229,44 +1258,67 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           </div>
           <div className="mt-4">
             <label className="block text-sm font-poppins text-text-secondary mb-2">
-              {t('form.childPhoto') || 'Child Photo'} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
+              {t('form.childPhoto') || 'Child Photo'}
             </label>
-            <div className="relative">
-              <input
-                type="file"
-                accept="image/*"
-                id="child-photo-input"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    if (file.size > 5 * 1024 * 1024) {
-                      alert(t('form.photoSizeError') || 'Photo size must be less than 5MB');
-                      return;
-                    }
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setChildData({
-                        ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                        photoData: reader.result as string,
-                        photoName: file.name
-                      });
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
-                className="hidden"
-              />
-              <label
-                htmlFor="child-photo-input"
-                className="flex items-center justify-center w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text-secondary hover:border-primary transition-colors cursor-pointer"
-              >
-                <span className="mr-2">{t('form.chooseFile') || 'Choose File'}</span>
-                {childData?.photoName ? (
-                  <span className="text-text text-sm">{childData.photoName}</span>
-                ) : (
-                  <span className="text-text-tertiary text-sm">{t('form.fileNotSelected') || 'No file selected'}</span>
+            <div className="flex items-center gap-4">
+              {childData?.photoData ? (
+                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
+                  <Image
+                    src={childData.photoData}
+                    alt="Child photo"
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              ) : null}
+              <div className="flex-1">
+                <label className="cursor-pointer inline-block">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="child-photo-input"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        if (file.size > 15 * 1024 * 1024) {
+                          alert(t('form.photoSizeError') || 'Photo size must be less than 15MB');
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setChildData({
+                            ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
+                            photoData: reader.result as string,
+                            photoName: file.name
+                          });
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="hidden"
+                  />
+                  <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                    {childData?.photoName || (t('form.chooseFile') || 'Choose File')}
+                  </span>
+                </label>
+                {childData?.photoName && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setChildData(prev => prev ? { ...prev, photoData: null, photoName: null } : null);
+                      const input = document.getElementById('child-photo-input') as HTMLInputElement;
+                      if (input) input.value = '';
+                    }}
+                    className="ml-2 text-xs text-text-secondary hover:text-primary"
+                  >
+                    {t('form.removeFile') || 'Remove'}
+                  </button>
                 )}
-              </label>
+                <p className="text-xs text-text-tertiary mt-2">
+                  {t('form.photoHint') || 'Maximum 15MB. JPG, PNG formats.'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
