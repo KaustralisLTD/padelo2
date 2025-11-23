@@ -145,7 +145,22 @@ export default function DashboardContent() {
   const handleEdit = () => {
     if (!selectedRegistration) return;
     const categoryPartners = selectedRegistration.categoryPartners || {};
-    setEditCategoryPartners(categoryPartners);
+    // Конвертируем name в firstName/lastName для каждого партнера
+    const convertedPartners: Record<string, any> = {};
+    Object.entries(categoryPartners).forEach(([category, partner]: [string, any]) => {
+      if (partner && partner.name && !partner.firstName) {
+        // Разделяем name на firstName и lastName
+        const nameParts = partner.name.trim().split(/\s+/);
+        convertedPartners[category] = {
+          ...partner,
+          firstName: nameParts[0] || '',
+          lastName: nameParts.slice(1).join(' ') || '',
+        };
+      } else {
+        convertedPartners[category] = partner;
+      }
+    });
+    setEditCategoryPartners(convertedPartners);
     // Разворачиваем блоки партнеров для mixed категорий
     const expanded: Record<string, boolean> = {};
     (selectedRegistration.categories || []).forEach((cat: string) => {
@@ -182,9 +197,23 @@ export default function DashboardContent() {
         return;
       }
 
+      // Конвертируем firstName/lastName в name для каждого партнера категории
+      const convertedCategoryPartners: Record<string, any> = {};
+      Object.entries(editCategoryPartners).forEach(([category, partner]: [string, any]) => {
+        if (partner) {
+          const name = partner.firstName 
+            ? `${partner.firstName}${partner.lastName ? ' ' + partner.lastName : ''}`.trim()
+            : partner.name || '';
+          convertedCategoryPartners[category] = {
+            ...partner,
+            name: name || undefined,
+          };
+        }
+      });
+
       const dataToSend = {
         ...editData,
-        categoryPartners: editCategoryPartners,
+        categoryPartners: convertedCategoryPartners,
         childData: childData,
       };
       
@@ -621,7 +650,7 @@ export default function DashboardContent() {
                               if (!editCategoryPartners[code]) {
                                 setEditCategoryPartners({
                                   ...editCategoryPartners,
-                                  [code]: { name: '', email: '', phone: '', tshirtSize: '' }
+                                  [code]: { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }
                                 });
                               }
                               setExpandedCategoryPartners({
@@ -698,7 +727,7 @@ export default function DashboardContent() {
                     className="w-full flex items-center justify-between mb-2"
                   >
                     <h4 className="text-sm font-orbitron font-semibold text-text">
-                      {t('form.partnerForCategory', { category: customCategories['mixed1'] })}
+                      {t('form.partnerForCategory')} {getLocalizedCategoryName('mixed1', locale) || customCategories['mixed1'] || 'Mixed 1'}
                       {registrationSettings.partner.required && <span className="text-red-400 ml-1">*</span>}
                     </h4>
                     <svg
@@ -712,20 +741,36 @@ export default function DashboardContent() {
                   </button>
                   
                   {expandedCategoryPartners['mixed1'] && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                      <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('form.partnerName')} {registrationSettings.partner.required && <span className="text-red-400">*</span>}
-                        </label>
-                        <input
-                          type="text"
-                          value={(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }).name}
-                          onChange={(e) => setEditCategoryPartners({
-                            ...editCategoryPartners,
-                            'mixed1': { ...(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }), name: e.target.value }
-                          })}
-                          className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                        />
+                    <div className="space-y-4 mt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.firstName')} {registrationSettings.partner.required && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="text"
+                            value={(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).firstName || ''}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              'mixed1': { ...(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), firstName: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.lastName')}
+                          </label>
+                          <input
+                            type="text"
+                            value={(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).lastName || ''}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              'mixed1': { ...(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), lastName: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
                       </div>
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -733,10 +778,10 @@ export default function DashboardContent() {
                         </label>
                         <input
                           type="email"
-                          value={(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }).email}
+                          value={(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).email || ''}
                           onChange={(e) => setEditCategoryPartners({
                             ...editCategoryPartners,
-                            'mixed1': { ...(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }), email: e.target.value }
+                            'mixed1': { ...(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), email: e.target.value }
                           })}
                           className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                         />
@@ -747,10 +792,10 @@ export default function DashboardContent() {
                         </label>
                         <input
                           type="tel"
-                          value={(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }).phone}
+                          value={(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).phone || ''}
                           onChange={(e) => setEditCategoryPartners({
                             ...editCategoryPartners,
-                            'mixed1': { ...(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }), phone: e.target.value }
+                            'mixed1': { ...(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), phone: e.target.value }
                           })}
                           className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                         />
@@ -760,10 +805,10 @@ export default function DashboardContent() {
                           {t('form.partnerTshirtSize')}
                         </label>
                         <select
-                          value={(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }).tshirtSize}
+                          value={(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).tshirtSize || ''}
                           onChange={(e) => setEditCategoryPartners({
                             ...editCategoryPartners,
-                            'mixed1': { ...(editCategoryPartners['mixed1'] || { name: '', email: '', phone: '', tshirtSize: '' }), tshirtSize: e.target.value }
+                            'mixed1': { ...(editCategoryPartners['mixed1'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), tshirtSize: e.target.value }
                           })}
                           className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                         >
@@ -790,7 +835,7 @@ export default function DashboardContent() {
                     className="w-full flex items-center justify-between mb-2"
                   >
                     <h4 className="text-sm font-orbitron font-semibold text-text">
-                      {t('form.partnerForCategory', { category: customCategories['mixed2'] })}
+                      {t('form.partnerForCategory')} {getLocalizedCategoryName('mixed2', locale) || customCategories['mixed2'] || 'Mixed 2'}
                       {registrationSettings.partner.required && <span className="text-red-400 ml-1">*</span>}
                     </h4>
                     <svg
@@ -804,20 +849,36 @@ export default function DashboardContent() {
                   </button>
                   
                   {expandedCategoryPartners['mixed2'] && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                      <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('form.partnerName')} {registrationSettings.partner.required && <span className="text-red-400">*</span>}
-                        </label>
-                        <input
-                          type="text"
-                          value={(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }).name}
-                          onChange={(e) => setEditCategoryPartners({
-                            ...editCategoryPartners,
-                            'mixed2': { ...(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }), name: e.target.value }
-                          })}
-                          className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                        />
+                    <div className="space-y-4 mt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.firstName')} {registrationSettings.partner.required && <span className="text-red-400">*</span>}
+                          </label>
+                          <input
+                            type="text"
+                            value={(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).firstName || ''}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              'mixed2': { ...(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), firstName: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-poppins text-text-secondary mb-2">
+                            {t('form.lastName')}
+                          </label>
+                          <input
+                            type="text"
+                            value={(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).lastName || ''}
+                            onChange={(e) => setEditCategoryPartners({
+                              ...editCategoryPartners,
+                              'mixed2': { ...(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), lastName: e.target.value }
+                            })}
+                            className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                          />
+                        </div>
                       </div>
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -825,10 +886,10 @@ export default function DashboardContent() {
                         </label>
                         <input
                           type="email"
-                          value={(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }).email}
+                          value={(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).email || ''}
                           onChange={(e) => setEditCategoryPartners({
                             ...editCategoryPartners,
-                            'mixed2': { ...(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }), email: e.target.value }
+                            'mixed2': { ...(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), email: e.target.value }
                           })}
                           className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                         />
@@ -839,10 +900,10 @@ export default function DashboardContent() {
                         </label>
                         <input
                           type="tel"
-                          value={(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }).phone}
+                          value={(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).phone || ''}
                           onChange={(e) => setEditCategoryPartners({
                             ...editCategoryPartners,
-                            'mixed2': { ...(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }), phone: e.target.value }
+                            'mixed2': { ...(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), phone: e.target.value }
                           })}
                           className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                         />
@@ -852,10 +913,10 @@ export default function DashboardContent() {
                           {t('form.partnerTshirtSize')}
                         </label>
                         <select
-                          value={(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }).tshirtSize}
+                          value={(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }).tshirtSize || ''}
                           onChange={(e) => setEditCategoryPartners({
                             ...editCategoryPartners,
-                            'mixed2': { ...(editCategoryPartners['mixed2'] || { name: '', email: '', phone: '', tshirtSize: '' }), tshirtSize: e.target.value }
+                            'mixed2': { ...(editCategoryPartners['mixed2'] || { firstName: '', lastName: '', email: '', phone: '', tshirtSize: '' }), tshirtSize: e.target.value }
                           })}
                           className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                         >

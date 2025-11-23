@@ -473,7 +473,8 @@
       "cancelEdit": "Cancel",
       "registrationUpdated": "Registration updated successfully!",
       "registrationUpdateError": "Error updating registration. Please try again.",
-      "leaving": "Leaving..."
+      "leaving": "Leaving...",
+      "categoryPartners": "Partners by Category"
     },
     "rules": {
       "title": "Tournament Rules",

@@ -9,10 +9,12 @@ import {
   normalizeRegistrationSettings,
 } from '@/lib/registration-settings';
 import { compressImageToSize } from '@/lib/image-compression';
-import { getCategoryLevelExplanation } from '@/lib/localization-utils';
+import { getCategoryLevelExplanation, getLocalizedCategoryName } from '@/lib/localization-utils';
 
 interface Partner {
-  name: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone: string;
   tshirtSize: string;
@@ -261,7 +263,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   };
 
   const createEmptyPartner = (): Partner => ({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     tshirtSize: '',
@@ -482,13 +485,13 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         }
         return;
       }
-      if (!categoryPartner.name?.trim()) {
-        const errorMsg = t('form.partnerName') + ' is required' || 'Partner name is required';
+      if (!categoryPartner.firstName?.trim()) {
+        const errorMsg = t('form.firstName') + ' is required' || 'Partner first name is required';
         alert(errorMsg);
-        const partnerNameField = document.querySelector(`[name="partnerName-${category}"]`) as HTMLElement;
-        if (partnerNameField) {
-          partnerNameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          partnerNameField.focus();
+        const partnerFirstNameField = document.querySelector(`[name="partnerFirstName-${category}"]`) as HTMLElement;
+        if (partnerFirstNameField) {
+          partnerFirstNameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerFirstNameField.focus();
         }
         return;
       }
@@ -542,13 +545,13 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     const partnerSectionVisible = partnerRequired || showPartner;
 
     if (partnerSectionVisible && partner) {
-      if (!partner.name?.trim()) {
-        const errorMsg = t('form.partnerName') + ' is required' || 'Partner name is required';
+      if (!partner.firstName?.trim() && !partner.name?.trim()) {
+        const errorMsg = t('form.firstName') + ' is required' || 'Partner first name is required';
         alert(errorMsg);
-        const partnerNameField = document.querySelector('[name="partnerName"]') as HTMLElement;
-        if (partnerNameField) {
-          partnerNameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          partnerNameField.focus();
+        const partnerFirstNameField = document.querySelector('[name="partnerFirstName"]') as HTMLElement;
+        if (partnerFirstNameField) {
+          partnerFirstNameField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          partnerFirstNameField.focus();
         }
         return;
       }
@@ -605,6 +608,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       partnerSectionVisible && partner
         ? {
             ...partner,
+            // Конвертируем firstName/lastName в name для обратной совместимости
+            name: partner.firstName 
+              ? `${partner.firstName}${partner.lastName ? ' ' + partner.lastName : ''}`.trim()
+              : partner.name || undefined,
             photoData: partner.photoData || null,
             photoName: partner.photoName || null,
           }
@@ -615,10 +622,16 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     const categoryPartnersPayload: Record<string, Partner> = {};
     for (const category of mixedCategories) {
       if (categoryPartners[category]) {
+        const partner = categoryPartners[category];
+        // Конвертируем firstName/lastName в name для обратной совместимости
+        const name = partner.firstName 
+          ? `${partner.firstName}${partner.lastName ? ' ' + partner.lastName : ''}`.trim()
+          : partner.name || '';
         categoryPartnersPayload[category] = {
-          ...categoryPartners[category],
-          photoData: categoryPartners[category].photoData || null,
-          photoName: categoryPartners[category].photoName || null,
+          ...partner,
+          name: name || undefined,
+          photoData: partner.photoData || null,
+          photoName: partner.photoName || null,
         };
       }
     }
@@ -1150,21 +1163,35 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             {(isRequired || isExpanded) && (
               <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
                 <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
-                  {t('form.partnerForCategory')} {categoryName}
+                  {t('form.partnerForCategory')} {getLocalizedCategoryName(category, locale) || categoryName}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-poppins text-text-secondary mb-2">
-                      {t('form.partnerName')} {(isRequired || isExpanded) && <span className="text-red-400">*</span>}
-                    </label>
-                    <input
-                      type="text"
-                      required={isRequired || isExpanded}
-                      name={`partnerName-${category}`}
-                      value={categoryPartner.name || ''}
-                      onChange={(e) => updateCategoryPartnerField(category, 'name', e.target.value)}
-                      className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-                    />
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-poppins text-text-secondary mb-2">
+                        {t('form.firstName')} {(isRequired || isExpanded) && <span className="text-red-400">*</span>}
+                      </label>
+                      <input
+                        type="text"
+                        required={isRequired || isExpanded}
+                        name={`partnerFirstName-${category}`}
+                        value={categoryPartner.firstName || ''}
+                        onChange={(e) => updateCategoryPartnerField(category, 'firstName', e.target.value)}
+                        className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-poppins text-text-secondary mb-2">
+                        {t('form.lastName')}
+                      </label>
+                      <input
+                        type="text"
+                        name={`partnerLastName-${category}`}
+                        value={categoryPartner.lastName || ''}
+                        onChange={(e) => updateCategoryPartnerField(category, 'lastName', e.target.value)}
+                        className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -1224,7 +1251,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                       <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
                         <Image
                           src={categoryPartner.photoData}
-                          alt={categoryPartner.name || 'Partner photo'}
+                          alt={categoryPartner.firstName || categoryPartner.name || 'Partner photo'}
                           fill
                           className="object-cover"
                           unoptimized
