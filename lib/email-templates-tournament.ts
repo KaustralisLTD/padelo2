@@ -685,8 +685,23 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   // Нормализуем и локализуем категории, с fallback на оригинальные значения
   let localizedCategories: string[] = [];
   if (categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.map(cat => {
-      if (!cat || typeof cat !== 'string') return cat;
+    // Сначала нормализуем категории - извлекаем строки из объектов или используем строки напрямую
+    const normalizedCategories = categories.map(cat => {
+      if (!cat) return null;
+      // Если это объект с полем name или value, извлекаем его
+      if (typeof cat === 'object' && cat !== null) {
+        return (cat as any).name || (cat as any).value || (cat as any).category || String(cat);
+      }
+      // Если это строка, используем её
+      if (typeof cat === 'string') {
+        return cat.trim();
+      }
+      // Иначе преобразуем в строку
+      return String(cat).trim();
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
+    
+    // Теперь локализуем нормализованные категории
+    localizedCategories = normalizedCategories.map(cat => {
       const normalized = cat.trim();
       if (!normalized) return cat;
       
@@ -711,7 +726,17 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   
   // Если локализация не дала результатов, используем оригинальные категории
   if (localizedCategories.length === 0 && categories && Array.isArray(categories) && categories.length > 0) {
-    localizedCategories = categories.filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '').map((cat: string) => cat.trim());
+    // Нормализуем категории для fallback
+    localizedCategories = categories.map(cat => {
+      if (!cat) return null;
+      if (typeof cat === 'object' && cat !== null) {
+        return (cat as any).name || (cat as any).value || (cat as any).category || String(cat);
+      }
+      if (typeof cat === 'string') {
+        return cat.trim();
+      }
+      return String(cat).trim();
+    }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '');
   }
 
   // Получаем переведенное расписание событий
@@ -1228,7 +1253,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.categories}:</div>
-                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : (categories && Array.isArray(categories) && categories.length > 0 ? categories.filter((c: any) => c && typeof c === 'string').join(', ') : 'N/A')}</div>
+                          <div class="detail-value">${localizedCategories.length > 0 ? localizedCategories.join(', ') : 'N/A'}</div>
                         </div>
                       </div>
 
@@ -1237,7 +1262,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row">
                           <div class="detail-label">${t.amount}:</div>
-                          <div class="detail-value"><strong>${paymentAmount} EUR</strong></div>
+                          <div class="detail-value"><strong>${paymentAmount || 0} EUR</strong></div>
                         </div>
                         
                         ${paymentMethod ? `
