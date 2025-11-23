@@ -199,14 +199,36 @@ export async function POST(
           
           let categories: string[] = [];
           try {
-            categories = JSON.parse(registration.categories || '[]');
-            if (!Array.isArray(categories)) {
+            const parsed = JSON.parse(registration.categories || '[]');
+            if (Array.isArray(parsed)) {
+              // Нормализуем категории - извлекаем строки из объектов или используем строки напрямую
+              categories = parsed.map((cat: any) => {
+                if (!cat) return null;
+                // Если это объект с полем name или value, извлекаем его
+                if (typeof cat === 'object' && cat !== null) {
+                  return (cat as any).name || (cat as any).value || (cat as any).category || String(cat);
+                }
+                // Если это строка, используем её
+                if (typeof cat === 'string') {
+                  return cat.trim();
+                }
+                // Иначе преобразуем в строку
+                return String(cat).trim();
+              }).filter((cat: any) => cat && typeof cat === 'string' && cat.trim() !== '') as string[];
+            } else {
               categories = [];
             }
           } catch (e) {
             console.error('[send-email] Error parsing categories:', e);
             categories = [];
           }
+          
+          console.log('[send-email] Tournament confirmed - Categories after normalization:', {
+            original: registration.categories,
+            normalized: categories,
+            count: categories.length,
+            participantId: registrationId,
+          });
           
           // Calculate payment amount based on number of categories
           // If single category: priceSingleCategory, if multiple: priceDoubleCategory * count
@@ -221,7 +243,7 @@ export async function POST(
             firstName: registration.first_name || undefined,
             lastName: registration.last_name || undefined,
             tournament: tournamentData,
-            categories: categories.length > 0 ? categories : [],
+            categories: categories, // Передаем уже нормализованные категории
             paymentAmount,
             paymentMethod: 'Manual',
             orderNumber: `REG-${registration.id}`,
