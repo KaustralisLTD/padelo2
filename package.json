@@ -19,7 +19,10 @@
     "check-db-connections": "tsx scripts/check-db-connections.ts",
     "check-indexes": "tsx scripts/check-and-fix-indexes.ts",
     "create-admin": "tsx scripts/create-admin.ts",
-    "create-admin-direct": "tsx scripts/create-admin-direct.ts"
+    "create-admin-direct": "tsx scripts/create-admin-direct.ts",
+    "fix-ua-translations": "tsx scripts/fix-tournament-ua-translations.ts",
+    "fix-winter-2025-ua": "tsx scripts/fix-winter-2025-ua-translations.ts",
+    "check-translations": "tsx scripts/check-tournament-translations.ts"
   },
   "dependencies": {
     "@sendgrid/mail": "^8.1.0",

@@ -1,9 +1,10 @@
 // Script to check tournament translations in database
-import { config } from 'dotenv';
-import { resolve } from 'path';
 
-// Load .env.local file
-config({ path: resolve(__dirname, '../.env.local') });
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load environment variables
+dotenv.config({ path: path.join(process.cwd(), '.env.local') });
 
 import { getDbPool } from '../lib/db';
 
@@ -11,67 +12,77 @@ async function checkTournamentTranslations() {
   try {
     const pool = getDbPool();
     
-    // Get all tournaments
+    // Find all tournaments with UA PADEL OPEN
     const [tournaments] = await pool.execute(
-      'SELECT id, name, translations FROM tournaments WHERE translations IS NOT NULL'
+      `SELECT id, name, description, event_schedule, translations 
+       FROM tournaments 
+       WHERE name LIKE '%UA PADEL OPEN%'
+       ORDER BY id DESC`
     ) as any[];
-    
-    console.log(`\nFound ${tournaments.length} tournaments with translations:\n`);
-    
+
+    if (tournaments.length === 0) {
+      console.error('❌ No tournaments found');
+      return;
+    }
+
+    console.log(`✅ Found ${tournaments.length} tournament(s):\n`);
+
     for (const tournament of tournaments) {
-      let translations;
-      try {
-        translations = typeof tournament.translations === 'string' 
-          ? JSON.parse(tournament.translations) 
-          : tournament.translations;
-      } catch (e) {
-        console.error(`Error parsing translations for tournament ${tournament.id}:`, e);
-        continue;
-      }
+      console.log(`📋 Tournament: ${tournament.name} (ID: ${tournament.id})`);
+      console.log(`   Description: ${tournament.description?.substring(0, 50)}...`);
       
-      console.log(`\nTournament ID: ${tournament.id}`);
-      console.log(`Name: ${tournament.name}`);
-      console.log(`\nDescription translations:`);
+      // Parse translations
+      let translations: any = {};
+      if (tournament.translations) {
+        try {
+          translations = typeof tournament.translations === 'string' 
+            ? JSON.parse(tournament.translations) 
+            : tournament.translations;
+        } catch (e) {
+          console.log('   ⚠️  Could not parse translations');
+          continue;
+        }
+      }
+
+      // Check description translations
       if (translations.description) {
+        console.log('\n   📝 Description translations:');
         const descKeys = Object.keys(translations.description);
-        console.log(`  Available locales: ${descKeys.join(', ')}`);
-        console.log(`  Has 'ua': ${!!translations.description['ua']}`);
-        console.log(`  Has 'uk': ${!!translations.description['uk']}`);
-        console.log(`  Has 'ru': ${!!translations.description['ru']}`);
-        console.log(`  Has 'en': ${!!translations.description['en']}`);
+        for (const key of descKeys) {
+          const preview = translations.description[key]?.substring(0, 60) || '';
+          console.log(`      ${key}: ${preview}...`);
+        }
       } else {
-        console.log(`  No description translations`);
+        console.log('   📝 Description translations: ❌ None');
       }
-      
-      console.log(`\nEvent Schedule translations:`);
+
+      // Check event schedule translations
       if (translations.eventSchedule) {
+        console.log('\n   📅 EventSchedule translations:');
         const scheduleKeys = Object.keys(translations.eventSchedule);
-        console.log(`  Available locales: ${scheduleKeys.join(', ')}`);
-        console.log(`  Has 'ua': ${!!translations.eventSchedule['ua']}`);
-        console.log(`  Has 'uk': ${!!translations.eventSchedule['uk']}`);
-        console.log(`  Has 'ru': ${!!translations.eventSchedule['ru']}`);
-        console.log(`  Has 'en': ${!!translations.eventSchedule['en']}`);
-        
-        // Show sample for ua if exists
-        if (translations.eventSchedule['ua']) {
-          console.log(`  Sample 'ua' eventSchedule:`, JSON.stringify(translations.eventSchedule['ua'][0], null, 2));
-        }
-        if (translations.eventSchedule['uk']) {
-          console.log(`  Sample 'uk' eventSchedule:`, JSON.stringify(translations.eventSchedule['uk'][0], null, 2));
+        for (const key of scheduleKeys) {
+          const events = translations.eventSchedule[key];
+          if (Array.isArray(events) && events.length > 0) {
+            console.log(`      ${key}: ${events.length} events`);
+            console.log(`         First event: ${events[0]?.title}`);
+            if (events[0]?.description) {
+              console.log(`         Description: ${events[0].description.substring(0, 50)}...`);
+            }
+          }
         }
       } else {
-        console.log(`  No eventSchedule translations`);
+        console.log('   📅 EventSchedule translations: ❌ None');
       }
-      
-      console.log(`\n${'='.repeat(60)}`);
+
+      console.log('\n' + '='.repeat(60) + '\n');
     }
     
-    process.exit(0);
   } catch (error: any) {
-    console.error('Error checking translations:', error);
-    process.exit(1);
+    console.error('❌ Error:', error);
+    throw error;
+  } finally {
+    process.exit(0);
   }
 }
 
 checkTournamentTranslations();
-
