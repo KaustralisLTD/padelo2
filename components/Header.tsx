@@ -42,20 +42,28 @@ const Header = () => {
         setMenuItemsOverflow(false);
       } else {
         // На десктопе проверяем, помещается ли меню
-        if (navRef.current) {
-          const nav = navRef.current;
-          const navItems = nav.querySelector('.nav-items-container') as HTMLElement;
-          const navWidth = nav.offsetWidth;
-          const itemsWidth = navItems?.offsetWidth || 0;
-          const logoWidth = nav.querySelector('.logo-container')?.clientWidth || 0;
-          const availableWidth = navWidth - logoWidth - 200; // 200px для отступов и других элементов
-          
-          const overflow = itemsWidth > availableWidth;
-          setMenuItemsOverflow(overflow);
-          setShowMobileMenu(overflow);
-        } else {
-          setShowMobileMenu(false);
-        }
+        // Добавляем небольшую задержку для корректного измерения после рендера
+        setTimeout(() => {
+          if (navRef.current) {
+            const nav = navRef.current;
+            const navItems = nav.querySelector('.nav-items-container') as HTMLElement;
+            if (!navItems) {
+              setShowMobileMenu(false);
+              return;
+            }
+            const navWidth = nav.offsetWidth;
+            const itemsWidth = navItems.offsetWidth || 0;
+            const logoWidth = nav.querySelector('.logo-container')?.clientWidth || 0;
+            const languageSelectorWidth = 120; // Примерная ширина селектора языка
+            const availableWidth = navWidth - logoWidth - languageSelectorWidth - 100; // 100px для отступов и других элементов
+            
+            const overflow = itemsWidth > availableWidth;
+            setMenuItemsOverflow(overflow);
+            setShowMobileMenu(overflow);
+          } else {
+            setShowMobileMenu(false);
+          }
+        }, 100);
       }
     };
 
