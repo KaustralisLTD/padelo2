@@ -314,12 +314,13 @@
       "chooseFile": "Kies bestand",
       "photoHint": "Maximaal 5 MB. Formaten JPG, PNG.",
       "removeFile": "Verwijderen",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email",
-      "fileNotSelected": "Geen bestand geselecteerd"
+      "registrationReceived": "Registratie Ontvangen!",
+      "registrationReceivedMessage": "Bedankt voor uw inschrijving voor het toernooi {tournamentName}! We hebben uw inschrijving ontvangen. Bevestigingsdetails zijn naar uw e-mailadres verzonden.",
+      "checkEmail": "Controleer uw inbox voor de bevestigingslink.",
+      "emailInstructions": "Als u de e-mail niet ziet, controleer dan uw spammap. De bevestigingslink is 7 dagen geldig.",
+      "resendVerificationEmail": "Bevestigings-E-mail Opnieuw Verzenden",
+      "fileNotSelected": "Geen bestand geselecteerd",
+      "registrationReceivedMessageUnverified": "Bedankt voor uw inschrijving voor het toernooi {tournamentName}! We hebben uw inschrijvingsverzoek ontvangen. Controleer uw e-mail en klik op de bevestigingslink om uw inschrijving te voltooien."
     },
     "confirmation": {
       "title": "Registratie Bevestigd",

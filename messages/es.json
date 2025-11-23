@@ -337,11 +337,12 @@
       "chooseFile": "Elegir archivo",
       "photoHint": "Máximo 5MB. Formatos JPG, PNG.",
       "removeFile": "Eliminar",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email",
+      "registrationReceived": "¡Registro Recibido!",
+      "registrationReceivedMessage": "Gracias por registrarte en el torneo {tournamentName}. Hemos recibido tu registro. Los detalles de confirmación han sido enviados a tu correo electrónico.",
+      "registrationReceivedMessageUnverified": "Gracias por registrarte en el torneo {tournamentName}. Hemos recibido tu solicitud de registro. Por favor, revisa tu correo electrónico y haz clic en el enlace de confirmación para completar tu registro.",
+      "checkEmail": "Por favor, revisa tu bandeja de entrada para el enlace de confirmación.",
+      "emailInstructions": "Si no ves el correo electrónico, por favor revisa tu carpeta de spam. El enlace de confirmación será válido por 7 días.",
+      "resendVerificationEmail": "Reenviar Correo de Verificación",
       "fileNotSelected": "No se ha seleccionado ningún archivo"
     },
     "confirmation": {

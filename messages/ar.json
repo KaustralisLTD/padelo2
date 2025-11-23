@@ -314,12 +314,13 @@
       "chooseFile": "اختر الملف",
       "photoHint": "الحد الأقصى 5 ميجابايت. صيغ JPG، PNG.",
       "removeFile": "إزالة",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email",
-      "fileNotSelected": "لم يتم اختيار ملف"
+      "registrationReceived": "تم استلام التسجيل!",
+      "registrationReceivedMessage": "شكراً لك على التسجيل في البطولة {tournamentName}! لقد استلمنا تسجيلك. تم إرسال تفاصيل التأكيد إلى بريدك الإلكتروني.",
+      "checkEmail": "يرجى التحقق من صندوق الوارد الخاص بك للحصول على رابط التأكيد.",
+      "emailInstructions": "إذا لم تر البريد الإلكتروني، يرجى التحقق من مجلد البريد العشوائي. سيكون رابط التأكيد صالحاً لمدة 7 أيام.",
+      "resendVerificationEmail": "إعادة إرسال بريد التحقق",
+      "fileNotSelected": "لم يتم اختيار ملف",
+      "registrationReceivedMessageUnverified": "شكراً لك على التسجيل في البطولة {tournamentName}! لقد استلمنا طلب التسجيل الخاص بك. يرجى التحقق من بريدك الإلكتروني والنقر على رابط التأكيد لإكمال التسجيل."
     },
     "confirmation": {
       "title": "تم تأكيد التسجيل",

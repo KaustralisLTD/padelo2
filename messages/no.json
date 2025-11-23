@@ -314,12 +314,13 @@
       "chooseFile": "Velg fil",
       "photoHint": "Maksimum 5 MB. Formater JPG, PNG.",
       "removeFile": "Fjern",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email",
-      "fileNotSelected": "Ingen fil valgt"
+      "registrationReceived": "Registrering Mottatt!",
+      "registrationReceivedMessage": "Takk for din registrering til turneringen {tournamentName}! Vi har mottatt din registrering. Bekreftelsesdetaljer er sendt til din e-post.",
+      "checkEmail": "Vennligst sjekk innboksen din for bekreftelseslenken.",
+      "emailInstructions": "Hvis du ikke ser e-posten, vennligst sjekk spam-mappen din. Bekreftelseslenken vil være gyldig i 7 dager.",
+      "resendVerificationEmail": "Send Bekreftelses-E-post På Nytt",
+      "fileNotSelected": "Ingen fil valgt",
+      "registrationReceivedMessageUnverified": "Takk for din registrering til turneringen {tournamentName}! Vi har mottatt din registreringsforespørsel. Vennligst sjekk din e-post og klikk på bekreftelseslenken for å fullføre din registrering."
     },
     "confirmation": {
       "title": "Registrering Bekreftet",

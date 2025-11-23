@@ -1328,37 +1328,37 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       )}
 
       {submitStatus === 'success' && (
-        <div className="p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
-              <svg className="w-6 h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3 max-w-full overflow-hidden">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-xl mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-lg sm:text-xl mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent break-words">
                 {t('form.registrationReceived')}
               </h3>
-              <p className="text-text text-sm mb-3 leading-relaxed">
+              <p className="text-text text-sm mb-3 leading-relaxed break-words">
                 {emailVerified 
                   ? t('form.registrationReceivedMessage', { tournamentName })
                   : t('form.registrationReceivedMessageUnverified', { tournamentName })}
               </p>
               {!emailVerified && (
                 <div className="bg-background/50 rounded-lg p-3 border border-primary/20">
-                  <p className="text-text font-semibold text-sm mb-1 flex items-center gap-2">
-                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <p className="text-text font-semibold text-sm mb-1 flex items-start gap-2 break-words">
+                    <svg className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    {t('form.checkEmail')}
+                    <span className="break-words">{t('form.checkEmail')}</span>
                   </p>
-                  <p className="text-text-secondary text-xs leading-relaxed mb-2">{t('form.emailInstructions')}</p>
+                  <p className="text-text-secondary text-xs leading-relaxed mb-2 break-words">{t('form.emailInstructions')}</p>
                   <button
                     onClick={async () => {
                       // TODO: Implement resend verification email
                       alert(t('form.resendVerificationEmail') || 'Resend verification email functionality coming soon');
                     }}
-                    className="text-primary hover:text-accent text-xs font-semibold underline"
+                    className="text-primary hover:text-accent text-xs font-semibold underline break-words"
                   >
                     {t('form.resendVerificationEmail')}
                   </button>

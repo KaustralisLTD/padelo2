@@ -314,12 +314,13 @@
       "chooseFile": "选择文件",
       "photoHint": "最大 5MB。格式 JPG、PNG。",
       "removeFile": "删除",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email",
-      "fileNotSelected": "未选择文件"
+      "registrationReceived": "已收到注册！",
+      "registrationReceivedMessage": "感谢您注册参加 {tournamentName} 锦标赛！我们已收到您的注册。确认详情已发送到您的电子邮件。",
+      "checkEmail": "请检查您的收件箱以获取确认链接。",
+      "emailInstructions": "如果您没有看到电子邮件，请检查您的垃圾邮件文件夹。确认链接将在7天内有效。",
+      "resendVerificationEmail": "重新发送验证电子邮件",
+      "fileNotSelected": "未选择文件",
+      "registrationReceivedMessageUnverified": "感谢您注册参加 {tournamentName} 锦标赛！我们已收到您的注册请求。请检查您的电子邮件并点击确认链接以完成注册。"
     },
     "confirmation": {
       "title": "注册已确认",

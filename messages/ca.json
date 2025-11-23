@@ -885,12 +885,13 @@
       "chooseFile": "Tria fitxer",
       "photoHint": "Màxim 5 MB. Formats JPG, PNG.",
       "removeFile": "Eliminar",
-      "registrationReceived": "Registration Received!",
-      "registrationReceivedMessage": "We have received your registration request for the tournament {tournamentName}. Please check your email and click on the confirmation link to complete your registration.",
-      "checkEmail": "Please check your email inbox for the confirmation link.",
-      "emailInstructions": "If you don't see the email, please check your spam folder. The confirmation link will be valid for 7 days.",
-      "resendVerificationEmail": "Resend Verification Email",
-      "fileNotSelected": "Cap fitxer seleccionat"
+      "registrationReceived": "Registre Rebut!",
+      "registrationReceivedMessage": "Gràcies per registrar-te al torneig {tournamentName}! Hem rebut la teva inscripció. Els detalls de confirmació s'han enviat al teu correu electrònic.",
+      "checkEmail": "Si us plau, comprova la teva safata d'entrada per a l'enllaç de confirmació.",
+      "emailInstructions": "Si no veus el correu electrònic, comprova la carpeta de correu brossa. L'enllaç de confirmació serà vàlid durant 7 dies.",
+      "resendVerificationEmail": "Reenviar Correu de Verificació",
+      "fileNotSelected": "Cap fitxer seleccionat",
+      "registrationReceivedMessageUnverified": "Gràcies per registrar-te al torneig {tournamentName}! Hem rebut la teva sol·licitud d'inscripció. Si us plau, comprova el teu correu electrònic i fes clic a l'enllaç de confirmació per completar la inscripció."
     },
     "confirmation": {
       "title": "Registration Confirmed",
