@@ -801,7 +801,7 @@ export interface WelcomeEmailData {
 }
 
 export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
-  const { firstName, lastName, locale = 'en' } = data;
+  const { firstName, lastName, locale = 'en', email, temporaryPassword } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'User';
   const firstNameOnly = firstName || name.split(' ')[0] || 'User';
 
@@ -1248,7 +1248,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
                         ${t.description}
                       </p>
 
-                      ${data.temporaryPassword ? `
+                      ${temporaryPassword ? `
                       <div style="background: #f0f9ff; border: 2px solid #0284c7; border-radius: 12px; padding: 20px; margin: 20px 0;">
                         <p class="lead" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e;">
                           ${t.accountInfo}
@@ -1257,13 +1257,13 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
                           <tr>
                             <td style="padding: 8px 0; border-bottom: 1px solid #bae6fd;">
                               <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">${t.loginLabel}</p>
-                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace;">${data.email || ''}</p>
+                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace;">${email || ''}</p>
                             </td>
                           </tr>
                           <tr>
                             <td style="padding: 8px 0;">
                               <p style="margin: 0; font-size: 13px; color: #64748b; font-weight: 500;">${t.passwordLabel}</p>
-                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: 1px;">${data.temporaryPassword}</p>
+                              <p style="margin: 4px 0 0 0; font-size: 15px; color: #0f172a; font-weight: 600; font-family: 'Courier New', monospace; letter-spacing: 1px;">${temporaryPassword}</p>
                             </td>
                           </tr>
                         </table>
