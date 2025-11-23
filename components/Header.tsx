@@ -264,8 +264,8 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* Mobile/Tablet Menu - улучшенная версия */}
-      <AnimatePresence>
+      {/* Mobile/Tablet Menu - современная версия */}
+      <AnimatePresence mode="wait">
         {isMobileMenuOpen && (
           <>
             {/* Overlay для закрытия меню */}
@@ -274,95 +274,171 @@ const Header = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
             />
             
             {/* Меню */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className={`${showMobileMenu ? 'block' : 'lg:hidden'} fixed top-[73px] left-0 right-0 bottom-0 z-[70] ${
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ 
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+                mass: 0.8
+              }}
+              className={`lg:hidden fixed top-[73px] left-0 right-0 bottom-0 z-[70] ${
                 theme === 'light' 
-                  ? 'bg-white shadow-2xl' 
-                  : 'bg-background-secondary'
-              } border-t border-border overflow-y-auto`}
+                  ? 'bg-white shadow-[0_10px_40px_rgba(0,0,0,0.15)]' 
+                  : 'bg-background-secondary shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
+              } border-t ${
+                theme === 'light' ? 'border-gray-200' : 'border-border'
+              } overflow-y-auto`}
+              style={{ 
+                maxHeight: 'calc(100vh - 73px)',
+                WebkitOverflowScrolling: 'touch'
+              }}
             >
               <div className="container mx-auto px-4 py-6">
                 {/* Навигационные пункты */}
-                <nav className="space-y-2 mb-6">
+                <nav className="space-y-1 mb-6">
                   {authenticatedNavItems.map((item, index) => (
-          <motion.div
+                    <motion.div
                       key={item.key}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.2 }}
+                      transition={{ 
+                        delay: index * 0.03,
+                        type: 'spring',
+                        stiffness: 300,
+                        damping: 25
+                      }}
                     >
-                <Link
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 font-poppins ${
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-poppins group ${
                           pathname === item.href
-                            ? 'text-primary bg-primary/10 font-semibold'
-                            : 'text-text-secondary hover:text-primary hover:bg-primary/5'
-                  }`}
-                >
-                        <span className="text-base">{t(item.key)}</span>
-                        {pathname === item.href && (
+                            ? theme === 'light'
+                              ? 'text-primary bg-primary/15 font-semibold shadow-sm'
+                              : 'text-primary bg-primary/10 font-semibold'
+                            : theme === 'light'
+                              ? 'text-gray-800 hover:text-primary hover:bg-gray-50 active:bg-gray-100'
+                              : 'text-text-secondary hover:text-primary hover:bg-white/5 active:bg-white/10'
+                        }`}
+                      >
+                        <span className="text-base font-medium">{t(item.key)}</span>
+                        {pathname === item.href ? (
                           <motion.div
                             layoutId="activeIndicator"
-                            className="ml-auto w-2 h-2 rounded-full bg-primary"
+                            className="w-2 h-2 rounded-full bg-primary"
                             initial={false}
                             transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                           />
+                        ) : (
+                          <motion.svg
+                            className={`w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity ${
+                              theme === 'light' ? 'text-primary' : 'text-primary'
+                            }`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </motion.svg>
                         )}
-                </Link>
+                      </Link>
                     </motion.div>
-              ))}
+                  ))}
                   
                   {/* Account/Login */}
                   <motion.div
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: authenticatedNavItems.length * 0.05, duration: 0.2 }}
+                    transition={{ 
+                      delay: authenticatedNavItems.length * 0.03,
+                      type: 'spring',
+                      stiffness: 300,
+                      damping: 25
+                    }}
                   >
-              <Link
-                href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center px-4 py-3 rounded-lg transition-all duration-200 font-poppins ${
+                    <Link
+                      href={isAuthenticated ? `/${locale}/profile` : `/${locale}/login`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 font-poppins group ${
                         (pathname === `/${locale}/login` || pathname === `/${locale}/profile`)
-                          ? 'text-primary bg-primary/10 font-semibold'
-                          : 'text-text-secondary hover:text-primary hover:bg-primary/5'
-                }`}
-              >
-                      <span className="text-base">{isAuthenticated ? t('account') : t('login')}</span>
-                      {(pathname === `/${locale}/login` || pathname === `/${locale}/profile`) && (
+                          ? theme === 'light'
+                            ? 'text-primary bg-primary/15 font-semibold shadow-sm'
+                            : 'text-primary bg-primary/10 font-semibold'
+                          : theme === 'light'
+                            ? 'text-gray-800 hover:text-primary hover:bg-gray-50 active:bg-gray-100'
+                            : 'text-text-secondary hover:text-primary hover:bg-white/5 active:bg-white/10'
+                      }`}
+                    >
+                      <span className="text-base font-medium">{isAuthenticated ? t('account') : t('login')}</span>
+                      {(pathname === `/${locale}/login` || pathname === `/${locale}/profile`) ? (
                         <motion.div
                           layoutId="activeIndicator"
-                          className="ml-auto w-2 h-2 rounded-full bg-primary"
+                          className="w-2 h-2 rounded-full bg-primary"
                           initial={false}
                           transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                         />
+                      ) : (
+                        <motion.svg
+                          className={`w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity ${
+                            theme === 'light' ? 'text-primary' : 'text-primary'
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </motion.svg>
                       )}
-              </Link>
+                    </Link>
                   </motion.div>
                 </nav>
 
                 {/* Разделитель */}
-                <div className="border-t border-border my-6" />
+                <motion.div
+                  initial={{ opacity: 0, scaleX: 0 }}
+                  animate={{ opacity: 1, scaleX: 1 }}
+                  transition={{ delay: (authenticatedNavItems.length + 1) * 0.03, duration: 0.3 }}
+                  className={`border-t my-6 ${
+                    theme === 'light' ? 'border-gray-200' : 'border-border'
+                  }`}
+                />
 
                 {/* Language Selector */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: (authenticatedNavItems.length + 1) * 0.05, duration: 0.2 }}
+                  transition={{ 
+                    delay: (authenticatedNavItems.length + 2) * 0.03,
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 25
+                  }}
                   className="px-4"
                 >
-                  <div className="text-sm font-poppins text-text-secondary mb-3">
+                  <div className={`text-xs font-poppins font-semibold uppercase tracking-wider mb-3 ${
+                    theme === 'light' ? 'text-gray-500' : 'text-text-tertiary'
+                  }`}>
                     Language
                   </div>
-                <LanguageSelector />
+                  <LanguageSelector />
                 </motion.div>
             </div>
           </motion.div>
