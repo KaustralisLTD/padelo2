@@ -505,6 +505,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -1214,6 +1215,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -1815,6 +1817,7 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -2446,6 +2449,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -3083,6 +3087,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -3680,6 +3685,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -4119,6 +4125,7 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -4567,6 +4574,7 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -5020,6 +5028,7 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -5500,6 +5509,7 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -5952,6 +5962,7 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -6405,6 +6416,7 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -6872,6 +6884,7 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -7259,6 +7272,7 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
@@ -7712,6 +7726,7 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>

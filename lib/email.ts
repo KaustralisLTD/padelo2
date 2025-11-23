@@ -366,6 +366,7 @@ export async function sendEmailVerification(
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
+                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
