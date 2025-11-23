@@ -24,6 +24,7 @@ export default function DashboardContent() {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [photoError, setPhotoError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [leavingTournament, setLeavingTournament] = useState(false);
   const [registrationSettings, setRegistrationSettings] = useState<TournamentRegistrationSettings>(
     () => getDefaultRegistrationSettings()
