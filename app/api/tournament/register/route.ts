@@ -149,9 +149,25 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
   }
 }
 
+// Configure runtime and increase body size limit
+export const runtime = 'nodejs';
+export const maxDuration = 30;
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    // Handle large request bodies (for photo uploads)
+    let body;
+    try {
+      body = await request.json();
+    } catch (error: any) {
+      if (error.message?.includes('PayloadTooLargeError') || error.message?.includes('413')) {
+        return NextResponse.json(
+          { success: false, error: 'Request body too large. Please compress your images before uploading.' },
+          { status: 413 }
+        );
+      }
+      throw error;
+    }
     const authHeader = request.headers.get('authorization');
     const tokenHeader = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
     let userId: string | null = null;
@@ -367,7 +383,19 @@ export async function PATCH(request: NextRequest) {
       );
     }
     
-    const body = await request.json();
+    // Handle large request bodies (for photo uploads)
+    let body;
+    try {
+      body = await request.json();
+    } catch (error: any) {
+      if (error.message?.includes('PayloadTooLargeError') || error.message?.includes('413') || error.message?.includes('too large')) {
+        return NextResponse.json(
+          { success: false, error: 'Request body too large. Please compress your images before uploading (max 5MB per image).' },
+          { status: 413 }
+        );
+      }
+      throw error;
+    }
     const pool = getDbPool();
     
     // Формируем UPDATE запрос динамически
