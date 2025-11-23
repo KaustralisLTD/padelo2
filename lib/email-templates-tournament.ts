@@ -444,7 +444,6 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -1144,7 +1143,6 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -1724,7 +1722,6 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -2332,7 +2329,6 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -2948,7 +2944,6 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -3521,7 +3516,6 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -3945,7 +3939,6 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -4370,7 +4363,6 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -4801,7 +4793,6 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -5260,7 +5251,6 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -5693,7 +5683,6 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -6122,7 +6111,6 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -6570,7 +6558,6 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -6938,7 +6925,6 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
@@ -7368,7 +7354,6 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
         margin: 0; 
         padding: 0; 
         background-color: #f8fafc;
-        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
       }
       table { border-spacing: 0; border-collapse: collapse; }
       a { text-decoration: none; }
