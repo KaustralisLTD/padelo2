@@ -413,25 +413,6 @@ export default function DashboardContent() {
                   </svg>
                   {t('dashboard.editButton')}
                 </button>
-                <button
-                  onClick={handleLeaveTournament}
-                  disabled={leavingTournament}
-                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {leavingTournament ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      {t('dashboard.leaving') || 'Leaving...'}
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                      {t('dashboard.leaveTournament') || 'Leave Tournament'}
-                    </>
-                  )}
-                </button>
               </div>
             )}
           </div>
@@ -1264,6 +1245,31 @@ export default function DashboardContent() {
               {t('form.message')}
             </h2>
             <p className="text-text-secondary font-poppins">{selectedRegistration.message}</p>
+          </div>
+        )}
+
+        {/* Leave Tournament Button - маленькая кнопка внизу */}
+        {!isEditing && (
+          <div className="mt-8 pt-6 border-t border-border flex justify-end">
+            <button
+              onClick={handleLeaveTournament}
+              disabled={leavingTournament}
+              className="px-4 py-2 text-sm bg-background border border-red-500/50 text-red-400 font-poppins rounded-lg hover:bg-red-500/10 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {leavingTournament ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-400"></div>
+                  {t('dashboard.leaving') || 'Leaving...'}
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  {t('dashboard.leaveTournament') || 'Leave Tournament'}
+                </>
+              )}
+            </button>
           </div>
         )}
           </>

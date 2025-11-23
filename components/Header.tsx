@@ -160,7 +160,7 @@ const Header = () => {
           )}
         </Link>
 
-          <div className="nav-items-container flex items-center space-x-4 xl:space-x-6 2xl:space-x-8 justify-end">
+          <div className="nav-items-container flex items-center space-x-2 xl:space-x-3 2xl:space-x-4 justify-end">
           {authenticatedNavItems.map((item) => (
             <Link
               key={item.key}
@@ -193,7 +193,7 @@ const Header = () => {
         </div>
 
         {/* Mobile/Tablet Navigation - показывается на <lg или когда меню не помещается */}
-        <div className={`${showMobileMenu ? 'flex' : 'lg:hidden flex'} items-center justify-between`}>
+        <div className="lg:hidden flex items-center justify-between">
           {/* Mobile Menu Button (слева) */}
         <button
             className={`transition-all duration-200 p-2 rounded-lg hover:bg-primary/10 active:scale-95 ${
