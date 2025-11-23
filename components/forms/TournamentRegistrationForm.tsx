@@ -996,7 +996,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     const measurements = tshirtSizesData[size];
                     return (
                       <option key={size} value={size}>
-                        {size} (ANCHO: {measurements.ancho}cm, LARGO: {measurements.largo}cm)
+                        {size} ({t('form.tshirtWidth')}: {measurements.ancho}cm, {t('form.tshirtLength')}: {measurements.largo}cm)
                       </option>
                     );
                   })}
@@ -1155,11 +1155,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     className="w-full px-4 py-3 bg-background border border-gray-600 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
                   >
                     <option value="">{t('form.partnerSelectSize')}</option>
-                    {tshirtSizes.map((size) => (
-                      <option key={size} value={size}>
-                        {size}
-                      </option>
-                    ))}
+                    {tshirtSizes.map((size) => {
+                      const measurements = tshirtSizesData[size];
+                      return (
+                        <option key={size} value={size}>
+                          {size} ({t('form.tshirtWidth')}: {measurements.ancho}cm, {t('form.tshirtLength')}: {measurements.largo}cm)
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div>
@@ -1231,11 +1234,14 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
           >
             <option value="">{t('form.selectSize')}</option>
-            {tshirtSizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
+            {tshirtSizes.map((size) => {
+              const measurements = tshirtSizesData[size];
+              return (
+                <option key={size} value={size}>
+                  {size} ({t('form.tshirtWidth')}: {measurements.ancho}cm, {t('form.tshirtLength')}: {measurements.largo}cm)
+                </option>
+              );
+            })}
           </select>
         </div>
       )}

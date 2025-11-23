@@ -45,7 +45,7 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
   useEffect(() => {
     fetchTournamentDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tournamentId]);
+  }, [tournamentId, locale]);
 
   const fetchTournamentDetails = async () => {
     try {
@@ -87,6 +87,64 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
     return null;
   }
 
+  // Helper function to get translated description with fallback
+  const getTranslatedDescription = (): string => {
+    if (!tournament.description) return '';
+    
+    // Try current locale first
+    if (tournament.translations?.description?.[locale]) {
+      return tournament.translations.description[locale];
+    }
+    
+    // Fallback for Ukrainian: try 'uk' if 'ua' not found
+    if (locale === 'ua' && tournament.translations?.description?.['uk']) {
+      return tournament.translations.description['uk'];
+    }
+    
+    // Fallback to Russian for Ukrainian users
+    if (locale === 'ua' && tournament.translations?.description?.['ru']) {
+      return tournament.translations.description['ru'];
+    }
+    
+    // Fallback to English
+    if (tournament.translations?.description?.['en']) {
+      return tournament.translations.description['en'];
+    }
+    
+    // Final fallback to original description
+    return tournament.description;
+  };
+
+  // Helper function to get translated event schedule with fallback
+  const getTranslatedEventSchedule = (): EventScheduleItem[] => {
+    if (!tournament.eventSchedule || tournament.eventSchedule.length === 0) {
+      return [];
+    }
+    
+    // Try current locale first
+    if (tournament.translations?.eventSchedule?.[locale]) {
+      return tournament.translations.eventSchedule[locale];
+    }
+    
+    // Fallback for Ukrainian: try 'uk' if 'ua' not found
+    if (locale === 'ua' && tournament.translations?.eventSchedule?.['uk']) {
+      return tournament.translations.eventSchedule['uk'];
+    }
+    
+    // Fallback to Russian for Ukrainian users
+    if (locale === 'ua' && tournament.translations?.eventSchedule?.['ru']) {
+      return tournament.translations.eventSchedule['ru'];
+    }
+    
+    // Fallback to English
+    if (tournament.translations?.eventSchedule?.['en']) {
+      return tournament.translations.eventSchedule['en'];
+    }
+    
+    // Final fallback to original event schedule
+    return tournament.eventSchedule;
+  };
+
   return (
     <div className="mb-8 bg-background-secondary p-6 rounded-lg border border-border">
       <h2 className="text-2xl font-poppins font-bold mb-4 text-text">
@@ -96,7 +154,7 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
       {tournament.description && (
         <div className="mb-4">
           <p className="text-text-secondary font-poppins whitespace-pre-line">
-            {tournament.translations?.description?.[locale] || tournament.description}
+            {getTranslatedDescription()}
           </p>
         </div>
       )}
@@ -257,8 +315,8 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
             </button>
           </div>
           {showEventSchedule && (() => {
-            // Используем переведенное расписание, если доступно, иначе оригинальное
-            const schedule = tournament.translations?.eventSchedule?.[locale] || tournament.eventSchedule || [];
+            // Используем переведенное расписание с fallback логикой
+            const schedule = getTranslatedEventSchedule();
             return (
               <div className="space-y-4">
                 {schedule.map((event, index) => (

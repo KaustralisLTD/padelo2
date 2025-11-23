@@ -91,8 +91,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
+    // Check if email is verified (skip for superadmin)
+    if (!user.emailVerified && user.role !== 'superadmin') {
       return NextResponse.json(
         { 
           error: 'Email not verified',

@@ -361,9 +361,11 @@ export function generateProductSchema(
       availability: product.offers.availability || 'https://schema.org/PreOrder',
       priceCurrency: product.offers.priceCurrency || 'EUR',
       priceValidUntil: priceValidUntil, // Required field
+      // Always include price field (required by Google)
+      price: typeof priceValue === 'number' ? priceValue.toString() : priceValue,
     };
 
-    // For PreOrder, use priceSpecification instead of price
+    // For PreOrder, also add priceSpecification
     if (isPreOrder && priceValue === '0') {
       schema.offers.priceSpecification = {
         '@type': 'UnitPriceSpecification',
@@ -371,19 +373,16 @@ export function generateProductSchema(
         priceCurrency: product.offers.priceCurrency || 'EUR',
         valueAddedTaxIncluded: true,
       };
-    } else {
-      // For regular offers, use price
-      schema.offers.price = typeof priceValue === 'number' ? priceValue.toString() : priceValue;
     }
 
     // Add hasMerchantReturnPolicy if provided or use default
     if (product.offers.hasMerchantReturnPolicy) {
       schema.offers.hasMerchantReturnPolicy = product.offers.hasMerchantReturnPolicy;
     } else {
-      // Default return policy
+      // Default return policy - use ISO country code array for international shipping
       schema.offers.hasMerchantReturnPolicy = {
         '@type': 'MerchantReturnPolicy',
-        applicableCountry: 'Worldwide',
+        applicableCountry: ['US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'NL', 'BE', 'AT', 'CH', 'SE', 'NO', 'DK', 'FI', 'PL', 'PT', 'IE', 'GR', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SK', 'SI', 'EE', 'LV', 'LT', 'MT', 'LU', 'CY'],
         returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
         merchantReturnDays: 30,
         returnMethod: 'https://schema.org/ReturnByMail',
@@ -395,7 +394,7 @@ export function generateProductSchema(
     if (product.offers.shippingDetails) {
       schema.offers.shippingDetails = product.offers.shippingDetails;
     } else {
-      // Default shipping details
+      // Default shipping details - use ISO country code array for international shipping
       schema.offers.shippingDetails = {
         '@type': 'OfferShippingDetails',
         shippingRate: {
@@ -405,7 +404,7 @@ export function generateProductSchema(
         },
         shippingDestination: {
           '@type': 'DefinedRegion',
-          addressCountry: 'Worldwide',
+          addressCountry: ['US', 'CA', 'GB', 'DE', 'FR', 'ES', 'IT', 'NL', 'BE', 'AT', 'CH', 'SE', 'NO', 'DK', 'FI', 'PL', 'PT', 'IE', 'GR', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SK', 'SI', 'EE', 'LV', 'LT', 'MT', 'LU', 'CY'],
         },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',

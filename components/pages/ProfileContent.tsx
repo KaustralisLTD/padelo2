@@ -39,7 +39,15 @@ export default function ProfileContent() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
 
-  const tshirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  // Размеры футболок с измерениями (ANCHO - ширина, LARGO - длина)
+  const tshirtSizesData: Record<string, { ancho: number; largo: number }> = {
+    'S': { ancho: 48, largo: 67 },
+    'M': { ancho: 51, largo: 69 },
+    'L': { ancho: 54, largo: 71 },
+    'XL': { ancho: 57, largo: 73 },
+    '2XL': { ancho: 60, largo: 75 },
+  };
+  const tshirtSizes = Object.keys(tshirtSizesData);
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
@@ -399,11 +407,14 @@ export default function ProfileContent() {
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
                 >
                   <option value="">{t('selectSize')}</option>
-                  {tshirtSizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
+                  {tshirtSizes.map((size) => {
+                    const measurements = tshirtSizesData[size];
+                    return (
+                      <option key={size} value={size}>
+                        {size} ({t('tshirtWidth')}: {measurements.ancho}cm, {t('tshirtLength')}: {measurements.largo}cm)
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>
