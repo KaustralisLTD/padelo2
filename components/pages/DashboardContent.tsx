@@ -10,6 +10,7 @@ import {
   normalizeRegistrationSettings,
 } from '@/lib/registration-settings';
 import { compressImageToSize } from '@/lib/image-compression';
+import { getLocalizedCategoryName } from '@/lib/localization-utils';
 
 export default function DashboardContent() {
   const t = useTranslations('Tournaments');
@@ -1133,7 +1134,7 @@ export default function DashboardContent() {
             {Object.entries(selectedRegistration.categoryPartners).map(([category, partner]: [string, any]) => (
               <div key={category} className="mb-6 last:mb-0 border-b border-gray-700 pb-6 last:border-b-0">
                 <h3 className="text-lg font-orbitron font-semibold mb-3 text-primary">
-                  {customCategories[category] || category}
+                  {getLocalizedCategoryName(category, locale) || customCategories[category] || category}
                 </h3>
                 <div className="space-y-2 text-text-secondary font-poppins">
                   <p><strong className="text-text">{t('form.partnerName')}:</strong> {partner.name}</p>
