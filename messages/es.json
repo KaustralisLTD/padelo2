@@ -808,6 +808,21 @@
   "Admin": {
     "loading": "Cargando...",
     "backToDashboard": "Volver al Panel",
+    "dashboard": {
+      "title": "Panel de Control"
+    },
+    "tournaments": {
+      "title": "Torneos"
+    },
+    "wallet": {
+      "title": "Billetera"
+    },
+    "logs": {
+      "title": "Registros"
+    },
+    "dbMonitor": {
+      "title": "Monitor de BD"
+    },
     "users": {
       "title": "Gestión de Usuarios",
       "description": "Crear, editar y gestionar todas las cuentas de usuario",
