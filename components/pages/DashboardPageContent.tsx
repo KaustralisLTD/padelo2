@@ -56,6 +56,12 @@ export default function DashboardPageContent() {
       .finally(() => setLoading(false));
   }, [locale, router]);
 
+  useEffect(() => {
+    if (!loading && role === 'participant') {
+      router.push(`/${locale}/participant-dashboard`);
+    }
+  }, [loading, role, locale, router]);
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-20 mt-20">
@@ -262,13 +268,6 @@ export default function DashboardPageContent() {
     );
   }
 
-  // Participant dashboard - перенаправляем на participant-dashboard
-  useEffect(() => {
-    if (role === 'participant') {
-      router.push(`/${locale}/participant-dashboard`);
-    }
-  }, [role, locale, router]);
-  
   if (role === 'participant') {
     return (
       <div className="container mx-auto px-4 py-20 mt-20">
