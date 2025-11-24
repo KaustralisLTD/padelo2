@@ -263,9 +263,21 @@ export default function DashboardPageContent() {
   }
 
   // Participant dashboard - перенаправляем на participant-dashboard
-  if (typeof window !== 'undefined') {
-    router.push(`/${locale}/participant-dashboard`);
-    return null;
+  useEffect(() => {
+    if (role === 'participant') {
+      router.push(`/${locale}/participant-dashboard`);
+    }
+  }, [role, locale, router]);
+  
+  if (role === 'participant') {
+    return (
+      <div className="container mx-auto px-4 py-20 mt-20">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-text-secondary font-poppins">{t('loading')}</p>
+        </div>
+      </div>
+    );
   }
   
   return null;
