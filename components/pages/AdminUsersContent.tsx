@@ -508,34 +508,27 @@ export default function AdminUsersContent() {
       const selectedUserIds = Array.from(selectedUsers);
       const selectedUsersData = users.filter(u => selectedUserIds.includes(u.id));
 
-      // Добавляем каждого пользователя к турниру
-      const promises = selectedUsersData.map(async (user) => {
-        const response = await fetch(`/api/tournament/${selectedTournamentId}/register-admin`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            categories: [], // Можно добавить выбор категорий позже
-            confirmed: true,
-            userId: user.id,
-          }),
-        });
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || 'Failed to add user to tournament');
-        }
-
-        return response.json();
+      // Добавляем пользователей к турниру через API
+      const response = await fetch('/api/admin/tournaments', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tournamentId: selectedTournamentId,
+          userIds: selectedUserIds,
+          category: 'male1', // Можно добавить выбор категории позже
+        }),
       });
 
-      await Promise.allSettled(promises);
-      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to add users to tournament');
+      }
+
+      const data = await response.json();
+
       setSuccess(`Successfully added ${selectedUsersData.length} user(s) to tournament`);
       setShowAddToTournamentModal(false);
       setSelectedUsers(new Set());
@@ -842,7 +835,7 @@ export default function AdminUsersContent() {
                 {users.map((user, index) => {
                   const isSelected = selectedUsers.has(user.id);
                   return (
-                  <tr key={user.id} className={`border-b border-border hover:bg-background/50 transition-colors ${isSelected ? 'bg-primary/10 border-primary/30' : ''}`}>
+                    <tr key={user.id} className={`border-b border-border hover:bg-background/50 transition-colors ${isSelected ? 'bg-primary/10 border-primary/30' : ''}`}>
                     <td className="px-3 py-4 text-center">
                       <input
                         type="checkbox"
@@ -950,7 +943,8 @@ export default function AdminUsersContent() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
             {users.length === 0 && (
@@ -1205,7 +1199,7 @@ export default function AdminUsersContent() {
                     </div>
                   </div>
                 )}
-              </div>
+              </>
             )}
         </div>
       )}
