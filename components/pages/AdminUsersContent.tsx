@@ -558,7 +558,7 @@ export default function AdminUsersContent() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full px-2 sm:px-3">
         <div className="text-center">
           <p className="text-text-secondary font-poppins">{t('loading')}</p>
         </div>
@@ -568,7 +568,7 @@ export default function AdminUsersContent() {
 
   return (
     <>
-    <div className="max-w-7xl mx-auto">
+    <div className="w-full px-2 sm:px-3">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
