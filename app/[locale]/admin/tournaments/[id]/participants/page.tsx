@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import ExportButton from '@/components/ExportButton';
 
 interface CategoryPartner {
   name: string;
@@ -1015,6 +1016,33 @@ export default function TournamentParticipantsPage() {
                 </div>
               </div>
             )}
+
+            {/* Export button */}
+            <div className="p-4 border-b border-border flex justify-end">
+              <ExportButton
+                data={participants.map((participant, index) => ({
+                  '#': participant.orderNumber || index + 1,
+                  'User ID': participant.userId || '-',
+                  'Name': `${participant.firstName} ${participant.lastName}`,
+                  'Email': participant.email || '-',
+                  'Phone': participant.phone || '-',
+                  'Categories': participant.categories?.join(', ') || '-',
+                  'Payment Status': participant.paymentStatus || '-',
+                  'Registered At': participant.createdAt ? new Date(participant.createdAt).toLocaleString(locale) : '-',
+                }))}
+                columns={[
+                  { key: '#', label: '#' },
+                  { key: 'User ID', label: 'User ID' },
+                  { key: 'Name', label: 'Name' },
+                  { key: 'Email', label: 'Email' },
+                  { key: 'Phone', label: 'Phone' },
+                  { key: 'Categories', label: 'Categories' },
+                  { key: 'Payment Status', label: 'Payment Status' },
+                  { key: 'Registered At', label: 'Registered At' },
+                ]}
+                filename={`participants-${tournamentName || 'tournament'}`}
+              />
+            </div>
 
             <table className="w-full border-collapse min-w-[1400px]">
               <thead>

@@ -837,6 +837,14 @@
   "Admin": {
     "loading": "Caricamento...",
     "backToDashboard": "Torna alla dashboard",
+    "logout": "Esci",
+    "export": "Esporta",
+    "export.csv": "Scarica come CSV",
+    "export.excel": "Scarica come Excel",
+    "export.print": "Stampa",
+    "settings": {
+      "title": "Impostazioni"
+    },
     "dashboard": {
       "title": "Dashboard"
     },

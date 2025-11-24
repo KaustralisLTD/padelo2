@@ -828,6 +828,14 @@
   "Admin": {
     "loading": "جاري التحميل...",
     "backToDashboard": "العودة إلى لوحة التحكم",
+    "logout": "تسجيل الخروج",
+    "export": "تصدير",
+    "export.csv": "تحميل كـ CSV",
+    "export.excel": "تحميل كـ Excel",
+    "export.print": "طباعة",
+    "settings": {
+      "title": "الإعدادات"
+    },
     "dashboard": {
       "title": "لوحة التحكم"
     },

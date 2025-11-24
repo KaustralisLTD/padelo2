@@ -906,7 +906,68 @@
     "export.excel": "Download as Excel",
     "export.print": "Print",
     "settings": {
-      "title": "Settings"
+      "title": "Settings",
+      "description": "Manage your system settings and configurations",
+      "clubModules": {
+        "title": "Club Modules",
+        "description": "Manage your club related settings",
+        "courts": {
+          "title": "Courts",
+          "description": "Add, edit or manage all your courts from here."
+        },
+        "extras": {
+          "title": "Extras",
+          "description": "Add, edit or manage products that will be available at your facility."
+        },
+        "pricing": {
+          "title": "Pricing",
+          "description": "Configure your court's price based on time and date."
+        },
+        "holidays": {
+          "title": "Holidays",
+          "description": "Add, edit or manage holidays that will apply your facility."
+        },
+        "policies": {
+          "title": "Policies",
+          "description": "Add, edit or manage all your club policies."
+        }
+      },
+      "companyAdmin": {
+        "title": "Company Admin Modules",
+        "description": "Configure your company related settings",
+        "company": {
+          "title": "Company",
+          "description": "Edit or update your company information here."
+        },
+        "clubs": {
+          "title": "Clubs",
+          "description": "Add, edit or manage multiple clubs. Add locations, facilities and sports categories."
+        },
+        "manageAdmins": {
+          "title": "Manage Admins",
+          "description": "Add, edit and manage clubs admins and their permissions."
+        },
+        "terms": {
+          "title": "Terms and Conditions",
+          "description": "Update your company terms and conditions."
+        }
+      },
+      "account": {
+        "title": "Account",
+        "description": "Manage your account settings",
+        "profile": {
+          "title": "Profile",
+          "description": "Update your profile information."
+        }
+      }
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Direct communication with players and trainers",
+      "search": "Search",
+      "noMessages": "No messages yet. Start a conversation!",
+      "typeMessage": "Type a message...",
+      "selectMessage": "Select a message to start chatting"
     },
     "dashboard": {
       "title": "Dashboard"

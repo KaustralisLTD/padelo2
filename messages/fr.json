@@ -837,6 +837,14 @@
   "Admin": {
     "loading": "Chargement...",
     "backToDashboard": "Retour au tableau de bord",
+    "logout": "Déconnexion",
+    "export": "Exporter",
+    "export.csv": "Télécharger en CSV",
+    "export.excel": "Télécharger en Excel",
+    "export.print": "Imprimer",
+    "settings": {
+      "title": "Paramètres"
+    },
     "dashboard": {
       "title": "Tableau de bord"
     },

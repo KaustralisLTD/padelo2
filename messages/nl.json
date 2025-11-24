@@ -786,6 +786,14 @@
   "Admin": {
     "loading": "Laden...",
     "backToDashboard": "Terug naar dashboard",
+    "logout": "Uitloggen",
+    "export": "Exporteren",
+    "export.csv": "Downloaden als CSV",
+    "export.excel": "Downloaden als Excel",
+    "export.print": "Afdrukken",
+    "settings": {
+      "title": "Instellingen"
+    },
     "dashboard": {
       "title": "Dashboard"
     },

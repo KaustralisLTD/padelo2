@@ -790,6 +790,14 @@
   "Admin": {
     "loading": "Laden...",
     "backToDashboard": "Zurück zum Dashboard",
+    "logout": "Abmelden",
+    "export": "Exportieren",
+    "export.csv": "Als CSV herunterladen",
+    "export.excel": "Als Excel herunterladen",
+    "export.print": "Drucken",
+    "settings": {
+      "title": "Einstellungen"
+    },
     "dashboard": {
       "title": "Dashboard"
     },

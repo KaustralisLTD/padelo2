@@ -837,6 +837,14 @@
   "Admin": {
     "loading": "Laster...",
     "backToDashboard": "Tilbake til dashboard",
+    "logout": "Logg ut",
+    "export": "Eksporter",
+    "export.csv": "Last ned som CSV",
+    "export.excel": "Last ned som Excel",
+    "export.print": "Skriv ut",
+    "settings": {
+      "title": "Innstillinger"
+    },
     "dashboard": {
       "title": "Dashboard"
     },

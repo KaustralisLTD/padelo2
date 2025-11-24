@@ -837,6 +837,14 @@
   "Admin": {
     "loading": "Indlæser...",
     "backToDashboard": "Tilbage til dashboard",
+    "logout": "Log ud",
+    "export": "Eksporter",
+    "export.csv": "Download som CSV",
+    "export.excel": "Download som Excel",
+    "export.print": "Udskriv",
+    "settings": {
+      "title": "Indstillinger"
+    },
     "dashboard": {
       "title": "Dashboard"
     },

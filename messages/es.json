@@ -808,6 +808,14 @@
   "Admin": {
     "loading": "Cargando...",
     "backToDashboard": "Volver al Panel",
+    "logout": "Cerrar sesión",
+    "export": "Exportar",
+    "export.csv": "Descargar como CSV",
+    "export.excel": "Descargar como Excel",
+    "export.print": "Imprimir",
+    "settings": {
+      "title": "Configuración"
+    },
     "dashboard": {
       "title": "Panel de Control"
     },

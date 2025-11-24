@@ -1074,6 +1074,14 @@
   "Admin": {
     "loading": "Carregant...",
     "backToDashboard": "Tornar al tauler",
+    "logout": "Tancar sessió",
+    "export": "Exportar",
+    "export.csv": "Descarregar com CSV",
+    "export.excel": "Descarregar com Excel",
+    "export.print": "Imprimir",
+    "settings": {
+      "title": "Configuració"
+    },
     "dashboard": {
       "title": "Tauler de control"
     },
