@@ -8,7 +8,27 @@ interface EmailOptions {
   text?: string; // Plain text version for better deliverability
   from?: string;
   replyTo?: string;
+  locale?: string;
 }
+
+const brandTaglines: Record<string, string> = {
+  en: 'Breathe &amp; live padel',
+  ru: 'Дыши и живи паделем',
+  ua: 'Дихай та живи паделем',
+  es: 'Respira y vive el pádel',
+  fr: 'Respirez et vivez le padel',
+  de: 'Atme und lebe Padel',
+  it: 'Respira e vivi il padel',
+  ca: 'Respira i viu el pàdel',
+  nl: 'Adem en leef padel',
+  da: 'Træk vejret og lev padel',
+  sv: 'Andas och lev padel',
+  no: 'Pust og lev padel',
+  ar: 'تنفس وعِش البادل',
+  zh: '呼吸并热爱壁板球',
+};
+
+const getBrandTagline = (locale: string) => brandTaglines[locale] || brandTaglines.en;
 
 /**
  * Send email using Resend service
@@ -31,7 +51,7 @@ function htmlToText(html: string): string {
 }
 
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
-  const { to, subject, html, text, from, replyTo } = options;
+  const { to, subject, html, text, from, replyTo, locale = 'en' } = options;
   // Используем верифицированный домен из переменной окружения или padelo2.com по умолчанию
   const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'padelo2.com';
   const fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
@@ -62,9 +82,8 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
         text: plainText, // Add plain text version for better deliverability
         reply_to: replyTo || fromEmail,
         headers: {
-          // Unsubscribe headers для соответствия требованиям CAN-SPAM Act
-          'List-Unsubscribe': `<${siteUrl}/unsubscribe>`,
-          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          'Content-Language': locale,
+          'X-Locale': locale,
           // Уникальный ID для трекинга (но не используем случайные значения, которые могут выглядеть как спам)
           'X-Entity-Ref-ID': `${Date.now()}-${Math.random().toString(36).substring(7)}`,
           // УБРАЛИ 'Precedence': 'bulk' - это плохо для транзакционных писем!
@@ -143,6 +162,7 @@ export async function sendContactFormEmail(
     subject,
     html,
     replyTo: email,
+    locale: 'en',
   });
 }
 
@@ -185,6 +205,7 @@ export async function sendInvestmentRequestEmail(
     subject,
     html,
     replyTo: email,
+    locale: 'en',
   });
 }
 
@@ -360,6 +381,7 @@ export async function sendEmailVerification(
   };
   
   const t = translations[locale] || translations.en;
+  const brandTagline = getBrandTagline(locale);
   
   const html = `
     <!DOCTYPE html>
@@ -406,12 +428,11 @@ export async function sendEmailVerification(
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${brandTagline}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -530,6 +551,7 @@ export async function sendEmailVerification(
     to: email,
     subject: t.subject,
     html,
+    locale,
   });
 }
 
@@ -573,6 +595,7 @@ export async function sendWelcomeEmail(
     to: email,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -689,6 +712,7 @@ export async function sendRoleChangeNotification(
     to: email,
     subject: t.subject,
     html,
+    locale,
   });
 }
 
@@ -733,6 +757,7 @@ export async function sendPasswordResetEmail(
     to: email,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -776,6 +801,7 @@ export async function sendPasswordChangedEmail(
     to: email,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -822,6 +848,7 @@ export async function sendNewDeviceLoginEmail(
     to: email,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -868,6 +895,7 @@ export async function sendChangeEmailOldAddressEmail(
     to: oldEmail,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -913,6 +941,7 @@ export async function sendChangeEmailNewAddressEmail(
     to: newEmail,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -957,6 +986,7 @@ export async function sendAccountDeletionConfirmEmail(
     to: email,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -998,6 +1028,7 @@ export async function sendAccountDeletedEmail(
     to: email,
     subject: translations[locale] || translations.en,
     html,
+    locale,
   });
 }
 
@@ -1064,6 +1095,7 @@ export async function sendTournamentRegistrationEmail(data: {
     subject: subject,
     html,
     text,
+    locale: data.locale || 'en',
   });
 }
 

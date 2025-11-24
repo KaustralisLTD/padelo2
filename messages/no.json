@@ -278,7 +278,7 @@
       "categories": "Kategorier",
       "selectMultiple": "Du kan velge flere (f.eks: Herre + Mixed)",
       "categoryHelp": "Du kan bare velge én Herre (1 eller 2), én Kvinne (1 eller 2) og én Mixed (1 eller 2). Du kan velge Herre + Mixed eller Kvinne + Mixed, men du kan ikke velge to Herre-, to Kvinne- eller to Mixed-kategorier samtidig.",
-      "tshirtSize": "T-skjorte Størrelse",
+      "tshirtSize": "Din T-skjortestørrelse",
       "selectSize": "Velg størrelse",
       "tshirtWidth": "Bredde",
       "tshirtLength": "Lengde",

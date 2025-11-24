@@ -27,6 +27,25 @@ export interface TournamentRegistrationEmailData {
   locale?: string;
 }
 
+const brandTaglines: Record<string, string> = {
+  en: '${getBrandTagline(locale)}',
+  ru: 'Дыши и живи паделем',
+  ua: 'Дихай та живи паделем',
+  es: 'Respira y vive el pádel',
+  fr: 'Respirez et vivez le padel',
+  de: 'Atme und lebe Padel',
+  it: 'Respira e vivi il padel',
+  ca: 'Respira i viu el pàdel',
+  nl: 'Adem en leef padel',
+  da: 'Træk vejret og lev padel',
+  sv: 'Andas och lev padel',
+  no: 'Pust og lev padel',
+  ar: 'تنفس وعِش البادل',
+  zh: '呼吸并热爱壁板球',
+};
+
+const getBrandTagline = (locale: string) => brandTaglines[locale] || brandTaglines.en;
+
 export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrationEmailData): string {
   const { firstName, lastName, tournament, categories, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
@@ -479,12 +498,11 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -622,9 +640,6 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -1189,12 +1204,11 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -1354,9 +1368,6 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -1773,12 +1784,11 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -1898,9 +1908,6 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -2381,12 +2388,11 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -2517,9 +2523,6 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -2995,12 +2998,11 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -3135,9 +3137,6 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -3569,12 +3568,11 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -3700,9 +3698,6 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -3986,12 +3981,11 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -4084,9 +4078,6 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -4412,12 +4403,11 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -4530,9 +4520,6 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -4843,12 +4830,11 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -4955,9 +4941,6 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -5301,12 +5284,11 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -5438,9 +5420,6 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -5731,12 +5710,11 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -5836,9 +5814,6 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -6162,12 +6137,11 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -6294,9 +6268,6 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -6607,12 +6578,11 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -6710,9 +6680,6 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -6972,12 +6939,11 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -7070,9 +7036,6 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -7404,12 +7367,11 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
                 <table role="presentation" width="100%">
                   <tr>
                     <td class="font-default" valign="middle">
-                      <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png" alt="PadelO₂" style="height: 40px; width: auto; margin-bottom: 8px; display: block;" />
                       <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -7527,9 +7489,6 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
                   <tr>
                     <td style="padding-top: 16px;">
                       <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
-                      <p class="muted" style="margin: 0 0 8px 0;">
-                        <a href="${siteUrl}/${locale}/unsubscribe" style="color: #6b7280; text-decoration: underline; font-size: 12px;">${t.unsubscribe || 'Unsubscribe'}</a>
-                      </p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>

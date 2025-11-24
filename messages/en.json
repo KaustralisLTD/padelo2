@@ -387,7 +387,7 @@
       "categories": "Categories",
       "selectMultiple": "You can select multiple (e.g., Men's + Mixed)",
       "categoryHelp": "You can only select one Men's (1 or 2), one Women's (1 or 2), and one Mixed (1 or 2). You may combine Men's + Mixed or Women's + Mixed, but you cannot select two Men's, two Women's, or two Mixed categories at the same time.",
-      "tshirtSize": "T-shirt Size",
+      "tshirtSize": "Your T-shirt Size",
       "selectSize": "Select size",
       "tshirtWidth": "Width",
       "tshirtLength": "Length",

@@ -1055,7 +1055,7 @@ export default function DashboardContent() {
               {editData.partner && (
                 <div className="border-t border-gray-700 pt-4 mt-4">
                   <h3 className="text-lg font-orbitron font-semibold mb-4 text-text">
-                    {t('form.partnerInfo')}
+                    {t('partnerInfo')}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>

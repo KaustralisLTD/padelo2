@@ -301,7 +301,7 @@
       "categories": "Categorías",
       "selectMultiple": "Puedes seleccionar varias (ej: Masculino + Mixto)",
       "categoryHelp": "Solo puedes seleccionar una Masculina (1 o 2), una Femenina (1 o 2) y una Mixta (1 o 2). Puedes elegir Masculina + Mixta o Femenina + Mixta, pero no puedes seleccionar dos Masculinas, dos Femeninas ni dos Mixtas al mismo tiempo.",
-      "tshirtSize": "Talla de Camiseta",
+      "tshirtSize": "Talla de tu camiseta",
       "selectSize": "Selecciona talla",
       "tshirtWidth": "Ancho",
       "tshirtLength": "Largo",

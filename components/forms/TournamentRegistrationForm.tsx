@@ -1000,7 +1000,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           {(partnerRequired || showPartner) && (
             <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
               <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
-                {t('form.partnerInfo')}
+                {t('partnerInfo')}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>

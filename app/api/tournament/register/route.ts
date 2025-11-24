@@ -127,6 +127,7 @@ async function sendConfirmationEmail(email: string, confirmationUrl: string, tou
         subject,
         html,
       text,
+      locale,
       });
     
     console.log(`[sendConfirmationEmail] Email sent to ${email}`);

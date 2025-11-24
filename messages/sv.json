@@ -278,7 +278,7 @@
       "categories": "Kategorier",
       "selectMultiple": "Du kan välja flera (t.ex: Herr + Mixed)",
       "categoryHelp": "Du kan bara välja en Herr (1 eller 2), en Dam (1 eller 2) och en Mixed (1 eller 2). Du kan välja Herr + Mixed eller Dam + Mixed, men du kan inte välja två Herr-, två Dam- eller två Mixed-kategorier samtidigt.",
-      "tshirtSize": "T-shirt Storlek",
+      "tshirtSize": "Din T-shirt-storlek",
       "selectSize": "Välj storlek",
       "tshirtWidth": "Bredd",
       "tshirtLength": "Längd",

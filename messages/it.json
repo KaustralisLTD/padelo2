@@ -278,7 +278,7 @@
       "categories": "Categorie",
       "selectMultiple": "Puoi selezionare più opzioni (es: Maschile + Misto)",
       "categoryHelp": "Puoi selezionare solo una categoria Maschile (1 o 2), una Femminile (1 o 2) e una Mista (1 o 2). Puoi scegliere Maschile + Mista o Femminile + Mista, ma non puoi selezionare due categorie Maschili, due Femminili o due Miste contemporaneamente.",
-      "tshirtSize": "Taglia T-shirt",
+      "tshirtSize": "Taglia della tua maglietta",
       "selectSize": "Seleziona taglia",
       "tshirtWidth": "Larghezza",
       "tshirtLength": "Lunghezza",

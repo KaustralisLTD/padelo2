@@ -9,6 +9,25 @@ export interface EmailTemplateData {
   locale?: string;
 }
 
+const brandTaglines: Record<string, string> = {
+  en: '${getBrandTagline(locale)}',
+  ru: 'Дыши и живи паделем',
+  ua: 'Дихай та живи паделем',
+  es: 'Respira y vive el pádel',
+  fr: 'Respirez et vivez le padel',
+  de: 'Atme und lebe Padel',
+  it: 'Respira e vivi il padel',
+  ca: 'Respira i viu el pàdel',
+  nl: 'Adem en leef padel',
+  da: 'Træk vejret og lev padel',
+  sv: 'Andas och lev padel',
+  no: 'Pust og lev padel',
+  ar: 'تنفس وعِش البادل',
+  zh: '呼吸并热爱壁板球',
+};
+
+const getBrandTagline = (locale: string) => brandTaglines[locale] || brandTaglines.en;
+
 export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
   const { tournamentName, confirmationUrl, firstName, lastName, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
@@ -567,7 +586,7 @@ export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
                           text-transform: uppercase;
                         "
                       >
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -1182,7 +1201,7 @@ export function getWelcomeEmailTemplate(data: WelcomeEmailData): string {
                           text-transform: uppercase;
                         "
                       >
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -1653,7 +1672,7 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): str
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -2037,7 +2056,7 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -2446,7 +2465,7 @@ export function getNewDeviceLoginEmailTemplate(data: NewDeviceLoginEmailData): s
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -2777,7 +2796,7 @@ export function getChangeEmailOldAddressEmailTemplate(data: ChangeEmailOldAddres
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -3115,7 +3134,7 @@ export function getChangeEmailNewAddressEmailTemplate(data: ChangeEmailNewAddres
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -3473,7 +3492,7 @@ export function getAccountDeletionConfirmEmailTemplate(data: AccountDeletionConf
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">
@@ -3815,7 +3834,7 @@ export function getAccountDeletedEmailTemplate(data: AccountDeletedEmailData): s
                         PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
                       </div>
                       <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
-                        Breathe &amp; live padel
+                        ${getBrandTagline(locale)}
                       </div>
                     </td>
                     <td class="hide-mobile" align="right" valign="middle">

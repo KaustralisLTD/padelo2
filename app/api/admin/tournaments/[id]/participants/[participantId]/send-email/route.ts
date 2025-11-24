@@ -271,6 +271,7 @@ export async function POST(
             to: registration.email,
             subject: translations[participantLocale] || translations.en,
             html,
+          locale: participantLocale,
           });
         } catch (error: any) {
           console.error('[send-email] Error in tournament_confirmed:', error);
@@ -364,6 +365,7 @@ export async function POST(
             to: registration.email,
             subject: translations[participantLocale] || translations.en,
             html,
+          locale: participantLocale,
           });
         } catch (error: any) {
           console.error('[send-email] Error in tournament_waiting_list:', error);
@@ -426,6 +428,7 @@ export async function POST(
             to: registration.email,
             subject: translations[participantLocale] || translations.en,
             html,
+          locale: participantLocale,
           });
         } catch (error: any) {
           console.error('[send-email] Error in tournament_spot_confirmed:', error);
@@ -534,6 +537,7 @@ export async function POST(
             to: registration.email,
             subject: translations[participantLocale] || translations.en,
             html,
+          locale: participantLocale,
           });
         } catch (error: any) {
           console.error('[send-email] Error in payment_received:', error);
@@ -643,6 +647,7 @@ export async function POST(
             to: registration.email,
             subject: translations[participantLocale] || translations.en,
             html,
+          locale: participantLocale,
           });
         } catch (error: any) {
           console.error('[send-email] Error in payment_failed:', error);
@@ -690,6 +695,7 @@ export async function POST(
             to: registration.email,
             subject: translations[participantLocale] || translations.en,
             html,
+          locale: participantLocale,
           });
         } catch (error: any) {
           console.error('[send-email] Error in tournament_schedule_published:', error);
