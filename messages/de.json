@@ -801,16 +801,6 @@
     "dashboard": {
       "title": "Dashboard"
     },
-    "tournaments": {
-      "title": "Turniere Verwalten",
-      "active": "Aktive Turniere",
-      "participants": "Teilnehmer",
-      "more": "mehr",
-      "description": "Beschreibung",
-      "createTournament": "Turnier Erstellen",
-      "editTournament": "Turnier Bearbeiten",
-      "name": "Name"
-    },
     "messages": {
       "title": "Nachrichten",
       "description": "Direkte Kommunikation mit Spielern und Trainern",
@@ -819,6 +809,15 @@
       "typeMessage": "Nachricht eingeben...",
       "selectMessage": "Wählen Sie eine Nachricht aus, um zu chatten"
       },
+    "tournaments": {
+      "title": "Turniere Verwalten",
+      "active": "Aktive Turniere",
+      "participants": "Teilnehmer",
+      "more": "mehr",
+      "description": "Beschreibung",
+      "createTournament": "Turnier Erstellen",
+      "editTournament": "Turnier Bearbeiten",
+      "name": "Name",
       "startDate": "Startdatum",
       "endDate": "Enddatum",
       "registrationDeadline": "Anmeldeschluss",
@@ -1249,7 +1248,8 @@
         "failed": "Fehlgeschlagen",
         "cancelled": "Abgebrochen"
       }
-    },
+    }
+  },
   "Profile": {
     "title": "Profil",
     "description": "Verwalte deine persönlichen Informationen und Einstellungen",

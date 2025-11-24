@@ -797,6 +797,14 @@
     "dashboard": {
       "title": "Dashboard"
     },
+    "messages": {
+      "title": "Berichten",
+      "description": "Directe communicatie met spelers en trainers",
+      "search": "Zoeken",
+      "noMessages": "Nog geen berichten. Start een gesprek!",
+      "typeMessage": "Typ een bericht...",
+      "selectMessage": "Selecteer een bericht om te beginnen met chatten"
+    },
     "tournaments": {
       "title": "Toernooien Beheren",
       "active": "Actieve Toernooien",
@@ -805,16 +813,8 @@
       "description": "Beschrijving",
       "createTournament": "Toernooi Aanmaken",
       "editTournament": "Toernooi Bewerken",
-      "name": "Naam"
-    },
-    "messages": {
-      "title": "Berichten",
-      "description": "Directe communicatie met spelers en trainers",
-      "search": "Zoeken",
-      "noMessages": "Nog geen berichten. Start een gesprek!",
-      "typeMessage": "Typ een bericht...",
-      "selectMessage": "Selecteer een bericht om te beginnen met chatten"
-      "selectMessage": "Selecteer een bericht om te beginnen met chatten"
+      "name": "Naam",
+      "startDate": "Startdatum",
       "endDate": "Einddatum",
       "registrationDeadline": "Inschrijvingsdeadline",
       "location": "Locatie",

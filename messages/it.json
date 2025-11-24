@@ -841,12 +841,10 @@
     "export": "Esporta",
     "export.csv": "Scarica come CSV",
     "export.excel": "Scarica come Excel",
-    "export.print": "Stampa",
+    "export.print": "Stampa"
+  },
     "settings": {
       "title": "Impostazioni"
-    },
-    "dashboard": {
-      "title": "Dashboard"
     },
     "messages": {
       "title": "Messaggi",
@@ -855,6 +853,9 @@
       "noMessages": "Nessun messaggio ancora. Inizia una conversazione!",
       "typeMessage": "Digita un messaggio...",
       "selectMessage": "Seleziona un messaggio per iniziare a chattare"
+    },
+    "dashboard": {
+      "title": "Dashboard"
     },
     "tournaments": {
       "title": "Gestisci Tornei",
@@ -1291,8 +1292,7 @@
         "failed": "Fallito",
         "cancelled": "Annullato"
       }
-    }
-  },
+    },
   "Profile": {
     "title": "Profilo",
     "description": "Gestisci le tue informazioni personali e impostazioni",

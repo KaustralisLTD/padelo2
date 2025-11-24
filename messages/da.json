@@ -848,6 +848,14 @@
     "dashboard": {
       "title": "Dashboard"
     },
+    "messages": {
+      "title": "Beskeder",
+      "description": "Direkte kommunikation med spillere og trænere",
+      "search": "Søg",
+      "noMessages": "Ingen beskeder endnu. Start en samtale!",
+      "typeMessage": "Skriv en besked...",
+      "selectMessage": "Vælg en besked for at starte chat"
+    },
     "tournaments": {
       "title": "Administrer Turneringer",
       "active": "Aktive Turneringer",
@@ -856,16 +864,8 @@
       "description": "Beskrivelse",
       "createTournament": "Opret Turnering",
       "editTournament": "Rediger Turnering",
-      "name": "Navn"
-    },
-    "messages": {
-      "title": "Beskeder",
-      "description": "Direkte kommunikation med spillere og trænere",
-      "search": "Søg",
-      "noMessages": "Ingen beskeder endnu. Start en samtale!",
-      "typeMessage": "Skriv en besked...",
-      "selectMessage": "Vælg en besked for at starte chat"
-      "selectMessage": "Vælg en besked for at starte chat"
+      "name": "Navn",
+      "startDate": "Startdato",
       "endDate": "Slutdato",
       "registrationDeadline": "Tilmelding Deadline",
       "location": "Sted",
