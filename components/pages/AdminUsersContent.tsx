@@ -476,11 +476,12 @@ export default function AdminUsersContent() {
         const firstFailure = results.find(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.success));
         if (firstFailure && firstFailure.status === 'fulfilled') {
           errorMessage = firstFailure.value.data?.error || errorMessage;
+          if (firstFailure.value.data?.message) {
+            errorMessage = firstFailure.value.data.message;
+          }
         }
-        if (firstFailure && firstFailure.status === 'fulfilled' && firstFailure.value.data?.message) {
-          errorMessage = data.message;
-        } else if (data.missingFields && Array.isArray(data.missingFields)) {
-          errorMessage = `${errorMessage}:\n\nMissing fields:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
+        if (firstFailure && firstFailure.status === 'fulfilled' && firstFailure.value.data?.missingFields && Array.isArray(firstFailure.value.data.missingFields)) {
+          errorMessage = `${errorMessage}:\n\nMissing fields:\n${firstFailure.value.data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
         }
         setError(errorMessage);
       }
