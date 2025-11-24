@@ -735,8 +735,8 @@ export default function TournamentParticipantsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-24 md:pt-28">
-      <div className="container mx-auto px-4 pb-12 max-w-7xl">
+    <div className="min-h-screen bg-background">
+      <div className="w-full px-6 pb-12">
         <div className="mb-6">
           <Link
             href={`/${locale}/admin/tournaments`}

@@ -795,6 +795,9 @@
     },
     "tournaments": {
       "title": "Turniere Verwalten",
+      "active": "Aktive Turniere",
+      "participants": "Teilnehmer",
+      "more": "mehr",
       "description": "Beschreibung",
       "createTournament": "Turnier Erstellen",
       "editTournament": "Turnier Bearbeiten",

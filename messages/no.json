@@ -842,6 +842,9 @@
     },
     "tournaments": {
       "title": "Administrer Turneringer",
+      "active": "Aktive Turneringer",
+      "participants": "Deltakere",
+      "more": "mer",
       "description": "Beskrivelse",
       "createTournament": "Opprett Turnering",
       "editTournament": "Rediger Turnering",

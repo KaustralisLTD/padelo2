@@ -842,6 +842,9 @@
     },
     "tournaments": {
       "title": "管理锦标赛",
+      "active": "活跃锦标赛",
+      "participants": "参与者",
+      "more": "更多",
       "description": "描述",
       "createTournament": "创建锦标赛",
       "editTournament": "编辑锦标赛",

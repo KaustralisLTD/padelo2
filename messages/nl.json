@@ -791,6 +791,9 @@
     },
     "tournaments": {
       "title": "Toernooien Beheren",
+      "active": "Actieve Toernooien",
+      "participants": "Deelnemers",
+      "more": "meer",
       "description": "Beschrijving",
       "createTournament": "Toernooi Aanmaken",
       "editTournament": "Toernooi Bewerken",

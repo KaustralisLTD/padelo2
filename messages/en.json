@@ -904,7 +904,10 @@
       "title": "Dashboard"
     },
     "tournaments": {
-      "title": "Tournaments"
+      "title": "Tournaments",
+      "active": "Active Tournaments",
+      "participants": "Participants",
+      "more": "more"
     },
     "wallet": {
       "title": "Wallet"

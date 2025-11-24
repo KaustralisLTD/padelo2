@@ -883,7 +883,10 @@
       "title": "Панель керування"
     },
     "tournaments": {
-      "title": "Турніри"
+      "title": "Турніри",
+      "active": "Активні турніри",
+      "participants": "Учасники",
+      "more": "ще"
     },
     "wallet": {
       "title": "Гаманець"

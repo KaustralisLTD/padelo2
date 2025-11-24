@@ -871,7 +871,10 @@
       "title": "Панель управления"
     },
     "tournaments": {
-      "title": "Турниры"
+      "title": "Турниры",
+      "active": "Активные турниры",
+      "participants": "Участники",
+      "more": "еще"
     },
     "wallet": {
       "title": "Кошелек"

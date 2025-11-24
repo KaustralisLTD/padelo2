@@ -812,7 +812,10 @@
       "title": "Panel de Control"
     },
     "tournaments": {
-      "title": "Torneos"
+      "title": "Torneos",
+      "active": "Torneos Activos",
+      "participants": "Participantes",
+      "more": "más"
     },
     "wallet": {
       "title": "Billetera"

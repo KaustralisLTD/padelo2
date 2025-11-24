@@ -842,6 +842,9 @@
     },
     "tournaments": {
       "title": "Tournois",
+      "active": "Tournois Actifs",
+      "participants": "Participants",
+      "more": "plus",
       "description": "Description",
     "wallet": {
       "title": "Portefeuille"

@@ -5,8 +5,8 @@ import { notFound } from 'next/navigation';
 import Script from 'next/script';
 import { locales } from '@/i18n';
 import ClientProviders from '@/components/providers/ClientProviders';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import ConditionalHeader from '@/components/ConditionalHeader';
+import ConditionalFooter from '@/components/ConditionalFooter';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import ThemeToggle from '@/components/ThemeToggle';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
@@ -104,9 +104,9 @@ export default async function RootLayout({
       <body>
         <ClientProviders>
           <NextIntlClientProvider messages={messages}>
-            <Header />
+            <ConditionalHeader />
             <main className="min-h-screen">{children}</main>
-            <Footer />
+            <ConditionalFooter />
             <WhatsAppButton />
             <ThemeToggle />
           </NextIntlClientProvider>

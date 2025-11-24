@@ -842,6 +842,9 @@
     },
     "tournaments": {
       "title": "Hantera Turneringar",
+      "active": "Aktiva Turneringar",
+      "participants": "Deltagare",
+      "more": "mer",
       "description": "Beskrivning",
       "createTournament": "Skapa Turnering",
       "editTournament": "Redigera Turnering",

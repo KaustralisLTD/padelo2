@@ -833,6 +833,9 @@
     },
     "tournaments": {
       "title": "إدارة البطولات",
+      "active": "البطولات النشطة",
+      "participants": "المشاركون",
+      "more": "المزيد",
       "description": "الوصف",
       "createTournament": "إنشاء بطولة",
       "editTournament": "تعديل البطولة",

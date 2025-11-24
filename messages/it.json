@@ -842,6 +842,9 @@
     },
     "tournaments": {
       "title": "Gestisci Tornei",
+      "active": "Tornei Attivi",
+      "participants": "Partecipanti",
+      "more": "altro",
       "description": "Descrizione",
       "createTournament": "Crea Torneo",
       "editTournament": "Modifica Torneo",
