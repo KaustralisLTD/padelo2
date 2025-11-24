@@ -40,7 +40,7 @@ export function generateMetadata(config: SEOConfig, locale: string): Metadata {
     description,
     keywords = defaultKeywords,
     path = '',
-    image = '/logo-hero.png',
+    image = '/logo-header.png',
     noindex = false,
     nofollow = false,
   } = config;

@@ -16,6 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: 'Join PadelO₂ tournaments: categories, schedules, live results and registration. Compete globally with the best players.',
       keywords: ['padel tournaments', 'padel competitions', 'padel events', 'padel registration', 'padel matches'],
       path: '/tournaments',
+      image: '/logo-header.png',
     }, locale);
   }
   
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: seo.description,
     keywords: ['padel tournaments', 'padel competitions', 'padel events', 'padel registration', 'padel matches'],
     path: '/tournaments',
+    image: '/logo-header.png',
   }, locale);
 }
 
@@ -50,7 +52,7 @@ export default async function TournamentsPage({ params }: { params: Promise<{ lo
       name: 'PadelO₂',
       url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale}`,
     },
-    image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-hero.png`,
+    image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png`,
     eventStatus: 'https://schema.org/EventScheduled',
     offers: {
       url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale}/tournaments`,

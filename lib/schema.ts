@@ -59,7 +59,7 @@ export function generateOrganizationSchema(
   const defaultData: OrganizationSchema = {
     name: 'PadelO₂',
     url: `${baseUrl}/${locale}`,
-    logo: `${baseUrl}/logo-hero.png`,
+    logo: `${baseUrl}/logo-header.png`,
     description: 'Innovative padel sports ecosystem combining tournaments, training, AI-powered machines, and global court construction.',
     contactPoint: {
       contactType: 'Customer Service',
