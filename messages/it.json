@@ -853,7 +853,16 @@
       "active": "Tornei Attivi",
       "participants": "Partecipanti",
       "more": "altro",
-      "description": "Descrizione",
+      "description": "Descrizione"
+    },
+    "messages": {
+      "title": "Messaggi",
+      "description": "Comunicazione diretta con giocatori e allenatori",
+      "search": "Cerca",
+      "noMessages": "Nessun messaggio ancora. Inizia una conversazione!",
+      "typeMessage": "Digita un messaggio...",
+      "selectMessage": "Seleziona un messaggio per iniziare a chattare"
+    },
       "createTournament": "Crea Torneo",
       "editTournament": "Modifica Torneo",
       "name": "Nome",

@@ -825,6 +825,14 @@
       "participants": "Participantes",
       "more": "más"
     },
+    "messages": {
+      "title": "Mensajes",
+      "description": "Comunicación directa con jugadores y entrenadores",
+      "search": "Buscar",
+      "noMessages": "Aún no hay mensajes. ¡Inicia una conversación!",
+      "typeMessage": "Escribe un mensaje...",
+      "selectMessage": "Selecciona un mensaje para comenzar a chatear"
+    },
     "wallet": {
       "title": "Billetera"
     },

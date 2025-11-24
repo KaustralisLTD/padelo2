@@ -853,7 +853,16 @@
       "active": "活跃锦标赛",
       "participants": "参与者",
       "more": "更多",
-      "description": "描述",
+      "description": "描述"
+    },
+    "messages": {
+      "title": "消息",
+      "description": "与球员和教练直接沟通",
+      "search": "搜索",
+      "noMessages": "还没有消息。开始对话！",
+      "typeMessage": "输入消息...",
+      "selectMessage": "选择一条消息开始聊天"
+    },
       "createTournament": "创建锦标赛",
       "editTournament": "编辑锦标赛",
       "name": "名称",

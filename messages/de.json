@@ -806,7 +806,16 @@
       "active": "Aktive Turniere",
       "participants": "Teilnehmer",
       "more": "mehr",
-      "description": "Beschreibung",
+      "description": "Beschreibung"
+    },
+    "messages": {
+      "title": "Nachrichten",
+      "description": "Direkte Kommunikation mit Spielern und Trainern",
+      "search": "Suchen",
+      "noMessages": "Noch keine Nachrichten. Starten Sie eine Unterhaltung!",
+      "typeMessage": "Nachricht eingeben...",
+      "selectMessage": "Wählen Sie eine Nachricht aus, um zu chatten"
+    },
       "createTournament": "Turnier Erstellen",
       "editTournament": "Turnier Bearbeiten",
       "name": "Name",

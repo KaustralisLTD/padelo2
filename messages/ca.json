@@ -1090,7 +1090,16 @@
       "active": "Torneigs Actius",
       "participants": "Participants",
       "more": "més",
-      "description": "Descripció",
+      "description": "Descripció"
+    },
+    "messages": {
+      "title": "Missatges",
+      "description": "Comunicació directa amb jugadors i entrenadors",
+      "search": "Cercar",
+      "noMessages": "Encara no hi ha missatges. Inicia una conversa!",
+      "typeMessage": "Escriu un missatge...",
+      "selectMessage": "Selecciona un missatge per començar a xatejar"
+    },
       "createTournament": "Crear Torneig",
       "editTournament": "Editar Torneig",
       "name": "Nom",

@@ -802,7 +802,16 @@
       "active": "Actieve Toernooien",
       "participants": "Deelnemers",
       "more": "meer",
-      "description": "Beschrijving",
+      "description": "Beschrijving"
+    },
+    "messages": {
+      "title": "Berichten",
+      "description": "Directe communicatie met spelers en trainers",
+      "search": "Zoeken",
+      "noMessages": "Nog geen berichten. Start een gesprek!",
+      "typeMessage": "Typ een bericht...",
+      "selectMessage": "Selecteer een bericht om te beginnen met chatten"
+    },
       "createTournament": "Toernooi Aanmaken",
       "editTournament": "Toernooi Bewerken",
       "name": "Naam",

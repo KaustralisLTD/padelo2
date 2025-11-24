@@ -853,7 +853,16 @@
       "active": "Tournois Actifs",
       "participants": "Participants",
       "more": "plus",
-      "description": "Description",
+      "description": "Description"
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Communication directe avec les joueurs et les entraîneurs",
+      "search": "Rechercher",
+      "noMessages": "Aucun message pour le moment. Commencez une conversation !",
+      "typeMessage": "Tapez un message...",
+      "selectMessage": "Sélectionnez un message pour commencer à discuter"
+    },
     "wallet": {
       "title": "Portefeuille"
     },

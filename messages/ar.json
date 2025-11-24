@@ -844,7 +844,17 @@
       "active": "البطولات النشطة",
       "participants": "المشاركون",
       "more": "المزيد",
-      "description": "الوصف",
+      "description": "الوصف"
+    },
+    "messages": {
+      "title": "الرسائل",
+      "description": "التواصل المباشر مع اللاعبين والمدربين",
+      "search": "بحث",
+      "noMessages": "لا توجد رسائل بعد. ابدأ محادثة!",
+      "typeMessage": "اكتب رسالة...",
+      "selectMessage": "اختر رسالة لبدء الدردشة"
+    },
+    "tournaments": {
       "createTournament": "إنشاء بطولة",
       "editTournament": "تعديل البطولة",
       "name": "الاسم",

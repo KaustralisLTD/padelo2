@@ -853,7 +853,16 @@
       "active": "Aktive Turneringer",
       "participants": "Deltakere",
       "more": "mer",
-      "description": "Beskrivelse",
+      "description": "Beskrivelse"
+    },
+    "messages": {
+      "title": "Meldinger",
+      "description": "Direkte kommunikasjon med spillere og trenere",
+      "search": "Søk",
+      "noMessages": "Ingen meldinger ennå. Start en samtale!",
+      "typeMessage": "Skriv en melding...",
+      "selectMessage": "Velg en melding for å starte chatting"
+    },
       "createTournament": "Opprett Turnering",
       "editTournament": "Rediger Turnering",
       "name": "Navn",
