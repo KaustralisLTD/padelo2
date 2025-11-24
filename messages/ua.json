@@ -879,6 +879,14 @@
   "Admin": {
     "loading": "Завантаження...",
     "backToDashboard": "Повернутися до панелі керування",
+    "logout": "Вийти",
+    "export": "Експорт",
+    "export.csv": "Завантажити як CSV",
+    "export.excel": "Завантажити як Excel",
+    "export.print": "Друк",
+    "settings": {
+      "title": "Налаштування"
+    },
     "dashboard": {
       "title": "Панель керування"
     },

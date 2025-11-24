@@ -4,6 +4,7 @@ import { useEffect, useState, FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ExportButton from '@/components/ExportButton';
 
 interface User {
   id: string;
@@ -602,6 +603,30 @@ export default function AdminUsersContent() {
       {/* Контент вкладок */}
       {activeTab === 'list' && (
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
+          <div className="p-4 border-b border-border flex justify-between items-center">
+            <h3 className="text-lg font-poppins font-semibold text-text">{t('users.title')}</h3>
+            <ExportButton
+              data={users.map((user, index) => ({
+                '#': index + 1,
+                'User ID': user.id,
+                'Email': user.email,
+                'Name': `${user.firstName} ${user.lastName}`,
+                'Role': user.role,
+                'Created At': new Date(user.createdAt).toLocaleString(locale),
+                'Email Verified': user.emailVerified ? 'Yes' : 'No',
+              }))}
+              columns={[
+                { key: '#', label: '#' },
+                { key: 'User ID', label: 'User ID' },
+                { key: 'Email', label: 'Email' },
+                { key: 'Name', label: 'Name' },
+                { key: 'Role', label: 'Role' },
+                { key: 'Created At', label: 'Created At' },
+                { key: 'Email Verified', label: 'Email Verified' },
+              ]}
+              filename="users"
+            />
+          </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-background border-b border-border">
@@ -686,6 +711,18 @@ export default function AdminUsersContent() {
                           label={t('users.edit')}
                           onClick={() => openEditModal(user)}
                           Icon={EditIcon}
+                        />
+                        <ActionIconButton
+                          label={t('users.sendEmail')}
+                          onClick={() => {
+                            setEmailUser(user);
+                            setShowEmailModal(true);
+                          }}
+                          Icon={() => (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                          )}
                         />
                         <ActionIconButton
                           label={t('users.delete')}
@@ -1157,23 +1194,23 @@ export default function AdminUsersContent() {
                   <option value="account_deleted">{t('users.templateAccountDeleted') || 'Account Deleted'}</option>
                 </optgroup>
 
-                {/* Tournament Templates - Note */}
-                <optgroup label={t('users.categoryTournament') || '🏆 Tournament Templates (use tournament participants page)'}>
-                  <option value="tournament_registration" disabled>{t('users.templateTournamentRegistration') || 'Tournament Registration'}</option>
-                  <option value="tournament_confirmed" disabled>{t('users.templateTournamentConfirmed') || 'Tournament Confirmed'}</option>
-                  <option value="tournament_waiting_list" disabled>{t('users.templateWaitingList') || 'Waiting List'}</option>
-                  <option value="tournament_spot_confirmed" disabled>{t('users.templateSpotConfirmed') || 'Spot Confirmed'}</option>
-                  <option value="payment_received" disabled>{t('users.templatePaymentReceived') || 'Payment Received'}</option>
-                  <option value="payment_failed" disabled>{t('users.templatePaymentFailed') || 'Payment Failed'}</option>
-                  <option value="tournament_schedule_published" disabled>{t('users.templateSchedulePublished') || 'Schedule Published'}</option>
-                  <option value="match_reminder_1day" disabled>{t('users.templateMatchReminder1Day') || 'Match Reminder - 1 Day'}</option>
-                  <option value="match_reminder_sameday" disabled>{t('users.templateMatchReminderSameDay') || 'Match Reminder - Same Day'}</option>
-                  <option value="schedule_change" disabled>{t('users.templateScheduleChange') || 'Schedule Change'}</option>
-                  <option value="group_stage_results" disabled>{t('users.templateGroupStageResults') || 'Group Stage Results'}</option>
-                  <option value="finals_winners" disabled>{t('users.templateFinalsWinners') || 'Finals & Winners'}</option>
-                  <option value="post_tournament_recap" disabled>{t('users.templatePostTournamentRecap') || 'Post-Tournament Recap'}</option>
-                  <option value="tournament_feedback" disabled>{t('users.templateTournamentFeedback') || 'Tournament Feedback'}</option>
-                  <option value="tournament_cancelled" disabled>{t('users.templateTournamentCancelled') || 'Tournament Cancelled'}</option>
+                {/* Tournament Templates */}
+                <optgroup label={t('users.categoryTournament') || '🏆 Tournament Templates'}>
+                  <option value="tournament_registration">{t('users.templateTournamentRegistration') || 'Tournament Registration'}</option>
+                  <option value="tournament_confirmed">{t('users.templateTournamentConfirmed') || 'Tournament Confirmed'}</option>
+                  <option value="tournament_waiting_list">{t('users.templateWaitingList') || 'Waiting List'}</option>
+                  <option value="tournament_spot_confirmed">{t('users.templateSpotConfirmed') || 'Spot Confirmed'}</option>
+                  <option value="payment_received">{t('users.templatePaymentReceived') || 'Payment Received'}</option>
+                  <option value="payment_failed">{t('users.templatePaymentFailed') || 'Payment Failed'}</option>
+                  <option value="tournament_schedule_published">{t('users.templateSchedulePublished') || 'Schedule Published'}</option>
+                  <option value="match_reminder_1day">{t('users.templateMatchReminder1Day') || 'Match Reminder - 1 Day'}</option>
+                  <option value="match_reminder_sameday">{t('users.templateMatchReminderSameDay') || 'Match Reminder - Same Day'}</option>
+                  <option value="schedule_change">{t('users.templateScheduleChange') || 'Schedule Change'}</option>
+                  <option value="group_stage_results">{t('users.templateGroupStageResults') || 'Group Stage Results'}</option>
+                  <option value="finals_winners">{t('users.templateFinalsWinners') || 'Finals & Winners'}</option>
+                  <option value="post_tournament_recap">{t('users.templatePostTournamentRecap') || 'Post-Tournament Recap'}</option>
+                  <option value="tournament_feedback">{t('users.templateTournamentFeedback') || 'Tournament Feedback'}</option>
+                  <option value="tournament_cancelled">{t('users.templateTournamentCancelled') || 'Tournament Cancelled'}</option>
                 </optgroup>
               </select>
             </div>

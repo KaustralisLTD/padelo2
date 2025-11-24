@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from 'react';
 import AdminSidebar from '@/components/admin/AdminSidebar';
+import LanguageSelector from '@/components/LanguageSelector';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [sidebarWidth, setSidebarWidth] = useState(256); // 64 * 4 = 256px (w-64)
@@ -33,6 +34,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-background">
       <AdminSidebar />
       <main className="flex-1 transition-all duration-300" style={{ marginLeft: `${sidebarWidth}px` }}>
+        {/* Language Selector in top right */}
+        <div className="fixed top-4 right-4 z-50">
+          <LanguageSelector variant="header" />
+        </div>
         <div className="p-6">
           {children}
         </div>

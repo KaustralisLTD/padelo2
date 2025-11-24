@@ -867,6 +867,14 @@
   "Admin": {
     "loading": "Загрузка...",
     "backToDashboard": "Вернуться в панель управления",
+    "logout": "Выйти",
+    "export": "Экспорт",
+    "export.csv": "Скачать как CSV",
+    "export.excel": "Скачать как Excel",
+    "export.print": "Печать",
+    "settings": {
+      "title": "Настройки"
+    },
     "dashboard": {
       "title": "Панель управления"
     },

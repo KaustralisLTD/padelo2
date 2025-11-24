@@ -900,6 +900,14 @@
   "Admin": {
     "loading": "Loading...",
     "backToDashboard": "Back to Dashboard",
+    "logout": "Logout",
+    "export": "Export",
+    "export.csv": "Download as CSV",
+    "export.excel": "Download as Excel",
+    "export.print": "Print",
+    "settings": {
+      "title": "Settings"
+    },
     "dashboard": {
       "title": "Dashboard"
     },

@@ -736,7 +736,7 @@ export default function TournamentParticipantsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="w-full px-6 pb-12">
+      <div className="w-full pl-3 pr-6 pb-12">
         <div className="mb-6">
           <Link
             href={`/${locale}/admin/tournaments`}
