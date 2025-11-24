@@ -76,11 +76,29 @@ export default function TournamentsContent() {
         setSelectedTournament(targetId);
         setShowForm(true);
         setTimeout(() => {
-          document.getElementById(`register-${targetId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 0);
+          const element = document.getElementById(`register-${targetId}`);
+          if (element) {
+            const headerHeight = 100; // Высота хедера с отступом
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - headerHeight;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }, 100);
       } else if (cardMatch) {
         setTimeout(() => {
-          document.getElementById(`tournament-${targetId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const element = document.getElementById(`tournament-${targetId}`);
+          if (element) {
+            const headerHeight = 100;
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - headerHeight;
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
         }, 0);
       }
     }
