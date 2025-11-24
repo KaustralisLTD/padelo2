@@ -853,6 +853,9 @@
       "active": "Aktiva Turneringar",
       "participants": "Deltagare",
       "more": "mer",
+      "createTournament": "Skapa Turnering",
+      "editTournament": "Redigera Turnering",
+      "name": "Namn",
       "description": "Beskrivning"
     },
     "messages": {
@@ -862,11 +865,7 @@
       "noMessages": "Inga meddelanden ännu. Starta en konversation!",
       "typeMessage": "Skriv ett meddelande...",
       "selectMessage": "Välj ett meddelande för att börja chatta"
-    },
-      "createTournament": "Skapa Turnering",
-      "editTournament": "Redigera Turnering",
-      "name": "Namn",
-      "startDate": "Startdatum",
+      "selectMessage": "Välj ett meddelande för att börja chatta"
       "endDate": "Slutdatum",
       "registrationDeadline": "Anmälningsdeadline",
       "location": "Plats",

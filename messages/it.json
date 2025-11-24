@@ -848,13 +848,6 @@
     "dashboard": {
       "title": "Dashboard"
     },
-    "tournaments": {
-      "title": "Gestisci Tornei",
-      "active": "Tornei Attivi",
-      "participants": "Partecipanti",
-      "more": "altro",
-      "description": "Descrizione"
-    },
     "messages": {
       "title": "Messaggi",
       "description": "Comunicazione diretta con giocatori e allenatori",
@@ -863,6 +856,12 @@
       "typeMessage": "Digita un messaggio...",
       "selectMessage": "Seleziona un messaggio per iniziare a chattare"
     },
+    "tournaments": {
+      "title": "Gestisci Tornei",
+      "active": "Tornei Attivi",
+      "participants": "Partecipanti",
+      "more": "altro",
+      "description": "Descrizione",
       "createTournament": "Crea Torneo",
       "editTournament": "Modifica Torneo",
       "name": "Nome",

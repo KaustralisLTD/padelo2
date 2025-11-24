@@ -802,7 +802,10 @@
       "active": "Actieve Toernooien",
       "participants": "Deelnemers",
       "more": "meer",
-      "description": "Beschrijving"
+      "description": "Beschrijving",
+      "createTournament": "Toernooi Aanmaken",
+      "editTournament": "Toernooi Bewerken",
+      "name": "Naam"
     },
     "messages": {
       "title": "Berichten",
@@ -811,11 +814,7 @@
       "noMessages": "Nog geen berichten. Start een gesprek!",
       "typeMessage": "Typ een bericht...",
       "selectMessage": "Selecteer een bericht om te beginnen met chatten"
-    },
-      "createTournament": "Toernooi Aanmaken",
-      "editTournament": "Toernooi Bewerken",
-      "name": "Naam",
-      "startDate": "Startdatum",
+      "selectMessage": "Selecteer een bericht om te beginnen met chatten"
       "endDate": "Einddatum",
       "registrationDeadline": "Inschrijvingsdeadline",
       "location": "Locatie",

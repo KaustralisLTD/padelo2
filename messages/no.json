@@ -853,6 +853,9 @@
       "active": "Aktive Turneringer",
       "participants": "Deltakere",
       "more": "mer",
+      "createTournament": "Opprett Turnering",
+      "editTournament": "Rediger Turnering",
+      "name": "Navn",
       "description": "Beskrivelse"
     },
     "messages": {
@@ -862,11 +865,7 @@
       "noMessages": "Ingen meldinger ennå. Start en samtale!",
       "typeMessage": "Skriv en melding...",
       "selectMessage": "Velg en melding for å starte chatting"
-    },
-      "createTournament": "Opprett Turnering",
-      "editTournament": "Rediger Turnering",
-      "name": "Navn",
-      "startDate": "Startdato",
+      "selectMessage": "Velg en melding for å starte chatting"
       "endDate": "Sluttdato",
       "registrationDeadline": "Påmeldingsfrist",
       "location": "Sted",

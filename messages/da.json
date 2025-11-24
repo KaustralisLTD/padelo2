@@ -853,7 +853,10 @@
       "active": "Aktive Turneringer",
       "participants": "Deltagere",
       "more": "mere",
-      "description": "Beskrivelse"
+      "description": "Beskrivelse",
+      "createTournament": "Opret Turnering",
+      "editTournament": "Rediger Turnering",
+      "name": "Navn"
     },
     "messages": {
       "title": "Beskeder",
@@ -862,11 +865,7 @@
       "noMessages": "Ingen beskeder endnu. Start en samtale!",
       "typeMessage": "Skriv en besked...",
       "selectMessage": "Vælg en besked for at starte chat"
-    },
-      "createTournament": "Opret Turnering",
-      "editTournament": "Rediger Turnering",
-      "name": "Navn",
-      "startDate": "Startdato",
+      "selectMessage": "Vælg en besked for at starte chat"
       "endDate": "Slutdato",
       "registrationDeadline": "Tilmelding Deadline",
       "location": "Sted",

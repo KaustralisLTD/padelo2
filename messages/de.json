@@ -806,7 +806,10 @@
       "active": "Aktive Turniere",
       "participants": "Teilnehmer",
       "more": "mehr",
-      "description": "Beschreibung"
+      "description": "Beschreibung",
+      "createTournament": "Turnier Erstellen",
+      "editTournament": "Turnier Bearbeiten",
+      "name": "Name"
     },
     "messages": {
       "title": "Nachrichten",
@@ -815,10 +818,7 @@
       "noMessages": "Noch keine Nachrichten. Starten Sie eine Unterhaltung!",
       "typeMessage": "Nachricht eingeben...",
       "selectMessage": "Wählen Sie eine Nachricht aus, um zu chatten"
-    },
-      "createTournament": "Turnier Erstellen",
-      "editTournament": "Turnier Bearbeiten",
-      "name": "Name",
+      },
       "startDate": "Startdatum",
       "endDate": "Enddatum",
       "registrationDeadline": "Anmeldeschluss",
@@ -1015,12 +1015,14 @@
       "copyFrom": "Kopieren von",
       "copyTo": "Kopieren nach",
       "copy": "Kopieren",
-      "accesses": "Zugriffe",
+      "accesses": "Zugriffe"
+    }, 
       "stats": {
         "totalAccess": "Gesamtzugriffe",
         "uniqueUsers": "Eindeutige Benutzer",
         "uniqueTournaments": "Eindeutige Turniere"
       },
+      "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",
       "comingSoon": "Staff management interface coming soon..."
@@ -1247,8 +1249,7 @@
         "failed": "Fehlgeschlagen",
         "cancelled": "Abgebrochen"
       }
-    }
-  },
+    },
   "Profile": {
     "title": "Profil",
     "description": "Verwalte deine persönlichen Informationen und Einstellungen",
@@ -1750,3 +1751,4 @@
     }
   }
 }
+
