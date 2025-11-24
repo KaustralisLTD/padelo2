@@ -20,7 +20,8 @@ interface Tournament {
 }
 
 export function ParticipantDashboardContent() {
-  const t = useTranslations(['ParticipantDashboard', 'Dashboard']);
+  const t = useTranslations('ParticipantDashboard');
+  const tDashboard = useTranslations('Dashboard');
   const locale = useLocale();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -244,7 +245,7 @@ export function ParticipantDashboardContent() {
 
         {/* Quick Actions Menu */}
         <div className="mt-8">
-          <h2 className="text-2xl font-poppins font-bold text-text mb-6">{t('Dashboard.participant.title') || 'Quick Actions'}</h2>
+          <h2 className="text-2xl font-poppins font-bold text-text mb-6">{tDashboard('participant.title') || 'Quick Actions'}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link
               href={`/${locale}/tournament/dashboard`}
@@ -256,10 +257,10 @@ export function ParticipantDashboardContent() {
                 </svg>
               </div>
               <h3 className="text-xl font-orbitron font-semibold mb-2 text-text">
-                {t('Dashboard.participant.myRegistration') || 'My Registration'}
+                {tDashboard('participant.myRegistration') || 'My Registration'}
               </h3>
               <p className="text-text-secondary font-poppins text-sm">
-                {t('Dashboard.participant.myRegistrationDesc') || 'View your tournament registration details'}
+                {tDashboard('participant.myRegistrationDesc') || 'View your tournament registration details'}
               </p>
             </Link>
 
@@ -273,10 +274,10 @@ export function ParticipantDashboardContent() {
                 </svg>
               </div>
               <h3 className="text-xl font-orbitron font-semibold mb-2 text-text">
-                {t('Dashboard.participant.schedule') || 'My Schedule'}
+                {tDashboard('participant.schedule') || 'My Schedule'}
               </h3>
               <p className="text-text-secondary font-poppins text-sm">
-                {t('Dashboard.participant.scheduleDesc') || 'View your match schedule'}
+                {tDashboard('participant.scheduleDesc') || 'View your match schedule'}
               </p>
             </Link>
 
@@ -290,10 +291,10 @@ export function ParticipantDashboardContent() {
                 </svg>
               </div>
               <h3 className="text-xl font-orbitron font-semibold mb-2 text-text">
-                {t('Dashboard.participant.results') || 'My Results'}
+                {tDashboard('participant.results') || 'My Results'}
               </h3>
               <p className="text-text-secondary font-poppins text-sm">
-                {t('Dashboard.participant.resultsDesc') || 'View your match results'}
+                {tDashboard('participant.resultsDesc') || 'View your match results'}
               </p>
             </Link>
 
@@ -308,10 +309,10 @@ export function ParticipantDashboardContent() {
                 </svg>
               </div>
               <h3 className="text-xl font-orbitron font-semibold mb-2 text-text">
-                {t('Dashboard.participant.settings') || 'Account Settings'}
+                {tDashboard('participant.settings') || 'Account Settings'}
               </h3>
               <p className="text-text-secondary font-poppins text-sm">
-                {t('Dashboard.participant.settingsDesc') || 'Manage your profile and account information'}
+                {tDashboard('participant.settingsDesc') || 'Manage your profile and account information'}
               </p>
             </Link>
 
@@ -325,10 +326,10 @@ export function ParticipantDashboardContent() {
                 </svg>
               </div>
               <h3 className="text-xl font-orbitron font-semibold mb-2 text-text">
-                {t('Dashboard.participant.wallet') || 'Wallet'}
+                {tDashboard('participant.wallet') || 'Wallet'}
               </h3>
               <p className="text-text-secondary font-poppins text-sm">
-                {t('Dashboard.participant.walletDesc') || 'View balance and transaction history'}
+                {tDashboard('participant.walletDesc') || 'View balance and transaction history'}
               </p>
             </Link>
           </div>
