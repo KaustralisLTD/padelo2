@@ -491,6 +491,12 @@ export default function AdminUsersContent() {
     }
   };
 
+  const handleBulkSendEmail = async () => {
+    if (!token || !selectedEmailTemplate || selectedUsers.size === 0) return;
+    setEmailUser(null); // Сбрасываем одиночного пользователя
+    setShowEmailModal(true);
+  };
+
   const closeModals = () => {
     setShowCreateModal(false);
     setEditingUser(null);
