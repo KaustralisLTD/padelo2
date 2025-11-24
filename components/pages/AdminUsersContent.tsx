@@ -498,6 +498,60 @@ export default function AdminUsersContent() {
     setShowEmailModal(true);
   };
 
+  const handleAddToTournament = async () => {
+    if (!token || !selectedTournamentId || selectedUsers.size === 0) return;
+
+    try {
+      setAddingToTournament(true);
+      setError(null);
+
+      const selectedUserIds = Array.from(selectedUsers);
+      const selectedUsersData = users.filter(u => selectedUserIds.includes(u.id));
+
+      // Добавляем каждого пользователя к турниру
+      const promises = selectedUsersData.map(async (user) => {
+        const response = await fetch(`/api/tournament/${selectedTournamentId}/register-admin`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            categories: [], // Можно добавить выбор категорий позже
+            confirmed: true,
+            userId: user.id,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to add user to tournament');
+        }
+
+        return response.json();
+      });
+
+      await Promise.allSettled(promises);
+      
+      setSuccess(`Successfully added ${selectedUsersData.length} user(s) to tournament`);
+      setShowAddToTournamentModal(false);
+      setSelectedUsers(new Set());
+      setIsSelectAll(false);
+      setSelectedTournamentId(null);
+      
+      setTimeout(() => {
+        setSuccess(null);
+      }, 5000);
+    } catch (err: any) {
+      setError(err.message || 'Failed to add users to tournament');
+    } finally {
+      setAddingToTournament(false);
+    }
+  };
+
   const closeModals = () => {
     setShowCreateModal(false);
     setEditingUser(null);
