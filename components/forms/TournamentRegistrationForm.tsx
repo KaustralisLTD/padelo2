@@ -828,6 +828,16 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
       </div>
 
+      {/* Photo Upload Instructions - For Player */}
+      <div className="p-4 bg-background-secondary border border-gray-700 rounded-lg">
+        <p className="text-sm font-poppins text-text-secondary mb-2">
+          <strong className="text-text">{t('form.photoInstructions.title')}:</strong>
+        </p>
+        <p className="text-sm font-poppins text-text-secondary">
+          {t('form.photoInstructions.text')}
+        </p>
+      </div>
+
       {/* Categories */}
       <div id="categories-section">
         <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -1493,17 +1503,6 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         />
       </div>
 
-      {/* Photo Upload Instructions - Only for Partner */}
-      {showPartner && (
-        <div className="p-4 bg-background-secondary border border-gray-700 rounded-lg">
-          <p className="text-sm font-poppins text-text-secondary mb-2">
-            <strong className="text-text">{t('form.photoInstructions.title')}:</strong>
-          </p>
-          <p className="text-sm font-poppins text-text-secondary">
-            {t('form.photoInstructions.text')}
-          </p>
-        </div>
-      )}
 
       {submitStatus === 'success' && (
         <div className="p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3 max-w-full overflow-hidden">
