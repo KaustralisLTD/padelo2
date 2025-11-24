@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import DashboardPageContent from '@/components/pages/DashboardPageContent';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
+import { redirect } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -21,6 +22,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  
+  // Для участников перенаправляем на participant-dashboard
+  // Для superadmin и staff показываем обычный dashboard
   return <DashboardPageContent />;
 }
 
