@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 import { locales } from '@/i18n';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com';
 
 export interface SEOConfig {
   title: string;

@@ -50,12 +50,12 @@ export default async function TournamentsPage({ params }: { params: Promise<{ lo
     },
     organizer: {
       name: 'PadelO₂',
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com'}/${locale}`,
     },
-    image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/logo-header.png`,
+    image: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com'}/logo-header.png`,
     eventStatus: 'https://schema.org/EventScheduled',
     offers: {
-      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale}/tournaments`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com'}/${locale}/tournaments`,
       price: '0',
       priceCurrency: 'EUR',
       availability: 'https://schema.org/InStock',

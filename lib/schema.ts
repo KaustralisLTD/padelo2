@@ -1,6 +1,6 @@
 // Schema.org JSON-LD structured data generator
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.padelo2.com';
 
 export interface OrganizationSchema {
   name: string;
