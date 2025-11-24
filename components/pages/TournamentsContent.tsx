@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import TournamentRegistrationForm from '@/components/forms/TournamentRegistrationForm';
@@ -23,6 +23,7 @@ export default function TournamentsContent() {
   const [selectedTournament, setSelectedTournament] = useState<number | null>(null);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
+  const hashHandledRef = useRef(false);
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -51,6 +52,40 @@ export default function TournamentsContent() {
 
     fetchTournaments();
   }, []);
+
+  useEffect(() => {
+    if (loading || hashHandledRef.current) {
+      return;
+    }
+    if (typeof window === 'undefined') return;
+    const { hash } = window.location;
+    if (!hash) {
+      hashHandledRef.current = true;
+      return;
+    }
+    const registerMatch = hash.match(/^#register-(\d+)$/i);
+    const cardMatch = hash.match(/^#tournament-(\d+)$/i);
+    const targetId = registerMatch
+      ? Number(registerMatch[1])
+      : cardMatch
+        ? Number(cardMatch[1])
+        : null;
+
+    if (targetId && tournaments.some((t) => t.id === targetId)) {
+      if (registerMatch) {
+        setSelectedTournament(targetId);
+        setShowForm(true);
+        setTimeout(() => {
+          document.getElementById(`register-${targetId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 0);
+      } else if (cardMatch) {
+        setTimeout(() => {
+          document.getElementById(`tournament-${targetId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 0);
+      }
+    }
+    hashHandledRef.current = true;
+  }, [loading, tournaments]);
 
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
@@ -95,11 +130,15 @@ export default function TournamentsContent() {
 
                   return (
                     <div
+                      id={`tournament-${tournament.id}`}
                       key={tournament.id}
                       onClick={() => {
                         if (isActive) {
                           setSelectedTournament(tournament.id);
                           setShowForm(true);
+                          if (typeof window !== 'undefined') {
+                            window.history.replaceState(null, '', `#register-${tournament.id}`);
+                          }
                         }
                       }}
                       className={`bg-background-secondary rounded-lg border border-border hover:border-primary transition-all overflow-hidden ${
@@ -157,13 +196,19 @@ export default function TournamentsContent() {
               onClick={() => {
                 setShowForm(false);
                 setSelectedTournament(null);
+                if (typeof window !== 'undefined') {
+                  window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
               }}
               className="mb-6 text-text-secondary hover:text-primary font-poppins transition-colors"
             >
               ← {t('back')}
             </button>
             <div className="mb-6">
-              <h3 className="text-2xl font-poppins font-bold mb-2 text-text">
+              <h3
+                id={selectedTournament ? `register-${selectedTournament}` : undefined}
+                className="text-2xl font-poppins font-bold mb-2 text-text"
+              >
                 {t('registerFor')} {tournaments.find(t => t.id === selectedTournament)?.name || ''}
               </h3>
             </div>

@@ -104,7 +104,7 @@ export async function POST(
           
           // Сохраняем токен в БД
           await pool.execute(
-            'UPDATE users SET email_verification_token = ?, email_verification_expires = DATE_ADD(NOW(), INTERVAL 24 HOUR) WHERE id = ?',
+            'UPDATE users SET email_verification_token = ? WHERE id = ?',
             [verificationToken, userId]
           );
 
