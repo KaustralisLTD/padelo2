@@ -1292,8 +1292,7 @@
         "failed": "Échoué",
         "cancelled": "Annulé"
       }
-    }
-  },
+    },
   "Profile": {
     "title": "Profil",
     "description": "Gérez vos informations personnelles et paramètres",
