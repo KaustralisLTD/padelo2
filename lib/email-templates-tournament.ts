@@ -46,6 +46,25 @@ const brandTaglines: Record<string, string> = {
 
 const getBrandTagline = (locale: string) => brandTaglines[locale] || brandTaglines.en;
 
+const welcomeBadgeTexts: Record<string, string> = {
+  en: 'Welcome to the court',
+  ru: 'Добро пожаловать на корт',
+  ua: 'Ласкаво просимо на корт',
+  es: 'Bienvenido a la pista',
+  fr: 'Bienvenue sur le court',
+  de: 'Willkommen auf dem Court',
+  it: 'Benvenuto in campo',
+  ca: 'Benvingut a la pista',
+  nl: 'Welkom op de baan',
+  da: 'Velkommen på banen',
+  sv: 'Välkommen till banan',
+  no: 'Velkommen på banen',
+  ar: 'مرحبًا بك في الملعب',
+  zh: '欢迎来到球场',
+};
+
+const getWelcomeBadgeText = (locale: string) => welcomeBadgeTexts[locale] || welcomeBadgeTexts.en;
+
 export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrationEmailData): string {
   const { firstName, lastName, tournament, categories, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
@@ -509,7 +528,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
                       <table role="presentation" style="border-radius: 8px; background: #e0f2fe; padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 8px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.05em; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.05em; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>

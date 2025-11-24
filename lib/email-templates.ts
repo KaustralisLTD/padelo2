@@ -28,6 +28,25 @@ const brandTaglines: Record<string, string> = {
 
 const getBrandTagline = (locale: string) => brandTaglines[locale] || brandTaglines.en;
 
+const welcomeBadgeTexts: Record<string, string> = {
+  en: 'Welcome to the court',
+  ru: 'Добро пожаловать на корт',
+  ua: 'Ласкаво просимо на корт',
+  es: 'Bienvenido a la pista',
+  fr: 'Bienvenue sur le court',
+  de: 'Willkommen auf dem Court',
+  it: 'Benvenuto in campo',
+  ca: 'Benvingut a la pista',
+  nl: 'Welkom op de baan',
+  da: 'Velkommen på banen',
+  sv: 'Välkommen till banan',
+  no: 'Velkommen på banen',
+  ar: 'مرحبًا بك في الملعب',
+  zh: '欢迎来到球场',
+};
+
+const getWelcomeBadgeText = (locale: string) => welcomeBadgeTexts[locale] || welcomeBadgeTexts.en;
+
 export function getConfirmationEmailTemplate(data: EmailTemplateData): string {
   const { tournamentName, confirmationUrl, firstName, lastName, locale = 'en' } = data;
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Participant';
@@ -1679,7 +1698,7 @@ export function getPasswordResetEmailTemplate(data: PasswordResetEmailData): str
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>
@@ -2063,7 +2082,7 @@ export function getPasswordChangedEmailTemplate(data: PasswordChangedEmailData):
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>
@@ -2472,7 +2491,7 @@ export function getNewDeviceLoginEmailTemplate(data: NewDeviceLoginEmailData): s
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>
@@ -2803,7 +2822,7 @@ export function getChangeEmailOldAddressEmailTemplate(data: ChangeEmailOldAddres
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>
@@ -3141,7 +3160,7 @@ export function getChangeEmailNewAddressEmailTemplate(data: ChangeEmailNewAddres
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>
@@ -3499,7 +3518,7 @@ export function getAccountDeletionConfirmEmailTemplate(data: AccountDeletionConf
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>
@@ -3841,7 +3860,7 @@ export function getAccountDeletedEmailTemplate(data: AccountDeletedEmailData): s
                       <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
                         <tr>
                           <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
-                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${locale === 'ua' ? 'Ласкаво просимо на корт' : locale === 'ru' ? 'Добро пожаловать на корт' : 'Welcome to the court'}</span>
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${getWelcomeBadgeText(locale)}</span>
                           </td>
                         </tr>
                       </table>

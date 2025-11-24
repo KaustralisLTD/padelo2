@@ -84,6 +84,8 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
         headers: {
           'Content-Language': locale,
           'X-Locale': locale,
+          'List-Unsubscribe': `<mailto:${process.env.SUPPORT_EMAIL || 'support@padelo2.com'}?subject=unsubscribe>, <${siteUrl}/unsubscribe>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
           // Уникальный ID для трекинга (но не используем случайные значения, которые могут выглядеть как спам)
           'X-Entity-Ref-ID': `${Date.now()}-${Math.random().toString(36).substring(7)}`,
           // УБРАЛИ 'Precedence': 'bulk' - это плохо для транзакционных писем!
