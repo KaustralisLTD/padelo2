@@ -614,12 +614,96 @@ export default function TournamentScheduleAdmin({ tournamentId, refreshToken }: 
     }
   };
 
+  // Состояния для touch-событий на мобильных
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number; matchId: number; element: HTMLElement } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
+
   const handleDragStart = (match: Match) => {
     // Разрешаем перетаскивание только если карточка выделена
     if (selectedCardId !== match.id) {
       return;
     }
     setDraggedMatch(match);
+  };
+
+  // Обработчики для touch-событий на мобильных
+  const handleTouchStart = (e: React.TouchEvent, match: Match) => {
+    if (selectedCardId !== match.id) return;
+    
+    const touch = e.touches[0];
+    const element = e.currentTarget as HTMLElement;
+    setTouchStart({
+      x: touch.clientX,
+      y: touch.clientY,
+      matchId: match.id,
+      element,
+    });
+    setIsDragging(false);
+    setDraggedMatch(match);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart) return;
+    
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStart.x);
+    const deltaY = Math.abs(touch.clientY - touchStart.y);
+    
+    // Если движение достаточно большое, начинаем перетаскивание
+    if (deltaX > 10 || deltaY > 10) {
+      setIsDragging(true);
+      setDragOffset({
+        x: touch.clientX - touchStart.x,
+        y: touch.clientY - touchStart.y,
+      });
+      
+      // Визуальная обратная связь - добавляем класс для стилизации
+      if (touchStart.element) {
+        touchStart.element.style.transform = `translate(${touch.clientX - touchStart.x}px, ${touch.clientY - touchStart.y}px)`;
+        touchStart.element.style.opacity = '0.8';
+        touchStart.element.style.zIndex = '1000';
+      }
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart || !isDragging) {
+      setTouchStart(null);
+      setIsDragging(false);
+      setDragOffset(null);
+      return;
+    }
+
+    const touch = e.changedTouches[0];
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    
+    // Ищем элемент с атрибутом data-slot и data-court
+    let targetElement = elementBelow;
+    while (targetElement && !targetElement.hasAttribute('data-slot')) {
+      targetElement = targetElement.parentElement;
+    }
+
+    if (targetElement && targetElement.hasAttribute('data-slot')) {
+      const targetSlot = targetElement.getAttribute('data-slot');
+      const targetCourt = parseInt(targetElement.getAttribute('data-court') || '0');
+      
+      if (targetSlot) {
+        handleDrop(targetSlot, targetCourt);
+      }
+    }
+
+    // Сбрасываем визуальные эффекты
+    if (touchStart.element) {
+      touchStart.element.style.transform = '';
+      touchStart.element.style.opacity = '';
+      touchStart.element.style.zIndex = '';
+    }
+
+    setTouchStart(null);
+    setIsDragging(false);
+    setDragOffset(null);
+    setDraggedMatch(null);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -1081,6 +1165,8 @@ export default function TournamentScheduleAdmin({ tournamentId, refreshToken }: 
                           backgroundImage: `repeating-linear-gradient(to bottom, transparent 0, transparent 79px, rgba(148, 163, 184, 0.1) 79px, rgba(148, 163, 184, 0.1) 80px)`,
                           backgroundSize: `100% ${calendarHeight}px`
                         }}
+                  data-court={court}
+                  data-slot={filteredTimeSlots[0]?.toISOString() || ''}
                   onDragOver={handleDragOver}
                   onDrop={(e) => {
                     e.preventDefault();
@@ -1192,15 +1278,24 @@ export default function TournamentScheduleAdmin({ tournamentId, refreshToken }: 
                         key={match.id}
                         draggable={isSelected}
                         onDragStart={() => handleDragStart(match)}
+                        onTouchStart={(e) => handleTouchStart(e, match)}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
                         onClick={(e) => {
+                          // Предотвращаем клик, если было перетаскивание
+                          if (isDragging) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            return;
+                          }
                           e.stopPropagation();
                           setSelectedCardId(match.id);
                         }}
-                        className={`match-card absolute left-1 right-1 rounded-2xl p-3 text-xs flex flex-col relative z-10 bg-gradient-to-br from-primary/15 via-background/65 to-accent/10 border transition-all ${
+                        className={`match-card absolute left-1 right-1 rounded-2xl p-3 text-xs flex flex-col relative z-10 bg-gradient-to-br from-primary/15 via-background/65 to-accent/10 border transition-all touch-none ${
                           isSelected 
                             ? 'border-primary shadow-lg shadow-primary/20 cursor-move' 
                             : 'border-primary/20 shadow-lg shadow-primary/10 cursor-pointer hover:border-primary/40'
-                        }`}
+                        } ${isDragging && touchStart?.matchId === match.id ? 'opacity-80 scale-105' : ''}`}
                         style={{
                           top: `${top}px`,
                           height: `${height}px`,

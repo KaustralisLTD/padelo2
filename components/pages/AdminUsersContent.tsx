@@ -41,6 +41,14 @@ export default function AdminUsersContent() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
   
+  // Состояния для множественного выбора пользователей
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set());
+  const [isSelectAll, setIsSelectAll] = useState(false);
+  const [tournaments, setTournaments] = useState<any[]>([]);
+  const [showAddToTournamentModal, setShowAddToTournamentModal] = useState(false);
+  const [selectedTournamentId, setSelectedTournamentId] = useState<number | null>(null);
+  const [addingToTournament, setAddingToTournament] = useState(false);
+  
   // Данные для вкладок
   const [bookings, setBookings] = useState<any[]>([]);
   const [matches, setMatches] = useState<any[]>([]);
@@ -178,6 +186,7 @@ export default function AdminUsersContent() {
           router.push(`/${locale}/dashboard`);
         } else {
           fetchUsers();
+          fetchTournaments();
         }
       })
       .catch(() => {
@@ -185,6 +194,21 @@ export default function AdminUsersContent() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
+
+  const fetchTournaments = async () => {
+    if (!token) return;
+    try {
+      const response = await fetch('/api/admin/tournaments', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTournaments(data.tournaments || []);
+      }
+    } catch (error) {
+      console.error('Error fetching tournaments:', error);
+    }
+  };
 
   // Загрузка данных при смене вкладки
   useEffect(() => {
@@ -390,39 +414,70 @@ export default function AdminUsersContent() {
   };
 
   const handleSendEmail = async () => {
-    if (!token || !selectedEmailTemplate || !emailUser) return;
+    if (!token || !selectedEmailTemplate) return;
 
     try {
       setSendingEmail(true);
       setError(null);
       
-      const userLocale = locale; // Можно получить из пользователя, если есть preferred_language
+      // Определяем список пользователей для отправки
+      const userIds: string[] = [];
+      if (emailUser) {
+        // Отправка одному пользователю
+        userIds.push(emailUser.id);
+      } else if (selectedUsers.size > 0) {
+        // Отправка выбранным пользователям
+        userIds.push(...Array.from(selectedUsers));
+      } else {
+        setError('No users selected');
+        setSendingEmail(false);
+        return;
+      }
 
-      const response = await fetch(`/api/admin/users/${emailUser.id}/send-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          template: selectedEmailTemplate,
-          locale: userLocale,
-        }),
+      // Отправляем email каждому пользователю
+      const promises = userIds.map(async (userId) => {
+        const user = users.find(u => u.id === userId);
+        const userLocale = locale; // Можно получить из пользователя, если есть preferred_language
+
+        const response = await fetch(`/api/admin/users/${userId}/send-email`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            template: selectedEmailTemplate,
+            locale: userLocale,
+          }),
+        });
+
+        const data = await response.json();
+        return { userId, response, data, success: response.ok };
       });
 
-      const data = await response.json();
+      const results = await Promise.allSettled(promises);
+      const successful = results.filter(r => r.status === 'fulfilled' && r.value.success).length;
+      const failed = results.filter(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.success)).length;
 
-      if (response.ok) {
-        setSuccess(data.message || `Email sent successfully to ${emailUser.email}`);
+      if (successful > 0) {
+        setSuccess(`Email sent successfully to ${successful} user(s)${failed > 0 ? `, ${failed} failed` : ''}`);
         setShowEmailModal(false);
         setEmailUser(null);
         setSelectedEmailTemplate('');
+        if (selectedUsers.size > 0) {
+          setSelectedUsers(new Set());
+          setIsSelectAll(false);
+        }
         setTimeout(() => {
           setSuccess(null);
         }, 5000);
       } else {
-        let errorMessage = data.error || 'Failed to send email';
-        if (data.message) {
+        let errorMessage = 'Failed to send email';
+        const firstFailure = results.find(r => r.status === 'rejected' || (r.status === 'fulfilled' && !r.value.success));
+        if (firstFailure && firstFailure.status === 'fulfilled') {
+          errorMessage = firstFailure.value.data?.error || errorMessage;
+        }
+        if (firstFailure && firstFailure.status === 'fulfilled' && firstFailure.value.data?.message) {
           errorMessage = data.message;
         } else if (data.missingFields && Array.isArray(data.missingFields)) {
           errorMessage = `${errorMessage}:\n\nMissing fields:\n${data.missingFields.map((field: string) => `  • ${field}`).join('\n')}`;
@@ -627,10 +682,84 @@ export default function AdminUsersContent() {
               filename="users"
             />
           </div>
+          {selectedUsers.size > 0 && (
+            <div className="mb-4 bg-gradient-to-r from-primary/10 via-purple-500/10 to-primary/10 border border-primary/30 rounded-xl p-4 backdrop-blur-sm">
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-text font-poppins font-bold text-base">
+                      {t('users.selectedUsers') || 'Selected Users'}: {selectedUsers.size}
+                    </h3>
+                    <p className="text-text-secondary text-sm">{t('users.selectActionForSelected') || 'Select action for selected users'}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    onClick={() => {
+                      setShowAddToTournamentModal(true);
+                    }}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg font-poppins font-semibold text-sm hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    {t('users.addToTournament') || 'Add to Tournament'} ({selectedUsers.size})
+                  </button>
+                  <button
+                    onClick={handleBulkSendEmail}
+                    className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg font-poppins font-semibold text-sm hover:shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    {t('users.sendEmail') || 'Send Email'} ({selectedUsers.size})
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedUsers(new Set());
+                      setIsSelectAll(false);
+                    }}
+                    className="px-4 py-2 bg-background-secondary border border-border text-text rounded-lg font-poppins font-semibold text-sm hover:bg-background transition-colors"
+                  >
+                    {t('users.cancelSelection') || 'Cancel Selection'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-background border-b border-border">
                 <tr>
+                  <th className="px-3 py-4 text-center text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-12">
+                    <input
+                      type="checkbox"
+                      checked={isSelectAll}
+                      onChange={(e) => {
+                        setIsSelectAll(e.target.checked);
+                        if (e.target.checked) {
+                          const allIds = users.map(u => u.id);
+                          setSelectedUsers(new Set(allIds));
+                        } else {
+                          setSelectedUsers(new Set());
+                        }
+                      }}
+                      className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                      style={{
+                        backgroundImage: isSelectAll
+                          ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
+                          : 'none',
+                        backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                      }}
+                    />
+                  </th>
                   <th className="px-2 py-4 text-left text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-16">
                     #
                   </th>
@@ -649,8 +778,35 @@ export default function AdminUsersContent() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => (
-                  <tr key={user.id} className="border-b border-border hover:bg-background/50 transition-colors">
+                {users.map((user, index) => {
+                  const isSelected = selectedUsers.has(user.id);
+                  return (
+                  <tr key={user.id} className={`border-b border-border hover:bg-background/50 transition-colors ${isSelected ? 'bg-primary/10 border-primary/30' : ''}`}>
+                    <td className="px-3 py-4 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={(e) => {
+                          const newSelected = new Set(selectedUsers);
+                          if (e.target.checked) {
+                            newSelected.add(user.id);
+                          } else {
+                            newSelected.delete(user.id);
+                          }
+                          setSelectedUsers(newSelected);
+                          setIsSelectAll(newSelected.size === users.length);
+                        }}
+                        className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                        style={{
+                          backgroundImage: isSelected
+                            ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
+                            : 'none',
+                          backgroundSize: 'contain',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                        }}
+                      />
+                    </td>
                     <td className="px-2 py-4 text-xs text-text-secondary font-poppins text-center">
                       {index + 1}
                     </td>
@@ -1140,7 +1296,7 @@ export default function AdminUsersContent() {
     </div>
 
     {/* Send Email Modal */}
-    {showEmailModal && emailUser && (
+    {showEmailModal && (emailUser || selectedUsers.size > 0) && (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
         <div className="bg-background-secondary rounded-lg border border-border max-w-md w-full">
           <div className="p-6 border-b border-border flex justify-between items-center">
@@ -1149,7 +1305,9 @@ export default function AdminUsersContent() {
                 {t('users.sendEmail') || 'Send Email'}
               </h3>
               <p className="text-text-secondary text-sm mt-1">
-                {t('users.sendEmailTo') || 'Send email to:'} {emailUser.email}
+                {emailUser 
+                  ? `${t('users.sendEmailTo') || 'Send email to:'} ${emailUser.email}`
+                  : `${t('users.sendEmailTo') || 'Send email to:'} ${selectedUsers.size} ${t('users.selectedUsers') || 'selected users'}`}
               </p>
             </div>
             <button
@@ -1236,6 +1394,60 @@ export default function AdminUsersContent() {
                 {sendingEmail ? (t('users.sending') || 'Sending...') : (t('users.send') || 'Send')}
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Modal для добавления пользователей к турниру */}
+    {showAddToTournamentModal && (
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-background-secondary rounded-xl border border-border p-6 max-w-md w-full shadow-2xl">
+          <h2 className="text-2xl font-poppins font-bold text-text mb-4">
+            {t('users.addToTournament') || 'Add to Tournament'}
+          </h2>
+          
+          <div className="mb-4">
+            <label className="block text-sm font-poppins text-text-secondary mb-2">
+              {t('users.selectTournament') || 'Select Tournament'}
+            </label>
+            <select
+              value={selectedTournamentId || ''}
+              onChange={(e) => setSelectedTournamentId(parseInt(e.target.value) || null)}
+              className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+            >
+              <option value="">{t('users.selectTournament') || '-- Select Tournament --'}</option>
+              {tournaments.map((tournament) => (
+                <option key={tournament.id} value={tournament.id}>
+                  {tournament.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <p className="text-sm text-text-secondary font-poppins mb-4">
+            {t('users.addingUsersToTournament') || `Adding ${selectedUsers.size} user(s) to tournament...`}
+          </p>
+
+          <div className="flex justify-end space-x-4 pt-4 border-t border-border">
+            <button
+              type="button"
+              onClick={() => {
+                setShowAddToTournamentModal(false);
+                setSelectedTournamentId(null);
+              }}
+              className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
+            >
+              {t('users.cancel')}
+            </button>
+            <button
+              type="button"
+              onClick={handleAddToTournament}
+              disabled={!selectedTournamentId || addingToTournament}
+              className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {addingToTournament ? (t('users.adding') || 'Adding...') : (t('users.add') || 'Add')}
+            </button>
           </div>
         </div>
       </div>
