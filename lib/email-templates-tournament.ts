@@ -28,7 +28,7 @@ export interface TournamentRegistrationEmailData {
 }
 
 const brandTaglines: Record<string, string> = {
-  en: '${getBrandTagline(locale)}',
+  en: 'Breathe &amp; live padel',
   ru: 'Дыши и живи паделем',
   ua: 'Дихай та живи паделем',
   es: 'Respira y vive el pádel',
