@@ -23,12 +23,22 @@ const languageNames: Record<string, string> = {
   ar: 'AR',
 };
 
+// Каталонский флаг (Señera) - 4 красные полосы на золотом фоне
+const CatalanFlag = () => (
+  <svg width="20" height="14" viewBox="0 0 20 14" className="inline-block">
+    <rect width="20" height="14" fill="#FCDD09" />
+    <rect y="0" width="20" height="2" fill="#DA020E" />
+    <rect y="4" width="20" height="2" fill="#DA020E" />
+    <rect y="8" width="20" height="2" fill="#DA020E" />
+    <rect y="12" width="20" height="2" fill="#DA020E" />
+  </svg>
+);
+
 const languageFlags: Record<string, string> = {
   en: '🇬🇧',
   es: '🇪🇸',
   ua: '🇺🇦',
   ru: '🇺🇦',
-  ca: '🏴',
   zh: '🇨🇳',
   nl: '🇳🇱',
   da: '🇩🇰',
@@ -78,11 +88,15 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
           theme === 'light'
             ? variant === 'menu'
               ? 'text-gray-800 hover:text-primary border-gray-300 hover:border-primary bg-white'
-              : 'text-white/90 hover:text-primary border-white/30 hover:border-primary bg-white/10 backdrop-blur-sm'
-            : 'text-text-secondary hover:text-primary border-border'
+              : 'text-gray-900 hover:text-primary border-gray-300 hover:border-primary bg-white shadow-md'
+            : 'text-text-secondary hover:text-primary border-border bg-background-secondary'
         }`}
       >
-        <span className="text-lg leading-none">{languageFlags[locale] || '🌐'}</span>
+        {locale === 'ca' ? (
+          <CatalanFlag />
+        ) : (
+          <span className="text-lg leading-none">{languageFlags[locale] || '🌐'}</span>
+        )}
         <span className="text-xs font-semibold tracking-wider">
           {languageNames[locale] || locale.toUpperCase()}
         </span>
@@ -145,7 +159,11 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
               }`}
             >
               <span className={`inline-flex items-center ${locale === 'ar' ? 'flex-row-reverse gap-2' : 'gap-2'}`}>
-                <span className="text-lg leading-none">{languageFlags[loc] || '🌐'}</span>
+                {loc === 'ca' ? (
+                  <CatalanFlag />
+                ) : (
+                  <span className="text-lg leading-none">{languageFlags[loc] || '🌐'}</span>
+                )}
                 <span>{languageNames[loc]}</span>
               </span>
             </button>
