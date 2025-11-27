@@ -23,6 +23,23 @@ const languageNames: Record<string, string> = {
   ar: 'AR',
 };
 
+const languageFlags: Record<string, string> = {
+  en: '🇬🇧',
+  es: '🇪🇸',
+  ua: '🇺🇦',
+  ru: '🇺🇦',
+  ca: '🏴',
+  zh: '🇨🇳',
+  nl: '🇳🇱',
+  da: '🇩🇰',
+  sv: '🇸🇪',
+  de: '🇩🇪',
+  no: '🇳🇴',
+  it: '🇮🇹',
+  fr: '🇫🇷',
+  ar: '🇦🇪',
+};
+
 interface LanguageSelectorProps {
   variant?: 'header' | 'menu';
 }
@@ -56,7 +73,7 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
-          locale === 'ar' ? 'flex-row-reverse gap-2' : 'space-x-2'
+          locale === 'ar' ? 'flex-row-reverse gap-2' : 'gap-2'
         } ${
           theme === 'light'
             ? variant === 'menu'
@@ -65,7 +82,10 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
             : 'text-text-secondary hover:text-primary border-border'
         }`}
       >
-        <span>{languageNames[locale] || locale.toUpperCase()}</span>
+        <span className="text-lg leading-none">{languageFlags[locale] || '🌐'}</span>
+        <span className="text-xs font-semibold tracking-wider">
+          {languageNames[locale] || locale.toUpperCase()}
+        </span>
         <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
@@ -116,7 +136,7 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
               onClick={() => handleLanguageChange(loc)}
               className={`w-full px-4 py-2 text-sm font-poppins transition-colors ${
                 locale === 'ar' ? 'text-right' : 'text-left'
-              } ${
+              } ${ 
                 locale === loc
                   ? `text-primary ${theme === 'light' ? 'bg-primary/15 font-semibold' : 'bg-background'}`
                   : theme === 'light'
@@ -124,7 +144,10 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
                     : 'text-text-secondary hover:bg-background'
               }`}
             >
-              {languageNames[loc]}
+              <span className={`inline-flex items-center ${locale === 'ar' ? 'flex-row-reverse gap-2' : 'gap-2'}`}>
+                <span className="text-lg leading-none">{languageFlags[loc] || '🌐'}</span>
+                <span>{languageNames[loc]}</span>
+              </span>
             </button>
           ))}
         </div>
