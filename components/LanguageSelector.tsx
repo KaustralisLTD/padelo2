@@ -56,11 +56,13 @@ interface LanguageSelectorProps {
 
 const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const { theme } = useTheme();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,6 +74,21 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Проверяем, нужно ли открывать dropdown вверх (для мобильного меню внизу экрана)
+  useEffect(() => {
+    if (isOpen && variant === 'menu' && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      const dropdownHeight = 256; // max-h-64 = 256px
+      
+      // Если места внизу меньше, чем высота dropdown, и места сверху больше - открываем вверх
+      setOpenUpward(spaceBelow < dropdownHeight && spaceAbove > spaceBelow);
+    } else {
+      setOpenUpward(false);
+    }
+  }, [isOpen, variant]);
+
   const handleLanguageChange = (newLocale: string) => {
     const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
     router.push(newPath);
@@ -81,6 +98,7 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center px-3 py-2 text-sm font-poppins transition-colors border rounded-lg hover:border-primary ${
           locale === 'ar' ? 'flex-row-reverse gap-2' : 'gap-2'
@@ -117,7 +135,11 @@ const LanguageSelector = ({ variant = 'header' }: LanguageSelectorProps) => {
 
       {isOpen && (
         <div 
-          className={`absolute top-full mt-2 w-40 border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary ${
+          className={`absolute w-40 border rounded-lg shadow-xl z-50 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-primary ${
+            openUpward 
+              ? 'bottom-full mb-2' 
+              : 'top-full mt-2'
+          } ${
             locale === 'ar'
               ? 'left-0 ml-2' // Для RTL языков позиционируем слева с отступом
               : 'right-0' // Для LTR языков позиционируем справа
