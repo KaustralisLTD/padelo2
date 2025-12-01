@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
 
     const userEmail = userRows[0].email;
 
-    // Get all registrations for this user (by email)
+    // Get all registrations for this user (by email and user_id)
     const [registrations] = await pool.execute(
       `SELECT 
         tr.id,
@@ -48,9 +48,9 @@ export async function GET(request: NextRequest) {
         t.location
        FROM tournament_registrations tr
        LEFT JOIN tournaments t ON tr.tournament_id = t.id
-       WHERE tr.email = ?
+       WHERE tr.email = ? OR tr.user_id = ?
        ORDER BY tr.created_at DESC`,
-      [userEmail]
+      [userEmail, session.userId]
     ) as any[];
 
     const tournaments = registrations.map((row: any) => ({

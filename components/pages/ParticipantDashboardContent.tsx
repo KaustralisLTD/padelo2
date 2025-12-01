@@ -44,6 +44,22 @@ export function ParticipantDashboardContent() {
     }
 
     fetchTournaments(token);
+    
+    // Обновляем данные при фокусе на странице (например, после возврата с регистрации)
+    const handleFocus = () => {
+      fetchTournaments(token);
+    };
+    window.addEventListener('focus', handleFocus);
+    
+    // Также обновляем данные периодически (каждые 30 секунд)
+    const interval = setInterval(() => {
+      fetchTournaments(token);
+    }, 30000);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 

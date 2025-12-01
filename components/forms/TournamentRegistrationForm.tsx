@@ -1769,6 +1769,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           {isSubmitting ? t('form.submitting') : t('form.registerButton')}
         </button>
       )}
+        </div>
+      )}
     </form>
   );
 };
