@@ -58,7 +58,15 @@ export default function TournamentsContent() {
       return;
     }
     if (typeof window === 'undefined') return;
-    const { hash } = window.location;
+    let { hash } = window.location;
+    
+    // Декодируем %23 обратно в #, если браузер закодировал якорь
+    if (hash && hash.includes('%23')) {
+      hash = decodeURIComponent(hash);
+      // Обновляем URL без кодирования якоря
+      window.history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+    }
+    
     if (!hash) {
       hashHandledRef.current = true;
       return;
