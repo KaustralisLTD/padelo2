@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import {
   getAllTournaments,
   getTournament,
@@ -7,6 +7,7 @@ import {
   updateTournament,
   type Tournament,
 } from '@/lib/tournaments';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -136,6 +137,18 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Логируем создание турнира
+    const user = await findUserById(session.userId);
+    await logAction('create', 'tournament', {
+      userId: session.userId,
+      userEmail: user?.email,
+      userRole: session.role,
+      entityId: tournament.id,
+      details: { name: tournament.name, status: tournament.status },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
+
     return NextResponse.json({ tournament }, { status: 201 });
   } catch (error: any) {
     console.error('Error creating tournament:', error);
@@ -199,6 +212,18 @@ export async function PUT(request: NextRequest) {
       });
     }
 
+    // Логируем обновление турнира
+    const user = await findUserById(session.userId);
+    await logAction('update', 'tournament', {
+      userId: session.userId,
+      userEmail: user?.email,
+      userRole: session.role,
+      entityId: tournament.id,
+      details: { name: tournament.name, updatedFields: Object.keys(updates) },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
+
     return NextResponse.json({ tournament });
   } catch (error: any) {
     console.error('Error updating tournament:', error);
@@ -232,7 +257,23 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Tournament ID is required' }, { status: 400 });
     }
 
+    // Получаем информацию о турнире перед удалением для логирования
+    const tournament = await getTournament(parseInt(id, 10));
+
     const archived = await updateTournament(parseInt(id, 10), { status: 'archived' });
+
+    // Логируем удаление (архивирование) турнира
+    const user = await findUserById(session.userId);
+    await logAction('delete', 'tournament', {
+      userId: session.userId,
+      userEmail: user?.email,
+      userRole: session.role,
+      entityId: tournament?.id,
+      details: { name: tournament?.name, status: 'archived' },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
+
     return NextResponse.json({ success: true, tournament: archived });
   } catch (error: any) {
     console.error('Error deleting tournament:', error);
