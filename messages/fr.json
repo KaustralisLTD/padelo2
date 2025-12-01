@@ -790,6 +790,31 @@
       "generic": "Une erreur s'est produite. Veuillez réessayer."
     }
   },
+  "ResetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "description": "Entrez votre nouveau mot de passe ci-dessous.",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Entrez votre nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+    "passwordHint": "Le mot de passe doit contenir au moins 8 caractères.",
+    "submit": "Réinitialiser le mot de passe",
+    "submitting": "Réinitialisation...",
+    "backToLogin": "Retour à la connexion",
+    "loading": "Chargement...",
+    "success": {
+      "title": "Mot de passe réinitialisé avec succès",
+      "message": "Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+      "redirect": "Redirection vers la page de connexion..."
+    },
+    "errors": {
+      "noToken": "Jeton de réinitialisation invalide ou manquant. Veuillez demander un nouveau lien de réinitialisation de mot de passe.",
+      "passwordMismatch": "Les mots de passe ne correspondent pas. Veuillez réessayer.",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
+      "failed": "Échec de la réinitialisation du mot de passe. Veuillez réessayer.",
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    }
+  },
   "WhatsApp": {
     "button": "Discuter sur WhatsApp",
     "message": "Bonjour! Je suis intéressé par vos services de padel.",
@@ -817,6 +842,8 @@
     "registrationSuccess": "Merci pour votre inscription! Veuillez vérifier votre e-mail et cliquer sur le lien de vérification pour activer votre compte.",
     "errors": {
       "invalidCredentials": "Email ou mot de passe invalide",
+      "passwordIncorrect": "Le mot de passe que vous avez entré est incorrect. Veuillez vérifier votre mot de passe et réessayer.",
+      "userNotFound": "Aucun compte trouvé avec cette adresse e-mail. Veuillez vérifier votre e-mail ou créer un nouveau compte.",
       "passwordMismatch": "Les mots de passe ne correspondent pas",
       "registrationFailed": "Échec de l'inscription. Veuillez réessayer.",
       "generic": "Une erreur s'est produite. Veuillez réessayer.",
