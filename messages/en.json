@@ -1431,7 +1431,9 @@
         "match": "Match",
         "schedule": "Schedule",
         "registration": "Registration"
-      }
+      },
+      "affectedUsers": "Affected Users",
+      "affectedEmails": "Affected Emails"
     },
     "dbMonitor": {
       "title": "Database Monitor",

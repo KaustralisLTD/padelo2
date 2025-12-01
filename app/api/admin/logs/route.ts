@@ -61,24 +61,40 @@ export async function GET(request: NextRequest) {
       logs = [];
     }
 
-    // Фильтруем по userEmail и searchQuery на сервере
+    // Фильтруем по userEmail, userId и searchQuery на сервере
     try {
       if (userEmail) {
-        logs = logs.filter(log => 
-          log.userEmail?.toLowerCase().includes(userEmail.toLowerCase())
-        );
+        logs = logs.filter(log => {
+          const emailMatch = log.userEmail?.toLowerCase().includes(userEmail.toLowerCase());
+          // Также проверяем affectedUserEmails в details для действий над парами
+          const detailsMatch = log.details?.affectedUserEmails?.some((email: string) => 
+            email?.toLowerCase().includes(userEmail.toLowerCase())
+          );
+          return emailMatch || detailsMatch;
+        });
+      }
+
+      if (userId) {
+        logs = logs.filter(log => {
+          const idMatch = log.userId === userId;
+          // Также проверяем affectedUserIds в details для действий над парами
+          const detailsMatch = log.details?.affectedUserIds?.includes(userId);
+          return idMatch || detailsMatch;
+        });
       }
 
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         logs = logs.filter(log => {
           try {
+            const detailsStr = JSON.stringify(log.details || {});
             return (
               log.userEmail?.toLowerCase().includes(query) ||
+              log.userId?.toLowerCase().includes(query) ||
               log.action?.toLowerCase().includes(query) ||
               log.entityType?.toLowerCase().includes(query) ||
               log.entityId?.toString().toLowerCase().includes(query) ||
-              JSON.stringify(log.details || {}).toLowerCase().includes(query) ||
+              detailsStr.toLowerCase().includes(query) ||
               log.ipAddress?.toLowerCase().includes(query) ||
               log.userRole?.toLowerCase().includes(query)
             );

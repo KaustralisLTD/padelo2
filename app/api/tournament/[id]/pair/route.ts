@@ -55,6 +55,35 @@ export async function PUT(
     const user = await findUserById(session.userId);
     const userEmail = user?.email || 'unknown';
 
+    // Получаем информацию о пользователях, чьи пары обновляются
+    const pool = getDbPool();
+    const affectedUserIds: string[] = [];
+    const affectedUserEmails: string[] = [];
+    
+    const registrationIds = [
+      player1RegistrationId,
+      player2RegistrationId,
+      partner1RegistrationId,
+      partner2RegistrationId,
+    ].filter(Boolean) as number[];
+    
+    if (registrationIds.length > 0) {
+      const placeholders = registrationIds.map(() => '?').join(',');
+      const [registrations] = await pool.execute(
+        `SELECT DISTINCT user_id, email FROM tournament_registrations WHERE id IN (${placeholders}) AND user_id IS NOT NULL`,
+        registrationIds
+      ) as any[];
+      
+      registrations.forEach((reg: any) => {
+        if (reg.user_id && !affectedUserIds.includes(reg.user_id)) {
+          affectedUserIds.push(reg.user_id);
+        }
+        if (reg.email && !affectedUserEmails.includes(reg.email)) {
+          affectedUserEmails.push(reg.email);
+        }
+      });
+    }
+
     // Логируем действие
     await logAction('update', 'pair', {
       userId: session.userId,
@@ -67,6 +96,8 @@ export async function PUT(
         player2RegistrationId: player2RegistrationId || null,
         partner1RegistrationId: partner1RegistrationId || null,
         partner2RegistrationId: partner2RegistrationId || null,
+        affectedUserIds: affectedUserIds.length > 0 ? affectedUserIds : null,
+        affectedUserEmails: affectedUserEmails.length > 0 ? affectedUserEmails : null,
       },
       ipAddress: getIpAddress(request),
       userAgent: getUserAgent(request),
