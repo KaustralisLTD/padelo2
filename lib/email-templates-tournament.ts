@@ -1301,7 +1301,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
                         
                         <div class="detail-row" style="border-bottom: none;">
                           <div class="detail-label">${t.price || 'Price'}:</div>
-                          <div class="detail-value"><strong>${totalPrice && totalPrice > 0 ? totalPrice : (tournament.priceSingleCategory || 0)} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0} + ${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0}` : categoryCount + ' × ' + (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0)})` : ''}</div>
+                          <div class="detail-value"><strong>${paymentAmount || totalPrice || (tournament.priceSingleCategory || 0)} EUR</strong>${categoryCount > 1 ? ` (${categoryCount === 2 ? `${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0} + ${tournament.priceDoubleCategory || tournament.priceSingleCategory || 0}` : categoryCount + ' × ' + (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0)})` : ''}</div>
                         </div>
                       </div>
 
