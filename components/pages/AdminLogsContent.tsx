@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 interface AuditLog {
   id: number;
@@ -111,7 +110,16 @@ export default function AdminLogsContent() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('📋 AdminLogsContent: Received data:', { logsCount: data.logs?.length, total: data.total });
+        console.log('📋 AdminLogsContent: Received data:', { 
+          logsCount: data.logs?.length, 
+          total: data.total,
+          page: data.page,
+          limit: data.limit,
+          hasNextPage: data.hasNextPage
+        });
+        if (data.logs && data.logs.length > 0) {
+          console.log('📋 AdminLogsContent: Sample log:', data.logs[0]);
+        }
         setLogs(data.logs || []);
         setTotalPages(Math.ceil((data.total || 0) / itemsPerPage));
       } else {
@@ -187,8 +195,8 @@ export default function AdminLogsContent() {
 
   if (loading && logs.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-20 mt-20">
-        <div className="max-w-6xl mx-auto text-center">
+      <div className="w-full px-4 py-8">
+        <div className="text-center">
           <p className="text-text-secondary font-poppins">{t('loading')}</p>
         </div>
       </div>
@@ -196,24 +204,15 @@ export default function AdminLogsContent() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-20 mt-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
-          <Link
-            href={`/${locale}/dashboard`}
-            className="text-text-secondary hover:text-primary font-poppins transition-colors"
-          >
-            ← {t('backToDashboard')}
-          </Link>
-        </div>
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
-            {t('logs.title')}
-          </h1>
-          <p className="text-xl text-text-secondary font-poppins">
-            {t('logs.description')}
-          </p>
-        </div>
+    <div className="w-full px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
+          {t('logs.title')}
+        </h1>
+        <p className="text-xl text-text-secondary font-poppins">
+          {t('logs.description')}
+        </p>
+      </div>
 
         {/* Filters */}
         <div className="bg-background-secondary rounded-lg border border-border p-6 mb-6">

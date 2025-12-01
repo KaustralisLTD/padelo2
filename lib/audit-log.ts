@@ -169,6 +169,8 @@ export async function getAuditLogs(filters: {
 
     const [rows] = await pool.execute(query, params) as any[];
 
+    console.log(`📋 getAuditLogs: Found ${rows.length} rows in database`);
+
     return rows.map((row: any) => {
       // Парсим details только если это строка, иначе используем как есть
       let details = null;
@@ -178,12 +180,33 @@ export async function getAuditLogs(filters: {
             details = JSON.parse(row.details);
           } catch (e) {
             // Если не удалось распарсить, оставляем как строку
+            console.warn(`⚠️ Failed to parse details JSON for log ${row.id}:`, e);
             details = row.details;
           }
         } else {
           // Если уже объект, используем как есть
           details = row.details;
         }
+      }
+
+      // Обрабатываем created_at
+      let createdAt: string;
+      if (row.created_at) {
+        if (row.created_at instanceof Date) {
+          createdAt = row.created_at.toISOString();
+        } else if (typeof row.created_at === 'string') {
+          // Если это строка, пытаемся преобразовать в Date и обратно в ISO
+          const date = new Date(row.created_at);
+          if (!isNaN(date.getTime())) {
+            createdAt = date.toISOString();
+          } else {
+            createdAt = row.created_at;
+          }
+        } else {
+          createdAt = new Date().toISOString();
+        }
+      } else {
+        createdAt = new Date().toISOString();
       }
 
       return {
@@ -197,7 +220,7 @@ export async function getAuditLogs(filters: {
         details,
         ipAddress: row.ip_address,
         userAgent: row.user_agent,
-        createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : row.created_at) : new Date().toISOString(),
+        createdAt,
       };
     });
   } catch (error: any) {

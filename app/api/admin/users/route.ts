@@ -306,10 +306,18 @@ export async function DELETE(request: NextRequest) {
       userEmail: adminUser?.email,
       userRole: access.role,
       entityId: user.id,
-      details: { email: user.email, role: user.role },
+      details: { 
+        deletedUserEmail: user.email, 
+        deletedUserName: `${user.first_name} ${user.last_name}`,
+        deletedUserRole: user.role 
+      },
       ipAddress: getIpAddress(request),
       userAgent: getUserAgent(request),
-    }).catch(() => {}); // Игнорируем ошибки логирования
+    }).catch((logError) => {
+      console.error('❌ Error logging user deletion:', logError);
+    }); // Логируем ошибки, но не прерываем выполнение
+
+    console.log(`[DELETE /api/admin/users] User ${id} deleted by admin ${access.userId}`);
 
     return NextResponse.json({
       success: true,

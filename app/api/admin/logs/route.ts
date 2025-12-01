@@ -36,38 +36,61 @@ export async function GET(request: NextRequest) {
 
     // Получаем логи с фильтрами
     // Сначала получаем больше записей для фильтрации по userEmail и searchQuery
-    let logs = await getAuditLogs({
-      userId,
-      action,
-      entityType,
-      entityId,
-      startDate,
-      endDate,
-      limit: 1000, // Получаем больше для фильтрации на сервере
-      offset: 0,
-    });
+    let logs: any[] = [];
+    try {
+      logs = await getAuditLogs({
+        userId,
+        action,
+        entityType,
+        entityId,
+        startDate,
+        endDate,
+        limit: 1000, // Получаем больше для фильтрации на сервере
+        offset: 0,
+      });
 
-    // Логируем для отладки
-    console.log(`📋 Fetched ${logs.length} audit logs from database`);
-
-    // Фильтруем по userEmail и searchQuery на сервере
-    if (userEmail) {
-      logs = logs.filter(log => 
-        log.userEmail?.toLowerCase().includes(userEmail.toLowerCase())
-      );
+      // Логируем для отладки
+      console.log(`📋 Fetched ${logs.length} audit logs from database`);
+      if (logs.length > 0) {
+        console.log(`📋 Sample log:`, JSON.stringify(logs[0], null, 2));
+      }
+    } catch (fetchError: any) {
+      console.error('❌ Error in getAuditLogs:', fetchError);
+      console.error('Error stack:', fetchError.stack);
+      // Продолжаем с пустым массивом
+      logs = [];
     }
 
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      logs = logs.filter(log => 
-        log.userEmail?.toLowerCase().includes(query) ||
-        log.action?.toLowerCase().includes(query) ||
-        log.entityType?.toLowerCase().includes(query) ||
-        log.entityId?.toString().toLowerCase().includes(query) ||
-        JSON.stringify(log.details || {}).toLowerCase().includes(query) ||
-        log.ipAddress?.toLowerCase().includes(query) ||
-        log.userRole?.toLowerCase().includes(query)
-      );
+    // Фильтруем по userEmail и searchQuery на сервере
+    try {
+      if (userEmail) {
+        logs = logs.filter(log => 
+          log.userEmail?.toLowerCase().includes(userEmail.toLowerCase())
+        );
+      }
+
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        logs = logs.filter(log => {
+          try {
+            return (
+              log.userEmail?.toLowerCase().includes(query) ||
+              log.action?.toLowerCase().includes(query) ||
+              log.entityType?.toLowerCase().includes(query) ||
+              log.entityId?.toString().toLowerCase().includes(query) ||
+              JSON.stringify(log.details || {}).toLowerCase().includes(query) ||
+              log.ipAddress?.toLowerCase().includes(query) ||
+              log.userRole?.toLowerCase().includes(query)
+            );
+          } catch (filterError) {
+            console.warn(`⚠️ Error filtering log ${log.id}:`, filterError);
+            return false;
+          }
+        });
+      }
+    } catch (filterError: any) {
+      console.error('❌ Error filtering logs:', filterError);
+      // Продолжаем с текущими логами
     }
 
     // Подсчитываем общее количество после фильтрации
@@ -76,12 +99,14 @@ export async function GET(request: NextRequest) {
     // Применяем пагинацию
     const startIndex = offset;
     const endIndex = startIndex + limit;
-    logs = logs.slice(startIndex, endIndex);
+    const paginatedLogs = logs.slice(startIndex, endIndex);
 
     const hasNextPage = endIndex < total;
 
+    console.log(`📋 Returning ${paginatedLogs.length} logs (page ${page}, total ${total})`);
+
     return NextResponse.json({
-      logs,
+      logs: paginatedLogs,
       total,
       page,
       limit,
