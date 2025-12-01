@@ -58,6 +58,23 @@ export default function TournamentsContent() {
       return;
     }
     if (typeof window === 'undefined') return;
+    
+    // Проверяем query параметр _redirectHash (устанавливается middleware при редиректе)
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectHash = urlParams.get('_redirectHash');
+    if (redirectHash) {
+      // Устанавливаем правильный hash и удаляем query параметр
+      const newHash = '#' + redirectHash;
+      const newUrl = window.location.pathname + newHash;
+      window.history.replaceState(null, '', newUrl);
+      urlParams.delete('_redirectHash');
+      if (urlParams.toString()) {
+        window.history.replaceState(null, '', newUrl + '?' + urlParams.toString());
+      } else {
+        window.history.replaceState(null, '', newUrl);
+      }
+    }
+    
     let { hash } = window.location;
     
     // Декодируем %23 обратно в #, если браузер закодировал якорь
@@ -65,6 +82,11 @@ export default function TournamentsContent() {
       hash = decodeURIComponent(hash);
       // Обновляем URL без кодирования якоря
       window.history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+    }
+    
+    // Если hash был установлен через redirectHash, используем его
+    if (redirectHash && !hash) {
+      hash = '#' + redirectHash;
     }
     
     if (!hash) {
