@@ -91,6 +91,29 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Подтверждаем все регистрации на турниры для этого пользователя и обновляем user_id
+    try {
+      // Сначала обновляем user_id для регистраций без него
+      await pool.execute(
+        `UPDATE tournament_registrations 
+         SET user_id = ? 
+         WHERE email = ? AND (user_id IS NULL OR user_id = '')`,
+        [result.user.id, result.user.email]
+      );
+      
+      // Затем подтверждаем все регистрации
+      await pool.execute(
+        `UPDATE tournament_registrations 
+         SET confirmed = TRUE, confirmed_at = NOW() 
+         WHERE email = ? AND confirmed = FALSE`,
+        [result.user.email]
+      );
+      console.log(`[verify-email] Confirmed tournament registrations and updated user_id for user ${result.user.id} (${result.user.email})`);
+    } catch (e) {
+      console.error('[verify-email] Error confirming tournament registrations:', e);
+      // Не прерываем процесс верификации, если не удалось обновить регистрации
+    }
+
     // Create session for verified user
     const sessionToken = await createSession(result.user.id, 7); // 7 days
 

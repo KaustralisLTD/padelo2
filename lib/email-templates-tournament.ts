@@ -776,6 +776,15 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
     eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
   }
 
+  // Вычисляем количество категорий и общую цену (как в шаблоне 10)
+  const categoryCount = normalizedCategories.length > 0 ? normalizedCategories.length : (categories && Array.isArray(categories) ? categories.length : 0);
+  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceDoubleCategory * количество
+  const totalPrice = categoryCount === 1 
+    ? (tournament.priceSingleCategory || 0)
+    : categoryCount > 1
+    ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
+    : (tournament.priceSingleCategory || 0);
+
   const translations: Record<string, Record<string, string>> = {
     en: {
       subject: 'Payment confirmed - Tournament registration - PadelO₂',

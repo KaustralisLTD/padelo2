@@ -232,13 +232,22 @@ export async function POST(
           });
           
           // Calculate payment amount based on number of categories
-          // If single category: priceSingleCategory, if multiple: priceDoubleCategory * count
+          // Правильный расчет: для одной категории - priceSingleCategory, для нескольких - priceDoubleCategory * количество
           const categoryCount = categories.length;
           const paymentAmount = categoryCount === 1
             ? (tournament.priceSingleCategory || 0)
             : categoryCount > 1
             ? (tournament.priceDoubleCategory || tournament.priceSingleCategory || 0) * categoryCount
-            : tournament.priceSingleCategory || 0;
+            : (tournament.priceSingleCategory || 0);
+          
+          console.log('[send-email] Tournament confirmed - Payment calculation:', {
+            categoryCount,
+            priceSingleCategory: tournament.priceSingleCategory,
+            priceDoubleCategory: tournament.priceDoubleCategory,
+            paymentAmount,
+            categories,
+            participantId: registrationId,
+          });
           
           const html = getTournamentRegistrationConfirmedEmailTemplate({
             firstName: registration.first_name || undefined,
