@@ -299,6 +299,18 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    // Логируем удаление пользователя
+    const adminUser = await findUserById(access.userId!);
+    await logAction('delete', 'user', {
+      userId: access.userId,
+      userEmail: adminUser?.email,
+      userRole: access.role,
+      entityId: user.id,
+      details: { email: user.email, role: user.role },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
+
     return NextResponse.json({
       success: true,
       message: 'User deleted successfully',

@@ -169,19 +169,37 @@ export async function getAuditLogs(filters: {
 
     const [rows] = await pool.execute(query, params) as any[];
 
-    return rows.map((row: any) => ({
-      id: row.id,
-      userId: row.user_id,
-      userEmail: row.user_email,
-      userRole: row.user_role,
-      action: row.action,
-      entityType: row.entity_type,
-      entityId: row.entity_id,
-      details: row.details ? JSON.parse(row.details) : null,
-      ipAddress: row.ip_address,
-      userAgent: row.user_agent,
-      createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : row.created_at) : new Date().toISOString(),
-    }));
+    return rows.map((row: any) => {
+      // Парсим details только если это строка, иначе используем как есть
+      let details = null;
+      if (row.details) {
+        if (typeof row.details === 'string') {
+          try {
+            details = JSON.parse(row.details);
+          } catch (e) {
+            // Если не удалось распарсить, оставляем как строку
+            details = row.details;
+          }
+        } else {
+          // Если уже объект, используем как есть
+          details = row.details;
+        }
+      }
+
+      return {
+        id: row.id,
+        userId: row.user_id,
+        userEmail: row.user_email,
+        userRole: row.user_role,
+        action: row.action,
+        entityType: row.entity_type,
+        entityId: row.entity_id,
+        details,
+        ipAddress: row.ip_address,
+        userAgent: row.user_agent,
+        createdAt: row.created_at ? (row.created_at instanceof Date ? row.created_at.toISOString() : row.created_at) : new Date().toISOString(),
+      };
+    });
   } catch (error: any) {
     console.error('Error fetching audit logs:', error);
     console.error('Error details:', error.message, error.stack);
