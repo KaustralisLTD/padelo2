@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { sendChangeEmailOldAddressEmail, sendChangeEmailNewAddressEmail } from '@/lib/email';
 import crypto from 'crypto';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -114,6 +115,17 @@ export async function POST(request: NextRequest) {
       console.error('Error sending email change notifications:', emailError);
       // Continue even if email sending fails
     }
+
+    // Логируем запрос на изменение email
+    await logAction('change_email', 'user', {
+      userId: session.userId,
+      userEmail: user.email,
+      userRole: session.role,
+      entityId: session.userId,
+      details: { oldEmail: user.email, newEmail },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({
       success: true,

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import crypto from 'crypto';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 // Helper function to get or create user by email, name, or phone
 async function getOrCreateUserByPartnerInfo(
@@ -307,6 +308,28 @@ export async function PATCH(
       }
     }
 
+    // Логируем обновление регистрации
+    const user = session ? await findUserById(session.userId) : null;
+    const [registrationData] = await pool.execute(
+      'SELECT user_id, email FROM tournament_registrations WHERE id = ?',
+      [registrationIdNum]
+    ) as any[];
+    const registrationUserId = registrationData[0]?.user_id;
+    const registrationEmail = registrationData[0]?.email;
+
+    await logAction('update', 'tournament_registration', {
+      userId: session?.userId || registrationUserId,
+      userEmail: user?.email || registrationEmail,
+      userRole: session?.role,
+      entityId: registrationIdNum,
+      details: { 
+        tournamentId,
+        updatedFields: Object.keys(body).filter(key => body[key] !== undefined)
+      },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
+
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Error updating registration:', error);
@@ -357,11 +380,35 @@ export async function DELETE(
       return NextResponse.json({ error: 'Registration not found' }, { status: 404 });
     }
 
+    // Получаем информацию о регистрации перед удалением для логирования
+    const [registrationData] = await pool.execute(
+      'SELECT user_id, email FROM tournament_registrations WHERE id = ?',
+      [registrationIdNum]
+    ) as any[];
+    const registrationUserId = registrationData[0]?.user_id;
+    const registrationEmail = registrationData[0]?.email;
+
     // Удаляем регистрацию
     await pool.execute(
       'DELETE FROM tournament_registrations WHERE id = ? AND tournament_id = ?',
       [registrationIdNum, tournamentId]
     );
+
+    // Логируем удаление регистрации
+    const user = await findUserById(session.userId);
+    await logAction('delete', 'tournament_registration', {
+      userId: session.userId,
+      userEmail: user?.email,
+      userRole: session.role,
+      entityId: registrationIdNum,
+      details: { 
+        tournamentId,
+        deletedUserId: registrationUserId,
+        deletedUserEmail: registrationEmail
+      },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({ success: true, message: 'Registration deleted successfully' });
   } catch (error: any) {

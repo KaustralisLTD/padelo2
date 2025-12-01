@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 import {
   sendEmailVerification,
   sendWelcomeEmail,
@@ -32,7 +33,7 @@ import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
-async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string }> {
+async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: string }> {
   const authHeader = request.headers.get('authorization');
   const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
 
@@ -45,7 +46,7 @@ async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boo
     return { authorized: false };
   }
 
-  return { authorized: true, userId: session.userId };
+  return { authorized: true, userId: session.userId, role: session.role };
 }
 
 export async function POST(
@@ -294,6 +295,18 @@ export async function POST(
     }
 
     if (emailSent) {
+      // Логируем отправку email
+      const adminUser = await findUserById(access.userId!);
+      await logAction('send_email', 'user', {
+        userId: access.userId,
+        userEmail: adminUser?.email,
+        userRole: access.role,
+        entityId: user.id,
+        details: { template, recipientEmail: user.email, locale: userLocale },
+        ipAddress: getIpAddress(request),
+        userAgent: getUserAgent(request),
+      }).catch(() => {}); // Игнорируем ошибки логирования
+
       return NextResponse.json({
         success: true,
         message: `Email sent successfully to ${user.email}`,

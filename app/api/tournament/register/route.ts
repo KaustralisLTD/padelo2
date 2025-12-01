@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { saveRegistration } from '@/lib/tournament-storage';
-import { getSession, isUserEmailVerified } from '@/lib/users';
+import { getSession, isUserEmailVerified, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { getTournament } from '@/lib/tournaments';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 // Helper function to get or create user by email
 async function getOrCreateUserByEmail(email: string, firstName: string, lastName: string, verificationToken?: string): Promise<string | null> {
@@ -293,6 +294,24 @@ export async function POST(request: NextRequest) {
     } catch (emailError: any) {
       console.error('[POST /api/tournament/register] Error sending email:', emailError);
       // Не прерываем регистрацию, если email не отправился - пользователь все равно зарегистрирован
+    }
+    
+    // Логируем регистрацию на турнир
+    if (userId) {
+      const user = await findUserById(userId);
+      await logAction('register', 'tournament', {
+        userId: userId,
+        userEmail: user?.email || body.email,
+        userRole: user?.role,
+        entityId: body.tournamentId,
+        details: { 
+          tournamentName: tournament?.name || body.tournamentName,
+          categories: body.categories || [],
+          emailVerified 
+        },
+        ipAddress: getIpAddress(request),
+        userAgent: getUserAgent(request),
+      }).catch(() => {}); // Игнорируем ошибки логирования
     }
     
     return NextResponse.json({

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import { getTournament } from '@/lib/tournaments';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 import {
   sendEmailVerification,
   sendWelcomeEmail,
@@ -28,7 +29,7 @@ import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
-async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string }> {
+async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: string }> {
   const authHeader = request.headers.get('authorization');
   const token = authHeader?.replace('Bearer ', '');
 
@@ -45,7 +46,7 @@ async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boo
     return { authorized: false };
   }
 
-  return { authorized: true, userId: session.userId };
+  return { authorized: true, userId: session.userId, role: session.role };
 }
 
 export async function POST(
@@ -1053,6 +1054,30 @@ export async function POST(
         { status: 500 }
       );
     }
+
+    // Логируем отправку email участнику турнира
+    const adminUser = await findUserById(access.userId!);
+    const [userRows] = await pool.execute(
+      `SELECT email FROM users WHERE id = ?`,
+      [registration.user_id]
+    ) as any[];
+    const participantEmail = userRows[0]?.email || registration.email;
+
+    await logAction('send_email', 'tournament_registration', {
+      userId: access.userId,
+      userEmail: adminUser?.email,
+      userRole: access.role,
+      entityId: registrationId,
+      details: { 
+        template, 
+        recipientEmail: participantEmail, 
+        tournamentId, 
+        tournamentName: tournament.name,
+        locale: participantLocale 
+      },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({
       success: true,

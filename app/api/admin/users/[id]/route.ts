@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { updateUser, findUserById } from '@/lib/users';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 // Helper to check if user is admin
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
@@ -102,6 +103,18 @@ export async function PUT(
         { status: 500 }
       );
     }
+
+    // Логируем обновление пользователя
+    const adminUser = await findUserById(access.userId!);
+    await logAction('update', 'user', {
+      userId: access.userId,
+      userEmail: adminUser?.email,
+      userRole: access.role,
+      entityId: updatedUser.id,
+      details: { email: updatedUser.email, updatedFields: Object.keys(updateData) },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({
       success: true,

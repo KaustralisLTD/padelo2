@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { sendPasswordChangedEmail } from '@/lib/email';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -74,6 +75,17 @@ export async function POST(request: NextRequest) {
       console.error('Error sending password changed email:', emailError);
       // Don't fail the request if email fails, password was already changed
     }
+
+    // Логируем изменение пароля
+    await logAction('change_password', 'user', {
+      userId: session.userId,
+      userEmail: user.email,
+      userRole: session.role,
+      entityId: session.userId,
+      details: { success: true },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({
       success: true,

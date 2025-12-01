@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
+import { findUserById } from '@/lib/users';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,6 +78,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const oldEmail = user.email;
+
     // Update email and clear change request
     await pool.execute(
       `UPDATE users 
@@ -88,6 +92,18 @@ export async function GET(request: NextRequest) {
        WHERE id = ?`,
       [user.email_change_new_email, user.id]
     );
+
+    // Логируем подтверждение изменения email
+    const updatedUser = await findUserById(user.id);
+    await logAction('confirm_email_change', 'user', {
+      userId: user.id,
+      userEmail: oldEmail,
+      userRole: updatedUser?.role,
+      entityId: user.id,
+      details: { oldEmail, newEmail: user.email_change_new_email },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {}); // Игнорируем ошибки логирования
 
     return NextResponse.json({
       success: true,
