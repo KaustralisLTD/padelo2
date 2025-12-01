@@ -82,16 +82,31 @@ export function ParticipantDashboardContent() {
         const confirmed = allTournaments.filter((t: Tournament) => t.confirmed).length;
         
         // Разделяем на предстоящие и завершенные
+        // Предстоящие: турниры, которые еще не завершены (независимо от статуса подтверждения)
         const upcoming = allTournaments.filter((t: Tournament) => {
-          if (!t.startDate) return false;
-          return new Date(t.startDate) > now;
+          // Если есть дата окончания и она в прошлом - турнир завершен
+          if (t.endDate && new Date(t.endDate) < now) {
+            return false;
+          }
+          // Если есть дата начала и она в будущем - предстоящий
+          if (t.startDate && new Date(t.startDate) > now) {
+            return true;
+          }
+          // Если нет даты окончания или она в будущем - предстоящий
+          if (!t.endDate || new Date(t.endDate) >= now) {
+            return true;
+          }
+          return false;
         }).sort((a: Tournament, b: Tournament) => {
           // Сортируем по дате начала (ближайшие первыми)
-          if (!a.startDate || !b.startDate) return 0;
-          return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+          // Если у турнира нет startDate, используем createdAt как fallback
+          const aDate = a.startDate ? new Date(a.startDate).getTime() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
+          const bDate = b.startDate ? new Date(b.startDate).getTime() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
+          return aDate - bDate;
         });
         
         const completed = allTournaments.filter((t: Tournament) => {
+          // Завершенные: турниры с датой окончания в прошлом
           if (!t.endDate) return false;
           return new Date(t.endDate) < now;
         }).sort((a: Tournament, b: Tournament) => {
