@@ -308,7 +308,7 @@ export async function DELETE(request: NextRequest) {
       entityId: user.id,
       details: { 
         deletedUserEmail: user.email, 
-        deletedUserName: `${user.first_name} ${user.last_name}`,
+        deletedUserName: `${user.firstName} ${user.lastName}`,
         deletedUserRole: user.role 
       },
       ipAddress: getIpAddress(request),
