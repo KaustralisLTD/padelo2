@@ -405,7 +405,19 @@ export default function AdminLogsContent() {
                         {getEntityTypeLabel(log.entityType)}
                       </td>
                       <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
-                        {log.entityId || '-'}
+                        <div>
+                          {log.entityId || '-'}
+                          {log.entityType === 'pair' && log.details?.affectedUserIds && Array.isArray(log.details.affectedUserIds) && log.details.affectedUserIds.length > 0 && (
+                            <div className="text-xs text-text-secondary mt-1">
+                              {t('logs.affectedUsers')}: {log.details.affectedUserIds.join(', ')}
+                            </div>
+                          )}
+                          {log.entityType === 'pair' && log.details?.affectedUserEmails && Array.isArray(log.details.affectedUserEmails) && log.details.affectedUserEmails.length > 0 && (
+                            <div className="text-xs text-text-secondary mt-1">
+                              {t('logs.affectedEmails')}: {log.details.affectedUserEmails.join(', ')}
+                            </div>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-text-secondary font-poppins text-xs max-w-md">
                         {log.details ? (
