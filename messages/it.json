@@ -841,8 +841,7 @@
     "export": "Esporta",
     "export.csv": "Scarica come CSV",
     "export.excel": "Scarica come Excel",
-    "export.print": "Stampa"
-  },
+    "export.print": "Stampa",
     "settings": {
       "title": "Impostazioni"
     },
@@ -1187,8 +1186,6 @@
       "unauthorized": "You do not have access to this tool.",
       "unknown": "Unknown"
     },
-    "loading": "Загрузка...",
-    "backToDashboard": "Вернуться в панель управления",
     "users": {
       "title": "Gestione Utenti",
       "description": "Crea, modifica e gestisci tutti gli account utente",
@@ -1293,7 +1290,8 @@
         "failed": "Fallito",
         "cancelled": "Annullato"
       }
-    },
+    }
+  },
   "Profile": {
     "title": "Profilo",
     "description": "Gestisci le tue informazioni personali e impostazioni",
