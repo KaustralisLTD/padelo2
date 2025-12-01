@@ -1173,11 +1173,6 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   };
 
   const t = translations[locale] || translations.en;
-  const categoryCount = categories.length;
-  // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceDoubleCategory * количество
-  const totalPrice = categoryCount === 1 
-    ? tournament.priceSingleCategory 
-    : tournament.priceDoubleCategory ? tournament.priceDoubleCategory * categoryCount : (tournament.priceSingleCategory ? tournament.priceSingleCategory * categoryCount : undefined);
   const subjectText = t.subject || 'Payment confirmed - Tournament registration - PadelO₂';
 
   return `

@@ -1418,7 +1418,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Login",
+        "logout": "Logout",
+        "send_email": "Send Email",
+        "register": "Register"
       },
       "entityTypes": {
         "user": "User",

@@ -348,8 +348,8 @@ export default function AdminLogsContent() {
       ) : (
         <>
           <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <table className="w-full min-w-[1200px]">
                 <thead className="bg-background border-b border-border">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
@@ -384,6 +384,11 @@ export default function AdminLogsContent() {
                       <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
                         <div>
                           {log.userEmail || '-'}
+                          {log.userId && (
+                            <div className="text-xs text-text-secondary mt-1">
+                              ID: {log.userId}
+                            </div>
+                          )}
                           {log.userRole && (
                             <span className="text-xs text-text-secondary ml-1">
                               ({log.userRole})

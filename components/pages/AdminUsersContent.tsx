@@ -786,8 +786,8 @@ export default function AdminUsersContent() {
               </div>
             </div>
           )}
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <table className="w-full min-w-[1200px]">
               <thead className="bg-background border-b border-border">
                 <tr>
                   <th className="px-3 py-4 text-center text-xs font-poppins font-semibold text-text-secondary whitespace-nowrap w-12">
@@ -971,8 +971,8 @@ export default function AdminUsersContent() {
                     {bookings.length === 0 ? (
                       <p className="text-text-secondary font-poppins">{t('users.noBookings')}</p>
                     ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
+                      <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                        <table className="w-full min-w-[800px]">
                           <thead className="bg-background border-b border-border">
                             <tr>
                               <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.bookingTournament')}</th>
@@ -1013,8 +1013,8 @@ export default function AdminUsersContent() {
                     {matches.length === 0 ? (
                       <p className="text-text-secondary font-poppins">{t('users.noMatches')}</p>
                     ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
+                      <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                        <table className="w-full min-w-[800px]">
                           <thead className="bg-background border-b border-border">
                             <tr>
                               <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.matchTournament')}</th>
@@ -1066,8 +1066,8 @@ export default function AdminUsersContent() {
                     {walletTransactions.length === 0 ? (
                       <p className="text-text-secondary font-poppins">{t('users.noTransactions')}</p>
                     ) : (
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
+                      <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                        <table className="w-full min-w-[800px]">
                           <thead className="bg-background border-b border-border">
                             <tr>
                               <th className="text-left p-4 font-poppins font-semibold text-text">{t('users.transactionType')}</th>

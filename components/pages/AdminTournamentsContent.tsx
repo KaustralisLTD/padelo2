@@ -749,8 +749,8 @@ export default function AdminTournamentsContent() {
             </div>
 
             <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
+              <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                <table className="w-full min-w-[1000px]">
                   <thead className="bg-background border-b border-border">
                     <tr>
                       <th className="px-4 py-4 text-left text-sm font-poppins font-semibold text-text w-16">
