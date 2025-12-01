@@ -819,12 +819,6 @@
     "dashboard": {
       "title": "Panel de Control"
     },
-    "tournaments": {
-      "title": "Torneos",
-      "active": "Torneos Activos",
-      "participants": "Participantes",
-      "more": "más"
-    },
     "messages": {
       "title": "Mensajes",
       "description": "Comunicación directa con jugadores y entrenadores",
@@ -951,7 +945,10 @@
       }
     },
     "tournaments": {
-      "title": "Gestionar Torneos",
+      "title": "Torneos",
+      "active": "Torneos Activos",
+      "participants": "Participantes",
+      "more": "más",
       "description": "Descripción",
       "createTournament": "Crear Torneo",
       "editTournament": "Editar Torneo",

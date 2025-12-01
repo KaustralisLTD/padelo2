@@ -972,12 +972,6 @@
     "dashboard": {
       "title": "Dashboard"
     },
-    "tournaments": {
-      "title": "Tournaments",
-      "active": "Active Tournaments",
-      "participants": "Participants",
-      "more": "more"
-    },
     "wallet": {
       "title": "Wallet"
     },
@@ -1126,7 +1120,10 @@
       }
     },
     "tournaments": {
-      "title": "Manage Tournaments",
+      "title": "Tournaments",
+      "active": "Active Tournaments",
+      "participants": "Participants",
+      "more": "more",
       "description": "Description",
       "comingSoon": "Tournament management interface coming soon...",
       "createTournament": "Create Tournament",

@@ -890,12 +890,6 @@
     "dashboard": {
       "title": "Панель керування"
     },
-    "tournaments": {
-      "title": "Турніри",
-      "active": "Активні турніри",
-      "participants": "Учасники",
-      "more": "ще"
-    },
     "messages": {
       "title": "Повідомлення",
       "description": "Прямий зв'язок з гравцями та тренерами",
@@ -1022,7 +1016,10 @@
       }
     },
     "tournaments": {
-      "title": "Управління турнірами",
+      "title": "Турніри",
+      "active": "Активні турніри",
+      "participants": "Учасники",
+      "more": "ще",
       "description": "Опис",
       "comingSoon": "Інтерфейс управління турнірами скоро...",
       "createTournament": "Створити турнір",

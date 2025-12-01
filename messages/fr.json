@@ -864,7 +864,8 @@
       "selectMessage": "Sélectionnez un message pour commencer à discuter"
     },
     "wallet": {
-      "title": "Portefeuille"
+      "title": "Portefeuille",
+      "description": "Gérer les portefeuilles utilisateur et les transactions"
     },
     "logs": {
       "title": "Journaux"
@@ -873,10 +874,12 @@
       "title": "Moniteur de BD"
     },
     "staff": {
-      "title": "Personnel"
+      "title": "Personnel",
+      "description": "Assigner des rôles et gérer les membres du personnel"
     },
     "users": {
-      "title": "Gérer les utilisateurs"
+      "title": "Gérer les utilisateurs",
+      "description": "Créer, modifier et gérer tous les comptes utilisateur"
     },
       "createTournament": "Créer un Tournoi",
       "editTournament": "Modifier le Tournoi",
