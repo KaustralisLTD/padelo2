@@ -1383,6 +1383,9 @@
       "completed": "Завершенные"
     },
     "myTournaments": "Мои турниры",
+    "nextTournament": "Следующий турнир",
+    "upcomingTournaments": "Предстоящие турниры",
+    "completedTournaments": "Завершенные турниры",
     "noTournaments": "Вы еще не зарегистрировались ни на один турнир.",
     "registerForTournament": "Зарегистрироваться на турнир",
     "dates": "Даты",
@@ -1409,6 +1412,7 @@
       "title": "Призы и достижения",
       "comingSoon": "Призы и достижения будут отображены здесь"
     },
+    "quickActions": "Быстрые действия",
     "tournamentDetails": {
       "title": "Детали Турнира",
       "location": "Место проведения",

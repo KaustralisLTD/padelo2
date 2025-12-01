@@ -1072,8 +1072,8 @@
     }
   },
   "Admin": {
-    "loading": "Carregant...",
-    "backToDashboard": "Tornar al tauler",
+    "loading": "Загрузка...",
+    "backToDashboard": "Вернуться в панель управления",
     "logout": "Tancar sessió",
     "export": "Exportar",
     "export.csv": "Descarregar com CSV",
@@ -1165,7 +1165,6 @@
       "deleteDemoParticipantsConfirm": "Esteu segur que voleu eliminar tots els participants demo? Això també eliminarà tots els grups, parelles i partits associats.",
       "deleteDemoParticipantsSuccess": "S'han eliminat {count} participants demo amb èxit.",
       "deleteDemoParticipantsError": "No s'han pogut eliminar els participants demo.",
-      "participants": "Participants",
       "participantsList": "Llista de Participants",
       "noParticipants": "Encara no hi ha participants registrats.",
       "loading": "Carregant...",
@@ -1243,13 +1242,112 @@
       "optional": "Optional"
     },
     "wallet": {
-      "title": "Cartera"
+      "title": "Gestió de Moneders",
+      "description": "Gestionar moneders d'usuaris i transaccions",
+      "wallets": "Moneders",
+      "transactions": "Transaccions",
+      "walletsTable": {
+        "user": "Usuari",
+        "email": "Correu electrònic",
+        "balance": "Saldo",
+        "currency": "Moneda",
+        "updatedAt": "Actualitzat",
+        "noWallets": "No s'han trobat moneders"
+      },
+      "transactionsTable": {
+        "id": "ID",
+        "user": "Usuari",
+        "type": "Tipus",
+        "amount": "Quantitat",
+        "status": "Estat",
+        "description": "Descripció",
+        "createdAt": "Creat",
+        "noTransactions": "No s'han trobat transaccions"
+      },
+      "transactionTypes": {
+        "deposit": "Dipòsit",
+        "withdrawal": "Retirada",
+        "payment": "Pagament",
+        "refund": "Reemborsament",
+        "transfer": "Transferència"
+      },
+      "transactionStatus": {
+        "pending": "Pendent",
+        "completed": "Completat",
+        "failed": "Fallit",
+        "cancelled": "Cancel·lat"
+      }
     },
     "logs": {
-      "title": "Registres"
+      "title": "Audit Logs",
+      "description": "View all system actions, errors, and user activities",
+      "search": "Search",
+      "searchPlaceholder": "Search in logs...",
+      "user": "User",
+      "action": "Action",
+      "entityType": "Entity Type",
+      "entityId": "Entity ID",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "allUsers": "All Users",
+      "allActions": "All Actions",
+      "allEntityTypes": "All Entity Types",
+      "entityIdPlaceholder": "Enter entity ID",
+      "clearFilters": "Clear Filters",
+      "noLogs": "No logs found",
+      "dateTime": "Date & Time",
+      "details": "Details",
+      "ipAddress": "IP Address",
+      "viewDetails": "View Details",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page",
+      "of": "of",
+      "actions": {
+        "create": "Create",
+        "update": "Update",
+        "delete": "Delete",
+        "generate": "Generate",
+        "error": "Error"
+      },
+      "entityTypes": {
+        "user": "User",
+        "tournament": "Tournament",
+        "pair": "Pair",
+        "match": "Match",
+        "schedule": "Schedule",
+        "registration": "Registration"
+      }
     },
     "dbMonitor": {
-      "title": "Monitor de BD"
+      "title": "Database Monitor",
+      "description": "View active database connections and process details",
+      "refresh": "Refresh",
+      "lastUpdated": "Last updated",
+      "poolStatsTitle": "Connection Pool",
+      "poolStatsActive": "Active",
+      "poolStatsFree": "Free",
+      "poolStatsQueued": "Queued",
+      "poolStatsLimit": "Limit",
+      "poolStatsAcquired": "Connections acquired",
+      "poolStatsReleased": "Connections released",
+      "poolStatsErrors": "Connection errors",
+      "connectionSummary": "Connection Summary",
+      "totalConnections": "Total connections",
+      "userConnections": "Connections for current user",
+      "processListTitle": "Database Processes",
+      "processId": "ID",
+      "user": "User",
+      "host": "Host",
+      "db": "Database",
+      "command": "Command",
+      "time": "Time",
+      "state": "State",
+      "info": "Query",
+      "noProcesses": "No active processes",
+      "errorLoading": "Failed to load database statistics.",
+      "unauthorized": "You do not have access to this tool.",
+      "unknown": "Unknown"
     },
     "staff": {
       "title": "Manage Staff",
@@ -1352,79 +1450,6 @@
       "missingFields": "Camps faltants",
       "requiredDataStructure": "Estructura de dades requerida"
     },
-    "logs": {
-      "title": "Audit Logs",
-      "description": "View all system actions, errors, and user activities",
-      "search": "Search",
-      "searchPlaceholder": "Search in logs...",
-      "user": "User",
-      "action": "Action",
-      "entityType": "Entity Type",
-      "entityId": "Entity ID",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "allUsers": "All Users",
-      "allActions": "All Actions",
-      "allEntityTypes": "All Entity Types",
-      "entityIdPlaceholder": "Enter entity ID",
-      "clearFilters": "Clear Filters",
-      "noLogs": "No logs found",
-      "dateTime": "Date & Time",
-      "details": "Details",
-      "ipAddress": "IP Address",
-      "viewDetails": "View Details",
-      "previous": "Previous",
-      "next": "Next",
-      "page": "Page",
-      "of": "of",
-      "actions": {
-        "create": "Create",
-        "update": "Update",
-        "delete": "Delete",
-        "generate": "Generate",
-        "error": "Error"
-      },
-      "entityTypes": {
-        "user": "User",
-        "tournament": "Tournament",
-        "pair": "Pair",
-        "match": "Match",
-        "schedule": "Schedule",
-        "registration": "Registration"
-      }
-    },
-    "dbMonitor": {
-      "title": "Database Monitor",
-      "description": "View active database connections and process details",
-      "refresh": "Refresh",
-      "lastUpdated": "Last updated",
-      "poolStatsTitle": "Connection Pool",
-      "poolStatsActive": "Active",
-      "poolStatsFree": "Free",
-      "poolStatsQueued": "Queued",
-      "poolStatsLimit": "Limit",
-      "poolStatsAcquired": "Connections acquired",
-      "poolStatsReleased": "Connections released",
-      "poolStatsErrors": "Connection errors",
-      "connectionSummary": "Connection Summary",
-      "totalConnections": "Total connections",
-      "userConnections": "Connections for current user",
-      "processListTitle": "Database Processes",
-      "processId": "ID",
-      "user": "User",
-      "host": "Host",
-      "db": "Database",
-      "command": "Command",
-      "time": "Time",
-      "state": "State",
-      "info": "Query",
-      "noProcesses": "No active processes",
-      "errorLoading": "Failed to load database statistics.",
-      "unauthorized": "You do not have access to this tool.",
-      "unknown": "Unknown"
-    },
-    "loading": "Загрузка...",
-    "backToDashboard": "Вернуться в панель управления",
     "users": {
       "title": "Gestió d'Usuaris",
       "description": "Crear, editar i gestionar tots els comptes d'usuari",
@@ -1492,43 +1517,6 @@
       "confirmedRegistrations": "Registres confirmats",
       "totalMatches": "Total de partits",
       "phone": "Telèfon"
-    },
-    "wallet": {
-      "title": "Gestió de Moneders",
-      "description": "Gestionar moneders d'usuaris i transaccions",
-      "wallets": "Moneders",
-      "transactions": "Transaccions",
-      "walletsTable": {
-        "user": "Usuari",
-        "email": "Correu electrònic",
-        "balance": "Saldo",
-        "currency": "Moneda",
-        "updatedAt": "Actualitzat",
-        "noWallets": "No s'han trobat moneders"
-      },
-      "transactionsTable": {
-        "id": "ID",
-        "user": "Usuari",
-        "type": "Tipus",
-        "amount": "Quantitat",
-        "status": "Estat",
-        "description": "Descripció",
-        "createdAt": "Creat",
-        "noTransactions": "No s'han trobat transaccions"
-      },
-      "transactionTypes": {
-        "deposit": "Dipòsit",
-        "withdrawal": "Retirada",
-        "payment": "Pagament",
-        "refund": "Reemborsament",
-        "transfer": "Transferència"
-      },
-      "transactionStatus": {
-        "pending": "Pendent",
-        "completed": "Completat",
-        "failed": "Fallit",
-        "cancelled": "Cancel·lat"
-      }
     }
   },
   "Merchandise": {
@@ -1675,6 +1663,9 @@
       "completed": "Completats"
     },
     "myTournaments": "Els Meus Tornejos",
+    "completedTournaments": "Torneigs Completats",
+    "upcomingTournaments": "Torneigs Propers",
+    "nextTournament": "Proper Torneig",
     "noTournaments": "Encara no t'has registrat en cap torneig.",
     "registerForTournament": "Registrar-se en Torneig",
     "dates": "Dates",
@@ -1700,7 +1691,8 @@
     "prizes": {
       "title": "Premis i Assoliments",
       "comingSoon": "Els premis i assoliments es mostraran aquí"
-    }
+    },
+    "quickActions": "Accionesl de Participant"
   },
   "Common": {
     "darkMode": "Mode fosc",

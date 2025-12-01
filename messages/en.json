@@ -1493,6 +1493,9 @@
       "completed": "Completed"
     },
     "myTournaments": "My Tournaments",
+    "nextTournament": "Next Tournament",
+    "upcomingTournaments": "Upcoming Tournaments",
+    "completedTournaments": "Completed Tournaments",
     "noTournaments": "You haven't registered for any tournaments yet.",
     "registerForTournament": "Register for Tournament",
     "dates": "Dates",
@@ -1519,7 +1522,8 @@
     "prizes": {
       "title": "Prizes & Achievements",
       "comingSoon": "Prizes and achievements will be displayed here"
-    }
+    },
+    "quickActions": "Quick Actions"
   },
   "Merchandise": {
     "title": "Tournament Merchandise & Custom Products",

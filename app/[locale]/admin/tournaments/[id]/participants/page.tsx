@@ -1242,6 +1242,24 @@ export default function TournamentParticipantsPage() {
                                 Demo
                               </span>
                             )}
+                            {participant.message && participant.message.trim() && (
+                              <div className="relative group">
+                                <div className="w-5 h-5 bg-primary/20 text-primary rounded-full flex items-center justify-center cursor-help hover:bg-primary/30 transition-colors">
+                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                  </svg>
+                                </div>
+                                <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-background-secondary border border-border rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                                  <div className="text-xs font-poppins text-text-secondary mb-1 font-semibold">
+                                    {tTournaments('message') || 'Сообщение от участника'}:
+                                  </div>
+                                  <div className="text-xs font-poppins text-text whitespace-pre-wrap break-words">
+                                    {participant.message}
+                                  </div>
+                                  <div className="absolute bottom-0 left-4 transform translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-border"></div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </CopyableField>
                       </td>

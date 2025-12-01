@@ -26,6 +26,9 @@ export function ParticipantDashboardContent() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [upcomingTournaments, setUpcomingTournaments] = useState<Tournament[]>([]);
+  const [completedTournaments, setCompletedTournaments] = useState<Tournament[]>([]);
+  const [nextTournament, setNextTournament] = useState<Tournament | null>(null);
   const [stats, setStats] = useState({
     totalTournaments: 0,
     confirmedTournaments: 0,
@@ -54,26 +57,45 @@ export function ParticipantDashboardContent() {
 
       if (response.ok) {
         const data = await response.json();
-        setTournaments(data.tournaments || []);
+        const allTournaments = data.tournaments || [];
+        setTournaments(allTournaments);
         
-        // Calculate stats
+        // Calculate stats and sort tournaments
         const now = new Date();
-        const total = data.tournaments?.length || 0;
-        const confirmed = data.tournaments?.filter((t: Tournament) => t.confirmed).length || 0;
-        const upcoming = data.tournaments?.filter((t: Tournament) => {
+        const total = allTournaments.length;
+        const confirmed = allTournaments.filter((t: Tournament) => t.confirmed).length;
+        
+        // Разделяем на предстоящие и завершенные
+        const upcoming = allTournaments.filter((t: Tournament) => {
           if (!t.startDate) return false;
           return new Date(t.startDate) > now;
-        }).length || 0;
-        const completed = data.tournaments?.filter((t: Tournament) => {
+        }).sort((a: Tournament, b: Tournament) => {
+          // Сортируем по дате начала (ближайшие первыми)
+          if (!a.startDate || !b.startDate) return 0;
+          return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+        });
+        
+        const completed = allTournaments.filter((t: Tournament) => {
           if (!t.endDate) return false;
           return new Date(t.endDate) < now;
-        }).length || 0;
+        }).sort((a: Tournament, b: Tournament) => {
+          // Сортируем по дате окончания (последние завершенные первыми)
+          if (!a.endDate || !b.endDate) return 0;
+          return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
+        });
+
+        setUpcomingTournaments(upcoming);
+        setCompletedTournaments(completed);
+        
+        // Находим следующий турнир (ближайший предстоящий)
+        const next = upcoming.length > 0 ? upcoming[0] : null;
+        setNextTournament(next);
 
         setStats({
           totalTournaments: total,
           confirmedTournaments: confirmed,
-          upcomingTournaments: upcoming,
-          completedTournaments: completed,
+          upcomingTournaments: upcoming.length,
+          completedTournaments: completed.length,
         });
       } else if (response.status === 401) {
         localStorage.removeItem('auth_token');
@@ -165,9 +187,42 @@ export function ParticipantDashboardContent() {
           <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
             {t('title')}
           </h1>
-          <p className="text-xl text-text-secondary font-poppins">
+          <p className="text-xl text-text-secondary font-poppins mb-6">
             {t('description')}
           </p>
+          
+          {/* Next Tournament Card */}
+          {nextTournament && (
+            <div className="bg-gradient-to-r from-primary/20 to-primary/10 rounded-lg border border-primary/30 p-6 mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-lg font-poppins font-semibold text-text-secondary mb-1">
+                    {t('nextTournament') || 'Следующий турнир'}
+                  </h2>
+                  <h3 className="text-2xl font-poppins font-bold text-text">
+                    {nextTournament.tournamentName}
+                  </h3>
+                </div>
+                {getStatusBadge(nextTournament)}
+              </div>
+              <div className="space-y-1 text-sm text-text-secondary font-poppins mt-3">
+                {nextTournament.location && (
+                  <p>📍 {nextTournament.location}</p>
+                )}
+                <p>
+                  {t('dates')}: {formatDate(nextTournament.startDate)} - {formatDate(nextTournament.endDate)}
+                </p>
+                <p>
+                  {t('categories')}: {nextTournament.categories.map(getCategoryLabel).join(', ')}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Statistics Cards */}
@@ -191,61 +246,107 @@ export function ParticipantDashboardContent() {
         </div>
 
         {/* Tournaments List */}
-        <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
-          <div className="p-6 border-b border-border">
-            <h2 className="text-2xl font-poppins font-bold text-text">{t('myTournaments')}</h2>
+        {tournaments.length === 0 ? (
+          <div className="bg-background-secondary rounded-lg border border-border p-12 text-center">
+            <p className="text-text-secondary font-poppins mb-6">{t('noTournaments')}</p>
+            <Link
+              href={`/${locale}/tournaments`}
+              className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity inline-block"
+            >
+              {t('registerForTournament')}
+            </Link>
           </div>
-
-          {tournaments.length === 0 ? (
-            <div className="p-12 text-center">
-              <p className="text-text-secondary font-poppins mb-6">{t('noTournaments')}</p>
-              <Link
-                href={`/${locale}/tournaments`}
-                className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity inline-block"
-              >
-                {t('registerForTournament')}
-              </Link>
-            </div>
-          ) : (
-            <div className="divide-y divide-border">
-              {tournaments.map((tournament) => (
-                <div key={tournament.id} className="p-6 hover:bg-background transition-colors">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-xl font-poppins font-bold text-text">
-                          {tournament.tournamentName}
-                        </h3>
-                        {getStatusBadge(tournament)}
-                      </div>
-                      
-                      <div className="space-y-1 text-sm text-text-secondary font-poppins">
-                        {tournament.location && (
-                          <p>📍 {tournament.location}</p>
-                        )}
-                        <p>
-                          {t('dates')}: {formatDate(tournament.startDate)} - {formatDate(tournament.endDate)}
-                        </p>
-                        <p>
-                          {t('categories')}: {tournament.categories.map(getCategoryLabel).join(', ')}
-                        </p>
-                        {tournament.confirmedAt && (
-                          <p className="text-green-400">
-                            ✓ {t('confirmedAt')}: {formatDate(tournament.confirmedAt)}
-                          </p>
-                        )}
+        ) : (
+          <>
+            {/* Upcoming Tournaments */}
+            {upcomingTournaments.length > 0 && (
+              <div className="bg-background-secondary rounded-lg border border-border overflow-hidden mb-6">
+                <div className="p-6 border-b border-border">
+                  <h2 className="text-2xl font-poppins font-bold text-text">{t('upcomingTournaments') || 'Предстоящие турниры'}</h2>
+                </div>
+                <div className="divide-y divide-border">
+                  {upcomingTournaments.map((tournament) => (
+                    <div key={tournament.id} className="p-6 hover:bg-background transition-colors">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-xl font-poppins font-bold text-text">
+                              {tournament.tournamentName}
+                            </h3>
+                            {getStatusBadge(tournament)}
+                          </div>
+                          
+                          <div className="space-y-1 text-sm text-text-secondary font-poppins">
+                            {tournament.location && (
+                              <p>📍 {tournament.location}</p>
+                            )}
+                            <p>
+                              {t('dates')}: {formatDate(tournament.startDate)} - {formatDate(tournament.endDate)}
+                            </p>
+                            <p>
+                              {t('categories')}: {tournament.categories.map(getCategoryLabel).join(', ')}
+                            </p>
+                            {tournament.confirmedAt && (
+                              <p className="text-green-400">
+                                ✓ {t('confirmedAt')}: {formatDate(tournament.confirmedAt)}
+                              </p>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            )}
+
+            {/* Completed Tournaments */}
+            {completedTournaments.length > 0 && (
+              <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
+                <div className="p-6 border-b border-border">
+                  <h2 className="text-2xl font-poppins font-bold text-text">{t('completedTournaments') || 'Завершенные турниры'}</h2>
+                </div>
+                <div className="divide-y divide-border">
+                  {completedTournaments.map((tournament) => (
+                    <div key={tournament.id} className="p-6 hover:bg-background transition-colors">
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-xl font-poppins font-bold text-text">
+                              {tournament.tournamentName}
+                            </h3>
+                            {getStatusBadge(tournament)}
+                          </div>
+                          
+                          <div className="space-y-1 text-sm text-text-secondary font-poppins">
+                            {tournament.location && (
+                              <p>📍 {tournament.location}</p>
+                            )}
+                            <p>
+                              {t('dates')}: {formatDate(tournament.startDate)} - {formatDate(tournament.endDate)}
+                            </p>
+                            <p>
+                              {t('categories')}: {tournament.categories.map(getCategoryLabel).join(', ')}
+                            </p>
+                            {tournament.confirmedAt && (
+                              <p className="text-green-400">
+                                ✓ {t('confirmedAt')}: {formatDate(tournament.confirmedAt)}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
 
         {/* Quick Actions Menu */}
         <div className="mt-8">
-          <h2 className="text-2xl font-poppins font-bold text-text mb-6">{tDashboard('participant.title') || 'Quick Actions'}</h2>
+          <h2 className="text-2xl font-poppins font-bold text-text mb-6">{t('quickActions') || 'Quick Actions'}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link
               href={`/${locale}/tournament/dashboard`}

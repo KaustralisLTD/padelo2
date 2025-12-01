@@ -788,8 +788,8 @@
     "userId": "Benutzer-ID"
   },
   "Admin": {
-    "loading": "Laden...",
-    "backToDashboard": "Zurück zum Dashboard",
+    "loading": "Загрузка...",
+    "backToDashboard": "Вернуться в панель управления",
     "logout": "Abmelden",
     "export": "Exportieren",
     "export.csv": "Als CSV herunterladen",
@@ -808,7 +808,7 @@
       "noMessages": "Noch keine Nachrichten. Starten Sie eine Unterhaltung!",
       "typeMessage": "Nachricht eingeben...",
       "selectMessage": "Wählen Sie eine Nachricht aus, um zu chatten"
-      },
+    },
     "tournaments": {
       "title": "Turniere Verwalten",
       "active": "Aktive Turniere",
@@ -882,7 +882,6 @@
       "deleteDemoParticipantsConfirm": "Sind Sie sicher, dass Sie alle Demo-Teilnehmer löschen möchten? Dies löscht auch alle zugehörigen Gruppen, Paare und Spiele.",
       "deleteDemoParticipantsSuccess": "{count} Demo-Teilnehmer erfolgreich gelöscht.",
       "deleteDemoParticipantsError": "Demo-Teilnehmer konnten nicht gelöscht werden.",
-      "participants": "Teilnehmer",
       "participantsList": "Teilnehmerliste",
       "noParticipants": "Noch keine Teilnehmer registriert.",
       "loading": "Laden...",
@@ -960,117 +959,41 @@
       "optional": "Optional"
     },
     "wallet": {
-      "title": "Geldbörse"
-    },
-    "logs": {
-      "title": "Protokolle"
-    },
-    "dbMonitor": {
-      "title": "DB-Monitor"
-    },
-    "staff": {
-      "title": "Personal",
-      "assignAccess": "Zugriff Zuweisen",
-      "editAccess": "Zugriff Bearbeiten",
-      "user": "Benutzer",
-      "tournament": "Turnier",
-      "permissions": "Berechtigungen",
-      "actions": "Aktionen",
-      "edit": "Bearbeiten",
-      "delete": "Löschen",
-      "noAccess": "Kein Zugriff zugewiesen. Weisen Sie einem Benutzer Zugriff zu!",
-      "selectUser": "Benutzer Auswählen",
-      "selectTournament": "Turnier Auswählen",
-      "leaveTournament": "Turnier Verlassen",
-      "confirmLeaveTournament": "Sind Sie sicher, dass Sie dieses Turnier verlassen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-      "leaveTournamentError": "Fehler beim Verlassen des Turniers. Bitte versuchen Sie es erneut.",
-      "leaving": "Verlasse...",
-      "canManageGroups": "Gruppen Verwalten",
-      "canManageMatches": "Spiele Verwalten",
-      "canViewRegistrations": "Anmeldungen Ansehen",
-      "canManageUsers": "Benutzer Verwalten",
-      "canManageLogs": "Protokolle Verwalten",
-      "canManageTournaments": "Turniere Verwalten",
-      "userRole": "Benutzerrolle",
-      "selectRole": "Rolle Auswählen",
-      "roleSuperadmin": "Super Admin",
-      "roleTournamentAdmin": "Turnier Admin",
-      "roleManager": "Manager",
-      "roleCoach": "Trainer",
-      "roleStaff": "Personal",
-      "roleParticipant": "Teilnehmer",
-      "selectAllTournaments": "Alle Turniere Auswählen",
-      "cancel": "Abbrechen",
-      "assign": "Zuweisen",
-      "update": "Aktualisieren",
-      "search": "Suchen",
-      "searchPlaceholder": "Suche nach Name, E-Mail oder Turnier...",
-      "filterByTournament": "Nach Turnier filtern",
-      "filterByUser": "Nach Benutzer filtern",
-      "allTournaments": "Alle Turniere",
-      "allUsers": "Alle Benutzer",
-      "clearFilters": "Filter löschen",
-      "noResults": "Keine Ergebnisse gefunden",
-      "copyAccess": "Zugriff kopieren",
-      "copyFrom": "Kopieren von",
-      "copyTo": "Kopieren nach",
-      "copy": "Kopieren",
-      "accesses": "Zugriffe"
-    }, 
-      "stats": {
-        "totalAccess": "Gesamtzugriffe",
-        "uniqueUsers": "Eindeutige Benutzer",
-        "uniqueTournaments": "Eindeutige Turniere"
+      "title": "Geldbörsenverwaltung",
+      "description": "Benutzergeldbörsen und Transaktionen verwalten",
+      "wallets": "Geldbörsen",
+      "transactions": "Transaktionen",
+      "walletsTable": {
+        "user": "Benutzer",
+        "email": "E-Mail",
+        "balance": "Guthaben",
+        "currency": "Währung",
+        "updatedAt": "Aktualisiert",
+        "noWallets": "Keine Geldbörsen gefunden"
       },
-      "staff": {
-      "title": "Manage Staff",
-      "description": "Assign roles and manage staff members",
-      "comingSoon": "Staff management interface coming soon..."
-    },
-    "participants": {
-      "sendEmail": "Email Senden",
-      "sendEmailTo": "Email senden an:",
-      "selectEmailTemplate": "E-Mail-Vorlage Auswählen",
-      "selectTemplate": "-- Vorlage Auswählen --",
-      "categoryRegistration": "📋 Registrierung und Bestätigung",
-      "categoryPayment": "💳 Zahlung",
-      "categorySchedule": "📅 Zeitplan und Erinnerungen",
-      "categoryResults": "🏆 Ergebnisse und Nach-Event",
-      "categoryCancellation": "⚠️ Stornierung und Verschiebung",
-      "templateEmailVerification": "E-Mail-Bestätigung",
-      "templateWelcome": "Willkommen bei PadelO₂.com",
-      "templateTournamentRegistration": "Turnieranmeldung - Wir haben Ihre Anmeldung erhalten",
-      "templateTournamentConfirmed": "Turnieranmeldung - Bestätigt",
-      "templateWaitingList": "Turnieranmeldung - Warteliste",
-      "templateSpotConfirmed": "Platz Bestätigt (von Warteliste)",
-      "templatePaymentReceived": "Zahlung Erhalten / Turniereintritt Bezahlt",
-      "templatePaymentFailed": "Zahlung Fehlgeschlagen / Wiederholen",
-      "templateSchedulePublished": "Turnierzeitplan Veröffentlicht",
-      "templateMatchReminder1Day": "Spielerinnerung - 1 Tag Vorher",
-      "templateMatchReminderSameDay": "Spielerinnerung - Am Spieltag",
-      "templateScheduleChange": "Änderung im Zeitplan / Platzwechsel",
-      "templateGroupStageResults": "Gruppenphasen-Ergebnisse / Qualifikation",
-      "templateFinalsWinners": "Finals und Gewinner - Glückwunsch",
-      "templatePostTournamentRecap": "Turnier-Zusammenfassung und Fotos",
-      "templateTournamentFeedback": "Turnier-Feedback / NPS",
-      "templateTournamentCancelled": "Turnier Abgesagt / Verschoben",
-      "send": "Senden",
-      "sending": "Wird gesendet...",
-      "emailSent": "Email erfolgreich gesendet",
-      "emailSendError": "Fehler beim Senden der E-Mail",
-      "selectedParticipants": "Ausgewählte Teilnehmer",
-      "selectActionForSelected": "Wählen Sie eine Aktion für die ausgewählten Teilnehmer",
-      "markAsPaid": "Als Bezahlt Markieren",
-      "cancelSelection": "Auswahl Abbrechen",
-      "willBeSentTo": "Wird an {count} Teilnehmer gesendet",
-      "selectedCount": "{count} ausgewählte Teilnehmer",
-      "emailWillBeSentToEach": "E-Mail wird an jeden ausgewählten Teilnehmer in seiner Sprache gesendet",
-      "noParticipantSelected": "Kein Teilnehmer ausgewählt",
-      "emailSentTo": "E-Mail an {count} Teilnehmer gesendet",
-      "failedToSendTo": "Fehler beim Senden an {count} Teilnehmer",
-      "templateRequiresAdditionalData": "Vorlage erfordert zusätzliche Daten",
-      "missingFields": "Fehlende Felder",
-      "requiredDataStructure": "Erforderliche Datenstruktur"
+      "transactionsTable": {
+        "id": "ID",
+        "user": "Benutzer",
+        "type": "Typ",
+        "amount": "Betrag",
+        "status": "Status",
+        "description": "Beschreibung",
+        "createdAt": "Erstellt",
+        "noTransactions": "Keine Transaktionen gefunden"
+      },
+      "transactionTypes": {
+        "deposit": "Einzahlung",
+        "withdrawal": "Auszahlung",
+        "payment": "Zahlung",
+        "refund": "Rückerstattung",
+        "transfer": "Überweisung"
+      },
+      "transactionStatus": {
+        "pending": "Ausstehend",
+        "completed": "Abgeschlossen",
+        "failed": "Fehlgeschlagen",
+        "cancelled": "Abgebrochen"
+      }
     },
     "logs": {
       "title": "Audit Logs",
@@ -1143,8 +1066,61 @@
       "unauthorized": "You do not have access to this tool.",
       "unknown": "Unknown"
     },
-    "loading": "Загрузка...",
-    "backToDashboard": "Вернуться в панель управления",
+    "staff": {
+      "title": "Manage Staff",
+      "description": "Assign roles and manage staff members",
+      "comingSoon": "Staff management interface coming soon..."
+    },
+    "stats": {
+      "totalAccess": "Gesamtzugriffe",
+      "uniqueUsers": "Eindeutige Benutzer",
+      "uniqueTournaments": "Eindeutige Turniere"
+    },
+    "participants": {
+      "sendEmail": "Email Senden",
+      "sendEmailTo": "Email senden an:",
+      "selectEmailTemplate": "E-Mail-Vorlage Auswählen",
+      "selectTemplate": "-- Vorlage Auswählen --",
+      "categoryRegistration": "📋 Registrierung und Bestätigung",
+      "categoryPayment": "💳 Zahlung",
+      "categorySchedule": "📅 Zeitplan und Erinnerungen",
+      "categoryResults": "🏆 Ergebnisse und Nach-Event",
+      "categoryCancellation": "⚠️ Stornierung und Verschiebung",
+      "templateEmailVerification": "E-Mail-Bestätigung",
+      "templateWelcome": "Willkommen bei PadelO₂.com",
+      "templateTournamentRegistration": "Turnieranmeldung - Wir haben Ihre Anmeldung erhalten",
+      "templateTournamentConfirmed": "Turnieranmeldung - Bestätigt",
+      "templateWaitingList": "Turnieranmeldung - Warteliste",
+      "templateSpotConfirmed": "Platz Bestätigt (von Warteliste)",
+      "templatePaymentReceived": "Zahlung Erhalten / Turniereintritt Bezahlt",
+      "templatePaymentFailed": "Zahlung Fehlgeschlagen / Wiederholen",
+      "templateSchedulePublished": "Turnierzeitplan Veröffentlicht",
+      "templateMatchReminder1Day": "Spielerinnerung - 1 Tag Vorher",
+      "templateMatchReminderSameDay": "Spielerinnerung - Am Spieltag",
+      "templateScheduleChange": "Änderung im Zeitplan / Platzwechsel",
+      "templateGroupStageResults": "Gruppenphasen-Ergebnisse / Qualifikation",
+      "templateFinalsWinners": "Finals und Gewinner - Glückwunsch",
+      "templatePostTournamentRecap": "Turnier-Zusammenfassung und Fotos",
+      "templateTournamentFeedback": "Turnier-Feedback / NPS",
+      "templateTournamentCancelled": "Turnier Abgesagt / Verschoben",
+      "send": "Senden",
+      "sending": "Wird gesendet...",
+      "emailSent": "Email erfolgreich gesendet",
+      "emailSendError": "Fehler beim Senden der E-Mail",
+      "selectedParticipants": "Ausgewählte Teilnehmer",
+      "selectActionForSelected": "Wählen Sie eine Aktion für die ausgewählten Teilnehmer",
+      "markAsPaid": "Als Bezahlt Markieren",
+      "cancelSelection": "Auswahl Abbrechen",
+      "willBeSentTo": "Wird an {count} Teilnehmer gesendet",
+      "selectedCount": "{count} ausgewählte Teilnehmer",
+      "emailWillBeSentToEach": "E-Mail wird an jeden ausgewählten Teilnehmer in seiner Sprache gesendet",
+      "noParticipantSelected": "Kein Teilnehmer ausgewählt",
+      "emailSentTo": "E-Mail an {count} Teilnehmer gesendet",
+      "failedToSendTo": "Fehler beim Senden an {count} Teilnehmer",
+      "templateRequiresAdditionalData": "Vorlage erfordert zusätzliche Daten",
+      "missingFields": "Fehlende Felder",
+      "requiredDataStructure": "Erforderliche Datenstruktur"
+    },
     "users": {
       "title": "Benutzerverwaltung",
       "description": "Erstellen, bearbeiten und verwalten Sie alle Benutzerkonten",
@@ -1212,43 +1188,6 @@
       "confirmedRegistrations": "Bestätigte Registrierungen",
       "totalMatches": "Gesamte Spiele",
       "phone": "Telefon"
-    },
-    "wallet": {
-      "title": "Geldbörsenverwaltung",
-      "description": "Benutzergeldbörsen und Transaktionen verwalten",
-      "wallets": "Geldbörsen",
-      "transactions": "Transaktionen",
-      "walletsTable": {
-        "user": "Benutzer",
-        "email": "E-Mail",
-        "balance": "Guthaben",
-        "currency": "Währung",
-        "updatedAt": "Aktualisiert",
-        "noWallets": "Keine Geldbörsen gefunden"
-      },
-      "transactionsTable": {
-        "id": "ID",
-        "user": "Benutzer",
-        "type": "Typ",
-        "amount": "Betrag",
-        "status": "Status",
-        "description": "Beschreibung",
-        "createdAt": "Erstellt",
-        "noTransactions": "Keine Transaktionen gefunden"
-      },
-      "transactionTypes": {
-        "deposit": "Einzahlung",
-        "withdrawal": "Auszahlung",
-        "payment": "Zahlung",
-        "refund": "Rückerstattung",
-        "transfer": "Überweisung"
-      },
-      "transactionStatus": {
-        "pending": "Ausstehend",
-        "completed": "Abgeschlossen",
-        "failed": "Fehlgeschlagen",
-        "cancelled": "Abgebrochen"
-      }
     }
   },
   "Profile": {
@@ -1319,6 +1258,9 @@
       "completed": "Abgeschlossen"
     },
     "myTournaments": "Meine Turniere",
+    "completedTournaments": "Abgeschlossene Turniere",
+    "upcomingTournaments": "Kommende Turniere",
+    "nextTournament": "Nächstes Turnier",
     "noTournaments": "Du hast dich noch für kein Turnier registriert.",
     "registerForTournament": "Für Turnier registrieren",
     "dates": "Daten",
@@ -1369,7 +1311,8 @@
       "maxParticipants": "Max. Teilnehmer",
       "prizes": "Preise",
       "prizesInfo": "Informationen zu den Preisen werden bald bekannt gegeben. Bleiben Sie dran!"
-    }
+    },
+    "quickActions": "Teilnehmer-Actions"
   },
   "Dashboard": {
     "title": "Dashboard",
@@ -1752,4 +1695,3 @@
     }
   }
 }
-
