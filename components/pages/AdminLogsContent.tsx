@@ -214,8 +214,8 @@ export default function AdminLogsContent() {
         </p>
       </div>
 
-        {/* Filters */}
-        <div className="bg-background-secondary rounded-lg border border-border p-6 mb-6">
+      {/* Filters */}
+      <div className="bg-background-secondary rounded-lg border border-border p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             {/* Search */}
             <div className="md:col-span-2 lg:col-span-4">
@@ -340,117 +340,116 @@ export default function AdminLogsContent() {
           </div>
         </div>
 
-        {/* Logs Table */}
-        {logs.length === 0 ? (
-          <div className="bg-background-secondary rounded-lg border border-border p-8 text-center">
-            <p className="text-text-secondary font-poppins">{t('logs.noLogs')}</p>
-          </div>
-        ) : (
-          <>
-            <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-background border-b border-border">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.dateTime')}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.user')}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.action')}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.entityType')}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.entityId')}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.details')}
-                      </th>
-                      <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                        {t('logs.ipAddress')}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {logs.map((log) => (
-                      <tr key={log.id} className="hover:bg-background/50">
-                        <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
-                          {formatDate(log.createdAt)}
-                        </td>
-                        <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
-                          <div>
-                            {log.userEmail || '-'}
-                            {log.userRole && (
-                              <span className="text-xs text-text-secondary ml-1">
-                                ({log.userRole})
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`font-poppins font-semibold text-sm ${getActionColor(log.action)}`}>
-                            {getActionLabel(log.action)}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
-                          {getEntityTypeLabel(log.entityType)}
-                        </td>
-                        <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
-                          {log.entityId || '-'}
-                        </td>
-                        <td className="px-6 py-4 text-text-secondary font-poppins text-xs max-w-md">
-                          {log.details ? (
-                            <details className="cursor-pointer">
-                              <summary className="text-primary hover:text-accent">
-                                {t('logs.viewDetails')}
-                              </summary>
-                              <pre className="mt-2 p-2 bg-background rounded border border-border text-xs overflow-auto max-h-40">
-                                {JSON.stringify(log.details, null, 2)}
-                              </pre>
-                            </details>
-                          ) : (
-                            '-'
+      {/* Logs Table */}
+      {logs.length === 0 ? (
+        <div className="bg-background-secondary rounded-lg border border-border p-8 text-center">
+          <p className="text-text-secondary font-poppins">{t('logs.noLogs')}</p>
+        </div>
+      ) : (
+        <>
+          <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-background border-b border-border">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.dateTime')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.user')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.action')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.entityType')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.entityId')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.details')}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      {t('logs.ipAddress')}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {logs.map((log) => (
+                    <tr key={log.id} className="hover:bg-background/50">
+                      <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
+                        {formatDate(log.createdAt)}
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
+                        <div>
+                          {log.userEmail || '-'}
+                          {log.userRole && (
+                            <span className="text-xs text-text-secondary ml-1">
+                              ({log.userRole})
+                            </span>
                           )}
-                        </td>
-                        <td className="px-6 py-4 text-text-secondary font-poppins text-xs">
-                          {log.ipAddress || '-'}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`font-poppins font-semibold text-sm ${getActionColor(log.action)}`}>
+                          {getActionLabel(log.action)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
+                        {getEntityTypeLabel(log.entityType)}
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
+                        {log.entityId || '-'}
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary font-poppins text-xs max-w-md">
+                        {log.details ? (
+                          <details className="cursor-pointer">
+                            <summary className="text-primary hover:text-accent">
+                              {t('logs.viewDetails')}
+                            </summary>
+                            <pre className="mt-2 p-2 bg-background rounded border border-border text-xs overflow-auto max-h-40">
+                              {JSON.stringify(log.details, null, 2)}
+                            </pre>
+                          </details>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-text-secondary font-poppins text-xs">
+                        {log.ipAddress || '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-6 flex justify-center items-center gap-4">
-                <button
-                  onClick={() => setPage(Math.max(1, page - 1))}
-                  disabled={page === 1}
-                  className="px-4 py-2 bg-background-secondary text-text border border-border rounded-lg hover:border-primary transition-colors font-poppins disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {t('logs.previous')}
-                </button>
-                <span className="text-text-secondary font-poppins">
-                  {t('logs.page')} {page} {t('logs.of')} {totalPages}
-                </span>
-                <button
-                  onClick={() => setPage(Math.min(totalPages, page + 1))}
-                  disabled={page === totalPages}
-                  className="px-4 py-2 bg-background-secondary text-text border border-border rounded-lg hover:border-primary transition-colors font-poppins disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {t('logs.next')}
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6 flex justify-center items-center gap-4">
+              <button
+                onClick={() => setPage(Math.max(1, page - 1))}
+                disabled={page === 1}
+                className="px-4 py-2 bg-background-secondary text-text border border-border rounded-lg hover:border-primary transition-colors font-poppins disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {t('logs.previous')}
+              </button>
+              <span className="text-text-secondary font-poppins">
+                {t('logs.page')} {page} {t('logs.of')} {totalPages}
+              </span>
+              <button
+                onClick={() => setPage(Math.min(totalPages, page + 1))}
+                disabled={page === totalPages}
+                className="px-4 py-2 bg-background-secondary text-text border border-border rounded-lg hover:border-primary transition-colors font-poppins disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {t('logs.next')}
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
