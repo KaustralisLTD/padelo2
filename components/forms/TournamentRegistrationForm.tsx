@@ -64,7 +64,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [userPhotoError, setUserPhotoError] = useState<string | null>(null);
   // Категория KIDS
   const [kidsCategoryEnabled, setKidsCategoryEnabled] = useState(false);
-  const [childData, setChildData] = useState<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null } | null>(null);
+  const [children, setChildren] = useState<Array<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null }>>([]);
+  const [showChildForm, setShowChildForm] = useState(false);
+  const [formCollapsed, setFormCollapsed] = useState(false);
 
   const categoryGroups = {
     male: [
@@ -529,15 +531,17 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
 
     // Валидация данных ребенка для категории KIDS
     if (formData.categories.includes('kids')) {
-      if (!childData || !childData.firstName?.trim()) {
-        const errorMsg = t('form.childFirstName') + ' is required' || 'Child first name is required';
+      if (children.length === 0) {
+        const errorMsg = t('form.atLeastOneChildRequired') || 'At least one child is required';
         alert(errorMsg);
-        return;
+        return false;
       }
-      if (!childData.lastName?.trim()) {
-        const errorMsg = t('form.childLastName') + ' is required' || 'Child last name is required';
-        alert(errorMsg);
-        return;
+      for (let i = 0; i < children.length; i++) {
+        if (!children[i].firstName?.trim() || !children[i].lastName?.trim()) {
+          const errorMsg = t('form.childFirstName') + ' and ' + t('form.childLastName') + ' are required for all children';
+          alert(errorMsg);
+          return false;
+        }
       }
     }
 
@@ -659,7 +663,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           customFields: enabledCustomFieldsPayload,
           partner: partnerPayload,
           categoryPartners: Object.keys(categoryPartnersPayload).length > 0 ? categoryPartnersPayload : undefined,
-          childData: formData.categories.includes('kids') && childData ? childData : undefined,
+          children: formData.categories.includes('kids') && children.length > 0 ? children : undefined,
           userPhoto: userPhoto.data ? { data: userPhoto.data, name: userPhoto.name } : undefined,
         }),
       });
@@ -668,6 +672,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         const data = await response.json();
         console.log('[TournamentRegistrationForm] Registration successful:', data);
         setSubmitStatus('success');
+        setFormCollapsed(true);
         setIsAlreadyRegistered(true);
         setExistingToken(data.token);
         // Store token in localStorage for dashboard access
@@ -705,6 +710,55 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto">
+      {submitStatus === 'success' && formCollapsed && (
+        <div className="p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3 max-w-full overflow-hidden">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-lg sm:text-xl mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent break-words">
+                {t('form.registrationReceived')}
+              </h3>
+              <p className="text-text text-sm mb-3 leading-relaxed break-words">
+                {emailVerified 
+                  ? t('form.registrationReceivedMessage', { tournamentName })
+                  : t('form.registrationReceivedMessageUnverified', { tournamentName })}
+              </p>
+              {!emailVerified && (
+                <div className="bg-background/50 rounded-lg p-3 border border-primary/20">
+                  <p className="text-text font-semibold text-sm mb-1 flex items-start gap-2 break-words">
+                    <svg className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span className="break-words">{t('form.checkEmail')}</span>
+                  </p>
+                  <p className="text-text-secondary text-xs leading-relaxed mb-2 break-words">{t('form.emailInstructions')}</p>
+                  <button
+                    onClick={async () => {
+                      alert(t('form.resendVerificationEmail') || 'Resend verification email functionality coming soon');
+                    }}
+                    className="text-primary hover:text-accent text-xs font-semibold underline break-words"
+                  >
+                    {t('form.resendVerificationEmail')}
+                  </button>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={() => setFormCollapsed(false)}
+                className="mt-3 px-4 py-2 bg-background-secondary border border-primary/30 rounded-lg text-text hover:border-primary transition-colors text-sm font-poppins"
+              >
+                {t('form.viewFilledData') || 'View Filled Data'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {(!formCollapsed || submitStatus !== 'success') && (
+        <div>
       {/* Name Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -914,6 +968,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           <p className="text-sm font-orbitron font-semibold text-text mb-3">
             {t('categories.mixed1').replace(/\s+\d+$/, '')}
           </p>
+          <p className="text-xs text-text-tertiary mb-2 font-poppins">
+            {t('form.mixedExplanation') || `${t('categories.male1').replace(/\s+\d+$/, '')} + ${t('categories.female1').replace(/\s+\d+$/, '')}`}
+          </p>
           <div className="grid grid-cols-2 gap-3">
             {categoryGroups.mixed.map((category) => (
               <label
@@ -961,8 +1018,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                     ? formData.categories.filter(c => c !== 'kids')
                     : [...formData.categories, 'kids'];
                   setFormData({ ...formData, categories: newCategories });
-                  if (!formData.categories.includes('kids') && !childData) {
-                    setChildData({ firstName: '', lastName: '', photoData: null, photoName: null });
+                  if (!formData.categories.includes('kids') && children.length === 0) {
+                    setShowChildForm(true);
                   }
                 }}
                 className="w-4 h-4 text-primary bg-background border-gray-600 rounded focus:ring-primary"
@@ -1008,10 +1065,28 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           )}
 
           {(partnerRequired || showPartner) && (
-            <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
-              <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
-                {t('partnerInfo')}
-              </h3>
+            <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4 relative">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-orbitron font-semibold text-text">
+                  {t('partnerInfo')}
+                </h3>
+                {!partnerRequired && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPartner(false);
+                      setPartner(null);
+                      setPartnerPhotoError(null);
+                    }}
+                    className="text-text-secondary hover:text-primary transition-colors"
+                    title={t('form.close') || 'Close'}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -1183,10 +1258,29 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             )}
 
             {(isRequired || isExpanded) && (
-              <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4">
-                <h3 className="text-lg font-orbitron font-semibold text-text mb-2">
-                  {t('form.partnerForCategory')} {getLocalizedCategoryName(category, locale) || categoryName}
-                </h3>
+              <div className="bg-background-secondary p-4 rounded-lg border border-gray-700 space-y-4 mt-4 relative">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-orbitron font-semibold text-text">
+                    {t('form.partnerForCategory')} {getLocalizedCategoryName(category, locale) || categoryName}
+                  </h3>
+                  {!isRequired && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setExpandedCategoryPartners(prev => ({
+                          ...prev,
+                          [category]: false,
+                        }));
+                      }}
+                      className="text-text-secondary hover:text-primary transition-colors"
+                      title={t('form.close') || 'Close'}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -1348,118 +1442,187 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       {/* KIDS Category - Child Data */}
       {kidsCategoryEnabled && formData.categories.includes('kids') && (
         <div className="border border-gray-700 rounded-lg p-4">
-          <h4 className="text-sm font-orbitron font-semibold text-text mb-4">
-            {t('form.childInfo') || 'Child Information'}
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.childFirstName') || 'Child First Name'} *
-              </label>
-              <input
-                type="text"
-                required
-                value={childData?.firstName || ''}
-                onChange={(e) => setChildData({
-                  ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                  firstName: e.target.value
-                })}
-                className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-poppins text-text-secondary mb-2">
-                {t('form.childLastName') || 'Child Last Name'} *
-              </label>
-              <input
-                type="text"
-                required
-                value={childData?.lastName || ''}
-                onChange={(e) => setChildData({
-                  ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                  lastName: e.target.value
-                })}
-                className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-              />
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-sm font-orbitron font-semibold text-text">
+              {t('form.childInfo') || 'Child Information'}
+            </h4>
+            {showChildForm && (
+              <button
+                type="button"
+                onClick={() => setShowChildForm(false)}
+                className="text-text-secondary hover:text-primary transition-colors"
+                title={t('form.close') || 'Close'}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
           </div>
-          <div className="mt-4">
-            <label className="block text-sm font-poppins text-text-secondary mb-2">
-              {t('form.childPhoto') || 'Child Photo'}
-            </label>
-            <div className="flex items-center gap-4">
-              {childData?.photoData ? (
-                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
-                  <Image
-                    src={childData.photoData}
-                    alt="Child photo"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-              ) : null}
-              <div className="flex-1">
-                <label className="cursor-pointer inline-block">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    id="child-photo-input"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        // Validate file type
-                        if (!file.type.startsWith('image/')) {
-                          alert(t('form.error') || 'Please select an image file');
-                          return;
-                        }
-
-                        // Check original size (before compression)
-                        if (file.size > 20 * 1024 * 1024) {
-                          alert(t('form.photoSizeError') || 'Photo size must be less than 20MB');
-                          return;
-                        }
-
-                        try {
-                          // Compress image before converting to base64
-                          const compressedBase64 = await compressImageToSize(file, 500); // Max 500KB
-                          
-                          setChildData({
-                            ...(childData || { firstName: '', lastName: '', photoData: null, photoName: null }),
-                            photoData: compressedBase64,
-                            photoName: file.name
-                          });
-                        } catch (error) {
-                          console.error('Error compressing image:', error);
-                          alert(t('form.error') || 'Error processing image. Please try another file.');
-                        }
-                      }
-                    }}
-                    className="hidden"
-                  />
-                  <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
-                    {childData?.photoName || (t('form.chooseFile') || 'Choose File')}
+          
+          {/* List of added children */}
+          {children.length > 0 && (
+            <div className="mb-4 space-y-2">
+              {children.map((child, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-background-secondary rounded-lg border border-gray-700">
+                  <span className="text-text font-poppins text-sm">
+                    {child.firstName} {child.lastName}
                   </span>
-                </label>
-                {childData?.photoName && (
                   <button
                     type="button"
-                    onClick={() => {
-                      setChildData(prev => prev ? { ...prev, photoData: null, photoName: null } : null);
-                      const input = document.getElementById('child-photo-input') as HTMLInputElement;
-                      if (input) input.value = '';
-                    }}
-                    className="ml-2 text-xs text-text-secondary hover:text-primary"
+                    onClick={() => setChildren(children.filter((_, i) => i !== index))}
+                    className="text-red-400 hover:text-red-300 text-sm"
                   >
-                    {t('form.removeFile') || 'Remove'}
+                    {t('form.remove') || 'Remove'}
                   </button>
-                )}
-                <p className="text-xs text-text-tertiary mt-2">
-                  {t('form.photoHint') || 'Maximum 15MB. JPG, PNG formats.'}
-                </p>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {/* Add child button */}
+          {!showChildForm && (
+            <button
+              type="button"
+              onClick={() => setShowChildForm(true)}
+              className="w-full px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors flex items-center justify-center gap-2"
+            >
+              <span className="text-xl">+</span>
+              <span className="font-poppins">{t('form.addChild') || 'Add Child'}</span>
+            </button>
+          )}
+          
+          {/* Child form */}
+          {showChildForm && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.childFirstName') || 'Child First Name'} *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    id="child-first-name-input"
+                    className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    {t('form.childLastName') || 'Child Last Name'} *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    id="child-last-name-input"
+                    className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  {t('form.childPhoto') || 'Child Photo'}
+                </label>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1">
+                    <label className="cursor-pointer inline-block">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        id="child-photo-input"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            if (!file.type.startsWith('image/')) {
+                              alert(t('form.error') || 'Please select an image file');
+                              return;
+                            }
+                            if (file.size > 20 * 1024 * 1024) {
+                              alert(t('form.photoSizeError') || 'Photo size must be less than 20MB');
+                              return;
+                            }
+                            try {
+                              const compressedBase64 = await compressImageToSize(file, 500);
+                              const photoNameInput = document.getElementById('child-photo-name') as HTMLInputElement;
+                              if (photoNameInput) {
+                                photoNameInput.value = file.name;
+                                photoNameInput.setAttribute('data-photo', compressedBase64);
+                              }
+                            } catch (error) {
+                              console.error('Error compressing image:', error);
+                              alert(t('form.error') || 'Error processing image. Please try another file.');
+                            }
+                          }
+                        }}
+                        className="hidden"
+                      />
+                      <span className="inline-block px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity">
+                        <span id="child-photo-name-display">{t('form.chooseFile') || 'Choose File'}</span>
+                      </span>
+                    </label>
+                    <input type="hidden" id="child-photo-name" data-photo="" />
+                    <p className="text-xs text-text-tertiary mt-2">
+                      {t('form.photoHint') || 'Maximum 15MB. JPG, PNG formats.'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const firstNameInput = document.getElementById('child-first-name-input') as HTMLInputElement;
+                    const lastNameInput = document.getElementById('child-last-name-input') as HTMLInputElement;
+                    const photoInput = document.getElementById('child-photo-name') as HTMLInputElement;
+                    
+                    const firstName = firstNameInput?.value.trim();
+                    const lastName = lastNameInput?.value.trim();
+                    
+                    if (!firstName || !lastName) {
+                      alert(t('form.childFirstName') + ' and ' + t('form.childLastName') + ' are required');
+                      return;
+                    }
+                    
+                    const newChild = {
+                      firstName,
+                      lastName,
+                      photoData: photoInput?.getAttribute('data-photo') || null,
+                      photoName: photoInput?.value || null,
+                    };
+                    
+                    setChildren([...children, newChild]);
+                    if (firstNameInput) firstNameInput.value = '';
+                    if (lastNameInput) lastNameInput.value = '';
+                    if (photoInput) {
+                      photoInput.value = '';
+                      photoInput.setAttribute('data-photo', '');
+                    }
+                    const photoNameDisplay = document.getElementById('child-photo-name-display');
+                    if (photoNameDisplay) photoNameDisplay.textContent = t('form.chooseFile') || 'Choose File';
+                    const fileInput = document.getElementById('child-photo-input') as HTMLInputElement;
+                    if (fileInput) fileInput.value = '';
+                    setShowChildForm(false);
+                  }}
+                  className="flex-1 px-4 py-2 bg-primary text-background rounded-lg text-sm font-poppins hover:opacity-90 transition-opacity"
+                >
+                  {t('form.addChild') || 'Add Child'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowChildForm(false);
+                    const firstNameInput = document.getElementById('child-first-name-input') as HTMLInputElement;
+                    const lastNameInput = document.getElementById('child-last-name-input') as HTMLInputElement;
+                    if (firstNameInput) firstNameInput.value = '';
+                    if (lastNameInput) lastNameInput.value = '';
+                  }}
+                  className="px-4 py-2 bg-background-secondary border border-gray-700 rounded-lg text-text hover:border-primary transition-colors"
+                >
+                  {t('form.cancel') || 'Cancel'}
+                </button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
@@ -1541,6 +1704,13 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
                   </button>
                 </div>
               )}
+              <button
+                type="button"
+                onClick={() => setFormCollapsed(!formCollapsed)}
+                className="mt-3 px-4 py-2 bg-background-secondary border border-primary/30 rounded-lg text-text hover:border-primary transition-colors text-sm font-poppins"
+              >
+                {formCollapsed ? t('form.viewFilledData') || 'View Filled Data' : t('form.hideForm') || 'Hide Form'}
+              </button>
             </div>
           </div>
         </div>
