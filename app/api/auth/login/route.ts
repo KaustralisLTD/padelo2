@@ -83,9 +83,7 @@ export async function POST(request: NextRequest) {
         { 
           error: 'Invalid credentials',
           errorType: userExists ? 'invalidPassword' : 'userNotFound',
-          message: userExists 
-            ? 'The password you entered is incorrect. Please check your password and try again.'
-            : 'No account found with this email address. Please check your email or create a new account.'
+          errorKey: userExists ? 'errors.passwordIncorrect' : 'errors.userNotFound'
         },
         { status: 401 }
       );
@@ -97,7 +95,7 @@ export async function POST(request: NextRequest) {
         { 
           error: 'Email not verified',
           emailNotVerified: true,
-          message: 'Please verify your email address before logging in. Check your inbox for the verification link.'
+          errorKey: 'errors.emailNotVerified'
         },
         { status: 403 }
       );

@@ -81,11 +81,11 @@ export default function LoginContent() {
           console.error('Login error:', errorData);
           if (errorData.emailNotVerified) {
             setEmailNotVerified(true);
-            setError(t('errors.emailNotVerified') || errorData.message || 'Please verify your email address before logging in.');
+            setError(t(errorData.errorKey || 'errors.emailNotVerified'));
           } else {
             setEmailNotVerified(false);
-            // Используем детальное сообщение об ошибке, если оно есть
-            const errorMessage = errorData.message || errorData.error || t('errors.invalidCredentials');
+            // Используем локализованный ключ ошибки, если он есть
+            const errorMessage = errorData.errorKey ? t(errorData.errorKey) : (errorData.message || errorData.error || t('errors.invalidCredentials'));
             setError(errorMessage);
             // Показываем кнопку Forgot password для всех ошибок пароля
             if (errorData.errorType === 'invalidPassword' || errorData.errorType === 'userNotFound') {
