@@ -987,6 +987,9 @@
     "dbMonitor": {
       "title": "Database Monitor"
     },
+    "staff": {
+      "title": "Staff"
+    },
     "users": {
       "title": "Manage Users",
       "description": "Create, edit, and manage all user accounts",

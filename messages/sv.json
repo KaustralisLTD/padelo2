@@ -1014,6 +1014,7 @@
       "title": "DB Monitor"
     },
     "staff": {
+      "title": "Personal",
       "assignAccess": "Tilldela Åtkomst",
       "editAccess": "Redigera Åtkomst",
       "user": "Användare",

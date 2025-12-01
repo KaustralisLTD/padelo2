@@ -842,6 +842,9 @@
     "dbMonitor": {
       "title": "Monitor de BD"
     },
+    "staff": {
+      "title": "Personal"
+    },
     "users": {
       "title": "Gestión de Usuarios",
       "description": "Crear, editar y gestionar todas las cuentas de usuario",

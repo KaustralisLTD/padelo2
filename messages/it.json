@@ -1015,6 +1015,7 @@
       "title": "Monitor DB"
     },
     "staff": {
+      "title": "Personale",
       "assignAccess": "Assegna Accesso",
       "editAccess": "Modifica Accesso",
       "user": "Utente",

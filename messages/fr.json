@@ -872,6 +872,12 @@
     "dbMonitor": {
       "title": "Moniteur de BD"
     },
+    "staff": {
+      "title": "Personnel"
+    },
+    "users": {
+      "title": "Gérer les utilisateurs"
+    },
       "createTournament": "Créer un Tournoi",
       "editTournament": "Modifier le Tournoi",
       "name": "Nom",

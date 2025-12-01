@@ -959,6 +959,7 @@
       "title": "DB Monitor"
     },
     "staff": {
+      "title": "Personeel",
       "assignAccess": "Toegang Toewijzen",
       "editAccess": "Toegang Bewerken",
       "user": "Gebruiker",

@@ -969,6 +969,7 @@
       "title": "DB-Monitor"
     },
     "staff": {
+      "title": "Personal",
       "assignAccess": "Zugriff Zuweisen",
       "editAccess": "Zugriff Bearbeiten",
       "user": "Benutzer",

@@ -1014,6 +1014,7 @@
       "title": "DB Monitor"
     },
     "staff": {
+      "title": "Personale",
       "assignAccess": "Tildel Adgang",
       "editAccess": "Rediger Adgang",
       "user": "Bruger",

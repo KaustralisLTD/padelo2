@@ -1014,6 +1014,7 @@
       "title": "数据库监控"
     },
     "staff": {
+      "title": "员工",
       "assignAccess": "分配访问权限",
       "editAccess": "编辑访问权限",
       "user": "用户",
