@@ -790,6 +790,35 @@
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     }
   },
+  "ResetPassword": {
+    "title": "Passwort zurücksetzen",
+    "description": "Geben Sie unten Ihr neues Passwort ein.",
+    "newPassword": "Neues Passwort",
+    "newPasswordPlaceholder": "Geben Sie Ihr neues Passwort ein",
+    "confirmPassword": "Passwort bestätigen",
+    "confirmPasswordPlaceholder": "Bestätigen Sie Ihr neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "passwordHint": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+    "submit": "Passwort zurücksetzen",
+    "submitting": "Wird zurückgesetzt...",
+    "backToLogin": "Zurück zur Anmeldung",
+    "loading": "Laden...",
+    "success": {
+      "title": "Passwort erfolgreich zurückgesetzt",
+      "message": "Ihr Passwort wurde erfolgreich zurückgesetzt. Sie können sich jetzt mit Ihrem neuen Passwort anmelden.",
+      "redirect": "Weiterleitung zur Anmeldeseite..."
+    },
+    "errors": {
+      "noToken": "Ungültiges oder fehlendes Reset-Token. Bitte fordern Sie einen neuen Link zum Zurücksetzen des Passworts an.",
+      "invalidToken": "Ungültiges oder abgelaufenes Passwort-Reset-Token.",
+      "passwordMismatch": "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut.",
+      "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein.",
+      "failed": "Passwort konnte nicht zurückgesetzt werden. Bitte versuchen Sie es erneut.",
+      "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt.",
+    "passwordResetFailed": "Passwort konnte nicht zurückgesetzt werden."
+  },
   "WhatsApp": {
     "button": "Auf WhatsApp chatten",
     "message": "Hallo! Ich interessiere mich für weitere Informationen über Ihre Padel-Dienste.",
@@ -797,15 +826,68 @@
     "userId": "Benutzer-ID"
   },
   "Admin": {
-    "loading": "Загрузка...",
-    "backToDashboard": "Вернуться в панель управления",
+    "loading": "Laden...",
+    "backToDashboard": "Zurück zum Dashboard",
     "logout": "Abmelden",
     "export": "Exportieren",
     "export.csv": "Als CSV herunterladen",
     "export.excel": "Als Excel herunterladen",
     "export.print": "Drucken",
     "settings": {
-      "title": "Einstellungen"
+      "title": "Einstellungen",
+      "description": "Verwalten Sie allgemeine Plattformeinstellungen, Clubmodule, Unternehmensinformationen und Ihre Kontoeinstellungen.",
+      "clubModules": {
+        "title": "Clubmodule",
+        "description": "Konfigurieren Sie Einstellungen für Plätze, Extras, Preise, Feiertage und Richtlinien Ihres Clubs.",
+        "courts": {
+          "title": "Plätze",
+          "description": "Verwalten Sie Verfügbarkeit und Details von Padelplätzen."
+        },
+        "extras": {
+          "title": "Extras",
+          "description": "Konfigurieren Sie zusätzliche Dienste oder Produkte, die für Clubmitglieder verfügbar sind."
+        },
+        "pricing": {
+          "title": "Preise",
+          "description": "Definieren Sie Preisstrukturen für Platzreservierungen, Turniere und Mitgliedschaften."
+        },
+        "holidays": {
+          "title": "Feiertage",
+          "description": "Verwalten Sie Feiertage und Schließungen des Clubs."
+        },
+        "policies": {
+          "title": "Richtlinien",
+          "description": "Definieren Sie Richtlinien und Regeln des Clubs."
+        }
+      },
+      "companyAdmin": {
+        "title": "Unternehmensverwaltung",
+        "description": "Verwalten Sie Unternehmensinformationen, Clubs, Administratoren und Allgemeine Geschäftsbedingungen.",
+        "company": {
+          "title": "Unternehmen",
+          "description": "Aktualisieren Sie Unternehmensdetails und Kontaktinformationen."
+        },
+        "clubs": {
+          "title": "Clubs",
+          "description": "Verwalten Sie Clubs, die mit Ihrer Organisation verbunden sind."
+        },
+        "manageAdmins": {
+          "title": "Administratoren verwalten",
+          "description": "Hinzufügen, Bearbeiten oder Löschen von Administratorkonten."
+        },
+        "terms": {
+          "title": "Allgemeine Geschäftsbedingungen",
+          "description": "Aktualisieren Sie die Allgemeinen Geschäftsbedingungen der Plattform."
+        }
+      },
+      "account": {
+        "title": "Konto",
+        "description": "Verwalten Sie Einstellungen Ihres persönlichen Kontos, einschließlich Profil und Benachrichtigungseinstellungen.",
+        "profile": {
+          "title": "Profil",
+          "description": "Aktualisieren Sie Informationen Ihres persönlichen Profils."
+        }
+      }
     },
     "dashboard": {
       "title": "Dashboard"

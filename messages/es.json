@@ -827,11 +827,15 @@
     },
     "errors": {
       "noToken": "Token de restablecimiento inválido o faltante. Por favor, solicita un nuevo enlace para restablecer la contraseña.",
+      "invalidToken": "Token de restablecimiento de contraseña inválido o caducado.",
       "passwordMismatch": "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.",
       "passwordTooShort": "La contraseña debe tener al menos 8 caracteres.",
       "failed": "Error al restablecer la contraseña. Por favor, inténtalo de nuevo.",
       "generic": "Ocurrió un error. Por favor, inténtalo de nuevo."
-    }
+    },
+    "passwordResetSuccess": "La contraseña ha sido restablecida con éxito.",
+    "passwordResetFailed": "No se pudo restablecer la contraseña.",
+    "confirmNewPassword": "Confirme la nueva contraseña"
   },
   "WhatsApp": {
     "button": "Chatear en WhatsApp",
@@ -848,7 +852,60 @@
     "export.excel": "Descargar como Excel",
     "export.print": "Imprimir",
     "settings": {
-      "title": "Configuración"
+      "title": "Configuración",
+      "description": "Administre la configuración general de la plataforma, los módulos del club, la información de la empresa y las preferencias de su cuenta.",
+      "clubModules": {
+        "title": "Módulos del Club",
+        "description": "Configure los ajustes relacionados con las pistas, extras, precios, días festivos y políticas de su club.",
+        "courts": {
+          "title": "Pistas",
+          "description": "Gestione la disponibilidad y los detalles de las pistas de pádel."
+        },
+        "extras": {
+          "title": "Extras",
+          "description": "Configure los servicios o productos adicionales disponibles para los miembros del club."
+        },
+        "pricing": {
+          "title": "Precios",
+          "description": "Defina las estructuras de precios para reservas de pistas, torneos y membresías."
+        },
+        "holidays": {
+          "title": "Días Festivos",
+          "description": "Gestione los días festivos y los cierres del club."
+        },
+        "policies": {
+          "title": "Políticas",
+          "description": "Defina las políticas y reglas del club."
+        }
+      },
+      "companyAdmin": {
+        "title": "Administración de la Empresa",
+        "description": "Gestione la información de la empresa, los clubes, los administradores y los términos y condiciones.",
+        "company": {
+          "title": "Empresa",
+          "description": "Actualice los detalles de la empresa y la información de contacto."
+        },
+        "clubs": {
+          "title": "Clubes",
+          "description": "Gestione los clubes asociados a su organización."
+        },
+        "manageAdmins": {
+          "title": "Gestionar Administradores",
+          "description": "Añada, edite o elimine cuentas de administrador."
+        },
+        "terms": {
+          "title": "Términos y Condiciones",
+          "description": "Actualice los términos y condiciones de la plataforma."
+        }
+      },
+      "account": {
+        "title": "Cuenta",
+        "description": "Administre la configuración de su cuenta personal, incluyendo el perfil y las preferencias de notificación.",
+        "profile": {
+          "title": "Perfil",
+          "description": "Actualice la información de su perfil personal."
+        }
+      }
     },
     "dashboard": {
       "title": "Panel de Control"

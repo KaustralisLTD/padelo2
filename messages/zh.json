@@ -790,6 +790,35 @@
       "generic": "发生错误。请重试。"
     }
   },
+  "ResetPassword": {
+    "title": "重置密码",
+    "description": "请在下方输入您的新密码。",
+    "newPassword": "新密码",
+    "newPasswordPlaceholder": "请输入您的新密码",
+    "confirmPassword": "确认密码",
+    "confirmPasswordPlaceholder": "请确认您的新密码",
+    "confirmNewPassword": "确认新密码",
+    "passwordHint": "密码必须至少8个字符。",
+    "submit": "重置密码",
+    "submitting": "重置中...",
+    "backToLogin": "返回登录",
+    "loading": "加载中...",
+    "success": {
+      "title": "密码重置成功",
+      "message": "您的密码已成功重置。您现在可以使用新密码登录。",
+      "redirect": "正在重定向到登录页面..."
+    },
+    "errors": {
+      "noToken": "无效或缺失的重置令牌。请请求新的密码重置链接。",
+      "invalidToken": "密码重置令牌无效或已过期。",
+      "passwordMismatch": "密码不匹配。请重试。",
+      "passwordTooShort": "密码必须至少8个字符。",
+      "failed": "重置密码失败。请重试。",
+      "generic": "发生错误。请重试。"
+    },
+    "passwordResetSuccess": "密码已成功重置。",
+    "passwordResetFailed": "无法重置密码。"
+  },
   "WhatsApp": {
     "button": "在 WhatsApp 上聊天",
     "message": "你好！我想了解更多关于您的板式网球服务。",
@@ -852,7 +881,60 @@
     "export.excel": "下载为 Excel",
     "export.print": "打印",
     "settings": {
-      "title": "设置"
+      "title": "设置",
+      "description": "管理平台的一般设置、俱乐部模块、公司信息和您的账户偏好。",
+      "clubModules": {
+        "title": "俱乐部模块",
+        "description": "配置与球场、额外服务、定价、节假日和俱乐部政策相关的设置。",
+        "courts": {
+          "title": "球场",
+          "description": "管理板式网球球场的可用性和详细信息。"
+        },
+        "extras": {
+          "title": "额外服务",
+          "description": "配置俱乐部会员可用的额外服务或产品。"
+        },
+        "pricing": {
+          "title": "定价",
+          "description": "为球场预订、锦标赛和会员资格设置价格结构。"
+        },
+        "holidays": {
+          "title": "节假日",
+          "description": "管理节假日和俱乐部关闭时间。"
+        },
+        "policies": {
+          "title": "政策",
+          "description": "设置俱乐部的政策和规则。"
+        }
+      },
+      "companyAdmin": {
+        "title": "公司管理",
+        "description": "管理公司信息、俱乐部、管理员以及条款和条件。",
+        "company": {
+          "title": "公司",
+          "description": "更新公司详细信息和联系信息。"
+        },
+        "clubs": {
+          "title": "俱乐部",
+          "description": "管理与您的组织相关的俱乐部。"
+        },
+        "manageAdmins": {
+          "title": "管理管理员",
+          "description": "添加、编辑或删除管理员账户。"
+        },
+        "terms": {
+          "title": "条款和条件",
+          "description": "更新平台的条款和条件。"
+        }
+      },
+      "account": {
+        "title": "账户",
+        "description": "管理您的个人账户设置，包括个人资料和通知偏好。",
+        "profile": {
+          "title": "个人资料",
+          "description": "更新您的个人资料信息。"
+        }
+      }
     },
     "dashboard": {
       "title": "仪表板"

@@ -786,6 +786,35 @@
       "generic": "Er is een fout opgetreden. Probeer het opnieuw."
     }
   },
+  "ResetPassword": {
+    "title": "Wachtwoord opnieuw instellen",
+    "description": "Voer hieronder uw nieuwe wachtwoord in.",
+    "newPassword": "Nieuw wachtwoord",
+    "newPasswordPlaceholder": "Voer uw nieuwe wachtwoord in",
+    "confirmPassword": "Bevestig wachtwoord",
+    "confirmPasswordPlaceholder": "Bevestig uw nieuwe wachtwoord",
+    "confirmNewPassword": "Bevestig nieuw wachtwoord",
+    "passwordHint": "Wachtwoord moet minimaal 8 tekens lang zijn.",
+    "submit": "Wachtwoord opnieuw instellen",
+    "submitting": "Opnieuw instellen...",
+    "backToLogin": "Terug naar inloggen",
+    "loading": "Laden...",
+    "success": {
+      "title": "Wachtwoord succesvol opnieuw ingesteld",
+      "message": "Uw wachtwoord is succesvol opnieuw ingesteld. U kunt nu inloggen met uw nieuwe wachtwoord.",
+      "redirect": "Doorverwijzen naar inlogpagina..."
+    },
+    "errors": {
+      "noToken": "Ongeldig of ontbrekend reset-token. Vraag een nieuwe link voor het opnieuw instellen van het wachtwoord aan.",
+      "invalidToken": "Ongeldig of verlopen wachtwoord reset-token.",
+      "passwordMismatch": "Wachtwoorden komen niet overeen. Probeer het opnieuw.",
+      "passwordTooShort": "Wachtwoord moet minimaal 8 tekens lang zijn.",
+      "failed": "Kan wachtwoord niet opnieuw instellen. Probeer het opnieuw.",
+      "generic": "Er is een fout opgetreden. Probeer het opnieuw."
+    },
+    "passwordResetSuccess": "Wachtwoord is succesvol opnieuw ingesteld.",
+    "passwordResetFailed": "Kan wachtwoord niet opnieuw instellen."
+  },
   "WhatsApp": {
     "button": "Chat op WhatsApp",
     "message": "Hallo! Ik ben geïnteresseerd in meer informatie over uw padel diensten.",
@@ -793,15 +822,68 @@
     "userId": "Gebruikers-ID"
   },
   "Admin": {
-    "loading": "Загрузка...",
-    "backToDashboard": "Вернуться в панель управления",
+    "loading": "Laden...",
+    "backToDashboard": "Terug naar dashboard",
     "logout": "Uitloggen",
     "export": "Exporteren",
     "export.csv": "Downloaden als CSV",
     "export.excel": "Downloaden als Excel",
     "export.print": "Afdrukken",
     "settings": {
-      "title": "Instellingen"
+      "title": "Instellingen",
+      "description": "Beheer algemene platforminstellingen, clubmodules, bedrijfsinformatie en uw accountvoorkeuren.",
+      "clubModules": {
+        "title": "Clubmodules",
+        "description": "Configureer instellingen gerelateerd aan banen, extra's, prijzen, feestdagen en beleid van uw club.",
+        "courts": {
+          "title": "Banen",
+          "description": "Beheer beschikbaarheid en details van padelbanen."
+        },
+        "extras": {
+          "title": "Extra's",
+          "description": "Configureer extra diensten of producten beschikbaar voor clubleden."
+        },
+        "pricing": {
+          "title": "Prijzen",
+          "description": "Definieer prijsstructuren voor baanreserveringen, toernooien en lidmaatschappen."
+        },
+        "holidays": {
+          "title": "Feestdagen",
+          "description": "Beheer feestdagen en sluitingen van de club."
+        },
+        "policies": {
+          "title": "Beleid",
+          "description": "Definieer beleid en regels van de club."
+        }
+      },
+      "companyAdmin": {
+        "title": "Bedrijfsadministratie",
+        "description": "Beheer bedrijfsinformatie, clubs, beheerders en algemene voorwaarden.",
+        "company": {
+          "title": "Bedrijf",
+          "description": "Werk bedrijfsgegevens en contactinformatie bij."
+        },
+        "clubs": {
+          "title": "Clubs",
+          "description": "Beheer clubs die aan uw organisatie zijn gekoppeld."
+        },
+        "manageAdmins": {
+          "title": "Beheerders beheren",
+          "description": "Voeg beheerdersaccounts toe, bewerk of verwijder ze."
+        },
+        "terms": {
+          "title": "Algemene Voorwaarden",
+          "description": "Werk de algemene voorwaarden van het platform bij."
+        }
+      },
+      "account": {
+        "title": "Account",
+        "description": "Beheer instellingen van uw persoonlijke account, inclusief profiel en meldingsvoorkeuren.",
+        "profile": {
+          "title": "Profiel",
+          "description": "Werk informatie van uw persoonlijke profiel bij."
+        }
+      }
     },
     "dashboard": {
       "title": "Dashboard"

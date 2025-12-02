@@ -809,11 +809,15 @@
     },
     "errors": {
       "noToken": "Jeton de réinitialisation invalide ou manquant. Veuillez demander un nouveau lien de réinitialisation de mot de passe.",
+      "invalidToken": "Jeton de réinitialisation de mot de passe invalide ou expiré.",
       "passwordMismatch": "Les mots de passe ne correspondent pas. Veuillez réessayer.",
       "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères.",
       "failed": "Échec de la réinitialisation du mot de passe. Veuillez réessayer.",
       "generic": "Une erreur s'est produite. Veuillez réessayer."
-    }
+    },
+    "passwordResetSuccess": "Le mot de passe a été réinitialisé avec succès.",
+    "passwordResetFailed": "Échec de la réinitialisation du mot de passe.",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe"
   },
   "WhatsApp": {
     "button": "Discuter sur WhatsApp",
@@ -879,7 +883,60 @@
     "export.excel": "Télécharger en Excel",
     "export.print": "Imprimer",
     "settings": {
-      "title": "Paramètres"
+      "title": "Paramètres",
+      "description": "Gérez les paramètres généraux de la plateforme, les modules du club, les informations sur l'entreprise et les préférences de votre compte.",
+      "clubModules": {
+        "title": "Modules du Club",
+        "description": "Configurez les paramètres liés aux courts, aux extras, aux prix, aux jours fériés et aux politiques de votre club.",
+        "courts": {
+          "title": "Terrains",
+          "description": "Gérez la disponibilité et les détails des terrains de padel."
+        },
+        "extras": {
+          "title": "Extras",
+          "description": "Configurez les services ou produits supplémentaires disponibles pour les membres du club."
+        },
+        "pricing": {
+          "title": "Tarification",
+          "description": "Définissez les structures de prix pour les réservations de terrains, les tournois et les abonnements."
+        },
+        "holidays": {
+          "title": "Jours Fériés",
+          "description": "Gérez les jours fériés et les fermetures du club."
+        },
+        "policies": {
+          "title": "Politiques",
+          "description": "Définissez les politiques et les règles du club."
+        }
+      },
+      "companyAdmin": {
+        "title": "Administration de l'Entreprise",
+        "description": "Gérez les informations sur l'entreprise, les clubs, les administrateurs et les conditions générales.",
+        "company": {
+          "title": "Entreprise",
+          "description": "Mettez à jour les détails de l'entreprise et les informations de contact."
+        },
+        "clubs": {
+          "title": "Clubs",
+          "description": "Gérez les clubs associés à votre organisation."
+        },
+        "manageAdmins": {
+          "title": "Gérer les Administrateurs",
+          "description": "Ajoutez, modifiez ou supprimez les comptes administrateurs."
+        },
+        "terms": {
+          "title": "Conditions Générales",
+          "description": "Mettez à jour les conditions générales de la plateforme."
+        }
+      },
+      "account": {
+        "title": "Compte",
+        "description": "Gérez les paramètres de votre compte personnel, y compris le profil et les préférences de notification.",
+        "profile": {
+          "title": "Profil",
+          "description": "Mettez à jour les informations de votre profil personnel."
+        }
+      }
     },
     "dashboard": {
       "title": "Tableau de bord"
@@ -907,7 +964,9 @@
       "title": "Journaux"
     },
     "dbMonitor": {
-      "title": "Moniteur de BD"
+      "title": "Moniteur de BD",
+      "description": "Surveillez l'activité de la base de données en temps réel, y compris les requêtes, les connexions et les performances.",
+      "refresh": "Actualiser"
     },
     "staff": {
       "title": "Personnel",

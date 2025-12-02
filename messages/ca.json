@@ -1089,7 +1089,60 @@
     "export.excel": "Descarregar com Excel",
     "export.print": "Imprimir",
     "settings": {
-      "title": "Configuració"
+      "title": "Configuració",
+      "description": "Gestioneu la configuració general de la plataforma, els mòduls del club, la informació de l'empresa i les preferències del vostre compte.",
+      "clubModules": {
+        "title": "Mòduls del Club",
+        "description": "Configureu els ajustos relacionats amb les pistes, extres, preus, dies festius i polítiques del vostre club.",
+        "courts": {
+          "title": "Pistes",
+          "description": "Gestioneu la disponibilitat i els detalls de les pistes de pàdel."
+        },
+        "extras": {
+          "title": "Extres",
+          "description": "Configureu els serveis o productes addicionals disponibles per als membres del club."
+        },
+        "pricing": {
+          "title": "Preus",
+          "description": "Definiu les estructures de preus per a reserves de pistes, torneigs i membres."
+        },
+        "holidays": {
+          "title": "Dies Festius",
+          "description": "Gestioneu els dies festius i les tancades del club."
+        },
+        "policies": {
+          "title": "Polítiques",
+          "description": "Definiu les polítiques i regles del club."
+        }
+      },
+      "companyAdmin": {
+        "title": "Administració de l'Empresa",
+        "description": "Gestioneu la informació de l'empresa, els clubs, els administradors i els termes i condicions.",
+        "company": {
+          "title": "Empresa",
+          "description": "Actualitzeu els detalls de l'empresa i la informació de contacte."
+        },
+        "clubs": {
+          "title": "Clubs",
+          "description": "Gestioneu els clubs associats a la vostra organització."
+        },
+        "manageAdmins": {
+          "title": "Gestionar Administradors",
+          "description": "Afegiu, editeu o elimineu comptes d'administrador."
+        },
+        "terms": {
+          "title": "Termes i Condicions",
+          "description": "Actualitzeu els termes i condicions de la plataforma."
+        }
+      },
+      "account": {
+        "title": "Compte",
+        "description": "Gestioneu la configuració del vostre compte personal, incloent el perfil i les preferències de notificació.",
+        "profile": {
+          "title": "Perfil",
+          "description": "Actualitzeu la informació del vostre perfil personal."
+        }
+      }
     },
     "dashboard": {
       "title": "Tauler de control"
@@ -1769,6 +1822,35 @@
       "failed": "Error en enviar el correu de restabliment. Si us plau, torna-ho a intentar.",
       "generic": "S'ha produït un error. Si us plau, torna-ho a intentar."
     }
+  },
+  "ResetPassword": {
+    "title": "Restablir contrasenya",
+    "description": "Introdueix la teva nova contrasenya a continuació.",
+    "newPassword": "Nova contrasenya",
+    "newPasswordPlaceholder": "Introdueix la teva nova contrasenya",
+    "confirmPassword": "Confirma la contrasenya",
+    "confirmPasswordPlaceholder": "Confirma la teva nova contrasenya",
+    "confirmNewPassword": "Confirma la nova contrasenya",
+    "passwordHint": "La contrasenya ha de tenir almenys 8 caràcters.",
+    "submit": "Restablir contrasenya",
+    "submitting": "Restablint...",
+    "backToLogin": "Tornar a l'inici de sessió",
+    "loading": "Carregant...",
+    "success": {
+      "title": "Contrasenya restablida amb èxit",
+      "message": "La teva contrasenya s'ha restablert amb èxit. Ara pots iniciar sessió amb la teva nova contrasenya.",
+      "redirect": "Redirigint a la pàgina d'inici de sessió..."
+    },
+    "errors": {
+      "noToken": "Token de restabliment invàlid o faltant. Si us plau, sol·licita un nou enllaç per restablir la contrasenya.",
+      "invalidToken": "Token de restabliment de contrasenya invàlid o caducat.",
+      "passwordMismatch": "Les contrasenyes no coincideixen. Si us plau, torna-ho a intentar.",
+      "passwordTooShort": "La contrasenya ha de tenir almenys 8 caràcters.",
+      "failed": "Error en restablir la contrasenya. Si us plau, torna-ho a intentar.",
+      "generic": "S'ha produït un error. Si us plau, torna-ho a intentar."
+    },
+    "passwordResetSuccess": "La contrasenya s'ha restablert amb èxit.",
+    "passwordResetFailed": "No s'ha pogut restablir la contrasenya."
   },
   "WhatsApp": {
     "button": "Chat on WhatsApp",

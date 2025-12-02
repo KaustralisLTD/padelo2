@@ -790,6 +790,35 @@
       "generic": "Si è verificato un errore. Riprova."
     }
   },
+  "ResetPassword": {
+    "title": "Reimposta password",
+    "description": "Inserisci la tua nuova password qui sotto.",
+    "newPassword": "Nuova password",
+    "newPasswordPlaceholder": "Inserisci la tua nuova password",
+    "confirmPassword": "Conferma password",
+    "confirmPasswordPlaceholder": "Conferma la tua nuova password",
+    "confirmNewPassword": "Conferma nuova password",
+    "passwordHint": "La password deve essere di almeno 8 caratteri.",
+    "submit": "Reimposta password",
+    "submitting": "Reimpostazione...",
+    "backToLogin": "Torna al login",
+    "loading": "Caricamento...",
+    "success": {
+      "title": "Password reimpostata con successo",
+      "message": "La tua password è stata reimpostata con successo. Ora puoi accedere con la tua nuova password.",
+      "redirect": "Reindirizzamento alla pagina di accesso..."
+    },
+    "errors": {
+      "noToken": "Token di reimpostazione non valido o mancante. Richiedi un nuovo link per reimpostare la password.",
+      "invalidToken": "Token di reimpostazione password non valido o scaduto.",
+      "passwordMismatch": "Le password non corrispondono. Riprova.",
+      "passwordTooShort": "La password deve essere di almeno 8 caratteri.",
+      "failed": "Impossibile reimpostare la password. Riprova.",
+      "generic": "Si è verificato un errore. Riprova."
+    },
+    "passwordResetSuccess": "La password è stata reimpostata con successo.",
+    "passwordResetFailed": "Impossibile reimpostare la password."
+  },
   "WhatsApp": {
     "button": "Chatta su WhatsApp",
     "message": "Ciao! Sono interessato a saperne di più sui vostri servizi di padel.",
@@ -852,7 +881,60 @@
     "export.excel": "Scarica come Excel",
     "export.print": "Stampa",
     "settings": {
-      "title": "Impostazioni"
+      "title": "Impostazioni",
+      "description": "Gestisci le impostazioni generali della piattaforma, i moduli del club, le informazioni aziendali e le preferenze del tuo account.",
+      "clubModules": {
+        "title": "Moduli del Club",
+        "description": "Configura le impostazioni relative ai campi, agli extra, ai prezzi, alle festività e alle politiche del tuo club.",
+        "courts": {
+          "title": "Campi",
+          "description": "Gestisci disponibilità e dettagli dei campi da padel."
+        },
+        "extras": {
+          "title": "Extra",
+          "description": "Configura servizi o prodotti aggiuntivi disponibili per i membri del club."
+        },
+        "pricing": {
+          "title": "Prezzi",
+          "description": "Definisci le strutture dei prezzi per prenotazioni di campi, tornei e abbonamenti."
+        },
+        "holidays": {
+          "title": "Festività",
+          "description": "Gestisci festività e chiusure del club."
+        },
+        "policies": {
+          "title": "Politiche",
+          "description": "Definisci le politiche e le regole del club."
+        }
+      },
+      "companyAdmin": {
+        "title": "Amministrazione Aziendale",
+        "description": "Gestisci informazioni aziendali, club, amministratori e termini e condizioni.",
+        "company": {
+          "title": "Azienda",
+          "description": "Aggiorna i dettagli dell'azienda e le informazioni di contatto."
+        },
+        "clubs": {
+          "title": "Club",
+          "description": "Gestisci i club associati alla tua organizzazione."
+        },
+        "manageAdmins": {
+          "title": "Gestisci Amministratori",
+          "description": "Aggiungi, modifica o elimina account amministratore."
+        },
+        "terms": {
+          "title": "Termini e Condizioni",
+          "description": "Aggiorna i termini e le condizioni della piattaforma."
+        }
+      },
+      "account": {
+        "title": "Account",
+        "description": "Gestisci le impostazioni del tuo account personale, inclusi profilo e preferenze di notifica.",
+        "profile": {
+          "title": "Profilo",
+          "description": "Aggiorna le informazioni del tuo profilo personale."
+        }
+      }
     },
     "messages": {
       "title": "Messaggi",
