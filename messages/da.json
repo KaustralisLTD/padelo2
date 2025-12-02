@@ -790,6 +790,35 @@
       "generic": "Der opstod en fejl. Prøv venligst igen."
     }
   },
+  "ResetPassword": {
+    "title": "Nulstil adgangskode",
+    "description": "Indtast din nye adgangskode nedenfor.",
+    "newPassword": "Ny adgangskode",
+    "newPasswordPlaceholder": "Indtast din nye adgangskode",
+    "confirmPassword": "Bekræft adgangskode",
+    "confirmPasswordPlaceholder": "Bekræft din nye adgangskode",
+    "confirmNewPassword": "Bekræft ny adgangskode",
+    "passwordHint": "Adgangskoden skal være mindst 8 tegn lang.",
+    "submit": "Nulstil adgangskode",
+    "submitting": "Nulstiller...",
+    "backToLogin": "Tilbage til login",
+    "loading": "Indlæser...",
+    "success": {
+      "title": "Adgangskode nulstillet med succes",
+      "message": "Din adgangskode er blevet nulstillet med succes. Du kan nu logge ind med din nye adgangskode.",
+      "redirect": "Omdirigerer til login-siden..."
+    },
+    "errors": {
+      "noToken": "Ugyldigt eller manglende nulstillings-token. Anmod venligst om et nyt link til at nulstille adgangskoden.",
+      "invalidToken": "Ugyldigt eller udløbet adgangskode-nulstillings-token.",
+      "passwordMismatch": "Adgangskoderne matcher ikke. Prøv venligst igen.",
+      "passwordTooShort": "Adgangskoden skal være mindst 8 tegn lang.",
+      "failed": "Kunne ikke nulstille adgangskode. Prøv venligst igen.",
+      "generic": "Der opstod en fejl. Prøv venligst igen."
+    },
+    "passwordResetSuccess": "Adgangskoden er blevet nulstillet med succes.",
+    "passwordResetFailed": "Kunne ikke nulstille adgangskode."
+  },
   "WhatsApp": {
     "button": "Chat på WhatsApp",
     "message": "Hej! Jeg er interesseret i at lære mere om jeres padel tjenester.",
@@ -852,7 +881,60 @@
     "export.excel": "Download som Excel",
     "export.print": "Udskriv",
     "settings": {
-      "title": "Indstillinger"
+      "title": "Indstillinger",
+      "description": "Administrer generelle platformindstillinger, klubmoduler, virksomhedsoplysninger og dine kontopræferencer.",
+      "clubModules": {
+        "title": "Klubmoduler",
+        "description": "Konfigurer indstillinger relateret til baner, ekstraer, priser, helligdage og politikker for din klub.",
+        "courts": {
+          "title": "Baner",
+          "description": "Administrer tilgængelighed og detaljer for padelbaner."
+        },
+        "extras": {
+          "title": "Ekstraer",
+          "description": "Konfigurer yderligere tjenester eller produkter tilgængelige for klubmedlemmer."
+        },
+        "pricing": {
+          "title": "Prissætning",
+          "description": "Definer prisstrukturer for banereservationer, turneringer og medlemskaber."
+        },
+        "holidays": {
+          "title": "Helligdage",
+          "description": "Administrer helligdage og klublukninger."
+        },
+        "policies": {
+          "title": "Politikker",
+          "description": "Definer politikker og regler for klubben."
+        }
+      },
+      "companyAdmin": {
+        "title": "Virksomhedsadministration",
+        "description": "Administrer virksomhedsoplysninger, klubber, administratorer og vilkår og betingelser.",
+        "company": {
+          "title": "Virksomhed",
+          "description": "Opdater virksomhedsoplysninger og kontaktinformation."
+        },
+        "clubs": {
+          "title": "Klubber",
+          "description": "Administrer klubber tilknyttet din organisation."
+        },
+        "manageAdmins": {
+          "title": "Administrer administratorer",
+          "description": "Tilføj, rediger eller slet administratorkonti."
+        },
+        "terms": {
+          "title": "Vilkår og betingelser",
+          "description": "Opdater platformens vilkår og betingelser."
+        }
+      },
+      "account": {
+        "title": "Konto",
+        "description": "Administrer indstillinger for din personlige konto, inklusive profil og notifikationspræferencer.",
+        "profile": {
+          "title": "Profil",
+          "description": "Opdater information om din personlige profil."
+        }
+      }
     },
     "dashboard": {
       "title": "Dashboard"

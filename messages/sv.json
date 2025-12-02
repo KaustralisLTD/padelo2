@@ -790,6 +790,35 @@
       "generic": "Ett fel uppstod. Försök igen."
     }
   },
+  "ResetPassword": {
+    "title": "Återställ lösenord",
+    "description": "Ange ditt nya lösenord nedan.",
+    "newPassword": "Nytt lösenord",
+    "newPasswordPlaceholder": "Ange ditt nya lösenord",
+    "confirmPassword": "Bekräfta lösenord",
+    "confirmPasswordPlaceholder": "Bekräfta ditt nya lösenord",
+    "confirmNewPassword": "Bekräfta nytt lösenord",
+    "passwordHint": "Lösenordet måste vara minst 8 tecken långt.",
+    "submit": "Återställ lösenord",
+    "submitting": "Återställer...",
+    "backToLogin": "Tillbaka till inloggning",
+    "loading": "Laddar...",
+    "success": {
+      "title": "Lösenord återställt framgångsrikt",
+      "message": "Ditt lösenord har återställts framgångsrikt. Du kan nu logga in med ditt nya lösenord.",
+      "redirect": "Omdirigerar till inloggningssidan..."
+    },
+    "errors": {
+      "noToken": "Ogiltigt eller saknat återställnings-token. Vänligen begär en ny länk för att återställa lösenordet.",
+      "invalidToken": "Ogiltigt eller utgånget lösenordsåterställnings-token.",
+      "passwordMismatch": "Lösenorden matchar inte. Försök igen.",
+      "passwordTooShort": "Lösenordet måste vara minst 8 tecken långt.",
+      "failed": "Kunde inte återställa lösenordet. Försök igen.",
+      "generic": "Ett fel uppstod. Försök igen."
+    },
+    "passwordResetSuccess": "Lösenordet har återställts framgångsrikt.",
+    "passwordResetFailed": "Kunde inte återställa lösenordet."
+  },
   "WhatsApp": {
     "button": "Chatta på WhatsApp",
     "message": "Hej! Jag är intresserad av att lära mig mer om era padel-tjänster.",
@@ -852,7 +881,60 @@
     "export.excel": "Ladda ner som Excel",
     "export.print": "Skriv ut",
     "settings": {
-      "title": "Inställningar"
+      "title": "Inställningar",
+      "description": "Hantera allmänna plattformsinställningar, klubbmoduler, företagsinformation och dina kontopreferenser.",
+      "clubModules": {
+        "title": "Klubbmoduler",
+        "description": "Konfigurera inställningar relaterade till banor, extra, priser, helgdagar och policyer för din klubb.",
+        "courts": {
+          "title": "Banor",
+          "description": "Hantera tillgänglighet och detaljer för padelbanor."
+        },
+        "extras": {
+          "title": "Extra",
+          "description": "Konfigurera ytterligare tjänster eller produkter tillgängliga för klubbmedlemmar."
+        },
+        "pricing": {
+          "title": "Prissättning",
+          "description": "Definiera prisstrukturer för banareservationer, turneringar och medlemskap."
+        },
+        "holidays": {
+          "title": "Helgdagar",
+          "description": "Hantera helgdagar och klubbstängningar."
+        },
+        "policies": {
+          "title": "Policyer",
+          "description": "Definiera policyer och regler för klubben."
+        }
+      },
+      "companyAdmin": {
+        "title": "Företagsadministration",
+        "description": "Hantera företagsinformation, klubbar, administratörer och villkor.",
+        "company": {
+          "title": "Företag",
+          "description": "Uppdatera företagsdetaljer och kontaktinformation."
+        },
+        "clubs": {
+          "title": "Klubbar",
+          "description": "Hantera klubbar kopplade till din organisation."
+        },
+        "manageAdmins": {
+          "title": "Hantera administratörer",
+          "description": "Lägg till, redigera eller ta bort administratörskonton."
+        },
+        "terms": {
+          "title": "Villkor",
+          "description": "Uppdatera plattformens villkor."
+        }
+      },
+      "account": {
+        "title": "Konto",
+        "description": "Hantera inställningar för ditt personliga konto, inklusive profil och notifikationspreferenser.",
+        "profile": {
+          "title": "Profil",
+          "description": "Uppdatera information om din personliga profil."
+        }
+      }
     },
     "dashboard": {
       "title": "Dashboard"

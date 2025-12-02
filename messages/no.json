@@ -790,6 +790,35 @@
       "generic": "En feil oppstod. Prøv igjen."
     }
   },
+  "ResetPassword": {
+    "title": "Tilbakestill passord",
+    "description": "Skriv inn ditt nye passord nedenfor.",
+    "newPassword": "Nytt passord",
+    "newPasswordPlaceholder": "Skriv inn ditt nye passord",
+    "confirmPassword": "Bekreft passord",
+    "confirmPasswordPlaceholder": "Bekreft ditt nye passord",
+    "confirmNewPassword": "Bekreft nytt passord",
+    "passwordHint": "Passordet må være minst 8 tegn langt.",
+    "submit": "Tilbakestill passord",
+    "submitting": "Tilbakestiller...",
+    "backToLogin": "Tilbake til innlogging",
+    "loading": "Laster...",
+    "success": {
+      "title": "Passord tilbakestilt vellykket",
+      "message": "Passordet ditt har blitt tilbakestilt vellykket. Du kan nå logge inn med ditt nye passord.",
+      "redirect": "Omdirigerer til innloggingssiden..."
+    },
+    "errors": {
+      "noToken": "Ugyldig eller manglende tilbakestillings-token. Vennligst be om en ny lenke for å tilbakestille passordet.",
+      "invalidToken": "Ugyldig eller utløpt passord-tilbakestillings-token.",
+      "passwordMismatch": "Passordene stemmer ikke overens. Prøv igjen.",
+      "passwordTooShort": "Passordet må være minst 8 tegn langt.",
+      "failed": "Kunne ikke tilbakestille passordet. Prøv igjen.",
+      "generic": "En feil oppstod. Prøv igjen."
+    },
+    "passwordResetSuccess": "Passordet har blitt tilbakestilt vellykket.",
+    "passwordResetFailed": "Kunne ikke tilbakestille passordet."
+  },
   "WhatsApp": {
     "button": "Chat på WhatsApp",
     "message": "Hei! Jeg er interessert i å lære mer om deres padel-tjenester.",
@@ -852,7 +881,60 @@
     "export.excel": "Last ned som Excel",
     "export.print": "Skriv ut",
     "settings": {
-      "title": "Innstillinger"
+      "title": "Innstillinger",
+      "description": "Administrer generelle plattforminnstillinger, klubbmoduler, bedriftsopplysninger og dine kontopreferanser.",
+      "clubModules": {
+        "title": "Klubbmoduler",
+        "description": "Konfigurer innstillinger relatert til baner, ekstra, priser, helligdager og policyer for din klubb.",
+        "courts": {
+          "title": "Baner",
+          "description": "Administrer tilgjengelighet og detaljer for padelbaner."
+        },
+        "extras": {
+          "title": "Ekstra",
+          "description": "Konfigurer tilleggstjenester eller produkter tilgjengelige for klubbmedlemmer."
+        },
+        "pricing": {
+          "title": "Prissetting",
+          "description": "Definer prisstrukturer for banereservasjoner, turneringer og medlemskap."
+        },
+        "holidays": {
+          "title": "Helligdager",
+          "description": "Administrer helligdager og klubbstenginger."
+        },
+        "policies": {
+          "title": "Policyer",
+          "description": "Definer policyer og regler for klubben."
+        }
+      },
+      "companyAdmin": {
+        "title": "Bedriftsadministrasjon",
+        "description": "Administrer bedriftsopplysninger, klubber, administratorer og vilkår og betingelser.",
+        "company": {
+          "title": "Bedrift",
+          "description": "Oppdater bedriftsdetaljer og kontaktinformasjon."
+        },
+        "clubs": {
+          "title": "Klubber",
+          "description": "Administrer klubber tilknyttet din organisasjon."
+        },
+        "manageAdmins": {
+          "title": "Administrer administratorer",
+          "description": "Legg til, rediger eller slett administratorkonti."
+        },
+        "terms": {
+          "title": "Vilkår og betingelser",
+          "description": "Oppdater plattformens vilkår og betingelser."
+        }
+      },
+      "account": {
+        "title": "Konto",
+        "description": "Administrer innstillinger for din personlige konto, inkludert profil og varslingspreferanser.",
+        "profile": {
+          "title": "Profil",
+          "description": "Oppdater informasjon om din personlige profil."
+        }
+      }
     },
     "dashboard": {
       "title": "Dashboard"
