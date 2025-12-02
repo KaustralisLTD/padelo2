@@ -777,7 +777,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
   }
 
   // Вычисляем количество категорий и общую цену (как в шаблоне 10)
-  const categoryCount = normalizedCategories.length > 0 ? normalizedCategories.length : (categories && Array.isArray(categories) ? categories.length : 0);
+  const categoryCount = normalizedCategories.length;
   // Расчет цены: если одна категория - priceSingleCategory, если несколько - priceDoubleCategory * количество
   // Используем paymentAmount, если он передан, иначе вычисляем totalPrice
   const totalPrice = paymentAmount && paymentAmount > 0 
