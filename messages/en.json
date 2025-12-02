@@ -1011,7 +1011,8 @@
       "title": "Wallet"
     },
     "logs": {
-      "title": "Logs"
+      "title": "Logs",
+      "description": "View all system actions, errors, and user activities"
     },
     "dbMonitor": {
       "title": "Database Monitor"

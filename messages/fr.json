@@ -961,7 +961,8 @@
       "description": "Gérer les portefeuilles utilisateur et les transactions"
     },
     "logs": {
-      "title": "Journaux"
+      "title": "Journaux",
+      "description": "Consultez les journaux d'audit pour toutes les actions des utilisateurs et des administrateurs sur la plateforme."
     },
     "dbMonitor": {
       "title": "Moniteur de BD",
