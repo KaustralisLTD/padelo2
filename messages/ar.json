@@ -1131,7 +1131,8 @@
         "pair": "زوج",
         "match": "مباراة",
         "schedule": "الجدول الزمني",
-        "registration": "التسجيل"
+        "registration": "التسجيل",
+        "tournament_registration": "تسجيل البطولة"
       }
     },
     "dbMonitor": {
@@ -1278,6 +1279,7 @@
       "actions": "الإجراءات",
       "edit": "تعديل",
       "delete": "حذف",
+      "confirmDeleteUser": "هل أنت متأكد أنك تريد حذف المستخدم {name}؟ لا يمكن التراجع عن هذا الإجراء.",
       "view": "عرض",
       "list": "قائمة",
       "refresh": "تحديث",

@@ -1378,7 +1378,8 @@
         "pair": "Pair",
         "match": "Match",
         "schedule": "Schedule",
-        "registration": "Registration"
+        "registration": "Registration",
+        "tournament_registration": "Registre de Torneig"
       }
     },
     "dbMonitor": {
@@ -1525,6 +1526,7 @@
       "actions": "Accions",
       "edit": "Editar",
       "delete": "Eliminar",
+      "confirmDeleteUser": "Esteu segur que voleu eliminar l'usuari {name}? Aquesta acció no es pot desfer.",
       "view": "Veure",
       "list": "Llista",
       "refresh": "Actualitzar",

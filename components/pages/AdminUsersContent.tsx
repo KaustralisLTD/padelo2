@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ExportButton from '@/components/ExportButton';
+import ConfirmDialog from '@/components/ConfirmDialog';
 
 interface User {
   id: string;
@@ -48,6 +49,11 @@ export default function AdminUsersContent() {
   const [showAddToTournamentModal, setShowAddToTournamentModal] = useState(false);
   const [selectedTournamentId, setSelectedTournamentId] = useState<number | null>(null);
   const [addingToTournament, setAddingToTournament] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; userId: string | null; userName: string }>({
+    isOpen: false,
+    userId: null,
+    userName: '',
+  });
   
   // Данные для вкладок
   const [bookings, setBookings] = useState<any[]>([]);
@@ -379,12 +385,19 @@ export default function AdminUsersContent() {
     }
   };
 
-  const handleDelete = async (userId: string) => {
-    if (!token) return;
-    if (!confirm('Are you sure you want to delete this user?')) return;
+  const handleDeleteClick = (userId: string, userName: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      userId,
+      userName,
+    });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!token || !deleteConfirm.userId) return;
 
     try {
-      const response = await fetch(`/api/admin/users?id=${userId}`, {
+      const response = await fetch(`/api/admin/users?id=${deleteConfirm.userId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -393,12 +406,21 @@ export default function AdminUsersContent() {
 
       if (response.ok) {
         setSuccess('User deleted successfully');
+        // Снимаем выделение после удаления
+        setSelectedUsers(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(deleteConfirm.userId!);
+          return newSet;
+        });
+        setIsSelectAll(false);
         fetchUsers();
       } else {
         setError(data.error || 'Failed to delete user');
       }
     } catch (err) {
       setError('Failed to delete user');
+    } finally {
+      setDeleteConfirm({ isOpen: false, userId: null, userName: '' });
     }
   };
 
@@ -936,7 +958,7 @@ export default function AdminUsersContent() {
                         />
                         <ActionIconButton
                           label={t('users.delete')}
-                          onClick={() => handleDelete(user.id)}
+                          onClick={() => handleDeleteClick(user.id, `${user.firstName} ${user.lastName}`.trim() || user.email)}
                           Icon={TrashIcon}
                           variant="danger"
                         />
@@ -1507,6 +1529,18 @@ export default function AdminUsersContent() {
         </div>
       </div>
     )}
+
+    {/* Confirm Delete Dialog */}
+    <ConfirmDialog
+      isOpen={deleteConfirm.isOpen}
+      title={t('users.delete') || 'Delete User'}
+      message={t('users.confirmDeleteUser', { name: deleteConfirm.userName }) || `Are you sure you want to delete user ${deleteConfirm.userName}? This action cannot be undone.`}
+      confirmText={t('users.delete') || 'Delete'}
+      cancelText={t('users.cancel') || 'Cancel'}
+      onConfirm={handleDeleteConfirm}
+      onCancel={() => setDeleteConfirm({ isOpen: false, userId: null, userName: '' })}
+      variant="danger"
+    />
     </>
   );
 }

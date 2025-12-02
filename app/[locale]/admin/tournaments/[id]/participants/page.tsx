@@ -687,6 +687,13 @@ export default function TournamentParticipantsPage() {
 
       if (response.ok) {
         setSuccess(tTournaments('participantDeleted') || 'Участник успешно удален');
+        // Снимаем выделение после удаления
+        setSelectedParticipants(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(deleteConfirm.participantId!);
+          return newSet;
+        });
+        setIsSelectAll(false);
         fetchParticipants();
         setTimeout(() => setSuccess(null), 3000);
       } else {

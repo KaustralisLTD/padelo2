@@ -1169,7 +1169,8 @@
         "pair": "Pair",
         "match": "Match",
         "schedule": "Schedule",
-        "registration": "Registration"
+        "registration": "Registration",
+        "tournament_registration": "Turneringsregistrering"
       }
     },
     "dbMonitor": {
@@ -1316,6 +1317,7 @@
       "actions": "Åtgärder",
       "edit": "Redigera",
       "delete": "Radera",
+      "confirmDeleteUser": "Är du säker på att du vill radera användaren {name}? Denna åtgärd kan inte ångras.",
       "view": "Visa",
       "list": "Lista",
       "refresh": "Uppdatera",

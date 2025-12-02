@@ -1169,7 +1169,8 @@
         "pair": "Pair",
         "match": "Match",
         "schedule": "Schedule",
-        "registration": "Registration"
+        "registration": "Registration",
+        "tournament_registration": "Turneringsregistrering"
       }
     },
     "dbMonitor": {
@@ -1316,6 +1317,7 @@
       "actions": "Handlinger",
       "edit": "Rediger",
       "delete": "Slet",
+      "confirmDeleteUser": "Er du sikker på, at du vil slette brugeren {name}? Denne handling kan ikke fortrydes.",
       "view": "Vis",
       "list": "Liste",
       "refresh": "Opdater",

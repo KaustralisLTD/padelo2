@@ -1169,7 +1169,8 @@
         "pair": "Pair",
         "match": "Match",
         "schedule": "Schedule",
-        "registration": "Registration"
+        "registration": "Registration",
+        "tournament_registration": "Registrazione Torneo"
       }
     },
     "dbMonitor": {
@@ -1316,6 +1317,7 @@
       "actions": "Azioni",
       "edit": "Modifica",
       "delete": "Elimina",
+      "confirmDeleteUser": "Sei sicuro di voler eliminare l'utente {name}? Questa azione non può essere annullata.",
       "view": "Visualizza",
       "list": "Elenco",
       "refresh": "Aggiorna",

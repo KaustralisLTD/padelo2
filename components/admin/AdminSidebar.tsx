@@ -243,15 +243,30 @@ export default function AdminSidebar() {
               <li key={item.href}>
                 {hasChildren ? (
                   <>
-                    <button
-                      onClick={() => toggleExpanded(item.href)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-poppins text-sm ${
-                        active || isTournamentParticipantsActive
-                          ? 'bg-primary/10 text-primary border-l-2 border-primary'
-                          : 'text-text-secondary hover:bg-background-hover hover:text-text'
-                      } ${isCollapsed ? 'justify-center' : ''}`}
-                      title={isCollapsed ? item.label : undefined}
-                    >
+                    {isCollapsed && isTournamentsItem ? (
+                      <Link
+                        href={item.href}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-poppins text-sm ${
+                          active || isTournamentParticipantsActive
+                            ? 'bg-primary/10 text-primary border-l-2 border-primary'
+                            : 'text-text-secondary hover:bg-background-hover hover:text-text'
+                        } justify-center`}
+                        title={item.label}
+                      >
+                        <span className={active || isTournamentParticipantsActive ? 'text-primary' : 'text-text-tertiary'}>
+                          {item.icon}
+                        </span>
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => toggleExpanded(item.href)}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-poppins text-sm ${
+                          active || isTournamentParticipantsActive
+                            ? 'bg-primary/10 text-primary border-l-2 border-primary'
+                            : 'text-text-secondary hover:bg-background-hover hover:text-text'
+                        } ${isCollapsed ? 'justify-center' : ''}`}
+                        title={isCollapsed ? item.label : undefined}
+                      >
                       <span className={active || isTournamentParticipantsActive ? 'text-primary' : 'text-text-tertiary'}>
                         {item.icon}
                       </span>
@@ -273,7 +288,8 @@ export default function AdminSidebar() {
                           </svg>
                         </>
                       )}
-                    </button>
+                      </button>
+                    )}
                     {!isCollapsed && isExpanded && item.children && (
                       <ul className="ml-4 mt-1 space-y-1">
                         {item.children.map((child) => {

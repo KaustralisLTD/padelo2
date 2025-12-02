@@ -1066,7 +1066,8 @@
         "pair": "Пара",
         "match": "Матч",
         "schedule": "Розклад",
-        "registration": "Реєстрація"
+        "registration": "Реєстрація",
+        "tournament_registration": "Реєстрація на турнір"
       }
     },
     "dbMonitor": {
@@ -1168,6 +1169,7 @@
       "actions": "Дії",
       "edit": "Редагувати",
       "delete": "Видалити",
+      "confirmDeleteUser": "Ви впевнені, що хочете видалити користувача {name}? Цю дію неможливо скасувати.",
       "view": "Перегляд",
       "list": "Список",
       "refresh": "Оновити",

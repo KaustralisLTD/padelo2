@@ -1033,6 +1033,7 @@
       "actions": "Actions",
       "edit": "Edit",
       "delete": "Delete",
+      "confirmDeleteUser": "Are you sure you want to delete user {name}? This action cannot be undone.",
       "view": "View",
       "list": "List",
       "refresh": "Refresh",
@@ -1431,7 +1432,8 @@
         "pair": "Pair",
         "match": "Match",
         "schedule": "Schedule",
-        "registration": "Registration"
+        "registration": "Registration",
+        "tournament_registration": "Tournament Registration"
       },
       "affectedUsers": "Affected Users",
       "affectedEmails": "Affected Emails"

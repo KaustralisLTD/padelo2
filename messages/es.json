@@ -993,7 +993,8 @@
         "pair": "Pareja",
         "match": "Partido",
         "schedule": "Calendario",
-        "registration": "Registro"
+        "registration": "Registro",
+        "tournament_registration": "Registro de Torneo"
       }
     },
     "dbMonitor": {

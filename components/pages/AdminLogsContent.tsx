@@ -37,9 +37,72 @@ export default function AdminLogsContent() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [users, setUsers] = useState<Array<{ id: string; email: string; role: string }>>([]);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
   const itemsPerPage = 50;
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+  // Функция для копирования в буфер обмена
+  const copyToClipboard = async (text: string, fieldId: string) => {
+    if (!text || text === '—' || text === '-') return;
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(fieldId);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
+
+  // Компонент для отображения поля с иконкой копирования
+  const CopyableField = ({ 
+    value, 
+    fieldId, 
+    children, 
+    className = '' 
+  }: { 
+    value: string | null | undefined; 
+    fieldId: string; 
+    children?: React.ReactNode;
+    className?: string;
+  }) => {
+    const displayValue = value || '—';
+    const isCopied = copiedField === fieldId;
+    const canCopy = value && value !== '—' && value !== '-';
+
+    return (
+      <div className={`flex items-center gap-1.5 group ${className}`}>
+        <span 
+          className={canCopy ? 'cursor-pointer hover:text-primary transition-colors' : ''}
+          onClick={() => canCopy && copyToClipboard(value!, fieldId)}
+        >
+          {children || displayValue}
+        </span>
+        {canCopy && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              copyToClipboard(value!, fieldId);
+            }}
+            className="opacity-0 group-hover:opacity-100 transition-opacity p-0.5 hover:bg-primary/20 rounded"
+            title={isCopied ? 'Скопировано' : 'Копировать'}
+          >
+            {isCopied ? (
+              <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg className="w-3.5 h-3.5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            )}
+          </button>
+        )}
+      </div>
+    );
+  };
 
   useEffect(() => {
     if (!token) {
@@ -266,6 +329,10 @@ export default function AdminLogsContent() {
                 <option value="delete">{t('logs.actions.delete')}</option>
                 <option value="generate">{t('logs.actions.generate')}</option>
                 <option value="error">{t('logs.actions.error')}</option>
+                <option value="login">{t('logs.actions.login')}</option>
+                <option value="logout">{t('logs.actions.logout')}</option>
+                <option value="send_email">{t('logs.actions.send_email')}</option>
+                <option value="register">{t('logs.actions.register')}</option>
               </select>
             </div>
 
@@ -286,6 +353,7 @@ export default function AdminLogsContent() {
                 <option value="match">{t('logs.entityTypes.match')}</option>
                 <option value="schedule">{t('logs.entityTypes.schedule')}</option>
                 <option value="registration">{t('logs.entityTypes.registration')}</option>
+                <option value="tournament_registration">{t('logs.entityTypes.tournament_registration')}</option>
               </select>
             </div>
 
@@ -349,7 +417,7 @@ export default function AdminLogsContent() {
         <>
           <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
             <div className="overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-              <table className="w-full min-w-[1200px]">
+              <table className="w-full min-w-[1600px]">
                 <thead className="bg-background border-b border-border">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
@@ -383,10 +451,14 @@ export default function AdminLogsContent() {
                       </td>
                       <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
                         <div>
-                          {log.userEmail || '-'}
+                          <CopyableField value={log.userEmail || null} fieldId={`user-email-${log.id}`}>
+                            {log.userEmail || '-'}
+                          </CopyableField>
                           {log.userId && (
-                            <div className="text-xs text-text-secondary mt-1">
-                              ID: {log.userId}
+                            <div className="text-xs text-text-secondary mt-1 flex items-center gap-1.5">
+                              ID: <CopyableField value={log.userId} fieldId={`user-id-${log.id}`}>
+                                {log.userId}
+                              </CopyableField>
                             </div>
                           )}
                           {log.userRole && (
@@ -406,7 +478,9 @@ export default function AdminLogsContent() {
                       </td>
                       <td className="px-6 py-4 text-text-secondary font-poppins text-sm">
                         <div>
-                          {log.entityId || '-'}
+                          <CopyableField value={log.entityId || null} fieldId={`entity-id-${log.id}`}>
+                            {log.entityId || '-'}
+                          </CopyableField>
                           {log.entityType === 'pair' && log.details?.affectedUserIds && Array.isArray(log.details.affectedUserIds) && log.details.affectedUserIds.length > 0 && (
                             <div className="text-xs text-text-secondary mt-1">
                               {t('logs.affectedUsers')}: {log.details.affectedUserIds.join(', ')}
