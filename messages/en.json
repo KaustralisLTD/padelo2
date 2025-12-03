@@ -1437,7 +1437,8 @@
         "tournament_registration": "Tournament Registration"
       },
       "affectedUsers": "Affected Users",
-      "affectedEmails": "Affected Emails"
+      "affectedEmails": "Affected Emails",
+      "entityIdTooltip": "ID of the entity related to the action (e.g., tournament ID, user ID, or pair ID). For pair actions, affected users are also displayed."
     },
     "dbMonitor": {
       "title": "Database Monitor",

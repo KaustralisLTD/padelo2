@@ -846,6 +846,8 @@
     "registrationSuccess": "Tack för din registrering! Vänligen kontrollera din e-post och klicka på verifieringslänken för att aktivera ditt konto.",
     "errors": {
       "invalidCredentials": "Ogiltig e-post eller lösenord",
+      "passwordIncorrect": "Det angivna lösenordet är felaktigt. Kontrollera ditt lösenord och försök igen.",
+      "userNotFound": "Inget konto hittades med denna e-postadress. Kontrollera din e-post eller skapa ett nytt konto.",
       "passwordMismatch": "Lösenorden matchar inte",
       "registrationFailed": "Registrering misslyckades. Försök igen.",
       "generic": "Ett fel uppstod. Försök igen.",
@@ -1162,7 +1164,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Logga In",
+        "logout": "Logga Ut",
+        "send_email": "Skicka Email",
+        "register": "Registrera"
       },
       "entityTypes": {
         "user": "User",
@@ -1172,7 +1178,10 @@
         "schedule": "Schedule",
         "registration": "Registration",
         "tournament_registration": "Turneringsregistrering"
-      }
+      },
+      "affectedUsers": "Berörda Användare",
+      "affectedEmails": "Berörda Emails",
+      "entityIdTooltip": "ID för entiteten relaterad till åtgärden (t.ex. turnerings-ID, användar-ID eller par-ID). För åtgärder med par visas också berörda användare."
     },
     "dbMonitor": {
       "title": "Database Monitor",

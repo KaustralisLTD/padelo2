@@ -986,7 +986,11 @@
         "update": "Actualizar",
         "delete": "Eliminar",
         "generate": "Generar",
-        "error": "Error"
+        "error": "Error",
+        "login": "Iniciar Sesión",
+        "logout": "Cerrar Sesión",
+        "send_email": "Enviar Email",
+        "register": "Registrar"
       },
       "entityTypes": {
         "user": "Usuario",
@@ -996,7 +1000,10 @@
         "schedule": "Calendario",
         "registration": "Registro",
         "tournament_registration": "Registro de Torneo"
-      }
+      },
+      "affectedUsers": "Usuarios Afectados",
+      "affectedEmails": "Emails Afectados",
+      "entityIdTooltip": "ID de la entidad relacionada con la acción (por ejemplo, ID del torneo, usuario o pareja). Para acciones con parejas, también se muestran los usuarios afectados."
     },
     "dbMonitor": {
       "title": "Monitor de base de datos",

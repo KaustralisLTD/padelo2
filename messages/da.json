@@ -846,6 +846,8 @@
     "registrationSuccess": "Tak for din registrering! Tjek venligst din e-mail og klik på bekræftelseslinket for at aktivere din konto.",
     "errors": {
       "invalidCredentials": "Ugyldig e-mail eller adgangskode",
+      "passwordIncorrect": "Den indtastede adgangskode er forkert. Tjek venligst din adgangskode og prøv igen.",
+      "userNotFound": "Ingen konto fundet med denne e-mailadresse. Tjek venligst din e-mail eller opret en ny konto.",
       "passwordMismatch": "Adgangskoder matcher ikke",
       "registrationFailed": "Registrering mislykkedes. Prøv igen.",
       "generic": "Der opstod en fejl. Prøv igen.",
@@ -1162,7 +1164,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Log Ind",
+        "logout": "Log Ud",
+        "send_email": "Send Email",
+        "register": "Registrer"
       },
       "entityTypes": {
         "user": "User",
@@ -1172,7 +1178,10 @@
         "schedule": "Schedule",
         "registration": "Registration",
         "tournament_registration": "Turneringsregistrering"
-      }
+      },
+      "affectedUsers": "Berørte Brugere",
+      "affectedEmails": "Berørte Emails",
+      "entityIdTooltip": "ID for den enhed, der er relateret til handlingen (f.eks. turnerings-ID, bruger-ID eller par-ID). For handlinger med par vises også berørte brugere."
     },
     "dbMonitor": {
       "title": "Database Monitor",

@@ -1371,7 +1371,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Iniciar Sessió",
+        "logout": "Tancar Sessió",
+        "send_email": "Enviar Email",
+        "register": "Registrar"
       },
       "entityTypes": {
         "user": "User",
@@ -1381,7 +1385,10 @@
         "schedule": "Schedule",
         "registration": "Registration",
         "tournament_registration": "Registre de Torneig"
-      }
+      },
+      "affectedUsers": "Usuaris Afectats",
+      "affectedEmails": "Emails Afectats",
+      "entityIdTooltip": "ID de l'entitat relacionada amb l'acció (per exemple, ID del torneig, usuari o parella). Per a accions amb parelles, també es mostren els usuaris afectats."
     },
     "dbMonitor": {
       "title": "Database Monitor",
@@ -1884,6 +1891,8 @@
     "registrationSuccess": "Gràcies per registrar-te! Si us plau, revisa el teu correu electrònic i fes clic a l'enllaç de verificació per activar el teu compte.",
     "errors": {
       "invalidCredentials": "Correu electrònic o contrasenya invàlids",
+      "passwordIncorrect": "La contrasenya introduïda no és correcta. Si us plau, revisa la teva contrasenya i torna-ho a intentar.",
+      "userNotFound": "No s'ha trobat cap compte amb aquesta adreça de correu electrònic. Si us plau, revisa el teu correu electrònic o crea un compte nou.",
       "passwordMismatch": "Les contrasenyes no coincideixen",
       "registrationFailed": "Error en el registre. Si us plau, torna-ho a intentar.",
       "generic": "S'ha produït un error. Si us plau, torna-ho a intentar.",

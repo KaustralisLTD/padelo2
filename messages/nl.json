@@ -1107,7 +1107,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Inloggen",
+        "logout": "Uitloggen",
+        "send_email": "Email Verzenden",
+        "register": "Registreren"
       },
       "entityTypes": {
         "user": "User",
@@ -1117,7 +1121,10 @@
         "schedule": "Schedule",
         "registration": "Registration",
         "tournament_registration": "Toernooiregistratie"
-      }
+      },
+      "affectedUsers": "Betrokken Gebruikers",
+      "affectedEmails": "Betrokken Emails",
+      "entityIdTooltip": "ID van de entiteit gerelateerd aan de actie (bijv. toernooi-ID, gebruiker-ID of paar-ID). Voor acties met paren worden ook betrokken gebruikers weergegeven."
     },
     "dbMonitor": {
       "title": "Database Monitor",
@@ -1607,6 +1614,8 @@
     "registrationSuccess": "Bedankt voor uw registratie! Controleer uw e-mail en klik op de verificatielink om uw account te activeren.",
     "errors": {
       "invalidCredentials": "Ongeldig e-mailadres of wachtwoord",
+      "passwordIncorrect": "Het ingevoerde wachtwoord is onjuist. Controleer uw wachtwoord en probeer het opnieuw.",
+      "userNotFound": "Geen account gevonden met dit e-mailadres. Controleer uw e-mail of maak een nieuw account aan.",
       "passwordMismatch": "Wachtwoorden komen niet overeen",
       "registrationFailed": "Registratie mislukt. Probeer het opnieuw.",
       "generic": "Er is een fout opgetreden. Probeer het opnieuw.",

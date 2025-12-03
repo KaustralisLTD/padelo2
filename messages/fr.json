@@ -1250,7 +1250,11 @@
       "update": "Update",
       "delete": "Delete",
       "generate": "Generate",
-      "error": "Error"
+      "error": "Error",
+      "login": "Connexion",
+      "logout": "Déconnexion",
+      "send_email": "Envoyer Email",
+      "register": "S'inscrire"
     },
     "entityTypes": {
       "user": "User",
@@ -1260,7 +1264,10 @@
       "schedule": "Schedule",
       "registration": "Registration",
       "tournament_registration": "Inscription au Tournoi"
-    }
+    },
+    "affectedUsers": "Utilisateurs Affectés",
+    "affectedEmails": "Emails Affectés",
+    "entityIdTooltip": "ID de l'entité liée à l'action (par exemple, ID du tournoi, utilisateur ou paire). Pour les actions avec des paires, les utilisateurs affectés sont également affichés."
   },
   "dbMonitor": {
     "title": "Database Monitor",

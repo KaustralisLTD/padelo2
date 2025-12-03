@@ -846,6 +846,8 @@
     "registrationSuccess": "感谢您的注册！请检查您的电子邮件并点击验证链接以激活您的账户。",
     "errors": {
       "invalidCredentials": "电子邮件或密码无效",
+      "passwordIncorrect": "您输入的密码不正确。请检查您的密码并重试。",
+      "userNotFound": "未找到使用此电子邮件地址的账户。请检查您的电子邮件或创建新账户。",
       "passwordMismatch": "密码不匹配",
       "registrationFailed": "注册失败。请重试。",
       "generic": "发生错误。请重试。",
@@ -1180,7 +1182,11 @@
         "update": "更新",
         "delete": "删除",
         "generate": "生成",
-        "error": "错误"
+        "error": "错误",
+        "login": "登录",
+        "logout": "登出",
+        "send_email": "发送邮件",
+        "register": "注册"
       },
       "entityTypes": {
         "user": "用户",
@@ -1190,7 +1196,10 @@
         "schedule": "日程",
         "registration": "注册",
         "tournament_registration": "锦标赛注册"
-      }
+      },
+      "affectedUsers": "受影响的用户",
+      "affectedEmails": "受影响的邮件",
+      "entityIdTooltip": "与操作相关的实体ID（例如，锦标赛ID、用户ID或配对ID）。对于配对操作，还会显示受影响的用户。"
     },
     "dbMonitor": {
       "title": "数据库监控",

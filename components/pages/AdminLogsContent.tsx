@@ -433,7 +433,17 @@ export default function AdminLogsContent() {
                       {t('logs.entityType')}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
-                      {t('logs.entityId')}
+                      <div className="flex items-center gap-2">
+                        <span>{t('logs.entityId')}</span>
+                        <div className="group relative">
+                          <svg className="w-4 h-4 text-text-secondary cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <div className="absolute left-0 bottom-full mb-2 w-64 p-3 bg-background-secondary border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-xs text-text-secondary font-poppins">
+                            {t('logs.entityIdTooltip') || 'ID сущности, к которой относится действие (например, ID турнира, пользователя или пары). Для действий с парами также отображаются затронутые пользователи.'}
+                          </div>
+                        </div>
+                      </div>
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                       {t('logs.details')}

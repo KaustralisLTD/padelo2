@@ -1117,7 +1117,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "send_email": "Email Senden",
+        "register": "Registrieren"
       },
       "entityTypes": {
         "user": "User",
@@ -1127,7 +1131,10 @@
         "schedule": "Schedule",
         "registration": "Registration",
         "tournament_registration": "Turnieranmeldung"
-      }
+      },
+      "affectedUsers": "Betroffene Benutzer",
+      "affectedEmails": "Betroffene Emails",
+      "entityIdTooltip": "ID der Entität, die mit der Aktion verbunden ist (z.B. Turnier-ID, Benutzer-ID oder Paar-ID). Bei Aktionen mit Paaren werden auch betroffene Benutzer angezeigt."
     },
     "dbMonitor": {
       "title": "Database Monitor",
@@ -1595,6 +1602,8 @@
     "registrationSuccess": "Vielen Dank für Ihre Registrierung! Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Bestätigungslink, um Ihr Konto zu aktivieren.",
     "errors": {
       "invalidCredentials": "Ungültige E-Mail oder Passwort",
+      "passwordIncorrect": "Das eingegebene Passwort ist falsch. Bitte überprüfen Sie Ihr Passwort und versuchen Sie es erneut.",
+      "userNotFound": "Kein Konto mit dieser E-Mail-Adresse gefunden. Bitte überprüfen Sie Ihre E-Mail oder erstellen Sie ein neues Konto.",
       "passwordMismatch": "Passwörter stimmen nicht überein",
       "registrationFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",

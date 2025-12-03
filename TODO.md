@@ -20,10 +20,10 @@
 ## Осталось выполнить
 
 ### 1. Переводы для остальных языков
-- [ ] Добавить переводы ResetPassword и ошибок логина для de, it, ca, nl, da, sv, no, ar, zh
-- [ ] Добавить переводы Admin.logs.actions.login, logout, send_email, register для всех языков (кроме en) - уже есть в en.json
-- [ ] Добавить переводы Admin.logs.affectedUsers и Admin.logs.affectedEmails для всех языков
-- [x] Добавить перевод Admin.settings.comingSoon для всех языков - уже добавлен в en, ua, ru, es, fr (проверить остальные: ca, de, it, nl, da, sv, no, ar, zh)
+- [x] Добавить переводы ResetPassword и ошибок логина для de, it, ca, nl, da, sv, no, ar, zh - ✅ Выполнено
+- [x] Добавить переводы Admin.logs.actions.login, logout, send_email, register для всех языков (кроме en) - ✅ Выполнено
+- [x] Добавить переводы Admin.logs.affectedUsers и Admin.logs.affectedEmails для всех языков - ✅ Выполнено
+- [x] Добавить перевод Admin.settings.comingSoon для всех языков - ✅ Уже добавлен во всех языках
 
 ### 2. Функционал страниц настроек админки
 - [ ] Реализовать функционал страницы Courts (/admin/settings/courts)
@@ -37,8 +37,8 @@
 - [ ] Реализовать функционал страницы Terms (/admin/settings/terms)
 
 ### 3. Дополнительные улучшения (опционально)
-- [ ] Проверить работу горизонтального скролла на всех страницах админки
-- [ ] Добавить подсказки/тултипы для Entity ID колонки
+- [x] Проверить работу горизонтального скролла на всех страницах админки - ✅ Проверено: AdminLogsContent (min-w-[1600px]), AdminUsersContent (min-w-[1200px]), TournamentParticipantsPage (min-w-[1400px])
+- [x] Добавить подсказки/тултипы для Entity ID колонки - ✅ Добавлен тултип с объяснением Entity ID для всех 14 языков
 - [ ] Оптимизировать производительность фильтрации логов при большом количестве записей
 - [x] Улучшить отображение 404 страницы для админки - добавлена страница not-found.tsx с ссылками на Settings и Dashboard
 

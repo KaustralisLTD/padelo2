@@ -846,6 +846,8 @@
     "registrationSuccess": "Grazie per esserti registrato! Per favore, controlla la tua email e clicca sul link di verifica per attivare il tuo account.",
     "errors": {
       "invalidCredentials": "Email o password non validi",
+      "passwordIncorrect": "La password inserita non è corretta. Controlla la password e riprova.",
+      "userNotFound": "Nessun account trovato con questo indirizzo email. Controlla la tua email o crea un nuovo account.",
       "passwordMismatch": "Le password non corrispondono",
       "registrationFailed": "Registrazione fallita. Riprova.",
       "generic": "Si è verificato un errore. Riprova.",
@@ -1162,7 +1164,11 @@
         "update": "Update",
         "delete": "Delete",
         "generate": "Generate",
-        "error": "Error"
+        "error": "Error",
+        "login": "Accedi",
+        "logout": "Esci",
+        "send_email": "Invia Email",
+        "register": "Registrati"
       },
       "entityTypes": {
         "user": "User",
@@ -1172,7 +1178,10 @@
         "schedule": "Schedule",
         "registration": "Registration",
         "tournament_registration": "Registrazione Torneo"
-      }
+      },
+      "affectedUsers": "Utenti Coinvolti",
+      "affectedEmails": "Email Coinvolte",
+      "entityIdTooltip": "ID dell'entità correlata all'azione (ad esempio, ID del torneo, utente o coppia). Per le azioni con coppie, vengono visualizzati anche gli utenti coinvolti."
     },
     "dbMonitor": {
       "title": "Database Monitor",
