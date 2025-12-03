@@ -1142,7 +1142,8 @@
           "title": "Perfil",
           "description": "Actualitzeu la informació del vostre perfil personal."
         }
-      }
+      },
+      "comingSoon": "Aquesta secció estarà disponible aviat..."
     },
     "dashboard": {
       "title": "Tauler de control"

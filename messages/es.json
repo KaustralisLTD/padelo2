@@ -905,7 +905,8 @@
           "title": "Perfil",
           "description": "Actualice la información de su perfil personal."
         }
-      }
+      },
+      "comingSoon": "Esta sección estará disponible pronto..."
     },
     "dashboard": {
       "title": "Panel de Control"

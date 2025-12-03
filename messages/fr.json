@@ -936,7 +936,8 @@
           "title": "Profil",
           "description": "Mettez à jour les informations de votre profil personnel."
         }
-      }
+      },
+      "comingSoon": "Cette section sera bientôt disponible..."
     },
     "dashboard": {
       "title": "Tableau de bord"

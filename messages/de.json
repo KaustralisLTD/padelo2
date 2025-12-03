@@ -887,7 +887,8 @@
           "title": "Profil",
           "description": "Aktualisieren Sie Informationen Ihres persönlichen Profils."
         }
-      }
+      },
+      "comingSoon": "Dieser Abschnitt wird bald verfügbar sein..."
     },
     "dashboard": {
       "title": "Dashboard"

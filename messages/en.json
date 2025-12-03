@@ -994,7 +994,8 @@
           "title": "Profile",
           "description": "Update your profile information."
         }
-      }
+      },
+      "comingSoon": "This section is coming soon..."
     },
     "messages": {
       "title": "Messages",

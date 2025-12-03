@@ -934,7 +934,8 @@
           "title": "Profil",
           "description": "Uppdatera information om din personliga profil."
         }
-      }
+      },
+      "comingSoon": "Denna sektion kommer snart att vara tillgänglig..."
     },
     "dashboard": {
       "title": "Dashboard"
