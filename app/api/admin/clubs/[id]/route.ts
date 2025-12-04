@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
@@ -94,7 +94,7 @@ export async function PUT(
     // Логируем обновление клуба
     await logAction('update', 'club', {
       userId: session.userId,
-      userEmail: session.email,
+      userEmail: (await findUserById(session.userId))?.email,
       userRole: session.role,
       entityId: id,
       details: { name, address, location },
@@ -145,7 +145,7 @@ export async function DELETE(
     // Логируем удаление клуба
     await logAction('delete', 'club', {
       userId: session.userId,
-      userEmail: session.email,
+      userEmail: (await findUserById(session.userId))?.email,
       userRole: session.role,
       entityId: id,
       details: { name: clubs[0].name },

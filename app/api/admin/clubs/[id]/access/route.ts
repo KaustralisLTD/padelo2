@@ -166,11 +166,14 @@ export async function DELETE(
       [userId, id, role]
     );
 
+    // Получаем email текущего пользователя для логирования
+    const currentUser = await findUserById(session.userId);
+
     // Логируем удаление доступа
     if (clubs.length > 0 && users.length > 0) {
       await logAction('remove_access', 'club', {
         userId: session.userId,
-        userEmail: session.email,
+        userEmail: currentUser?.email,
         userRole: session.role,
         entityId: id,
         details: {

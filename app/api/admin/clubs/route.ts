@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     // Логируем создание клуба
     await logAction('create', 'club', {
       userId: session.userId,
-      userEmail: session.email,
+      userEmail: (await findUserById(session.userId))?.email,
       userRole: session.role,
       entityId: clubId,
       details: { name, address, location },
