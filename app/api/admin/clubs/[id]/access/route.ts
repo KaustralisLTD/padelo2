@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
-import { getSession } from '@/lib/users';
+import { getSession, findUserById } from '@/lib/users';
 import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
@@ -101,10 +101,13 @@ export async function POST(
       }
     }
 
+    // Получаем email текущего пользователя для логирования
+    const currentUser = await findUserById(session.userId);
+
     // Логируем назначение доступа
     await logAction('assign_access', 'club', {
       userId: session.userId,
-      userEmail: session.email,
+      userEmail: currentUser?.email,
       userRole: session.role,
       entityId: id,
       details: {
