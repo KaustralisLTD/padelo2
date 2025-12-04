@@ -734,17 +734,15 @@ export default function TournamentParticipantsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center py-12 text-text-secondary">{tTournaments('loading')}</div>
-        </div>
+      <div className="w-full px-3 py-6">
+        <div className="text-center py-12 text-text-secondary">{tTournaments('loading')}</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="w-full pl-3 pr-6 pb-12">
+    <div className="w-full">
+      <div className="w-full px-3 pr-6 pb-12">
         <div className="mb-6">
           <Link
             href={`/${locale}/admin/tournaments`}
@@ -969,8 +967,8 @@ export default function TournamentParticipantsPage() {
           )}
         </div>
 
-        <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
-          <div className="overflow-x-auto">
+        <div className="bg-background-secondary rounded-lg border border-border">
+          <div className="overflow-x-auto w-full">
             {/* Панель групповых действий */}
             {selectedParticipants.size > 0 && (
               <div className="mb-4 bg-gradient-to-r from-primary/10 via-purple-500/10 to-primary/10 border border-primary/30 rounded-xl p-4 backdrop-blur-sm">

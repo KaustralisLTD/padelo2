@@ -31,14 +31,17 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <AdminSidebar />
-      <main className="flex-1 transition-all duration-300" style={{ marginLeft: `${sidebarWidth}px` }}>
+      <main 
+        className="transition-all duration-300" 
+        style={{ marginLeft: `${sidebarWidth}px`, width: `calc(100% - ${sidebarWidth}px)` }}
+      >
         {/* Language Selector in top right */}
         <div className="fixed top-4 right-4 z-50">
           <LanguageSelector variant="header" />
         </div>
-        <div className="p-6">
+        <div className="w-full min-w-0">
           {children}
         </div>
       </main>
