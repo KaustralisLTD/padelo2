@@ -256,6 +256,123 @@ export default function AdminLogsContent() {
     return t(`logs.actions.${action}`) || action;
   };
 
+  // Функция для форматирования деталей лога в читабельный вид
+  const formatLogDetails = (log: AuditLog) => {
+    if (!log.details) return null;
+    
+    const details = log.details;
+    
+    // Для регистрации на турнир
+    if (log.action === 'register' && log.entityType === 'tournament_registration') {
+      return (
+        <div className="space-y-2">
+          <div><strong>Tournament:</strong> {details.tournamentName || details.tournamentId || '-'}</div>
+          {details.categories && Array.isArray(details.categories) && details.categories.length > 0 && (
+            <div><strong>Categories:</strong> {details.categories.join(', ')}</div>
+          )}
+          {details.partner && (
+            <div>
+              <strong>Partner:</strong> {details.partner.name || '-'}
+              {details.partner.email && <span className="text-text-tertiary"> ({details.partner.email})</span>}
+            </div>
+          )}
+          {details.categoryPartners && Object.keys(details.categoryPartners).length > 0 && (
+            <div>
+              <strong>Category Partners:</strong>
+              <ul className="ml-4 mt-1 list-disc">
+                {Object.entries(details.categoryPartners).map(([category, partner]: [string, any]) => (
+                  <li key={category}>
+                    {category}: {partner.name || '-'} {partner.email && <span className="text-text-tertiary">({partner.email})</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {details.children && Array.isArray(details.children) && details.children.length > 0 && (
+            <div>
+              <strong>Children:</strong>
+              <ul className="ml-4 mt-1 list-disc">
+                {details.children.map((child: any, idx: number) => (
+                  <li key={idx}>
+                    {child.firstName} {child.lastName} {child.email && <span className="text-text-tertiary">({child.email})</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {details.userMessage && (
+            <div><strong>User Message:</strong> <span className="text-text-tertiary italic">{details.userMessage}</span></div>
+          )}
+          {details.emailVerified !== undefined && (
+            <div><strong>Email Verified:</strong> {details.emailVerified ? 'Yes' : 'No'}</div>
+          )}
+          {details.tournamentDetails && (
+            <div className="mt-2 pt-2 border-t border-border">
+              <strong>Tournament Details:</strong>
+              <ul className="ml-4 mt-1 list-disc text-text-tertiary">
+                {details.tournamentDetails.startDate && <li>Start: {new Date(details.tournamentDetails.startDate).toLocaleDateString()}</li>}
+                {details.tournamentDetails.endDate && <li>End: {new Date(details.tournamentDetails.endDate).toLocaleDateString()}</li>}
+                {details.tournamentDetails.location && <li>Location: {details.tournamentDetails.location}</li>}
+              </ul>
+            </div>
+          )}
+        </div>
+      );
+    }
+    
+    // Для подтверждения регистрации
+    if (log.action === 'confirm' && log.entityType === 'tournament_registration') {
+      return (
+        <div className="space-y-2">
+          <div><strong>Tournament:</strong> {details.tournamentName || details.tournamentId || '-'}</div>
+          {details.categories && Array.isArray(details.categories) && details.categories.length > 0 && (
+            <div><strong>Categories:</strong> {details.categories.join(', ')}</div>
+          )}
+          {details.confirmedAt && (
+            <div><strong>Confirmed At:</strong> {new Date(details.confirmedAt).toLocaleString()}</div>
+          )}
+        </div>
+      );
+    }
+    
+    // Для отправки email
+    if (log.action === 'send_email') {
+      return (
+        <div className="space-y-2">
+          <div><strong>Email Type:</strong> {details.emailType || '-'}</div>
+          {details.tournamentName && (
+            <div><strong>Tournament:</strong> {details.tournamentName}</div>
+          )}
+          {details.categories && Array.isArray(details.categories) && details.categories.length > 0 && (
+            <div><strong>Categories:</strong> {details.categories.join(', ')}</div>
+          )}
+          {details.locale && (
+            <div><strong>Locale:</strong> {details.locale}</div>
+          )}
+          {details.hasTemporaryPassword !== undefined && (
+            <div><strong>Has Temporary Password:</strong> {details.hasTemporaryPassword ? 'Yes' : 'No'}</div>
+          )}
+        </div>
+      );
+    }
+    
+    // Для верификации email
+    if (log.action === 'verify_email') {
+      return (
+        <div className="space-y-2">
+          <div><strong>Verified At:</strong> {details.verifiedAt ? new Date(details.verifiedAt).toLocaleString() : '-'}</div>
+        </div>
+      );
+    }
+    
+    // Для остальных случаев - JSON формат
+    return (
+      <pre className="text-xs overflow-auto">
+        {JSON.stringify(details, null, 2)}
+      </pre>
+    );
+  };
+
   if (loading && logs.length === 0) {
     return (
       <div className="w-full px-4 py-8">
