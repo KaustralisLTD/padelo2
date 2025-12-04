@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
 import { getSession, findUserById } from '@/lib/users';
 import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
+import { checkClubAccessFromSession } from '@/lib/club-access';
 
 export const dynamic = 'force-dynamic';
 
