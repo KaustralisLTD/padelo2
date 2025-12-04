@@ -878,10 +878,12 @@
     "loading": "Caricamento...",
     "backToDashboard": "Torna alla dashboard",
     "logout": "Esci",
-    "export": "Esporta",
-    "export.csv": "Scarica come CSV",
-    "export.excel": "Scarica come Excel",
-    "export.print": "Stampa",
+    "export": {
+      "title": "Esporta",
+      "csv": "Scarica come CSV",
+      "excel": "Scarica come Excel",
+      "print": "Stampa"
+    },
     "settings": {
       "title": "Impostazioni",
       "description": "Gestisci le impostazioni generali della piattaforma, i moduli del club, le informazioni aziendali e le preferenze del tuo account.",

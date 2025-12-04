@@ -847,10 +847,12 @@
     "loading": "Cargando...",
     "backToDashboard": "Volver al Panel",
     "logout": "Cerrar sesión",
-    "export": "Exportar",
-    "export.csv": "Descargar como CSV",
-    "export.excel": "Descargar como Excel",
-    "export.print": "Imprimir",
+    "export": {
+      "title": "Exportar",
+      "csv": "Descargar como CSV",
+      "excel": "Descargar como Excel",
+      "print": "Imprimir"
+    },
     "settings": {
       "title": "Configuración",
       "description": "Administre la configuración general de la plataforma, los módulos del club, la información de la empresa y las preferencias de su cuenta.",

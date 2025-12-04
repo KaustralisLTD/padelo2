@@ -838,10 +838,12 @@
     "loading": "Загрузка...",
     "backToDashboard": "Вернуться в панель управления",
     "logout": "تسجيل الخروج",
-    "export": "تصدير",
-    "export.csv": "تحميل كـ CSV",
-    "export.excel": "تحميل كـ Excel",
-    "export.print": "طباعة",
+    "export": {
+      "title": "تصدير",
+      "csv": "تحميل كـ CSV",
+      "excel": "تحميل كـ Excel",
+      "print": "طباعة"
+    },
     "settings": {
       "title": "الإعدادات",
       "description": "إدارة الإعدادات العامة للمنصة ووحدات النادي ومعلومات الشركة وتفضيلات حسابك.",

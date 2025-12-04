@@ -825,10 +825,12 @@
     "loading": "Laden...",
     "backToDashboard": "Terug naar dashboard",
     "logout": "Uitloggen",
-    "export": "Exporteren",
-    "export.csv": "Downloaden als CSV",
-    "export.excel": "Downloaden als Excel",
-    "export.print": "Afdrukken",
+    "export": {
+      "title": "Exporteren",
+      "csv": "Downloaden als CSV",
+      "excel": "Downloaden als Excel",
+      "print": "Afdrukken"
+    },
     "settings": {
       "title": "Instellingen",
       "description": "Beheer algemene platforminstellingen, clubmodules, bedrijfsinformatie en uw accountvoorkeuren.",

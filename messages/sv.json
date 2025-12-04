@@ -878,10 +878,12 @@
     "loading": "Загрузка...",
     "backToDashboard": "Вернуться в панель управления",
     "logout": "Logga ut",
-    "export": "Exportera",
-    "export.csv": "Ladda ner som CSV",
-    "export.excel": "Ladda ner som Excel",
-    "export.print": "Skriv ut",
+    "export": {
+      "title": "Exportera",
+      "csv": "Ladda ner som CSV",
+      "excel": "Ladda ner som Excel",
+      "print": "Skriv ut"
+    },
     "settings": {
       "title": "Inställningar",
       "description": "Hantera allmänna plattformsinställningar, klubbmoduler, företagsinformation och dina kontopreferenser.",

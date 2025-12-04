@@ -936,10 +936,12 @@
     "loading": "Loading...",
     "backToDashboard": "Back to Dashboard",
     "logout": "Logout",
-    "export": "Export",
-    "export.csv": "Download as CSV",
-    "export.excel": "Download as Excel",
-    "export.print": "Print",
+    "export": {
+      "title": "Export",
+      "csv": "Download as CSV",
+      "excel": "Download as Excel",
+      "print": "Print"
+    },
     "settings": {
       "title": "Settings",
       "description": "Manage your system settings and configurations",

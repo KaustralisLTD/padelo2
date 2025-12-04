@@ -829,10 +829,12 @@
     "loading": "Laden...",
     "backToDashboard": "Zurück zum Dashboard",
     "logout": "Abmelden",
-    "export": "Exportieren",
-    "export.csv": "Als CSV herunterladen",
-    "export.excel": "Als Excel herunterladen",
-    "export.print": "Drucken",
+    "export": {
+      "title": "Exportieren",
+      "csv": "Als CSV herunterladen",
+      "excel": "Als Excel herunterladen",
+      "print": "Drucken"
+    },
     "settings": {
       "title": "Einstellungen",
       "description": "Verwalten Sie allgemeine Plattformeinstellungen, Clubmodule, Unternehmensinformationen und Ihre Kontoeinstellungen.",

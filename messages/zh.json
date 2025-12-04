@@ -878,10 +878,12 @@
     "loading": "Загрузка...",
     "backToDashboard": "Вернуться в панель управления",
     "logout": "登出",
-    "export": "导出",
-    "export.csv": "下载为 CSV",
-    "export.excel": "下载为 Excel",
-    "export.print": "打印",
+    "export": {
+      "title": "导出",
+      "csv": "下载为 CSV",
+      "excel": "下载为 Excel",
+      "print": "打印"
+    },
     "settings": {
       "title": "设置",
       "description": "管理平台的一般设置、俱乐部模块、公司信息和您的账户偏好。",

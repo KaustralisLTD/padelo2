@@ -1,16 +1,17 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { exportToCSV, exportToExcel, printTable, ExportColumn } from '@/lib/export-utils';
+import { exportToCSV, exportToExcel, printTable, ExportColumn, ExportMetadata } from '@/lib/export-utils';
 import { useTranslations } from 'next-intl';
 
 interface ExportButtonProps {
   data: any[];
   columns: ExportColumn[];
   filename?: string;
+  metadata?: ExportMetadata;
 }
 
-export default function ExportButton({ data, columns, filename = 'export' }: ExportButtonProps) {
+export default function ExportButton({ data, columns, filename = 'export', metadata }: ExportButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('Admin');
@@ -32,10 +33,10 @@ export default function ExportButton({ data, columns, filename = 'export' }: Exp
         exportToCSV(data, columns, filename);
         break;
       case 'excel':
-        exportToExcel(data, columns, filename);
+        exportToExcel(data, columns, filename, metadata);
         break;
       case 'print':
-        printTable(data, columns);
+        printTable(data, columns, metadata);
         break;
     }
     setIsOpen(false);
@@ -50,7 +51,7 @@ export default function ExportButton({ data, columns, filename = 'export' }: Exp
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        <span>{t('export') || 'Export'}</span>
+        <span>{t('export.title') || 'Export'}</span>
         <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"

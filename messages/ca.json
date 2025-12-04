@@ -1084,10 +1084,12 @@
     "loading": "Загрузка...",
     "backToDashboard": "Вернуться в панель управления",
     "logout": "Tancar sessió",
-    "export": "Exportar",
-    "export.csv": "Descarregar com CSV",
-    "export.excel": "Descarregar com Excel",
-    "export.print": "Imprimir",
+    "export": {
+      "title": "Exportar",
+      "csv": "Descarregar com CSV",
+      "excel": "Descarregar com Excel",
+      "print": "Imprimir"
+    },
     "settings": {
       "title": "Configuració",
       "description": "Gestioneu la configuració general de la plataforma, els mòduls del club, la informació de l'empresa i les preferències del vostre compte.",

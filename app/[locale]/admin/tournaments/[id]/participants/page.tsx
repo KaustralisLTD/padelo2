@@ -1046,6 +1046,19 @@ export default function TournamentParticipantsPage() {
                   { key: 'Registered At', label: 'Registered At' },
                 ]}
                 filename={`participants-${tournamentName || 'tournament'}`}
+                metadata={{
+                  fileId: `EXP-${tournamentId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                  tournamentName: tournamentName || `Tournament #${tournamentId}`,
+                  documentType: tTournaments('participants') || 'Tournament Participants Table',
+                  exportedAt: new Date().toLocaleString(locale),
+                  exportedBy: 'Admin',
+                  userMessages: participants
+                    .filter(p => p.message)
+                    .map(p => `${p.firstName} ${p.lastName} (${p.email}): ${p.message}`)
+                    .join('; ') || undefined,
+                  totalParticipants: participants.length,
+                  confirmedParticipants: participants.filter(p => p.confirmed).length,
+                }}
               />
             </div>
 

@@ -878,10 +878,12 @@
     "loading": "Chargement...",
     "backToDashboard": "Retour au tableau de bord",
     "logout": "Déconnexion",
-    "export": "Exporter",
-    "export.csv": "Télécharger en CSV",
-    "export.excel": "Télécharger en Excel",
-    "export.print": "Imprimer",
+    "export": {
+      "title": "Exporter",
+      "csv": "Télécharger en CSV",
+      "excel": "Télécharger en Excel",
+      "print": "Imprimer"
+    },
     "settings": {
       "title": "Paramètres",
       "description": "Gérez les paramètres généraux de la plateforme, les modules du club, les informations sur l'entreprise et les préférences de votre compte.",
