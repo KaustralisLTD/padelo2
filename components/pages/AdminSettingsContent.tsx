@@ -129,7 +129,7 @@ export default function AdminSettingsContent() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pt-20 pl-4">
       <div>
         <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
           {t('settings.title')}

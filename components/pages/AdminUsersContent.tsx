@@ -590,7 +590,7 @@ export default function AdminUsersContent() {
 
   return (
     <>
-    <div className="w-full px-2 sm:px-3">
+    <div className="w-full px-2 sm:px-3 pt-20">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">

@@ -1052,7 +1052,7 @@ export default function TournamentParticipantsPage() {
                   documentType: tTournaments('participants') || 'Tournament Participants Table',
                   exportedAt: new Date().toLocaleString(locale),
                   exportedBy: 'Admin',
-                  userMessages: participants
+                  userMessage: participants
                     .filter(p => p.message)
                     .map(p => `${p.firstName} ${p.lastName} (${p.email}): ${p.message}`)
                     .join('; ') || undefined,

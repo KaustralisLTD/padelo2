@@ -47,7 +47,7 @@ export default function AdminMessagesContent() {
   );
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex flex-col">
+    <div className="h-[calc(100vh-8rem)] flex flex-col pt-20 pl-4">
       <div className="mb-6">
         <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
           {t('messages.title') || 'Messages'}

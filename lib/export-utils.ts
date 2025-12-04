@@ -215,7 +215,7 @@ export function printTable(data: any[], columns: ExportColumn[], metadata?: Expo
       ${metadata.documentType ? `<p><strong>Document Type:</strong> ${escapeHtml(metadata.documentType)}</p>` : ''}
       ${metadata.exportedAt ? `<p><strong>Exported At:</strong> ${escapeHtml(metadata.exportedAt)}</p>` : ''}
       ${metadata.exportedBy ? `<p><strong>Exported By:</strong> ${escapeHtml(metadata.exportedBy)}</p>` : ''}
-      ${metadata.userMessages ? `<p><strong>User Messages:</strong> ${escapeHtml(metadata.userMessages)}</p>` : ''}
+      ${metadata.userMessage ? `<p><strong>User Message:</strong> ${escapeHtml(metadata.userMessage)}</p>` : ''}
     </div>
   ` : '';
   
