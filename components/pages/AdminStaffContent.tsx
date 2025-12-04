@@ -46,10 +46,13 @@ export default function AdminStaffContent() {
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingAccess, setEditingAccess] = useState<StaffAccess | null>(null);
+  const [clubs, setClubs] = useState<Array<{ id: number; name: string }>>([]);
+  const [accessType, setAccessType] = useState<'club' | 'tournament'>('tournament');
   const [formData, setFormData] = useState({
     userId: '',
-    userRole: '' as 'superadmin' | 'tournament_admin' | 'manager' | 'coach' | 'staff' | 'participant' | '',
+    userRole: '' as 'admin' | 'manager' | 'staff' | 'coach' | '',
     tournamentIds: [] as number[],
+    clubIds: [] as number[],
     canManageGroups: true,
     canManageMatches: true,
     canViewRegistrations: true,
@@ -97,6 +100,7 @@ export default function AdminStaffContent() {
     if (!token) return;
     
     try {
+      // Загружаем доступы, пользователей и турниры
       const response = await fetch('/api/admin/staff?includeDetails=true', {
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -108,6 +112,16 @@ export default function AdminStaffContent() {
         setTournaments(data.tournaments || []);
       } else {
         setError('Failed to load staff access');
+      }
+
+      // Загружаем клубы
+      const clubsResponse = await fetch('/api/admin/clubs', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      
+      if (clubsResponse.ok) {
+        const clubsData = await clubsResponse.json();
+        setClubs(clubsData.clubs || []);
       }
     } catch (err) {
       setError('Failed to load staff access');
@@ -128,8 +142,18 @@ export default function AdminStaffContent() {
       return;
     }
 
-    if (formData.tournamentIds.length === 0) {
+    if (accessType === 'tournament' && formData.tournamentIds.length === 0) {
       setError('Please select at least one tournament');
+      return;
+    }
+
+    if (accessType === 'club' && formData.clubIds.length === 0) {
+      setError('Please select at least one club');
+      return;
+    }
+
+    if (!formData.userRole) {
+      setError('Please select a role');
       return;
     }
 
@@ -152,26 +176,46 @@ export default function AdminStaffContent() {
         }
       }
 
-      // Создаем доступы для каждого выбранного турнира
-      const accessPromises = formData.tournamentIds.map(tournamentId =>
-        fetch('/api/admin/staff', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId: formData.userId,
-            tournamentId,
-            canManageGroups: formData.canManageGroups,
-            canManageMatches: formData.canManageMatches,
-            canViewRegistrations: formData.canViewRegistrations,
-            canManageUsers: formData.canManageUsers,
-            canManageLogs: formData.canManageLogs,
-            canManageTournaments: formData.canManageTournaments,
-          }),
-        })
-      );
+      // Создаем доступы в зависимости от типа
+      const accessPromises: Promise<Response>[] = [];
+      
+      if (accessType === 'tournament') {
+        // Создаем доступы для каждого выбранного турнира
+        accessPromises.push(...formData.tournamentIds.map(tournamentId =>
+          fetch('/api/admin/staff', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: formData.userId,
+              tournamentId,
+              canManageGroups: formData.canManageGroups,
+              canManageMatches: formData.canManageMatches,
+              canViewRegistrations: formData.canViewRegistrations,
+              canManageUsers: formData.canManageUsers,
+              canManageLogs: formData.canManageLogs,
+              canManageTournaments: formData.canManageTournaments,
+            }),
+          })
+        ));
+      } else if (accessType === 'club') {
+        // Создаем доступы для каждого выбранного клуба
+        accessPromises.push(...formData.clubIds.map(clubId =>
+          fetch(`/api/admin/clubs/${clubId}/access`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: formData.userId,
+              role: formData.userRole,
+            }),
+          })
+        ));
+      }
 
       const responses = await Promise.all(accessPromises);
       const results = await Promise.all(responses.map(r => r.json()));
@@ -739,71 +783,154 @@ export default function AdminStaffContent() {
                   </select>
                 </div>
 
+                {/* Выбор типа доступа */}
+                {!editingAccess && (
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      Access Type *
+                    </label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="accessType"
+                          value="tournament"
+                          checked={accessType === 'tournament'}
+                          onChange={(e) => {
+                            setAccessType('tournament');
+                            setFormData({ ...formData, clubIds: [] });
+                          }}
+                          className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                        />
+                        <span className="text-text font-poppins">Tournament</span>
+                      </label>
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="accessType"
+                          value="club"
+                          checked={accessType === 'club'}
+                          onChange={(e) => {
+                            setAccessType('club');
+                            setFormData({ ...formData, tournamentIds: [] });
+                          }}
+                          className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                        />
+                        <span className="text-text font-poppins">Club</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('staff.userRole')} {!editingAccess && '*'}
+                    Role {!editingAccess && '*'}
                   </label>
                   <select
                     required={!editingAccess}
                     value={formData.userRole}
-                    onChange={(e) => setFormData({ ...formData, userRole: (e.target.value || '') as 'superadmin' | 'tournament_admin' | 'manager' | 'coach' | 'staff' | 'participant' | '' })}
+                    onChange={(e) => setFormData({ ...formData, userRole: (e.target.value || '') as 'admin' | 'manager' | 'staff' | 'coach' | '' })}
                     className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
                   >
-                    <option value="">{t('staff.selectRole')}</option>
-                    <option value="superadmin">{t('staff.roleSuperadmin')}</option>
-                    <option value="tournament_admin">{t('staff.roleTournamentAdmin')}</option>
-                    <option value="manager">{t('staff.roleManager')}</option>
-                    <option value="coach">{t('staff.roleCoach')}</option>
-                    <option value="staff">{t('staff.roleStaff')}</option>
-                    <option value="participant">{t('staff.roleParticipant')}</option>
+                    <option value="">Select Role</option>
+                    <option value="admin">Admin</option>
+                    <option value="manager">Manager</option>
+                    <option value="staff">Staff</option>
+                    <option value="coach">Coach</option>
                   </select>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-poppins text-text-secondary mb-2">
-                    {t('staff.tournament')} {!editingAccess && '*'}
-                  </label>
-                  {editingAccess ? (
-                    <div className="px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins opacity-60">
-                      {tournaments.find(t => t.id === editingAccess.tournamentId)?.name || 'Unknown'}
-                    </div>
-                  ) : (
-                    <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-lg p-3 bg-background">
-                      <label className="flex items-center space-x-2 cursor-pointer mb-2">
-                        <input
-                          type="checkbox"
-                          checked={formData.tournamentIds.length === tournaments.length && tournaments.length > 0}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setFormData({ ...formData, tournamentIds: tournaments.map(t => t.id) });
-                            } else {
-                              setFormData({ ...formData, tournamentIds: [] });
-                            }
-                          }}
-                          className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
-                        />
-                        <span className="text-text font-poppins font-semibold">{t('staff.selectAllTournaments')}</span>
-                      </label>
-                      {tournaments.map((tournament) => (
-                        <label key={tournament.id} className="flex items-center space-x-2 cursor-pointer">
+                {/* Выбор турниров */}
+                {accessType === 'tournament' && (
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      {t('staff.tournament')} {!editingAccess && '*'}
+                    </label>
+                    {editingAccess ? (
+                      <div className="px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins opacity-60">
+                        {tournaments.find(t => t.id === editingAccess.tournamentId)?.name || 'Unknown'}
+                      </div>
+                    ) : (
+                      <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-lg p-3 bg-background">
+                        <label className="flex items-center space-x-2 cursor-pointer mb-2">
                           <input
                             type="checkbox"
-                            checked={formData.tournamentIds.includes(tournament.id)}
+                            checked={formData.tournamentIds.length === tournaments.length && tournaments.length > 0}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFormData({ ...formData, tournamentIds: [...formData.tournamentIds, tournament.id] });
+                                setFormData({ ...formData, tournamentIds: tournaments.map(t => t.id) });
                               } else {
-                                setFormData({ ...formData, tournamentIds: formData.tournamentIds.filter(id => id !== tournament.id) });
+                                setFormData({ ...formData, tournamentIds: [] });
                               }
                             }}
                             className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
                           />
-                          <span className="text-text font-poppins">{tournament.name}</span>
+                          <span className="text-text font-poppins font-semibold">{t('staff.selectAllTournaments')}</span>
+                        </label>
+                        {tournaments.map((tournament) => (
+                          <label key={tournament.id} className="flex items-center space-x-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={formData.tournamentIds.includes(tournament.id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData({ ...formData, tournamentIds: [...formData.tournamentIds, tournament.id] });
+                                } else {
+                                  setFormData({ ...formData, tournamentIds: formData.tournamentIds.filter(id => id !== tournament.id) });
+                                }
+                              }}
+                              className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                            />
+                            <span className="text-text font-poppins">{tournament.name}</span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Выбор клубов */}
+                {accessType === 'club' && (
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      Club {!editingAccess && '*'}
+                    </label>
+                    <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-lg p-3 bg-background">
+                      <label className="flex items-center space-x-2 cursor-pointer mb-2">
+                        <input
+                          type="checkbox"
+                          checked={formData.clubIds.length === clubs.length && clubs.length > 0}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData({ ...formData, clubIds: clubs.map(c => c.id) });
+                            } else {
+                              setFormData({ ...formData, clubIds: [] });
+                            }
+                          }}
+                          className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                        />
+                        <span className="text-text font-poppins font-semibold">Select All Clubs</span>
+                      </label>
+                      {clubs.map((club) => (
+                        <label key={club.id} className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={formData.clubIds.includes(club.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData({ ...formData, clubIds: [...formData.clubIds, club.id] });
+                              } else {
+                                setFormData({ ...formData, clubIds: formData.clubIds.filter(id => id !== club.id) });
+                              }
+                            }}
+                            className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                          />
+                          <span className="text-text font-poppins">{club.name}</span>
                         </label>
                       ))}
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 <div className="space-y-3 pt-4 border-t border-border">
                   <label className="block text-sm font-poppins font-semibold text-text mb-3">
