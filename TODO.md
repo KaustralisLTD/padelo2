@@ -26,7 +26,10 @@
 - [x] Добавить перевод Admin.settings.comingSoon для всех языков - ✅ Уже добавлен во всех языках
 
 ### 2. Функционал страниц настроек админки
-- [ ] Реализовать функционал страницы Courts (/admin/settings/courts)
+- [x] Реализовать функционал страницы Courts (/admin/settings/courts) - ✅ Выполнено
+  - Создана таблица courts в БД
+  - Созданы API endpoints для CRUD операций
+  - Реализован компонент CourtsSettingsContent с выбором клуба и управлением кортами
 - [ ] Реализовать функционал страницы Extras (/admin/settings/extras)
 - [ ] Реализовать функционал страницы Pricing (/admin/settings/pricing)
 - [ ] Реализовать функционал страницы Holidays (/admin/settings/holidays)
