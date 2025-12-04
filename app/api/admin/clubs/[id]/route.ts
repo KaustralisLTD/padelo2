@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDbPool } from '@/lib/db';
 import { getSession, findUserById } from '@/lib/users';
 import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
+import { checkClubAccessFromSession } from '@/lib/club-access';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,8 +66,14 @@ export async function PUT(
     }
 
     const session = await getSession(token);
-    if (!session || session.role !== 'superadmin') {
-      return NextResponse.json({ error: 'Forbidden. Only superadmin can update clubs.' }, { status: 403 });
+    if (!session) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    
+    // Проверяем доступ: суперадмин или админ этого клуба
+    const access = await checkClubAccessFromSession(token, parseInt(id), 'admin');
+    if (!access.authorized) {
+      return NextResponse.json({ error: 'Forbidden. You do not have access to update this club.' }, { status: 403 });
     }
 
     const body = await request.json();
@@ -124,7 +131,12 @@ export async function DELETE(
     }
 
     const session = await getSession(token);
-    if (!session || session.role !== 'superadmin') {
+    if (!session) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    
+    // Только суперадмин может удалять клубы
+    if (session.role !== 'superadmin') {
       return NextResponse.json({ error: 'Forbidden. Only superadmin can delete clubs.' }, { status: 403 });
     }
 

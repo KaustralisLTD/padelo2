@@ -20,8 +20,14 @@ export async function GET(
     }
 
     const session = await getSession(token);
-    if (!session || (session.role !== 'superadmin' && session.role !== 'tournament_admin')) {
+    if (!session) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+    
+    // Проверяем доступ: суперадмин или пользователь с доступом к этому клубу
+    const access = await checkClubAccessFromSession(token, parseInt(id));
+    if (!access.authorized && session.role !== 'superadmin') {
+      return NextResponse.json({ error: 'Forbidden. You do not have access to this club.' }, { status: 403 });
     }
 
     const pool = getDbPool();
