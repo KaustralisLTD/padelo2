@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 
@@ -16,6 +16,85 @@ interface AuditLog {
   ipAddress?: string;
   userAgent?: string;
   createdAt: string;
+}
+
+// Компонент Tooltip с фиксированным позиционированием для предотвращения обрезания
+function Tooltip({ children, content }: { children: React.ReactNode; content: string }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
+  const updatePosition = () => {
+    if (!triggerRef.current) return;
+    
+    const rect = triggerRef.current.getBoundingClientRect();
+    const tooltipWidth = 256; // w-64 = 256px
+    const tooltipHeight = 100; // Примерная высота
+    const spacing = 8; // mb-2 = 8px
+    
+    let left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+    let top = rect.top - tooltipHeight - spacing;
+    
+    // Проверяем границы экрана
+    if (left < 10) left = 10;
+    if (left + tooltipWidth > window.innerWidth - 10) {
+      left = window.innerWidth - tooltipWidth - 10;
+    }
+    
+    // Если не хватает места сверху, показываем снизу
+    if (top < 10) {
+      top = rect.bottom + spacing;
+    }
+    
+    setPosition({ top, left });
+  };
+
+  const handleMouseEnter = () => {
+    setIsVisible(true);
+    setTimeout(updatePosition, 0);
+  };
+
+  const handleMouseLeave = () => {
+    setIsVisible(false);
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      updatePosition();
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
+      return () => {
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+      };
+    }
+  }, [isVisible]);
+
+  return (
+    <>
+      <div
+        ref={triggerRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="inline-block"
+      >
+        {children}
+      </div>
+      {isVisible && (
+        <div
+          ref={tooltipRef}
+          className="fixed z-[9999] w-64 p-3 bg-background-secondary border border-border rounded-lg shadow-xl text-xs text-text-secondary font-poppins pointer-events-none"
+          style={{
+            top: `${position.top}px`,
+            left: `${position.left}px`,
+          }}
+        >
+          {content}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default function AdminLogsContent() {
@@ -552,14 +631,11 @@ export default function AdminLogsContent() {
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                       <div className="flex items-center gap-2">
                         <span>{t('logs.entityId')}</span>
-                        <div className="group relative">
+                        <Tooltip content={t('logs.entityIdTooltip') || 'ID сущности, к которой относится действие (например, ID турнира, пользователя или пары). Для действий с парами также отображаются затронутые пользователи.'}>
                           <svg className="w-4 h-4 text-text-secondary cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          <div className="absolute right-0 bottom-full mb-2 w-64 p-3 bg-background-secondary border border-border rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-[100] text-xs text-text-secondary font-poppins pointer-events-none">
-                            {t('logs.entityIdTooltip') || 'ID сущности, к которой относится действие (например, ID турнира, пользователя или пары). Для действий с парами также отображаются затронутые пользователи.'}
-                          </div>
-                        </div>
+                        </Tooltip>
                       </div>
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
