@@ -984,6 +984,106 @@ export async function initDatabase() {
       }
     }
 
+    // Create courts table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS courts (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        club_id INT(11) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT DEFAULT NULL,
+        location VARCHAR(255) DEFAULT NULL,
+        type ENUM('indoor', 'outdoor', 'covered') DEFAULT 'outdoor',
+        working_hours JSON DEFAULT NULL COMMENT "Часы работы: {monday: {open: '09:00', close: '22:00'}, ...}",
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_club (club_id),
+        INDEX idx_active (is_active),
+        FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create holidays table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS holidays (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        club_id INT(11) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        date DATE NOT NULL,
+        is_recurring BOOLEAN DEFAULT FALSE,
+        recurring_pattern VARCHAR(50) DEFAULT NULL COMMENT "yearly, monthly, weekly",
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_club (club_id),
+        INDEX idx_date (date),
+        FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create extras table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS extras (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        club_id INT(11) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT DEFAULT NULL,
+        price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+        currency VARCHAR(3) DEFAULT 'EUR',
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_club (club_id),
+        INDEX idx_active (is_active),
+        FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create pricing table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS pricing (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        club_id INT(11) NOT NULL,
+        type ENUM('court_booking', 'tournament', 'membership', 'lesson') NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT DEFAULT NULL,
+        price DECIMAL(10, 2) NOT NULL,
+        currency VARCHAR(3) DEFAULT 'EUR',
+        time_slot_start TIME DEFAULT NULL COMMENT "Начало временного слота (например, 09:00)",
+        time_slot_end TIME DEFAULT NULL COMMENT "Конец временного слота (например, 17:00)",
+        day_of_week ENUM('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday') DEFAULT NULL,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_club (club_id),
+        INDEX idx_type (type),
+        INDEX idx_active (is_active),
+        FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create policies table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS policies (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        club_id INT(11) NOT NULL,
+        type ENUM('cancellation', 'refund', 'rules', 'other') NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_club (club_id),
+        INDEX idx_type (type),
+        INDEX idx_active (is_active),
+        FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
     // Create first club "Padel La Masia"
     try {
       const [existingClubs] = await pool.execute(
