@@ -920,6 +920,94 @@ export async function initDatabase() {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
+
+    // Create clubs table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS clubs (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        name VARCHAR(255) NOT NULL,
+        address TEXT DEFAULT NULL,
+        description TEXT DEFAULT NULL,
+        location VARCHAR(255) DEFAULT NULL,
+        working_hours JSON DEFAULT NULL COMMENT "Часы работы: {monday: {open: '09:00', close: '22:00'}, ...}",
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_name (name)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create user_club_access table for managing user access to clubs
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS user_club_access (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        user_id VARCHAR(36) NOT NULL,
+        club_id INT(11) NOT NULL,
+        role ENUM('admin', 'manager', 'staff', 'coach') NOT NULL DEFAULT 'staff',
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY unique_user_club_role (user_id, club_id, role),
+        INDEX idx_user (user_id),
+        INDEX idx_club (club_id),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create user_tournament_access table for managing user access to tournaments
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS user_tournament_access (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        user_id VARCHAR(36) NOT NULL,
+        tournament_id INT(11) NOT NULL,
+        role ENUM('admin', 'manager', 'staff', 'coach') NOT NULL DEFAULT 'staff',
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        UNIQUE KEY unique_user_tournament_role (user_id, tournament_id, role),
+        INDEX idx_user (user_id),
+        INDEX idx_tournament (tournament_id),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Add club_id to tournaments table
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN club_id INT(11) DEFAULT NULL');
+      await pool.execute('ALTER TABLE tournaments ADD INDEX idx_club (club_id)');
+      await pool.execute('ALTER TABLE tournaments ADD FOREIGN KEY (club_id) REFERENCES clubs(id) ON DELETE SET NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name') && !e.message.includes('Duplicate key name')) {
+        console.warn('Warning adding club_id to tournaments:', e.message);
+      }
+    }
+
+    // Create first club "Padel La Masia"
+    try {
+      const [existingClubs] = await pool.execute(
+        'SELECT id FROM clubs WHERE name = ?',
+        ['Padel La Masia']
+      ) as any[];
+      
+      if (existingClubs.length === 0) {
+        await pool.execute(
+          `INSERT INTO clubs (name, address, description, location, created_at)
+           VALUES (?, ?, ?, ?, NOW())`,
+          [
+            'Padel La Masia',
+            'Carrer de Mallorca, Blanes',
+            'Padel club located in Blanes, Spain',
+            'Blanes, Spain'
+          ]
+        );
+        console.log('✅ Created default club: Padel La Masia');
+      }
+    } catch (e: any) {
+      console.warn('Warning creating default club:', e.message);
+    }
+
   } catch (error: any) {
     if (error.message.includes('Database credentials not configured')) {
       // Expected error when DB is not configured
