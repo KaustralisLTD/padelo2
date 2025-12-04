@@ -936,7 +936,8 @@
           "title": "个人资料",
           "description": "更新您的个人资料信息。"
         }
-      }
+      },
+      "comingSoon": "此部分即将推出..."
     },
     "dashboard": {
       "title": "仪表板"

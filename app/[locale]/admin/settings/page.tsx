@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import AdminSettingsContent from '@/components/pages/AdminSettingsContent';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
