@@ -326,6 +326,7 @@ export default function AdminStaffContent() {
       userId: '',
       userRole: '',
       tournamentIds: [],
+      clubIds: [],
       canManageGroups: true,
       canManageMatches: true,
       canViewRegistrations: true,
