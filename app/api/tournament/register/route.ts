@@ -296,22 +296,104 @@ export async function POST(request: NextRequest) {
       // Не прерываем регистрацию, если email не отправился - пользователь все равно зарегистрирован
     }
     
-    // Логируем регистрацию на турнир
+    // Логируем регистрацию на турнир с детальными данными
     if (userId) {
       const user = await findUserById(userId);
-      await logAction('register', 'tournament', {
+      const registrationDetails: Record<string, any> = {
+        tournamentId: body.tournamentId,
+        tournamentName: tournament?.name || body.tournamentName,
+        categories: body.categories || [],
+        emailVerified,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        phone: body.phone,
+        telegram: body.telegram,
+        tshirtSize: body.tshirtSize,
+        locale: body.locale || 'en',
+      };
+      
+      // Добавляем информацию о партнере (основной)
+      if (body.partner) {
+        registrationDetails.partner = {
+          name: body.partner.name,
+          email: body.partner.email,
+          phone: body.partner.phone,
+          tshirtSize: body.partner.tshirtSize,
+        };
+      }
+      
+      // Добавляем информацию о партнерах по категориям
+      if (body.categoryPartners && Object.keys(body.categoryPartners).length > 0) {
+        registrationDetails.categoryPartners = body.categoryPartners;
+      }
+      
+      // Добавляем информацию о детях
+      if (body.childData && Array.isArray(body.childData) && body.childData.length > 0) {
+        registrationDetails.children = body.childData.map((child: any) => ({
+          firstName: child.firstName,
+          lastName: child.lastName,
+          email: child.email,
+          phone: child.phone,
+        }));
+      }
+      
+      // Добавляем информацию о сообщении пользователя
+      if (body.message) {
+        registrationDetails.userMessage = body.message;
+      }
+      
+      // Добавляем информацию о турнире (если доступна)
+      if (tournament) {
+        registrationDetails.tournamentDetails = {
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          location: tournament.location,
+          priceSingleCategory: tournament.priceSingleCategory,
+          priceDoubleCategory: tournament.priceDoubleCategory,
+        };
+      }
+      
+      await logAction('register', 'tournament_registration', {
         userId: userId,
         userEmail: user?.email || body.email,
         userRole: user?.role,
         entityId: body.tournamentId,
-        details: { 
-          tournamentName: tournament?.name || body.tournamentName,
-          categories: body.categories || [],
-          emailVerified 
-        },
+        details: registrationDetails,
         ipAddress: getIpAddress(request),
         userAgent: getUserAgent(request),
       }).catch(() => {}); // Игнорируем ошибки логирования
+    }
+    
+    // Логируем отправку email для верификации
+    if (!emailVerified && verificationToken) {
+      await logAction('send_email', 'email_verification', {
+        userId: userId || undefined,
+        userEmail: body.email,
+        entityId: body.tournamentId,
+        details: {
+          emailType: 'verification',
+          tournamentName: tournament?.name || body.tournamentName,
+          verificationToken: verificationToken.substring(0, 8) + '...', // Только первые 8 символов для безопасности
+        },
+        ipAddress: getIpAddress(request),
+        userAgent: getUserAgent(request),
+      }).catch(() => {});
+    }
+    
+    // Логируем отправку tournament registration email
+    if (emailVerified) {
+      await logAction('send_email', 'tournament_registration', {
+        userId: userId || undefined,
+        userEmail: body.email,
+        entityId: body.tournamentId,
+        details: {
+          emailType: 'tournament_registration',
+          tournamentName: tournament?.name || body.tournamentName,
+          categories: body.categories || [],
+        },
+        ipAddress: getIpAddress(request),
+        userAgent: getUserAgent(request),
+      }).catch(() => {});
     }
     
     return NextResponse.json({

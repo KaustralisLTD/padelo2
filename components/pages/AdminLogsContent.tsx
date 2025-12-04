@@ -509,9 +509,9 @@ export default function AdminLogsContent() {
                             <summary className="text-primary hover:text-accent">
                               {t('logs.viewDetails')}
                             </summary>
-                            <pre className="mt-2 p-2 bg-background rounded border border-border text-xs overflow-auto max-h-40">
-                              {JSON.stringify(log.details, null, 2)}
-                            </pre>
+                            <div className="mt-2 p-3 bg-background rounded border border-border text-xs overflow-auto max-h-60">
+                              {formatLogDetails(log)}
+                            </div>
                           </details>
                         ) : (
                           '-'

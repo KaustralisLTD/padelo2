@@ -3,6 +3,7 @@ import { verifyEmail } from '@/lib/users';
 import { sendWelcomeEmail } from '@/lib/email';
 import { createSession } from '@/lib/users';
 import { getDbPool } from '@/lib/db';
+import { logAction, getIpAddress, getUserAgent } from '@/lib/audit-log';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +34,20 @@ export async function GET(request: NextRequest) {
         { status: 404 }
       );
     }
+    
+    // Логируем подтверждение email
+    await logAction('verify_email', 'user', {
+      userId: result.user.id,
+      userEmail: result.user.email,
+      userRole: result.user.role,
+      entityId: result.user.id,
+      details: {
+        verificationToken: token.substring(0, 8) + '...', // Только первые 8 символов для безопасности
+        verifiedAt: new Date().toISOString(),
+      },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {});
 
     // Send welcome email - get locale and temporary password from user's data
     const pool = getDbPool();
@@ -78,6 +93,21 @@ export async function GET(request: NextRequest) {
     console.log(`[verify-email] Temporary password value: ${temporaryPassword ? temporaryPassword.substring(0, 3) + '...' : 'null/undefined'}`);
     await sendWelcomeEmail(result.user.email, result.user.firstName, locale, temporaryPassword || undefined);
     
+    // Логируем отправку welcome email
+    await logAction('send_email', 'welcome', {
+      userId: result.user.id,
+      userEmail: result.user.email,
+      userRole: result.user.role,
+      entityId: result.user.id,
+      details: {
+        emailType: 'welcome',
+        locale: locale,
+        hasTemporaryPassword: !!temporaryPassword,
+      },
+      ipAddress: getIpAddress(request),
+      userAgent: getUserAgent(request),
+    }).catch(() => {});
+    
     // Clear temporary password after sending welcome email
     if (temporaryPassword) {
       try {
@@ -102,13 +132,42 @@ export async function GET(request: NextRequest) {
       );
       
       // Затем подтверждаем все регистрации
-      await pool.execute(
+      const [updatedRegistrations] = await pool.execute(
         `UPDATE tournament_registrations 
          SET confirmed = TRUE, confirmed_at = NOW() 
          WHERE email = ? AND confirmed = FALSE`,
         [result.user.email]
-      );
+      ) as any[];
+      
+      // Получаем информацию о подтвержденных регистрациях для логирования
+      const [confirmedRegistrations] = await pool.execute(
+        `SELECT id, tournament_id, tournament_name, categories 
+         FROM tournament_registrations 
+         WHERE email = ? AND confirmed = TRUE`,
+        [result.user.email]
+      ) as any[];
+      
       console.log(`[verify-email] Confirmed tournament registrations and updated user_id for user ${result.user.id} (${result.user.email})`);
+      
+      // Логируем подтверждение регистраций на турниры
+      if (confirmedRegistrations.length > 0) {
+        for (const registration of confirmedRegistrations) {
+          await logAction('confirm', 'tournament_registration', {
+            userId: result.user.id,
+            userEmail: result.user.email,
+            userRole: result.user.role,
+            entityId: registration.id,
+            details: {
+              tournamentId: registration.tournament_id,
+              tournamentName: registration.tournament_name,
+              categories: registration.categories ? JSON.parse(registration.categories) : [],
+              confirmedAt: new Date().toISOString(),
+            },
+            ipAddress: getIpAddress(request),
+            userAgent: getUserAgent(request),
+          }).catch(() => {});
+        }
+      }
     } catch (e) {
       console.error('[verify-email] Error confirming tournament registrations:', e);
       // Не прерываем процесс верификации, если не удалось обновить регистрации
