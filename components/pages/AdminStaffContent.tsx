@@ -343,6 +343,7 @@ export default function AdminStaffContent() {
       userId: access.userId,
       userRole: (user?.role as any) || '',
       tournamentIds: [access.tournamentId],
+      clubIds: [],
       canManageGroups: access.canManageGroups,
       canManageMatches: access.canManageMatches,
       canViewRegistrations: access.canViewRegistrations,
