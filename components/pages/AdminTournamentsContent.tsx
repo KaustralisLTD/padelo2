@@ -82,6 +82,10 @@ export default function AdminTournamentsContent() {
     kidsCategoryEnabled: false,
     bannerImageName: null as string | null,
     bannerImageData: null as string | null,
+    clubId: null as number | null,
+    newClubName: '',
+    newClubAddress: '',
+    newClubLocation: '',
   });
 
   const parseDemoParticipantsInput = (value: string | number | null | undefined) => {
@@ -96,6 +100,8 @@ export default function AdminTournamentsContent() {
     typeof count === 'number' && count >= 2 && count % 2 === 0;
 
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [clubs, setClubs] = useState<Array<{ id: number; name: string }>>([]);
+  const [showNewClubForm, setShowNewClubForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingTournament, setEditingTournament] = useState<Tournament | null>(null);
@@ -136,6 +142,23 @@ export default function AdminTournamentsContent() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
+
+  const fetchClubs = async () => {
+    if (!token) return;
+    
+    try {
+      const response = await fetch('/api/admin/clubs', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setClubs(data.clubs || []);
+      }
+    } catch (err) {
+      console.error('Error fetching clubs:', err);
+    }
+  };
 
   const fetchTournaments = async () => {
     if (!token) return;
@@ -1049,6 +1072,80 @@ export default function AdminTournamentsContent() {
                       className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
                     />
                   </div>
+
+                {/* Выбор клуба */}
+                <div>
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    Club
+                  </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="clubOption"
+                        checked={!showNewClubForm}
+                        onChange={() => {
+                          setShowNewClubForm(false);
+                          setFormData({ ...formData, newClubName: '', newClubAddress: '', newClubLocation: '' });
+                        }}
+                        className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                      />
+                      <span className="text-text font-poppins">Select existing club</span>
+                    </label>
+                    {!showNewClubForm && (
+                      <select
+                        value={formData.clubId || ''}
+                        onChange={(e) => setFormData({ ...formData, clubId: e.target.value ? parseInt(e.target.value) : null })}
+                        className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      >
+                        <option value="">No club</option>
+                        {clubs.map((club) => (
+                          <option key={club.id} value={club.id}>
+                            {club.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="clubOption"
+                        checked={showNewClubForm}
+                        onChange={() => {
+                          setShowNewClubForm(true);
+                          setFormData({ ...formData, clubId: null });
+                        }}
+                        className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                      />
+                      <span className="text-text font-poppins">Create new club</span>
+                    </label>
+                    {showNewClubForm && (
+                      <div className="space-y-2 pl-7 border-l-2 border-border">
+                        <input
+                          type="text"
+                          placeholder="Club name *"
+                          value={formData.newClubName}
+                          onChange={(e) => setFormData({ ...formData, newClubName: e.target.value })}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Club address"
+                          value={formData.newClubAddress}
+                          onChange={(e) => setFormData({ ...formData, newClubAddress: e.target.value })}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Club location"
+                          value={formData.newClubLocation}
+                          onChange={(e) => setFormData({ ...formData, newClubLocation: e.target.value })}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
 
                 {/* Адрес с координатами */}
                 <div className="border-t border-border pt-4">

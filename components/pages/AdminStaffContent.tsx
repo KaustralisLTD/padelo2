@@ -768,7 +768,7 @@ export default function AdminStaffContent() {
                       setFormData({ 
                         ...formData, 
                         userId: e.target.value,
-                        userRole: (selectedUser?.role || '') as 'superadmin' | 'tournament_admin' | 'manager' | 'coach' | 'staff' | 'participant' | ''
+                        userRole: (selectedUser?.role || '') as 'admin' | 'manager' | 'staff' | 'coach' | ''
                       });
                     }}
                     disabled={!!editingAccess}
