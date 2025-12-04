@@ -401,6 +401,7 @@ export default function AdminTournamentsContent() {
 
   const resetForm = () => {
     setFormData(createDefaultFormData());
+    setShowNewClubForm(false);
   };
 
   const updateRegistrationSettingsState = (
@@ -562,6 +563,7 @@ export default function AdminTournamentsContent() {
 
   const openEditModal = (tournament: Tournament) => {
     setEditingTournament(tournament);
+    setShowNewClubForm(false);
     setFormData({
       name: tournament.name,
       description: tournament.description || '',
