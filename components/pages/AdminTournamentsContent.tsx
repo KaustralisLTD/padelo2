@@ -592,6 +592,10 @@ export default function AdminTournamentsContent() {
       kidsCategoryEnabled: tournament.kidsCategoryEnabled || false,
       bannerImageName: tournament.bannerImageName || null,
       bannerImageData: tournament.bannerImageData || null,
+      clubId: (tournament as any).clubId || null,
+      newClubName: '',
+      newClubAddress: '',
+      newClubLocation: '',
     });
     setShowCreateModal(true);
   };
