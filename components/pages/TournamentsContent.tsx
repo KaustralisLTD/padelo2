@@ -353,23 +353,11 @@ export default function TournamentsContent() {
                         </div>
                         <div className="text-sm text-text-secondary">
                           {(() => {
-                            let guestDescription = selectedTournamentData.guestTicket.description || 'Attend as a guest';
-                            if (selectedTournamentData.translations?.guestTicketDescription) {
-                              let keysToTry: string[] = [locale];
-                              if (locale === 'ua') { keysToTry = ['ua', 'uk', 'ru', 'en']; }
-                              else if (locale === 'uk') { keysToTry = ['uk', 'ua', 'ru', 'en']; }
-                              else { keysToTry = [locale, 'en']; }
-                              for (const key of keysToTry) {
-                                if (selectedTournamentData.translations.guestTicketDescription[key]) {
-                                  guestDescription = selectedTournamentData.translations.guestTicketDescription[key];
-                                  break;
-                                }
-                              }
-                            }
+                            // Показываем только цену, без описания (описание показывается в TournamentDetails)
                             const guestPrice = selectedTournamentData.guestTicket.price;
                             return guestPrice 
-                              ? `${guestPrice} EUR - ${guestDescription}`
-                              : guestDescription;
+                              ? `${guestPrice} EUR`
+                              : '';
                           })()}
                         </div>
                       </div>

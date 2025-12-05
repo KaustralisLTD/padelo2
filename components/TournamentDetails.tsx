@@ -149,16 +149,11 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
   }
 
   // Helper function to get translated description
-  // Используем ТОЧНО ТУ ЖЕ логику, что и в письмах (строка 78-79 в email-templates-tournament.ts):
-  // let eventScheduleToDisplay = tournament.eventSchedule || [];
-  // if (tournament.translations?.eventSchedule?.[locale]) {
-  //   eventScheduleToDisplay = tournament.translations.eventSchedule[locale];
-  // }
   const getTranslatedDescription = (): string => {
-    if (!tournament.description) return '';
-    
-    // Получаем все доступные ключи переводов
-    const availableKeys = tournament.translations?.description ? Object.keys(tournament.translations.description) : [];
+    const targetDescription = registrationType === 'guest' ? tournament?.guestTicket?.description : tournament?.description;
+    const targetTranslations = registrationType === 'guest' ? tournament?.translations?.guestTicketDescription : tournament?.translations?.description;
+
+    if (!targetDescription) return '';
     
     // Определяем приоритетный порядок проверки ключей для текущей локали
     let keysToTry: string[] = [locale];
@@ -174,27 +169,13 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
     }
     
     // Пробуем найти перевод по приоритету
-    let descriptionToDisplay = tournament.description;
+    let descriptionToDisplay = targetDescription;
     for (const key of keysToTry) {
-      if (tournament.translations?.description?.[key]) {
-        descriptionToDisplay = tournament.translations.description[key];
+      if (targetTranslations?.[key]) {
+        descriptionToDisplay = targetTranslations[key];
         break;
       }
     }
-    
-    // Debug logging
-    console.log('[TournamentDetails] Description translation:', {
-      locale,
-      availableKeys,
-      keysToTry,
-      foundKey: keysToTry.find(k => tournament.translations?.description?.[k]),
-      hasUA: !!tournament.translations?.description?.['ua'],
-      hasUK: !!tournament.translations?.description?.['uk'],
-      hasRU: !!tournament.translations?.description?.['ru'],
-      using: descriptionToDisplay !== tournament.description ? 'translated' : 'original',
-      originalPreview: tournament.description.substring(0, 50),
-      translatedPreview: descriptionToDisplay.substring(0, 50),
-    });
     
     return descriptionToDisplay;
   };
@@ -270,35 +251,7 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
       {registrationType === 'guest' && tournament.guestTicket?.description && (
         <div className="mb-4">
           <p className="text-text-secondary font-poppins whitespace-pre-line">
-            {(() => {
-              // Получаем переведенное описание гостевого билета
-              let guestDescription = tournament.guestTicket.description;
-              
-              if (tournament.translations?.guestTicketDescription) {
-                // Определяем приоритетный порядок проверки ключей для текущей локали
-                let keysToTry: string[] = [locale];
-                
-                // Для украинского пробуем оба варианта
-                if (locale === 'ua') {
-                  keysToTry = ['ua', 'uk', 'ru', 'en'];
-                } else if (locale === 'uk') {
-                  keysToTry = ['uk', 'ua', 'ru', 'en'];
-                } else {
-                  // Для других языков пробуем текущую локаль, затем английский
-                  keysToTry = [locale, 'en'];
-                }
-                
-                // Пробуем найти перевод по приоритету
-                for (const key of keysToTry) {
-                  if (tournament.translations.guestTicketDescription[key]) {
-                    guestDescription = tournament.translations.guestTicketDescription[key];
-                    break;
-                  }
-                }
-              }
-              
-              return guestDescription;
-            })()}
+            {getTranslatedDescription()}
           </p>
         </div>
       )}
@@ -470,35 +423,7 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
 
       {/* Расписание событий - для участников или гостей */}
       {(() => {
-        // Определяем какое расписание показывать
-        let scheduleToShow: EventScheduleItem[] | null = null;
-        
-        if (registrationType === 'guest' && tournament.guestTicket?.eventSchedule) {
-          // Для гостей используем расписание гостевого билета
-          scheduleToShow = tournament.guestTicket.eventSchedule;
-          
-          // Пробуем найти переведенное расписание
-          if (tournament.translations?.guestTicketEventSchedule) {
-            let keysToTry: string[] = [locale];
-            if (locale === 'ua') {
-              keysToTry = ['ua', 'uk', 'ru', 'en'];
-            } else if (locale === 'uk') {
-              keysToTry = ['uk', 'ua', 'ru', 'en'];
-            } else {
-              keysToTry = [locale, 'en'];
-            }
-            
-            for (const key of keysToTry) {
-              if (tournament.translations.guestTicketEventSchedule[key]) {
-                scheduleToShow = tournament.translations.guestTicketEventSchedule[key];
-                break;
-              }
-            }
-          }
-        } else if (registrationType === 'participant' && tournament.eventSchedule) {
-          // Для участников используем обычное расписание
-          scheduleToShow = getTranslatedEventSchedule();
-        }
+        const scheduleToShow = getTranslatedEventSchedule();
         
         if (!scheduleToShow || scheduleToShow.length === 0) {
           return null;
