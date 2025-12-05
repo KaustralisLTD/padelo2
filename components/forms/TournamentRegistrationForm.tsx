@@ -968,6 +968,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           {t('form.photoInstructions.text')}
         </p>
       </div>
+      )}
 
       {/* Categories - только для участников */}
       {registrationType === 'participant' && (
