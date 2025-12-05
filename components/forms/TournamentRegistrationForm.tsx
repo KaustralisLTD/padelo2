@@ -70,6 +70,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [children, setChildren] = useState<Array<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null }>>([]);
   const [showChildForm, setShowChildForm] = useState(false);
   const [formCollapsed, setFormCollapsed] = useState(false);
+  // Для гостей: количество взрослых и детей
+  const [adultsCount, setAdultsCount] = useState<number>(1);
+  const [guestChildren, setGuestChildren] = useState<Array<{ age: number }>>([]);
 
   const categoryGroups = {
     male: [
@@ -675,6 +678,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           children: formData.categories.includes('kids') && children.length > 0 ? children : undefined,
           userPhoto: userPhoto.data ? { data: userPhoto.data, name: userPhoto.name } : undefined,
           registrationType: registrationType,
+          adultsCount: registrationType === 'guest' ? adultsCount : undefined,
+          guestChildren: registrationType === 'guest' && guestChildren.length > 0 ? guestChildren : undefined,
         }),
       });
 
@@ -842,11 +847,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
         <div>
           <label className="block text-sm font-poppins text-text-secondary mb-2">
-            {t('form.lastName')} *
+            {t('form.lastName')} {registrationType === 'guest' ? `(${t('form.optional')})` : '*'}
           </label>
           <input
             type="text"
-            required
+            required={registrationType === 'participant'}
             value={formData.lastName}
             onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
             className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
@@ -868,7 +873,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         />
       </div>
 
-      {/* Telegram */}
+      {/* Telegram - только для участников */}
+      {registrationType === 'participant' && (
       <div>
         <label className="block text-sm font-poppins text-text-secondary mb-2">
           {t('form.telegram')} ({t('form.optional')})
@@ -881,6 +887,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
         />
       </div>
+      )}
 
       {/* Phone */}
       <div>
@@ -896,7 +903,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         />
       </div>
 
-      {/* User Photo Upload */}
+      {/* User Photo Upload - только для участников */}
+      {registrationType === 'participant' && (
       <div>
         <label className="block text-sm font-poppins text-text-secondary mb-2">
           {t('form.userPhoto')} <span className="text-text-tertiary text-xs">({t('form.optional')})</span>
@@ -948,8 +956,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           </div>
         </div>
       </div>
+      )}
 
-      {/* Photo Upload Instructions - For Player */}
+      {/* Photo Upload Instructions - For Player - только для участников */}
+      {registrationType === 'participant' && (
       <div className="p-4 bg-background-secondary border border-gray-700 rounded-lg">
         <p className="text-sm font-poppins text-text-secondary mb-2">
           <strong className="text-text">{t('form.photoInstructions.title')}:</strong>
@@ -1695,7 +1705,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
       )}
 
-      {enabledCustomFields.length > 0 && (
+      {registrationType === 'participant' && enabledCustomFields.length > 0 && (
         <div className="space-y-4">
           {enabledCustomFields.map((field) => (
             <div key={field.id}>
@@ -1719,6 +1729,80 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
             </div>
           ))}
         </div>
+      )}
+
+      {/* Guest-specific fields */}
+      {registrationType === 'guest' && (
+        <>
+          {/* Количество взрослых */}
+          <div>
+            <label className="block text-sm font-poppins text-text-secondary mb-2">
+              {t('form.adultsCount') || 'Number of Adults'} *
+            </label>
+            <input
+              type="number"
+              min="1"
+              required
+              value={adultsCount}
+              onChange={(e) => setAdultsCount(parseInt(e.target.value) || 1)}
+              className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+            />
+          </div>
+
+          {/* Количество детей */}
+          <div>
+            <label className="block text-sm font-poppins text-text-secondary mb-2">
+              {t('form.childrenCount') || 'Number of Children'} ({t('form.optional')})
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={guestChildren.length}
+              onChange={(e) => {
+                const count = parseInt(e.target.value) || 0;
+                if (count > guestChildren.length) {
+                  // Добавляем детей
+                  setGuestChildren([...guestChildren, ...Array(count - guestChildren.length).fill(null).map(() => ({ age: 0 }))]);
+                } else if (count < guestChildren.length) {
+                  // Удаляем детей
+                  setGuestChildren(guestChildren.slice(0, count));
+                }
+              }}
+              className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+            />
+          </div>
+
+          {/* Возраст каждого ребенка */}
+          {guestChildren.length > 0 && (
+            <div className="space-y-3">
+              <label className="block text-sm font-poppins text-text-secondary mb-2">
+                {t('form.childrenAges') || 'Children Ages'} *
+              </label>
+              {guestChildren.map((child, index) => (
+                <div key={index} className="flex items-center gap-3">
+                  <label className="text-sm font-poppins text-text-secondary whitespace-nowrap">
+                    {t('form.child') || 'Child'} {index + 1}:
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="18"
+                    required
+                    value={child.age || ''}
+                    onChange={(e) => {
+                      const newChildren = [...guestChildren];
+                      newChildren[index] = { age: parseInt(e.target.value) || 0 };
+                      setGuestChildren(newChildren);
+                    }}
+                    placeholder={t('form.age') || 'Age'}
+                    className="flex-1 px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
+                  />
+                  <span className="text-sm text-text-secondary">{t('form.yearsOld') || 'years old'}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Message */}
