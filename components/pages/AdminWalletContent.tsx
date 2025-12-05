@@ -114,10 +114,8 @@ export default function AdminWalletContent() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-20 mt-20">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-text-secondary font-poppins">{tCommon('loading')}</p>
-        </div>
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <p className="text-text-secondary font-poppins">{tCommon('loading')}</p>
       </div>
     );
   }

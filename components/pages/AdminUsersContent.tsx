@@ -580,10 +580,8 @@ export default function AdminUsersContent() {
 
   if (loading) {
     return (
-      <div className="w-full px-2 sm:px-3">
-        <div className="text-center">
-          <p className="text-text-secondary font-poppins">{t('loading')}</p>
-        </div>
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <p className="text-text-secondary font-poppins">{t('loading')}</p>
       </div>
     );
   }

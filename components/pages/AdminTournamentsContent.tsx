@@ -653,10 +653,8 @@ export default function AdminTournamentsContent() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center">
-          <p className="text-text-secondary font-poppins">{t('loading')}</p>
-        </div>
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <p className="text-text-secondary font-poppins">{t('loading')}</p>
       </div>
     );
   }

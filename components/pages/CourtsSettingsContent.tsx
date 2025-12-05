@@ -225,10 +225,8 @@ export default function CourtsSettingsContent() {
 
   if (loading) {
     return (
-      <div className="w-full px-4 py-8">
-        <div className="text-center">
-          <p className="text-text-secondary font-poppins">Loading...</p>
-        </div>
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <p className="text-text-secondary font-poppins">Loading...</p>
       </div>
     );
   }
