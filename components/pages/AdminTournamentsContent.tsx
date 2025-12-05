@@ -47,6 +47,7 @@ interface Tournament {
   bannerImageData?: string | null;
   guestTicket?: {
     enabled: boolean;
+    title?: string;
     price?: number;
     eventSchedule?: EventScheduleItem[];
     description?: string;
@@ -94,6 +95,7 @@ export default function AdminTournamentsContent() {
     newClubAddress: '',
     newClubLocation: '',
     guestTicketEnabled: false,
+    guestTicketTitle: '',
     guestTicketPrice: '',
     guestTicketEventSchedule: [] as EventScheduleItem[],
     guestTicketDescription: '',
@@ -265,13 +267,14 @@ export default function AdminTournamentsContent() {
           kidsCategoryEnabled: formData.kidsCategoryEnabled,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
-          guestTicket: formData.guestTicketEnabled ? {
-            enabled: true,
+          guestTicket: {
+            enabled: formData.guestTicketEnabled,
+            title: formData.guestTicketTitle || undefined,
             price: formData.guestTicketPrice ? parseFloat(formData.guestTicketPrice) : undefined,
             eventSchedule: formData.guestTicketEventSchedule.length > 0 ? formData.guestTicketEventSchedule : undefined,
             description: formData.guestTicketDescription || undefined,
             pricing: Object.keys(formData.guestTicketPricing).length > 0 ? formData.guestTicketPricing : undefined,
-          } : undefined,
+          },
         }),
       });
 
@@ -328,13 +331,14 @@ export default function AdminTournamentsContent() {
           kidsCategoryEnabled: formData.kidsCategoryEnabled,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
-          guestTicket: formData.guestTicketEnabled ? {
-            enabled: true,
+          guestTicket: {
+            enabled: formData.guestTicketEnabled,
+            title: formData.guestTicketTitle || undefined,
             price: formData.guestTicketPrice ? parseFloat(formData.guestTicketPrice) : undefined,
             eventSchedule: formData.guestTicketEventSchedule.length > 0 ? formData.guestTicketEventSchedule : undefined,
             description: formData.guestTicketDescription || undefined,
             pricing: Object.keys(formData.guestTicketPricing).length > 0 ? formData.guestTicketPricing : undefined,
-          } : undefined,
+          },
         }),
       });
 
@@ -619,6 +623,7 @@ export default function AdminTournamentsContent() {
       bannerImageName: tournament.bannerImageName || null,
       bannerImageData: tournament.bannerImageData || null,
       guestTicketEnabled: tournament.guestTicket?.enabled || false,
+      guestTicketTitle: tournament.guestTicket?.title || '',
       guestTicketPrice: tournament.guestTicket?.price?.toString() || '',
       guestTicketEventSchedule: tournament.guestTicket?.eventSchedule || [],
       guestTicketDescription: tournament.guestTicket?.description || '',
@@ -1911,6 +1916,23 @@ export default function AdminTournamentsContent() {
                     <div className="space-y-4 pl-6">
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {t('tournaments.guestTicketTitle') || 'Guest Ticket Title'} *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.guestTicketTitle}
+                          onChange={(e) => setFormData({ ...formData, guestTicketTitle: e.target.value })}
+                          placeholder={t('tournaments.guestTicketTitlePlaceholder') || 'e.g., Guest Ticket - Winter 2025'}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                        <p className="text-xs text-text-tertiary mt-1">
+                          {t('tournaments.guestTicketTitleHint') || 'This title will be displayed when selecting registration type'}
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
                           {t('tournaments.guestTicketPrice') || 'Guest Ticket Price (EUR)'}
                         </label>
                         <input
@@ -1919,7 +1941,8 @@ export default function AdminTournamentsContent() {
                           step="0.01"
                           value={formData.guestTicketPrice}
                           onChange={(e) => setFormData({ ...formData, guestTicketPrice: e.target.value })}
-                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                          onWheel={(e) => e.currentTarget.blur()}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                       </div>
 
@@ -1931,8 +1954,12 @@ export default function AdminTournamentsContent() {
                           value={formData.guestTicketDescription}
                           onChange={(e) => setFormData({ ...formData, guestTicketDescription: e.target.value })}
                           rows={3}
+                          placeholder={t('tournaments.guestTicketDescriptionPlaceholder') || 'Detailed description that will be shown after selecting guest ticket type'}
                           className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
                         />
+                        <p className="text-xs text-text-tertiary mt-1">
+                          {t('tournaments.guestTicketDescriptionHint') || 'This description will be displayed in Tournament Details section after guest ticket is selected'}
+                        </p>
                       </div>
 
                       <div>

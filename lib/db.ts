@@ -1186,6 +1186,11 @@ export async function initDatabase() {
     } catch (e: any) {
       if (!e.message.includes('Duplicate column name')) throw e;
     }
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN guest_ticket_title VARCHAR(255) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
 
     // Add registration_type to tournament_registrations table
     try {

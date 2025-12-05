@@ -783,77 +783,79 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
       {(!formCollapsed || submitStatus !== 'success') && (
         <div>
 
-      {/* Name Fields - стильно для участников */}
-      <div className={`grid grid-cols-1 ${registrationType === 'participant' ? 'md:grid-cols-2' : ''} gap-4`}>
-        <div>
-          <label className="block text-sm font-poppins font-semibold text-text mb-2">
-            {t('form.firstName')} *
-          </label>
-          <input
-            type="text"
-            required
-            value={formData.firstName}
-            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-            className={`w-full px-4 py-3 bg-background-secondary border-2 ${registrationType === 'participant' ? 'border-primary/30 focus:border-primary' : 'border-gray-700 focus:border-primary'} rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins`}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-poppins font-semibold text-text mb-2">
-            {t('form.lastName')} {registrationType === 'guest' ? `(${t('form.optional')})` : '*'}
-          </label>
-          <input
-            type="text"
-            required={registrationType === 'participant'}
-            value={formData.lastName}
-            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-            className={`w-full px-4 py-3 bg-background-secondary border-2 ${registrationType === 'participant' ? 'border-primary/30 focus:border-primary' : 'border-gray-700 focus:border-primary'} rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins`}
-          />
-        </div>
-      </div>
-
-      {/* Email */}
-      <div>
-        <label className="block text-sm font-poppins font-semibold text-text mb-2">
-          {t('form.email')} *
-        </label>
-        <input
-          type="email"
-          required
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className={`w-full px-4 py-3 bg-background-secondary border-2 ${registrationType === 'participant' ? 'border-primary/30 focus:border-primary' : 'border-gray-700 focus:border-primary'} rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins`}
-        />
-      </div>
-
-      {/* Telegram - только для участников */}
+      {/* Name Fields - только для участников */}
       {registrationType === 'participant' && (
-      <div>
-        <label className="block text-sm font-poppins text-text-secondary mb-2">
-          {t('form.telegram')} ({t('form.optional')})
-        </label>
-        <input
-          type="text"
-          value={formData.telegram}
-          onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
-          placeholder="@username"
-          className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors"
-        />
-      </div>
-      )}
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-poppins font-semibold text-text mb-2">
+                {t('form.firstName')} *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-poppins font-semibold text-text mb-2">
+                {t('form.lastName')} *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+              />
+            </div>
+          </div>
 
-      {/* Phone */}
-      <div>
-        <label className="block text-sm font-poppins font-semibold text-text mb-2">
-          {t('form.phone')} *
-        </label>
-        <input
-          type="tel"
-          required
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-          className={`w-full px-4 py-3 bg-background-secondary border-2 ${registrationType === 'participant' ? 'border-primary/30 focus:border-primary' : 'border-gray-700 focus:border-primary'} rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins`}
-        />
-      </div>
+          {/* Email для участников */}
+          <div>
+            <label className="block text-sm font-poppins font-semibold text-text mb-2">
+              {t('form.email')} *
+            </label>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+            />
+          </div>
+
+          {/* Telegram - только для участников */}
+          <div>
+            <label className="block text-sm font-poppins font-semibold text-text mb-2">
+              {t('form.telegram')} ({t('form.optional')})
+            </label>
+            <input
+              type="text"
+              value={formData.telegram}
+              onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
+              placeholder="@username"
+              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+            />
+          </div>
+
+          {/* Phone для участников */}
+          <div>
+            <label className="block text-sm font-poppins font-semibold text-text mb-2">
+              {t('form.phone')} *
+            </label>
+            <input
+              type="tel"
+              required
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+            />
+          </div>
+        </>
+      )}
 
       {/* User Photo Upload - только для участников */}
       {registrationType === 'participant' && (
@@ -1684,9 +1686,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
         </div>
       )}
 
-      {/* Guest-specific fields */}
+      {/* Guest-specific fields - все в одном блоке */}
       {registrationType === 'guest' && (
-        <div className="space-y-6 p-6 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-2 border-primary/20 rounded-2xl shadow-lg">
+        <div className="p-6 bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-2 border-primary/20 rounded-2xl shadow-lg space-y-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
               <svg className="w-6 h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1696,6 +1698,61 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
             <h3 className="text-lg font-orbitron font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               {t('form.guestInfo') || 'Guest Information'}
             </h3>
+          </div>
+          
+          {/* Name Fields для гостей */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+              <label className="block text-sm font-poppins font-semibold text-text mb-2">
+                {t('form.firstName')} *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-poppins font-semibold text-text mb-2">
+                {t('form.lastName')} ({t('form.optional')})
+              </label>
+              <input
+                type="text"
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+              />
+            </div>
+          </div>
+
+          {/* Email для гостей */}
+          <div>
+            <label className="block text-sm font-poppins font-semibold text-text mb-2">
+              {t('form.email')} *
+            </label>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+            />
+          </div>
+
+          {/* Phone для гостей */}
+          <div>
+            <label className="block text-sm font-poppins font-semibold text-text mb-2">
+              {t('form.phone')} *
+            </label>
+            <input
+              type="tel"
+              required
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+            />
           </div>
 
           {/* Компактный блок для количества взрослых и детей */}
@@ -1789,52 +1846,50 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
             </div>
           </div>
 
-          {/* Возраст каждого ребенка */}
+          {/* Возраст каждого ребенка - выпадающее меню */}
           {guestChildren.length > 0 && (
             <div className="space-y-4 pt-4 border-t border-primary/20">
               <label className="flex items-center gap-2 text-sm font-poppins font-semibold text-text">
                 <span className="w-2 h-2 rounded-full bg-accent"></span>
                 {t('form.childrenAges') || 'Children Ages'} *
               </label>
-              <div className="grid grid-cols-1 gap-3">
+              <div className={`grid gap-3 ${guestChildren.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
                 {guestChildren.map((child, index) => (
-                  <div key={index} className="flex items-center gap-3 p-4 bg-background-secondary/60 border border-accent/20 rounded-xl hover:border-accent/40 transition-all">
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center border-2 border-accent/30">
-                      <span className="text-sm font-orbitron font-bold text-accent">{index + 1}</span>
+                  <div key={index} className="flex items-center gap-3 p-3 bg-background-secondary/60 border border-accent/20 rounded-xl hover:border-accent/40 transition-all">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center border-2 border-accent/30">
+                      <span className="text-xs font-orbitron font-bold text-accent">{index + 1}</span>
                     </div>
                     <div className="flex-1">
                       <label className="block text-xs font-poppins text-text-secondary mb-1.5">
-                        {t('form.child') || 'Child'} {index + 1}
+                        {t('form.child') || 'Child'} {index + 1} - {t('form.age') || 'Age'}
                       </label>
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="number"
-                          min="0"
-                          max="18"
-                          required
-                          value={child.age || ''}
-                          onChange={(e) => {
-                            const newChildren = [...guestChildren];
-                            newChildren[index] = { age: parseInt(e.target.value) || 0 };
-                            setGuestChildren(newChildren);
-                          }}
-                          placeholder={t('form.age') || 'Age'}
-                          className="flex-1 px-4 py-2.5 bg-background border border-accent/30 rounded-lg text-text focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all font-poppins"
-                        />
-                        <span className="text-sm font-poppins text-text-secondary whitespace-nowrap">{t('form.yearsOld') || 'years old'}</span>
-                      </div>
+                      <select
+                        required
+                        value={child.age || ''}
+                        onChange={(e) => {
+                          const newChildren = [...guestChildren];
+                          newChildren[index] = { age: parseInt(e.target.value) || 0 };
+                          setGuestChildren(newChildren);
+                        }}
+                        className="w-full px-3 py-2 bg-background border border-accent/30 rounded-lg text-text focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all font-poppins text-sm"
+                      >
+                        <option value="">{t('form.selectAge') || 'Select age'}</option>
+                        {Array.from({ length: 14 }, (_, i) => i + 1).map((age) => (
+                          <option key={age} value={age}>
+                            {age} {t('form.yearsOld') || 'years old'}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
-        </div>
-      )}
 
-      {/* Message */}
-      <div>
-        <label className="block text-sm font-poppins text-text-secondary mb-2">
+          {/* Message для гостей */}
+          <div>
+            <label className="block text-sm font-poppins font-semibold text-text mb-2">
           {t('form.message')} ({t('form.optional')})
         </label>
         <textarea
@@ -1842,9 +1897,27 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           placeholder={t('form.messagePlaceholder')}
-          className="w-full px-4 py-3 bg-background-secondary border border-gray-700 rounded-lg text-text focus:outline-none focus:border-primary transition-colors resize-none"
+              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins resize-none"
         />
       </div>
+        </div>
+      )}
+
+      {/* Message для участников */}
+      {registrationType === 'participant' && (
+        <div>
+          <label className="block text-sm font-poppins font-semibold text-text mb-2">
+            {t('form.message')} ({t('form.optional')})
+          </label>
+          <textarea
+            rows={4}
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            placeholder={t('form.messagePlaceholder')}
+            className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins resize-none"
+          />
+        </div>
+      )}
 
 
       {submitStatus === 'success' && (

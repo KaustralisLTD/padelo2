@@ -337,31 +337,13 @@ export default function TournamentsContent() {
                         </div>
                         <div className="text-sm text-text-secondary">
                           {(() => {
-                            // Получаем переведенное описание гостевого билета
-                            let guestDescription = selectedTournamentData.guestTicket.description || 'Attend as a guest';
+                            // Показываем title гостевого билета
+                            const guestTitle = selectedTournamentData.guestTicket.title || 'Register as Guest';
+                            const guestPrice = selectedTournamentData.guestTicket.price;
                             
-                            if (selectedTournamentData.translations?.guestTicketDescription) {
-                              let keysToTry: string[] = [locale];
-                              
-                              if (locale === 'ua') {
-                                keysToTry = ['ua', 'uk', 'ru', 'en'];
-                              } else if (locale === 'uk') {
-                                keysToTry = ['uk', 'ua', 'ru', 'en'];
-                              } else {
-                                keysToTry = [locale, 'en'];
-                              }
-                              
-                              for (const key of keysToTry) {
-                                if (selectedTournamentData.translations.guestTicketDescription[key]) {
-                                  guestDescription = selectedTournamentData.translations.guestTicketDescription[key];
-                                  break;
-                                }
-                              }
-                            }
-                            
-                            return selectedTournamentData.guestTicket.price 
-                              ? `${selectedTournamentData.guestTicket.price} EUR - ${guestDescription}`
-                              : guestDescription;
+                            return guestPrice 
+                              ? `${guestPrice} EUR - ${guestTitle}`
+                              : guestTitle;
                           })()}
                         </div>
                       </div>

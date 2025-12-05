@@ -425,7 +425,7 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
               </h3>
               <div>
                 <span className="font-poppins text-text-secondary">
-                  {t('tournamentDetails.guestTicketPrice') || 'Guest Ticket'}:
+                  {t('tournamentDetails.guestPrice') || 'Guest Ticket Price'}:
                 </span>
                 <span className="ml-2 font-poppins font-semibold text-primary">
                   {tournament.guestTicket.price.toFixed(2)} EUR
