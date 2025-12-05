@@ -64,6 +64,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
   const [userPhotoError, setUserPhotoError] = useState<string | null>(null);
   // Категория KIDS
   const [kidsCategoryEnabled, setKidsCategoryEnabled] = useState(false);
+  // Тип регистрации: 'participant' или 'guest'
+  const [registrationType, setRegistrationType] = useState<'participant' | 'guest'>('participant');
+  const [tournament, setTournament] = useState<any>(null);
   const [children, setChildren] = useState<Array<{ firstName: string; lastName: string; photoData: string | null; photoName: string | null }>>([]);
   const [showChildForm, setShowChildForm] = useState(false);
   const [formCollapsed, setFormCollapsed] = useState(false);
@@ -152,6 +155,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           const settings = data.tournament?.registrationSettings;
           setRegistrationSettings(normalizeRegistrationSettings(settings));
           setKidsCategoryEnabled(data.tournament?.kidsCategoryEnabled || false);
+          setTournament(data.tournament);
+          // Если гостевой билет включен, по умолчанию выбираем участника
+          if (data.tournament?.guestTicket?.enabled) {
+            setRegistrationType('participant');
+          }
         }
       } catch (error) {
         console.error('Error fetching tournament settings:', error);
@@ -433,7 +441,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
     e.preventDefault();
     
     // Валидация категорий
-    if (formData.categories.length === 0) {
+    // Валидация категорий только для участников
+    if (registrationType === 'participant' && formData.categories.length === 0) {
       const errorMsg = t('form.validation.selectCategory') || 'Please select at least one category';
       alert(errorMsg);
       scrollToElement('categories-section');
@@ -665,6 +674,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           categoryPartners: Object.keys(categoryPartnersPayload).length > 0 ? categoryPartnersPayload : undefined,
           children: formData.categories.includes('kids') && children.length > 0 ? children : undefined,
           userPhoto: userPhoto.data ? { data: userPhoto.data, name: userPhoto.name } : undefined,
+          registrationType: registrationType,
         }),
       });
 
@@ -759,6 +769,63 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
       )}
       {(!formCollapsed || submitStatus !== 'success') && (
         <div>
+      {/* Registration Type Selection - только если гостевой билет включен */}
+      {tournament?.guestTicket?.enabled && (
+        <div className="mb-6 p-4 bg-background-secondary border border-border rounded-lg">
+          <label className="block text-sm font-poppins font-semibold text-text mb-4">
+            {t('form.registrationType') || 'Registration Type'} *
+          </label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+              registrationType === 'participant'
+                ? 'border-primary bg-primary/10'
+                : 'border-border hover:border-primary/50'
+            }`}>
+              <input
+                type="radio"
+                name="registrationType"
+                value="participant"
+                checked={registrationType === 'participant'}
+                onChange={(e) => setRegistrationType(e.target.value as 'participant' | 'guest')}
+                className="w-5 h-5 text-primary mr-3"
+              />
+              <div>
+                <div className="font-poppins font-semibold text-text">
+                  {t('form.registerAsParticipant') || 'Register as Participant'}
+                </div>
+                <div className="text-sm text-text-secondary">
+                  {t('form.registerAsParticipantDesc') || 'Participate in tournament categories'}
+                </div>
+              </div>
+            </label>
+            <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+              registrationType === 'guest'
+                ? 'border-primary bg-primary/10'
+                : 'border-border hover:border-primary/50'
+            }`}>
+              <input
+                type="radio"
+                name="registrationType"
+                value="guest"
+                checked={registrationType === 'guest'}
+                onChange={(e) => setRegistrationType(e.target.value as 'participant' | 'guest')}
+                className="w-5 h-5 text-primary mr-3"
+              />
+              <div>
+                <div className="font-poppins font-semibold text-text">
+                  {t('form.registerAsGuest') || 'Register as Guest'}
+                </div>
+                <div className="text-sm text-text-secondary">
+                  {tournament.guestTicket.price 
+                    ? `${tournament.guestTicket.price} EUR - ${tournament.guestTicket.description || 'Attend as a guest'}`
+                    : (tournament.guestTicket.description || 'Attend as a guest')}
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+      )}
+
       {/* Name Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -892,7 +959,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </p>
       </div>
 
-      {/* Categories */}
+      {/* Categories - только для участников */}
+      {registrationType === 'participant' && (
       <div id="categories-section">
         <label className="block text-sm font-poppins text-text-secondary mb-2">
           {t('form.categories')} * ({t('form.selectMultiple')})
@@ -1000,8 +1068,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           </div>
         </div>
 
-        {/* KIDS Category */}
-        {kidsCategoryEnabled && (
+        {/* KIDS Category - только для участников */}
+        {registrationType === 'participant' && kidsCategoryEnabled && (
           <div className="mt-4">
             <label
               className={`flex items-center space-x-2 p-3 bg-background-secondary border rounded-lg cursor-pointer transition-colors ${
@@ -1034,9 +1102,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
           {t('form.categoryHelp')}
         </p>
       </div>
+      )}
 
-      {/* Add Partner - для основных категорий (male/female) */}
-      {formData.categories.some(c => c.startsWith('male') || c.startsWith('female')) && (
+      {/* Add Partner - для основных категорий (male/female) - только для участников */}
+      {registrationType === 'participant' && formData.categories.some(c => c.startsWith('male') || c.startsWith('female')) && (
         <div id="partner-section" className="mt-4">
           {partnerRequired ? (
             <p className="text-sm text-text-secondary font-poppins mb-3">
@@ -1220,8 +1289,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
       )}
 
-      {/* Partners for Mixed Categories */}
-      {formData.categories.filter(c => c.startsWith('mixed')).map((category) => {
+      {/* Partners for Mixed Categories - только для участников */}
+      {registrationType === 'participant' && formData.categories.filter(c => c.startsWith('mixed')).map((category) => {
         const categoryPartner = categoryPartners[category] || createEmptyPartner();
         const categoryName = t(`categories.${category}`);
         const isExpanded = expandedCategoryPartners[category] || false;
@@ -1439,8 +1508,8 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName }: Tournament
         </div>
       )}
 
-      {/* KIDS Category - Child Data */}
-      {kidsCategoryEnabled && formData.categories.includes('kids') && (
+      {/* KIDS Category - Child Data - только для участников */}
+      {registrationType === 'participant' && kidsCategoryEnabled && formData.categories.includes('kids') && (
         <div className="border border-gray-700 rounded-lg p-4">
           <div className="flex items-center justify-between mb-4">
             <h4 className="text-sm font-orbitron font-semibold text-text">

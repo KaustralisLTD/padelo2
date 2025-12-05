@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
       demoParticipantsCount,
       registrationSettings,
       customCategories,
+      guestTicket,
     } = body;
 
     if (!name || !startDate || !endDate) {
@@ -126,6 +127,7 @@ export async function POST(request: NextRequest) {
       demoParticipantsCount: normalizedDemoCount,
       registrationSettings,
       customCategories,
+      guestTicket,
     });
 
     // Store translations in database

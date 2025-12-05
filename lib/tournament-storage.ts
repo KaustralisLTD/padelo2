@@ -43,6 +43,7 @@ interface TournamentRegistration {
     photoData?: string | null;
   } | null;
   parentUserId?: string | null; // Для регистраций детей - ID родителя
+  registrationType?: 'participant' | 'guest'; // Тип регистрации
   token: string;
   createdAt: string;
   confirmed: boolean;
@@ -68,7 +69,8 @@ export async function saveRegistration(token: string, registration: TournamentRe
       
       // Убеждаемся, что categories всегда массив
       const categoriesArray = Array.isArray(registration.categories) ? registration.categories : [];
-      if (categoriesArray.length === 0) {
+      // Для гостей категории не обязательны
+      if (registration.registrationType !== 'guest' && categoriesArray.length === 0) {
         throw new Error('At least one category must be selected');
       }
       
@@ -85,9 +87,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           partner_name, partner_email, partner_phone,
           partner_tshirt_size, partner_photo_name, partner_photo_data,
           category_partners, user_photo_name, user_photo_data,
-          child_data, parent_user_id,
+          child_data, parent_user_id, registration_type,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
         [
           token,
           registration.tournamentId,
@@ -113,6 +115,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.userPhoto?.data || null,
           registration.childData ? JSON.stringify(registration.childData) : null,
           registration.parentUserId || null,
+          registration.registrationType || 'participant',
         ]
       ) as any;
       

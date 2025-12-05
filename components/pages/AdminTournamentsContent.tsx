@@ -86,6 +86,11 @@ export default function AdminTournamentsContent() {
     newClubName: '',
     newClubAddress: '',
     newClubLocation: '',
+    guestTicketEnabled: false,
+    guestTicketPrice: '',
+    guestTicketEventSchedule: [] as EventScheduleItem[],
+    guestTicketDescription: '',
+    guestTicketPricing: {} as Record<string, number>,
   });
 
   const parseDemoParticipantsInput = (value: string | number | null | undefined) => {
@@ -253,6 +258,13 @@ export default function AdminTournamentsContent() {
           kidsCategoryEnabled: formData.kidsCategoryEnabled,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
+          guestTicket: formData.guestTicketEnabled ? {
+            enabled: true,
+            price: formData.guestTicketPrice ? parseFloat(formData.guestTicketPrice) : undefined,
+            eventSchedule: formData.guestTicketEventSchedule.length > 0 ? formData.guestTicketEventSchedule : undefined,
+            description: formData.guestTicketDescription || undefined,
+            pricing: Object.keys(formData.guestTicketPricing).length > 0 ? formData.guestTicketPricing : undefined,
+          } : undefined,
         }),
       });
 
@@ -309,6 +321,13 @@ export default function AdminTournamentsContent() {
           kidsCategoryEnabled: formData.kidsCategoryEnabled,
           bannerImageName: formData.bannerImageName || undefined,
           bannerImageData: formData.bannerImageData || undefined,
+          guestTicket: formData.guestTicketEnabled ? {
+            enabled: true,
+            price: formData.guestTicketPrice ? parseFloat(formData.guestTicketPrice) : undefined,
+            eventSchedule: formData.guestTicketEventSchedule.length > 0 ? formData.guestTicketEventSchedule : undefined,
+            description: formData.guestTicketDescription || undefined,
+            pricing: Object.keys(formData.guestTicketPricing).length > 0 ? formData.guestTicketPricing : undefined,
+          } : undefined,
         }),
       });
 
@@ -592,6 +611,11 @@ export default function AdminTournamentsContent() {
       kidsCategoryEnabled: tournament.kidsCategoryEnabled || false,
       bannerImageName: tournament.bannerImageName || null,
       bannerImageData: tournament.bannerImageData || null,
+      guestTicketEnabled: tournament.guestTicket?.enabled || false,
+      guestTicketPrice: tournament.guestTicket?.price?.toString() || '',
+      guestTicketEventSchedule: tournament.guestTicket?.eventSchedule || [],
+      guestTicketDescription: tournament.guestTicket?.description || '',
+      guestTicketPricing: tournament.guestTicket?.pricing || {},
       clubId: (tournament as any).clubId || null,
       newClubName: '',
       newClubAddress: '',
@@ -1860,6 +1884,119 @@ export default function AdminTournamentsContent() {
                       {t('tournaments.addCategory')}
                     </button>
                   </div>
+                </div>
+
+                {/* Guest Ticket Section */}
+                <div className="p-4 bg-background border border-border rounded-lg space-y-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.guestTicketEnabled}
+                      onChange={(e) => setFormData({ ...formData, guestTicketEnabled: e.target.checked })}
+                      className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                    />
+                    <span className="text-sm font-poppins font-semibold text-text">
+                      {t('tournaments.guestTicketEnabled') || 'Enable Guest Ticket'}
+                    </span>
+                  </label>
+
+                  {formData.guestTicketEnabled && (
+                    <div className="space-y-4 pl-6">
+                      <div>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {t('tournaments.guestTicketPrice') || 'Guest Ticket Price (EUR)'}
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={formData.guestTicketPrice}
+                          onChange={(e) => setFormData({ ...formData, guestTicketPrice: e.target.value })}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {t('tournaments.guestTicketDescription') || 'Guest Ticket Description'}
+                        </label>
+                        <textarea
+                          value={formData.guestTicketDescription}
+                          onChange={(e) => setFormData({ ...formData, guestTicketDescription: e.target.value })}
+                          rows={3}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {t('tournaments.guestTicketEventSchedule') || 'Guest Ticket Event Schedule'}
+                        </label>
+                        <div className="space-y-2">
+                          {formData.guestTicketEventSchedule.map((event, index) => (
+                            <div key={index} className="flex gap-2 items-start">
+                              <input
+                                type="text"
+                                value={event.title}
+                                onChange={(e) => {
+                                  const newSchedule = [...formData.guestTicketEventSchedule];
+                                  newSchedule[index] = { ...event, title: e.target.value };
+                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
+                                }}
+                                placeholder={t('tournaments.eventTitlePlaceholder') || 'Event title'}
+                                className="flex-1 px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                              />
+                              <input
+                                type="date"
+                                value={event.date}
+                                onChange={(e) => {
+                                  const newSchedule = [...formData.guestTicketEventSchedule];
+                                  newSchedule[index] = { ...event, date: e.target.value };
+                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
+                                }}
+                                className="px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                              />
+                              <input
+                                type="time"
+                                value={event.time}
+                                onChange={(e) => {
+                                  const newSchedule = [...formData.guestTicketEventSchedule];
+                                  newSchedule[index] = { ...event, time: e.target.value };
+                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
+                                }}
+                                className="px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newSchedule = formData.guestTicketEventSchedule.filter((_, i) => i !== index);
+                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
+                                }}
+                                className="px-3 py-2 text-sm text-red-400 hover:bg-red-400/20 rounded transition-colors"
+                              >
+                                {t('tournaments.removeEvent') || 'Remove'}
+                              </button>
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormData({
+                                ...formData,
+                                guestTicketEventSchedule: [
+                                  ...formData.guestTicketEventSchedule,
+                                  { title: '', date: '', time: '' },
+                                ],
+                              });
+                            }}
+                            className="px-4 py-2 text-sm font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors"
+                          >
+                            {t('tournaments.addEvent') || 'Add Event'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex justify-end space-x-4 pt-4 border-t border-border">

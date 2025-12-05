@@ -43,6 +43,13 @@ export interface Tournament {
   };
   categoryPrices?: Record<string, number>; // key: category code (e.g., "male1"), value: price in EUR
   kidsCategoryEnabled?: boolean; // Включена ли категория KIDS
+  guestTicket?: {
+    enabled: boolean;
+    price?: number;
+    eventSchedule?: EventScheduleItem[];
+    description?: string;
+    pricing?: Record<string, number>; // Дополнительные цены для гостевого билета
+  };
 }
 
 export interface TournamentGroup {
@@ -280,6 +287,13 @@ export async function getTournament(id: number): Promise<Tournament | null> {
         translations,
         categoryPrices: row.category_prices ? (typeof row.category_prices === 'string' ? JSON.parse(row.category_prices) : row.category_prices) : undefined,
         kidsCategoryEnabled: row.kids_category_enabled ? !!row.kids_category_enabled : false,
+        guestTicket: row.guest_ticket_enabled ? {
+          enabled: !!row.guest_ticket_enabled,
+          price: row.guest_ticket_price ? parseFloat(row.guest_ticket_price) : undefined,
+          eventSchedule: row.guest_ticket_event_schedule ? (typeof row.guest_ticket_event_schedule === 'string' ? JSON.parse(row.guest_ticket_event_schedule) : row.guest_ticket_event_schedule) : undefined,
+          description: row.guest_ticket_description || undefined,
+          pricing: row.guest_ticket_pricing ? (typeof row.guest_ticket_pricing === 'string' ? JSON.parse(row.guest_ticket_pricing) : row.guest_ticket_pricing) : undefined,
+        } : undefined,
     };
   } catch (error: any) {
     console.error(`[getTournament] Error getting tournament ${id}:`, error);
@@ -300,8 +314,8 @@ export async function createTournament(
   const pool = getDbPool();
   const registrationSettings = normalizeRegistrationSettings(tournament.registrationSettings);
   const [result] = await pool.execute(
-    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings, custom_categories, banner_image_name, banner_image_data)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO tournaments (name, description, start_date, end_date, registration_deadline, location, location_address, location_coordinates, event_schedule, max_participants, price_single_category, price_double_category, status, demo_participants_count, registration_settings, custom_categories, banner_image_name, banner_image_data, guest_ticket_enabled, guest_ticket_price, guest_ticket_event_schedule, guest_ticket_description, guest_ticket_pricing)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       tournament.name,
       tournament.description || null,
@@ -321,6 +335,11 @@ export async function createTournament(
       tournament.customCategories ? JSON.stringify(tournament.customCategories) : null,
       tournament.bannerImageName || null,
       tournament.bannerImageData || null,
+      tournament.guestTicket?.enabled || false,
+      tournament.guestTicket?.price || null,
+      tournament.guestTicket?.eventSchedule ? JSON.stringify(tournament.guestTicket.eventSchedule) : null,
+      tournament.guestTicket?.description || null,
+      tournament.guestTicket?.pricing ? JSON.stringify(tournament.guestTicket.pricing) : null,
     ]
   ) as any;
   
@@ -417,6 +436,26 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if ((tournament as any).kidsCategoryEnabled !== undefined) {
     updates.push('kids_category_enabled = ?');
     values.push((tournament as any).kidsCategoryEnabled ? 1 : 0);
+  }
+  if (tournament.guestTicket !== undefined) {
+    updates.push('guest_ticket_enabled = ?');
+    values.push(tournament.guestTicket?.enabled || false);
+    if (tournament.guestTicket?.price !== undefined) {
+      updates.push('guest_ticket_price = ?');
+      values.push(tournament.guestTicket.price || null);
+    }
+    if (tournament.guestTicket?.eventSchedule !== undefined) {
+      updates.push('guest_ticket_event_schedule = ?');
+      values.push(tournament.guestTicket.eventSchedule ? JSON.stringify(tournament.guestTicket.eventSchedule) : null);
+    }
+    if (tournament.guestTicket?.description !== undefined) {
+      updates.push('guest_ticket_description = ?');
+      values.push(tournament.guestTicket.description || null);
+    }
+    if (tournament.guestTicket?.pricing !== undefined) {
+      updates.push('guest_ticket_pricing = ?');
+      values.push(tournament.guestTicket.pricing ? JSON.stringify(tournament.guestTicket.pricing) : null);
+    }
   }
   
   if (updates.length === 0) {

@@ -3,6 +3,7 @@
 import { useEffect, useState, FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Policy {
   id: number;
@@ -229,6 +230,12 @@ export default function PoliciesSettingsContent() {
   return (
     <div className="w-full px-4 py-8 pt-20 pl-4">
       <div className="mb-8">
+        <Link
+          href={`/${locale}/admin/settings`}
+          className="text-text-secondary hover:text-primary transition-colors mb-4 inline-block"
+        >
+          ← {t('settings.backToSettings') || 'Back to Settings'}
+        </Link>
         <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text">
           {t('settings.clubModules.policies.title')}
         </h1>

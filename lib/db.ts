@@ -1118,6 +1118,40 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
+    // Add guest ticket fields to tournaments table
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN guest_ticket_enabled BOOLEAN DEFAULT FALSE');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN guest_ticket_price DECIMAL(10, 2) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN guest_ticket_event_schedule JSON DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN guest_ticket_description TEXT DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE tournaments ADD COLUMN guest_ticket_pricing JSON DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+
+    // Add registration_type to tournament_registrations table
+    try {
+      await pool.execute('ALTER TABLE tournament_registrations ADD COLUMN registration_type ENUM(\'participant\', \'guest\') DEFAULT \'participant\'');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+
     // Create first club "Padel La Masia"
     try {
       const [existingClubs] = await pool.execute(
