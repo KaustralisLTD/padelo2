@@ -345,7 +345,13 @@
       "fileNotSelected": "Ingen fil valgt",
       "registrationReceivedMessageUnverified": "Tak for din tilmelding til turneringen {tournamentName}! Vi har modtaget din tilmeldingsanmodning. Tjek venligst din e-mail og klik på bekræftelseslinket for at fuldføre din tilmelding.",
       "payloadTooLarge": "Størrelsen af de uploadede billeder overstiger den tilladte grænse",
-      "photoUploadSolution": "Hvis du ikke kan uploade billeder nu, kan du gøre det senere fra din personlige konto på turneringssiden."
+      "photoUploadSolution": "Hvis du ikke kan uploade billeder nu, kan du gøre det senere fra din personlige konto på turneringssiden.",
+      "selectAge": "Vælg alder",
+      "priceCalculation": "Prisberegning",
+      "adults": "voksne",
+      "children": "børn",
+      "free": "GRATIS",
+      "total": "I alt"
     },
     "confirmation": {
       "title": "Registrering Bekræftet",
@@ -419,7 +425,9 @@
       "prizes": "Præmier",
       "prizesInfo": "Præmieinformation vil blive annonceret snart. Hold øje!",
       "showEvents": "Show All Events",
-      "hideEvents": "Hide Events"
+      "hideEvents": "Hide Events",
+      "guestPrice": "Gæstebillet Pris",
+      "guestTicketPrice": "Gæstebillet Pris"
     },
     "rules": {
       "title": "Turneringsregler",

@@ -345,7 +345,13 @@
       "fileNotSelected": "Keine Datei ausgewählt",
       "registrationReceivedMessageUnverified": "Vielen Dank für Ihre Anmeldung zum Turnier {tournamentName}! Wir haben Ihre Anmeldung erhalten. Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Bestätigungslink, um Ihre Anmeldung abzuschließen.",
       "payloadTooLarge": "Die Größe der hochgeladenen Fotos überschreitet das erlaubte Limit",
-      "photoUploadSolution": "Wenn Sie jetzt keine Fotos hochladen können, können Sie dies später von Ihrem persönlichen Konto auf der Turnierseite aus tun."
+      "photoUploadSolution": "Wenn Sie jetzt keine Fotos hochladen können, können Sie dies später von Ihrem persönlichen Konto auf der Turnierseite aus tun.",
+      "selectAge": "Alter auswählen",
+      "priceCalculation": "Preisberechnung",
+      "adults": "Erwachsene",
+      "children": "Kinder",
+      "free": "KOSTENLOS",
+      "total": "Gesamt"
     },
     "confirmation": {
       "title": "Registrierung Bestätigt",
@@ -419,7 +425,9 @@
       "priceDoubleCategory": "Zwei Kategorien",
       "perCategory": "pro Kategorie",
       "prizes": "Preise",
-      "prizesInfo": "Preisinformationen werden in Kürze bekannt gegeben. Bleiben Sie dran!"
+      "prizesInfo": "Preisinformationen werden in Kürze bekannt gegeben. Bleiben Sie dran!",
+      "guestPrice": "Gastticket-Preis",
+      "guestTicketPrice": "Gastticket-Preis"
     },
     "rules": {
       "title": "Turnierregeln",

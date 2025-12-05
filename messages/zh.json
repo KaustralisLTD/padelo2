@@ -345,7 +345,13 @@
       "fileNotSelected": "未选择文件",
       "registrationReceivedMessageUnverified": "感谢您注册参加 {tournamentName} 锦标赛！我们已收到您的注册请求。请检查您的电子邮件并点击确认链接以完成注册。",
       "payloadTooLarge": "上传的照片大小超过允许的限制",
-      "photoUploadSolution": "如果您现在无法上传照片，您可以稍后从锦标赛页面上的个人帐户中执行此操作。"
+      "photoUploadSolution": "如果您现在无法上传照片，您可以稍后从锦标赛页面上的个人帐户中执行此操作。",
+      "selectAge": "选择年龄",
+      "priceCalculation": "价格计算",
+      "adults": "成人",
+      "children": "儿童",
+      "free": "免费",
+      "total": "总计"
     },
     "confirmation": {
       "title": "注册已确认",
@@ -419,7 +425,9 @@
       "prizes": "奖品",
       "prizesInfo": "奖品信息将很快公布。敬请关注！",
       "showEvents": "Show All Events",
-      "hideEvents": "Hide Events"
+      "hideEvents": "Hide Events",
+      "guestPrice": "嘉宾票价格",
+      "guestTicketPrice": "嘉宾票价格"
     },
     "rules": {
       "title": "锦标赛规则",

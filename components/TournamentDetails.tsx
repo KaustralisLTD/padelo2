@@ -181,14 +181,13 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
   };
 
   // Helper function to get translated event schedule
-  // Используем ТОЧНО ТУ ЖЕ логику, что и в письмах (строка 77-79 в email-templates-tournament.ts)
   const getTranslatedEventSchedule = (): EventScheduleItem[] => {
-    if (!tournament.eventSchedule || tournament.eventSchedule.length === 0) {
+    const targetSchedule = registrationType === 'guest' ? tournament?.guestTicket?.eventSchedule : tournament?.eventSchedule;
+    const targetTranslations = registrationType === 'guest' ? tournament?.translations?.guestTicketEventSchedule : tournament?.translations?.eventSchedule;
+
+    if (!targetSchedule || targetSchedule.length === 0) {
       return [];
     }
-    
-    // Получаем все доступные ключи переводов
-    const availableKeys = tournament.translations?.eventSchedule ? Object.keys(tournament.translations.eventSchedule) : [];
     
     // Определяем приоритетный порядок проверки ключей для текущей локали
     let keysToTry: string[] = [locale];
@@ -204,31 +203,13 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
     }
     
     // Пробуем найти перевод по приоритету
-    let eventScheduleToDisplay = tournament.eventSchedule;
+    let eventScheduleToDisplay = targetSchedule;
     for (const key of keysToTry) {
-      if (tournament.translations?.eventSchedule?.[key]) {
-        eventScheduleToDisplay = tournament.translations.eventSchedule[key];
+      if (targetTranslations?.[key]) {
+        eventScheduleToDisplay = targetTranslations[key];
         break;
       }
     }
-    
-    // Debug logging
-    console.log('[TournamentDetails] EventSchedule translation:', {
-      locale,
-      availableKeys,
-      keysToTry,
-      foundKey: keysToTry.find(k => tournament.translations?.eventSchedule?.[k]),
-      hasUA: !!tournament.translations?.eventSchedule?.['ua'],
-      hasUK: !!tournament.translations?.eventSchedule?.['uk'],
-      hasRU: !!tournament.translations?.eventSchedule?.['ru'],
-      originalCount: tournament.eventSchedule.length,
-      translatedCount: eventScheduleToDisplay.length,
-      using: eventScheduleToDisplay !== tournament.eventSchedule ? 'translated' : 'original',
-      firstEventOriginal: tournament.eventSchedule[0]?.title,
-      firstEventTranslated: eventScheduleToDisplay[0]?.title,
-      allOriginalTitles: tournament.eventSchedule.map((e: any) => e.title),
-      allTranslatedTitles: eventScheduleToDisplay.map((e: any) => e.title),
-    });
     
     return eventScheduleToDisplay;
   };

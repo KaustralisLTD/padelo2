@@ -345,7 +345,13 @@
       "fileNotSelected": "لم يتم اختيار ملف",
       "registrationReceivedMessageUnverified": "شكراً لك على التسجيل في البطولة {tournamentName}! لقد استلمنا طلب التسجيل الخاص بك. يرجى التحقق من بريدك الإلكتروني والنقر على رابط التأكيد لإكمال التسجيل.",
       "payloadTooLarge": "حجم الصور المرفوعة يتجاوز الحد المسموح به",
-      "photoUploadSolution": "إذا لم تتمكن من تحميل الصور الآن، يمكنك القيام بذلك لاحقًا من حسابك الشخصي على صفحة البطولة."
+      "photoUploadSolution": "إذا لم تتمكن من تحميل الصور الآن، يمكنك القيام بذلك لاحقًا من حسابك الشخصي على صفحة البطولة.",
+      "selectAge": "اختر العمر",
+      "priceCalculation": "حساب السعر",
+      "adults": "بالغين",
+      "children": "أطفال",
+      "free": "مجاناً",
+      "total": "الإجمالي"
     },
     "confirmation": {
       "title": "تم تأكيد التسجيل",
@@ -419,7 +425,9 @@
       "prizes": "الجوائز",
       "prizesInfo": "سيتم الإعلان عن معلومات الجوائز قريبًا. ترقبوا!",
       "showEvents": "Show All Events",
-      "hideEvents": "Hide Events"
+      "hideEvents": "Hide Events",
+      "guestPrice": "سعر تذكرة الضيف",
+      "guestTicketPrice": "سعر تذكرة الضيف"
     },
     "rules": {
       "title": "قواعد البطولة",

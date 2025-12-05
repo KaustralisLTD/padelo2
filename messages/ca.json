@@ -570,7 +570,9 @@
       "pricing": "Pricing",
       "priceSingleCategory": "One Category",
       "priceDoubleCategory": "Two Categories",
-      "perCategory": "per category"
+      "perCategory": "per category",
+      "guestPrice": "Preu del Bitllet d'Invitat",
+      "guestTicketPrice": "Preu del Bitllet d'Invitat"
     },
     "rules": {
       "title": "Regles del Torneig",

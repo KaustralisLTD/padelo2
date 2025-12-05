@@ -345,7 +345,13 @@
       "fileNotSelected": "Nessun file selezionato",
       "registrationReceivedMessageUnverified": "Grazie per esserti registrato al torneo {tournamentName}! Abbiamo ricevuto la tua richiesta di registrazione. Controlla la tua email e clicca sul link di conferma per completare la registrazione.",
       "payloadTooLarge": "La dimensione delle foto caricate supera il limite consentito",
-      "photoUploadSolution": "Se non puoi caricare le foto ora, puoi farlo più tardi dal tuo account personale sulla pagina del torneo."
+      "photoUploadSolution": "Se non puoi caricare le foto ora, puoi farlo più tardi dal tuo account personale sulla pagina del torneo.",
+      "selectAge": "Seleziona età",
+      "priceCalculation": "Calcolo Prezzo",
+      "adults": "adulti",
+      "children": "bambini",
+      "free": "GRATIS",
+      "total": "Totale"
     },
     "confirmation": {
       "title": "Registrazione Confermata",
@@ -419,7 +425,9 @@
       "prizes": "Premi",
       "prizesInfo": "Le informazioni sui premi saranno annunciate a breve. Restate sintonizzati!",
       "showEvents": "Show All Events",
-      "hideEvents": "Hide Events"
+      "hideEvents": "Hide Events",
+      "guestPrice": "Prezzo Biglietto Ospite",
+      "guestTicketPrice": "Prezzo Biglietto Ospite"
     },
     "rules": {
       "title": "Regole del Torneo",

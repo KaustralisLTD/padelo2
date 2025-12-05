@@ -345,7 +345,13 @@
       "fileNotSelected": "Geen bestand geselecteerd",
       "registrationReceivedMessageUnverified": "Bedankt voor uw inschrijving voor het toernooi {tournamentName}! We hebben uw inschrijvingsverzoek ontvangen. Controleer uw e-mail en klik op de bevestigingslink om uw inschrijving te voltooien.",
       "payloadTooLarge": "De grootte van de geüploade foto's overschrijdt de toegestane limiet",
-      "photoUploadSolution": "Als u nu geen foto's kunt uploaden, kunt u dit later doen vanuit uw persoonlijke account op de toernooipagina."
+      "photoUploadSolution": "Als u nu geen foto's kunt uploaden, kunt u dit later doen vanuit uw persoonlijke account op de toernooipagina.",
+      "selectAge": "Selecteer leeftijd",
+      "priceCalculation": "Prijsberekening",
+      "adults": "volwassenen",
+      "children": "kinderen",
+      "free": "GRATIS",
+      "total": "Totaal"
     },
     "confirmation": {
       "title": "Registratie Bevestigd",
@@ -419,7 +425,9 @@
       "prizes": "Prijzen",
       "prizesInfo": "Prijsinformatie wordt binnenkort aangekondigd. Blijf op de hoogte!",
       "showEvents": "Show All Events",
-      "hideEvents": "Hide Events"
+      "hideEvents": "Hide Events",
+      "guestPrice": "Gastkaartje Prijs",
+      "guestTicketPrice": "Gastkaartje Prijs"
     },
     "rules": {
       "title": "Toernooiregels",
