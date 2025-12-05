@@ -32,6 +32,16 @@ interface TournamentRegistrationFormProps {
 const TournamentRegistrationForm = ({ tournamentId, tournamentName, registrationType: propRegistrationType, tournamentData }: TournamentRegistrationFormProps) => {
   const t = useTranslations('Tournaments');
   const locale = useLocale();
+  
+  // Helper function to get translation with fallback
+  const getTranslation = (key: string, fallback: string) => {
+    const translation = t(key);
+    // If translation returns the full key path, it means translation wasn't found
+    if (translation && translation.startsWith('Tournaments.')) {
+      return fallback;
+    }
+    return translation || fallback;
+  };
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -775,7 +785,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 onClick={() => setFormCollapsed(false)}
                 className="mt-3 px-4 py-2 bg-background-secondary border border-primary/30 rounded-lg text-text hover:border-primary transition-colors text-sm font-poppins"
               >
-                {t('form.viewFilledData') || 'View Filled Data'}
+                {getTranslation('form.viewFilledData', 'View Filled Data')}
               </button>
             </div>
           </div>
@@ -2001,7 +2011,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 onClick={() => setFormCollapsed(!formCollapsed)}
                 className="mt-3 px-4 py-2 bg-background-secondary border border-primary/30 rounded-lg text-text hover:border-primary transition-colors text-sm font-poppins"
               >
-                {formCollapsed ? t('form.viewFilledData') || 'View Filled Data' : t('form.hideForm') || 'Hide Form'}
+                {formCollapsed 
+                  ? getTranslation('form.viewFilledData', 'View Filled Data')
+                  : getTranslation('form.hideForm', 'Hide Form')}
               </button>
             </div>
           </div>
