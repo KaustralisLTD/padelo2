@@ -26,9 +26,17 @@ interface Tournament {
   priceSingleCategory?: number | null;
   priceDoubleCategory?: number | null;
   status: string;
+  guestTicket?: {
+    enabled: boolean;
+    price?: number;
+    description?: string;
+    eventSchedule?: EventScheduleItem[];
+  };
   translations?: {
     description?: Record<string, string>;
     eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    guestTicketDescription?: Record<string, string>;
+    guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
   };
 }
 
