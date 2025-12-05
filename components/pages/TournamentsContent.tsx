@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import TournamentRegistrationForm from '@/components/forms/TournamentRegistrationForm';
 import TournamentDetails from '@/components/TournamentDetails';
 
