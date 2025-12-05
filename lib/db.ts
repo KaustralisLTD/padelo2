@@ -1084,6 +1084,40 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
+    // Create company_info table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS company_info (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        name VARCHAR(255) NOT NULL,
+        description TEXT DEFAULT NULL,
+        email VARCHAR(255) DEFAULT NULL,
+        phone VARCHAR(50) DEFAULT NULL,
+        address TEXT DEFAULT NULL,
+        logo_url VARCHAR(500) DEFAULT NULL,
+        website VARCHAR(255) DEFAULT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
+    // Create terms table
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS terms (
+        id INT(11) NOT NULL AUTO_INCREMENT,
+        type ENUM('terms_of_service', 'privacy_policy', 'cookie_policy', 'other') NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        version VARCHAR(50) DEFAULT NULL,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        INDEX idx_type (type),
+        INDEX idx_active (is_active)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+
     // Create first club "Padel La Masia"
     try {
       const [existingClubs] = await pool.execute(
