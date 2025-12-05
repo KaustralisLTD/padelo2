@@ -102,7 +102,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           child_data, parent_user_id, registration_type,
           adults_count, children_count, guest_children,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           token,
           registration.tournamentId,
@@ -133,6 +133,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.childrenCount || null,
           registration.guestChildren ? JSON.stringify(registration.guestChildren) : null,
           registration.confirmed !== undefined ? registration.confirmed : false,
+          registration.createdAt ? new Date(registration.createdAt) : new Date(),
         ]
       ) as any;
       
