@@ -194,6 +194,14 @@ export async function getAllTournaments(): Promise<Tournament[]> {
         bannerImageData: row.banner_image_data ?? null,
         categoryPrices: row.category_prices ? (typeof row.category_prices === 'string' ? JSON.parse(row.category_prices) : row.category_prices) : undefined,
         kidsCategoryEnabled: row.kids_category_enabled ? !!row.kids_category_enabled : false,
+        guestTicket: (row.guest_ticket_enabled || row.guest_ticket_title || row.guest_ticket_price || row.guest_ticket_description || row.guest_ticket_event_schedule || row.guest_ticket_pricing) ? {
+          enabled: !!row.guest_ticket_enabled,
+          title: row.guest_ticket_title || undefined,
+          price: row.guest_ticket_price ? parseFloat(row.guest_ticket_price) : undefined,
+          eventSchedule: row.guest_ticket_event_schedule ? (typeof row.guest_ticket_event_schedule === 'string' ? JSON.parse(row.guest_ticket_event_schedule) : row.guest_ticket_event_schedule) : undefined,
+          description: row.guest_ticket_description || undefined,
+          pricing: row.guest_ticket_pricing ? (typeof row.guest_ticket_pricing === 'string' ? JSON.parse(row.guest_ticket_pricing) : row.guest_ticket_pricing) : undefined,
+        } : undefined,
       };
     });
   } catch (error) {
@@ -290,7 +298,7 @@ export async function getTournament(id: number): Promise<Tournament | null> {
         translations,
         categoryPrices: row.category_prices ? (typeof row.category_prices === 'string' ? JSON.parse(row.category_prices) : row.category_prices) : undefined,
         kidsCategoryEnabled: row.kids_category_enabled ? !!row.kids_category_enabled : false,
-        guestTicket: row.guest_ticket_enabled ? {
+        guestTicket: (row.guest_ticket_enabled || row.guest_ticket_title || row.guest_ticket_price || row.guest_ticket_description || row.guest_ticket_event_schedule || row.guest_ticket_pricing) ? {
           enabled: !!row.guest_ticket_enabled,
           title: row.guest_ticket_title || undefined,
           price: row.guest_ticket_price ? parseFloat(row.guest_ticket_price) : undefined,
@@ -445,26 +453,21 @@ export async function updateTournament(id: number, tournament: Partial<Omit<Tour
   if (tournament.guestTicket !== undefined) {
     updates.push('guest_ticket_enabled = ?');
     values.push(tournament.guestTicket?.enabled || false);
-    if (tournament.guestTicket?.title !== undefined) {
-      updates.push('guest_ticket_title = ?');
-      values.push(tournament.guestTicket.title || null);
-    }
-    if (tournament.guestTicket?.price !== undefined) {
-      updates.push('guest_ticket_price = ?');
-      values.push(tournament.guestTicket.price || null);
-    }
-    if (tournament.guestTicket?.eventSchedule !== undefined) {
-      updates.push('guest_ticket_event_schedule = ?');
-      values.push(tournament.guestTicket.eventSchedule ? JSON.stringify(tournament.guestTicket.eventSchedule) : null);
-    }
-    if (tournament.guestTicket?.description !== undefined) {
-      updates.push('guest_ticket_description = ?');
-      values.push(tournament.guestTicket.description || null);
-    }
-    if (tournament.guestTicket?.pricing !== undefined) {
-      updates.push('guest_ticket_pricing = ?');
-      values.push(tournament.guestTicket.pricing ? JSON.stringify(tournament.guestTicket.pricing) : null);
-    }
+    // Всегда сохраняем title, даже если пустая строка
+    updates.push('guest_ticket_title = ?');
+    values.push(tournament.guestTicket?.title !== undefined ? (tournament.guestTicket.title || null) : null);
+    // Всегда сохраняем price, даже если undefined
+    updates.push('guest_ticket_price = ?');
+    values.push(tournament.guestTicket?.price !== undefined ? (tournament.guestTicket.price || null) : null);
+    // Всегда сохраняем eventSchedule, даже если пустой массив
+    updates.push('guest_ticket_event_schedule = ?');
+    values.push(tournament.guestTicket?.eventSchedule !== undefined ? (tournament.guestTicket.eventSchedule && tournament.guestTicket.eventSchedule.length > 0 ? JSON.stringify(tournament.guestTicket.eventSchedule) : null) : null);
+    // Всегда сохраняем description, даже если пустая строка
+    updates.push('guest_ticket_description = ?');
+    values.push(tournament.guestTicket?.description !== undefined ? (tournament.guestTicket.description || null) : null);
+    // Всегда сохраняем pricing, даже если пустой объект
+    updates.push('guest_ticket_pricing = ?');
+    values.push(tournament.guestTicket?.pricing !== undefined ? (tournament.guestTicket.pricing && Object.keys(tournament.guestTicket.pricing).length > 0 ? JSON.stringify(tournament.guestTicket.pricing) : null) : null);
   }
   
   if (updates.length === 0) {

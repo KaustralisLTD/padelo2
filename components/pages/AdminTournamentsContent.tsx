@@ -634,6 +634,7 @@ export default function AdminTournamentsContent() {
       newClubAddress: '',
       newClubLocation: '',
     });
+    setActiveTab('participant'); // Сбрасываем вкладку на Participant при открытии
     setShowCreateModal(true);
   };
 
