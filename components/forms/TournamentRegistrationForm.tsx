@@ -1801,11 +1801,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
                 <span className="truncate">{t('form.adultsCount') || 'Number of Adults'} *</span>
               </label>
-              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-primary/30 rounded-xl shadow-lg shadow-primary/10">
+              <div className="flex items-center bg-background-secondary/80 border-2 border-primary/30 rounded-xl shadow-lg shadow-primary/10 overflow-hidden">
                 <button
                   type="button"
                   onClick={() => setAdultsCount(Math.max(1, adultsCount - 1))}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center rounded-l-xl"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation w-[44px] sm:w-[48px] h-full flex items-center justify-center"
                   disabled={adultsCount <= 1}
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -1819,12 +1819,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                   value={adultsCount}
                   onChange={(e) => setAdultsCount(Math.max(1, parseInt(e.target.value) || 1))}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0"
+                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0 border-x border-primary/20"
                 />
                 <button
                   type="button"
                   onClick={() => setAdultsCount(adultsCount + 1)}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center rounded-r-xl"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation w-[44px] sm:w-[48px] h-full flex items-center justify-center"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1840,7 +1840,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 <span className="truncate">{t('form.childrenCount') || 'Number of Children'}</span>
                 <span className="text-text-tertiary font-normal text-xs hidden sm:inline">({t('form.optional')})</span>
               </label>
-              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-accent/30 rounded-xl shadow-lg shadow-accent/10">
+              <div className="flex items-center bg-background-secondary/80 border-2 border-accent/30 rounded-xl shadow-lg shadow-accent/10 overflow-hidden">
                 <button
                   type="button"
                   onClick={() => {
@@ -1848,7 +1848,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                       setGuestChildren(guestChildren.slice(0, guestChildren.length - 1));
                     }
                   }}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed rounded-l-xl"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation w-[44px] sm:w-[48px] h-full flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                   disabled={guestChildren.length === 0}
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -1870,12 +1870,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                     }
                   }}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0"
+                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0 border-x border-accent/20"
                 />
                 <button
                   type="button"
                   onClick={() => setGuestChildren([...guestChildren, { age: 0 }])}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center rounded-r-xl"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation w-[44px] sm:w-[48px] h-full flex items-center justify-center"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
