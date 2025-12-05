@@ -327,6 +327,7 @@
       "child": "Niño",
       "age": "Edad",
       "yearsOld": "años",
+      "guestInfo": "Información de Invitados",
       "registerButton": "REGISTRARSE AHORA",
       "submitting": "Enviando...",
       "success": "¡Registro exitoso! Por favor, revisa tu correo para confirmación.",

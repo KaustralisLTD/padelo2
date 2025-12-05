@@ -304,6 +304,7 @@
       "child": "Enfant",
       "age": "Âge",
       "yearsOld": "ans",
+      "guestInfo": "Informations sur les Invités",
       "registerButton": "S'INSCRIRE MAINTENANT",
       "submitting": "Envoi en cours...",
       "success": "Inscription réussie! Veuillez vérifier votre email pour confirmation.",

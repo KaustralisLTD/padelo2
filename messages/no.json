@@ -306,6 +306,7 @@
       "child": "Barn",
       "age": "Alder",
       "yearsOld": "år",
+      "guestInfo": "Gjestinformasjon",
       "registerButton": "REGISTRER DEG NÅ",
       "submitting": "Sender...",
       "success": "Registrering vellykket! Sjekk din email for bekreftelse.",

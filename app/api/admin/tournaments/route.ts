@@ -96,10 +96,18 @@ export async function POST(request: NextRequest) {
     // Auto-translate description and eventSchedule if provided
     let translatedDescription: Record<string, string> | undefined;
     let translatedEventSchedule: Record<string, any> | undefined;
+    let translatedGuestTicketDescription: Record<string, string> | undefined;
+    let translatedGuestTicketEventSchedule: Record<string, any> | undefined;
     
-    if (description || eventSchedule) {
+    if (description || eventSchedule || guestTicket) {
       const sourceLocale = body.sourceLocale || 'en';
-      const { translateTournamentDescription, translateEventSchedule, storeTournamentTranslations } = await import('@/lib/translation-utils');
+      const { 
+        translateTournamentDescription, 
+        translateEventSchedule, 
+        translateGuestTicketDescription,
+        translateGuestTicketEventSchedule,
+        storeTournamentTranslations 
+      } = await import('@/lib/translation-utils');
       
       if (description) {
         translatedDescription = await translateTournamentDescription(description, sourceLocale);
@@ -107,6 +115,17 @@ export async function POST(request: NextRequest) {
       
       if (eventSchedule && Array.isArray(eventSchedule) && eventSchedule.length > 0) {
         translatedEventSchedule = await translateEventSchedule(eventSchedule, sourceLocale);
+      }
+      
+      // Translate guest ticket fields if provided
+      if (guestTicket) {
+        if (guestTicket.description) {
+          translatedGuestTicketDescription = await translateGuestTicketDescription(guestTicket.description, sourceLocale);
+        }
+        
+        if (guestTicket.eventSchedule && Array.isArray(guestTicket.eventSchedule) && guestTicket.eventSchedule.length > 0) {
+          translatedGuestTicketEventSchedule = await translateGuestTicketEventSchedule(guestTicket.eventSchedule, sourceLocale);
+        }
       }
     }
 
@@ -131,11 +150,13 @@ export async function POST(request: NextRequest) {
     });
 
     // Store translations in database
-    if (translatedDescription || translatedEventSchedule) {
+    if (translatedDescription || translatedEventSchedule || translatedGuestTicketDescription || translatedGuestTicketEventSchedule) {
       const { storeTournamentTranslations } = await import('@/lib/translation-utils');
       await storeTournamentTranslations(tournament.id, {
         description: translatedDescription,
         eventSchedule: translatedEventSchedule,
+        guestTicketDescription: translatedGuestTicketDescription,
+        guestTicketEventSchedule: translatedGuestTicketEventSchedule,
       });
     }
 
@@ -186,10 +207,18 @@ export async function PUT(request: NextRequest) {
     // Auto-translate description and eventSchedule if updated
     let translatedDescription: Record<string, string> | undefined;
     let translatedEventSchedule: Record<string, any> | undefined;
+    let translatedGuestTicketDescription: Record<string, string> | undefined;
+    let translatedGuestTicketEventSchedule: Record<string, any> | undefined;
     
-    if (updates.description || updates.eventSchedule) {
+    if (updates.description || updates.eventSchedule || updates.guestTicket) {
       const sourceLocale = body.sourceLocale || 'en';
-      const { translateTournamentDescription, translateEventSchedule, storeTournamentTranslations } = await import('@/lib/translation-utils');
+      const { 
+        translateTournamentDescription, 
+        translateEventSchedule, 
+        translateGuestTicketDescription,
+        translateGuestTicketEventSchedule,
+        storeTournamentTranslations 
+      } = await import('@/lib/translation-utils');
       
       if (updates.description) {
         translatedDescription = await translateTournamentDescription(updates.description, sourceLocale);
@@ -197,6 +226,17 @@ export async function PUT(request: NextRequest) {
       
       if (updates.eventSchedule && Array.isArray(updates.eventSchedule) && updates.eventSchedule.length > 0) {
         translatedEventSchedule = await translateEventSchedule(updates.eventSchedule, sourceLocale);
+      }
+      
+      // Translate guest ticket fields if updated
+      if (updates.guestTicket) {
+        if (updates.guestTicket.description) {
+          translatedGuestTicketDescription = await translateGuestTicketDescription(updates.guestTicket.description, sourceLocale);
+        }
+        
+        if (updates.guestTicket.eventSchedule && Array.isArray(updates.guestTicket.eventSchedule) && updates.guestTicket.eventSchedule.length > 0) {
+          translatedGuestTicketEventSchedule = await translateGuestTicketEventSchedule(updates.guestTicket.eventSchedule, sourceLocale);
+        }
       }
     }
 
@@ -206,11 +246,13 @@ export async function PUT(request: NextRequest) {
     });
 
     // Store translations in database
-    if (translatedDescription || translatedEventSchedule) {
+    if (translatedDescription || translatedEventSchedule || translatedGuestTicketDescription || translatedGuestTicketEventSchedule) {
       const { storeTournamentTranslations } = await import('@/lib/translation-utils');
       await storeTournamentTranslations(tournament.id, {
         description: translatedDescription,
         eventSchedule: translatedEventSchedule,
+        guestTicketDescription: translatedGuestTicketDescription,
+        guestTicketEventSchedule: translatedGuestTicketEventSchedule,
       });
     }
 

@@ -133,6 +133,30 @@ export async function translateEventSchedule(
 }
 
 /**
+ * Translate guest ticket description to all supported languages
+ */
+export async function translateGuestTicketDescription(
+  description: string | undefined,
+  sourceLocale: string = 'en'
+): Promise<Record<string, string> | undefined> {
+  if (!description || description.trim() === '') return undefined;
+  
+  return translateTournamentDescription(description, sourceLocale);
+}
+
+/**
+ * Translate guest ticket event schedule to all supported languages
+ */
+export async function translateGuestTicketEventSchedule(
+  eventSchedule: Array<{ title: string; date: string; time: string; description?: string }> | undefined,
+  sourceLocale: string = 'en'
+): Promise<Record<string, Array<{ title: string; date: string; time: string; description?: string }>> | undefined> {
+  if (!eventSchedule || eventSchedule.length === 0) return undefined;
+  
+  return translateEventSchedule(eventSchedule, sourceLocale);
+}
+
+/**
  * Store translated content in database
  * This assumes we have a translations table or JSON column
  */
@@ -141,6 +165,8 @@ export async function storeTournamentTranslations(
   translations: {
     description?: Record<string, string>;
     eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    guestTicketDescription?: Record<string, string>;
+    guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
   }
 ): Promise<void> {
   try {

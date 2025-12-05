@@ -304,6 +304,7 @@
       "child": "Kind",
       "age": "Alter",
       "yearsOld": "Jahre alt",
+      "guestInfo": "Gastinformationen",
       "registerButton": "JETZT REGISTRIEREN",
       "submitting": "Wird gesendet...",
       "success": "Registrierung erfolgreich! Bitte überprüfen Sie Ihre E-Mail zur Bestätigung.",

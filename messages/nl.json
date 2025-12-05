@@ -306,6 +306,7 @@
       "child": "Kind",
       "age": "Leeftijd",
       "yearsOld": "jaar",
+      "guestInfo": "Gastinformatie",
       "registerButton": "REGISTREER NU",
       "submitting": "Verzenden...",
       "success": "Registratie succesvol! Controleer uw email voor bevestiging.",

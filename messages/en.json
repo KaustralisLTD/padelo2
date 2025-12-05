@@ -430,6 +430,7 @@
       "child": "Child",
       "age": "Age",
       "yearsOld": "years old",
+      "guestInfo": "Guest Information",
       "registerButton": "REGISTER NOW",
       "submitting": "Submitting...",
       "success": "Registration successful! Please check your email for confirmation.",

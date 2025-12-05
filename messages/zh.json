@@ -304,6 +304,7 @@
       "child": "儿童",
       "age": "年龄",
       "yearsOld": "岁",
+      "guestInfo": "访客信息",
       "registerButton": "立即注册",
       "submitting": "提交中...",
       "success": "注册成功！请检查您的电子邮件以确认。",

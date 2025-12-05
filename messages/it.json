@@ -304,6 +304,7 @@
       "child": "Bambino",
       "age": "Età",
       "yearsOld": "anni",
+      "guestInfo": "Informazioni sugli Ospiti",
       "registerButton": "REGISTRATI ORA",
       "submitting": "Invio in corso...",
       "success": "Registrazione riuscita! Controlla la tua email per la conferma.",
