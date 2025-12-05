@@ -7531,3 +7531,877 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
 </html>
   `.trim();
 }
+
+// Guest Tournament Email Templates
+
+export interface GuestTournamentVerificationEmailData {
+  firstName?: string;
+  lastName?: string;
+  tournamentName: string;
+  confirmationUrl: string;
+  locale?: string;
+}
+
+export interface GuestTournamentRegistrationConfirmedEmailData {
+  firstName?: string;
+  lastName?: string;
+  tournament: {
+    id: number;
+    name: string;
+    startDate: string;
+    endDate: string;
+    location?: string;
+    locationAddress?: string;
+    locationCoordinates?: { lat: number; lng: number };
+    guestTicket?: {
+      title?: string;
+      description?: string;
+      price?: number;
+      eventSchedule?: Array<{ title: string; date: string; time: string; description?: string }>;
+    };
+    translations?: {
+      guestTicketTitle?: Record<string, string>;
+      guestTicketDescription?: Record<string, string>;
+      guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    };
+  };
+  adultsCount: number;
+  childrenCount: number;
+  childrenAges?: Array<number>;
+  totalPrice: number;
+  locale?: string;
+}
+
+export function getGuestTournamentVerificationEmailTemplate(data: GuestTournamentVerificationEmailData): string {
+  const { firstName, lastName, tournamentName, confirmationUrl, locale = 'en' } = data;
+  const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Guest';
+  const firstNameOnly = firstName || name.split(' ')[0] || 'Guest';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+
+  const translations: Record<string, Record<string, string>> = {
+    en: {
+      subject: `Confirm your guest registration for ${tournamentName}`,
+      greeting: 'Hello',
+      thankYou: 'Thank you for registering as a guest',
+      thankYouFor: 'Thank you for registering as a guest for',
+      message: 'We received your guest registration for',
+      confirmMessage: 'Please confirm your email address to complete your registration and receive all event details.',
+      confirmButton: 'Confirm Email',
+      ifButtonDoesntWork: 'If the button doesn\'t work, paste this link into your browser:',
+      footer: 'See you at the tournament!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'You\'re receiving this email because you registered as a guest for a tournament on',
+      followJourney: 'Follow the journey:',
+    },
+    ru: {
+      subject: `Подтвердите вашу регистрацию как гостя на ${tournamentName}`,
+      greeting: 'Здравствуйте',
+      thankYou: 'Спасибо за регистрацию как гость',
+      thankYouFor: 'Спасибо за регистрацию как гость на',
+      message: 'Мы получили вашу регистрацию как гостя на',
+      confirmMessage: 'Пожалуйста, подтвердите ваш email адрес, чтобы завершить регистрацию и получить все детали мероприятия.',
+      confirmButton: 'Подтвердить Email',
+      ifButtonDoesntWork: 'Если кнопка не работает, вставьте эту ссылку в браузер:',
+      footer: 'Увидимся на турнире!',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Вы получаете это письмо, потому что зарегистрировались как гость на турнир на',
+      followJourney: 'Следите за путешествием:',
+    },
+    ua: {
+      subject: `Підтвердіть вашу реєстрацію як гостя на ${tournamentName}`,
+      greeting: 'Вітаємо',
+      thankYou: 'Дякуємо за реєстрацію як гість',
+      thankYouFor: 'Дякуємо за реєстрацію як гість на',
+      message: 'Ми отримали вашу реєстрацію як гостя на',
+      confirmMessage: 'Будь ласка, підтвердіть вашу email адресу, щоб завершити реєстрацію та отримати всі деталі заходу.',
+      confirmButton: 'Підтвердити Email',
+      ifButtonDoesntWork: 'Якщо кнопка не працює, вставте це посилання в браузер:',
+      footer: 'Побачимося на турнірі!',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Ви отримуєте цей лист, тому що зареєструвалися як гість на турнір на',
+      followJourney: 'Слідкуйте за подорожжю:',
+    },
+    es: {
+      subject: `Confirma tu registro como invitado para ${tournamentName}`,
+      greeting: 'Hola',
+      thankYou: 'Gracias por registrarte como invitado',
+      thankYouFor: 'Gracias por registrarte como invitado para',
+      message: 'Recibimos tu registro como invitado para',
+      confirmMessage: 'Por favor, confirma tu dirección de correo electrónico para completar tu registro y recibir todos los detalles del evento.',
+      confirmButton: 'Confirmar Email',
+      ifButtonDoesntWork: 'Si el botón no funciona, pega este enlace en tu navegador:',
+      footer: '¡Nos vemos en el torneo!',
+      team: 'Equipo PadelO₂',
+      receivingEmail: 'Estás recibiendo este correo porque te registraste como invitado para un torneo en',
+      followJourney: 'Sigue el viaje:',
+    },
+    fr: {
+      subject: `Confirmez votre inscription en tant qu'invité pour ${tournamentName}`,
+      greeting: 'Bonjour',
+      thankYou: 'Merci de vous être inscrit en tant qu\'invité',
+      thankYouFor: 'Merci de vous être inscrit en tant qu\'invité pour',
+      message: 'Nous avons reçu votre inscription en tant qu\'invité pour',
+      confirmMessage: 'Veuillez confirmer votre adresse e-mail pour finaliser votre inscription et recevoir tous les détails de l\'événement.',
+      confirmButton: 'Confirmer l\'Email',
+      ifButtonDoesntWork: 'Si le bouton ne fonctionne pas, collez ce lien dans votre navigateur:',
+      footer: 'À bientôt au tournoi !',
+      team: 'Équipe PadelO₂',
+      receivingEmail: 'Vous recevez cet e-mail parce que vous vous êtes inscrit en tant qu\'invité pour un tournoi sur',
+      followJourney: 'Suivez le voyage:',
+    },
+    de: {
+      subject: `Bestätigen Sie Ihre Gästeregistrierung für ${tournamentName}`,
+      greeting: 'Hallo',
+      thankYou: 'Vielen Dank für Ihre Registrierung als Gast',
+      thankYouFor: 'Vielen Dank für Ihre Registrierung als Gast für',
+      message: 'Wir haben Ihre Gästeregistrierung für',
+      confirmMessage: 'Bitte bestätigen Sie Ihre E-Mail-Adresse, um Ihre Registrierung abzuschließen und alle Veranstaltungsdetails zu erhalten.',
+      confirmButton: 'E-Mail bestätigen',
+      ifButtonDoesntWork: 'Wenn der Button nicht funktioniert, fügen Sie diesen Link in Ihren Browser ein:',
+      footer: 'Wir sehen uns beim Turnier!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Sie erhalten diese E-Mail, weil Sie sich als Gast für ein Turnier auf',
+      followJourney: 'Folgen Sie der Reise:',
+    },
+    it: {
+      subject: `Conferma la tua registrazione come ospite per ${tournamentName}`,
+      greeting: 'Ciao',
+      thankYou: 'Grazie per esserti registrato come ospite',
+      thankYouFor: 'Grazie per esserti registrato come ospite per',
+      message: 'Abbiamo ricevuto la tua registrazione come ospite per',
+      confirmMessage: 'Per favore, conferma il tuo indirizzo email per completare la registrazione e ricevere tutti i dettagli dell\'evento.',
+      confirmButton: 'Conferma Email',
+      ifButtonDoesntWork: 'Se il pulsante non funziona, incolla questo link nel tuo browser:',
+      footer: 'Ci vediamo al torneo!',
+      team: 'Team PadelO₂',
+      receivingEmail: 'Stai ricevendo questa email perché ti sei registrato come ospite per un torneo su',
+      followJourney: 'Segui il viaggio:',
+    },
+    ca: {
+      subject: `Confirma el teu registre com a convidat per a ${tournamentName}`,
+      greeting: 'Hola',
+      thankYou: 'Gràcies per registrar-te com a convidat',
+      thankYouFor: 'Gràcies per registrar-te com a convidat per a',
+      message: 'Hem rebut el teu registre com a convidat per a',
+      confirmMessage: 'Si us plau, confirma la teva adreça de correu electrònic per completar el registre i rebre tots els detalls de l\'esdeveniment.',
+      confirmButton: 'Confirmar Email',
+      ifButtonDoesntWork: 'Si el botó no funciona, enganxa aquest enllaç al teu navegador:',
+      footer: 'Ens veiem al torneig!',
+      team: 'Equip PadelO₂',
+      receivingEmail: 'Estàs rebent aquest correu perquè et vas registrar com a convidat per a un torneig a',
+      followJourney: 'Segueix el viatge:',
+    },
+    nl: {
+      subject: `Bevestig uw gastregistratie voor ${tournamentName}`,
+      greeting: 'Hallo',
+      thankYou: 'Bedankt voor uw registratie als gast',
+      thankYouFor: 'Bedankt voor uw registratie als gast voor',
+      message: 'We hebben uw gastregistratie ontvangen voor',
+      confirmMessage: 'Bevestig uw e-mailadres om uw registratie te voltooien en alle evenementdetails te ontvangen.',
+      confirmButton: 'E-mail bevestigen',
+      ifButtonDoesntWork: 'Als de knop niet werkt, plak deze link in uw browser:',
+      footer: 'Tot ziens op het toernooi!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'U ontvangt deze e-mail omdat u zich heeft geregistreerd als gast voor een toernooi op',
+      followJourney: 'Volg de reis:',
+    },
+    da: {
+      subject: `Bekræft din gæsteregistrering for ${tournamentName}`,
+      greeting: 'Hej',
+      thankYou: 'Tak for din registrering som gæst',
+      thankYouFor: 'Tak for din registrering som gæst for',
+      message: 'Vi har modtaget din gæsteregistrering for',
+      confirmMessage: 'Bekræft venligst din e-mailadresse for at fuldføre din registrering og modtage alle begivenhedsoplysninger.',
+      confirmButton: 'Bekræft Email',
+      ifButtonDoesntWork: 'Hvis knappen ikke virker, indsæt dette link i din browser:',
+      footer: 'Vi ses ved turneringen!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du modtager denne e-mail, fordi du tilmeldte dig som gæst til en turnering på',
+      followJourney: 'Følg rejsen:',
+    },
+    sv: {
+      subject: `Bekräfta din gästregistrering för ${tournamentName}`,
+      greeting: 'Hej',
+      thankYou: 'Tack för din registrering som gäst',
+      thankYouFor: 'Tack för din registrering som gäst för',
+      message: 'Vi har mottagit din gästregistrering för',
+      confirmMessage: 'Vänligen bekräfta din e-postadress för att slutföra din registrering och ta emot alla evenemangsdetaljer.',
+      confirmButton: 'Bekräfta E-post',
+      ifButtonDoesntWork: 'Om knappen inte fungerar, klistra in denna länk i din webbläsare:',
+      footer: 'Vi ses vid turneringen!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du får detta e-postmeddelande eftersom du registrerade dig som gäst för en turnering på',
+      followJourney: 'Följ resan:',
+    },
+    no: {
+      subject: `Bekreft din gjesteregistrering for ${tournamentName}`,
+      greeting: 'Hei',
+      thankYou: 'Takk for din registrering som gjest',
+      thankYouFor: 'Takk for din registrering som gjest for',
+      message: 'Vi har mottatt din gjesteregistrering for',
+      confirmMessage: 'Vennligst bekreft din e-postadresse for å fullføre registreringen og motta alle arrangementdetaljer.',
+      confirmButton: 'Bekreft E-post',
+      ifButtonDoesntWork: 'Hvis knappen ikke fungerer, lim inn denne lenken i nettleseren din:',
+      footer: 'Vi sees ved turneringen!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du mottar denne e-posten fordi du registrerte deg som gjest for en turnering på',
+      followJourney: 'Følg reisen:',
+    },
+    ar: {
+      subject: `أكد تسجيلك كضيف لـ ${tournamentName}`,
+      greeting: 'مرحبا',
+      thankYou: 'شكرا لتسجيلك كضيف',
+      thankYouFor: 'شكرا لتسجيلك كضيف لـ',
+      message: 'لقد استلمنا تسجيلك كضيف لـ',
+      confirmMessage: 'يرجى تأكيد عنوان بريدك الإلكتروني لإكمال التسجيل والحصول على جميع تفاصيل الحدث.',
+      confirmButton: 'تأكيد البريد الإلكتروني',
+      ifButtonDoesntWork: 'إذا لم يعمل الزر، الصق هذا الرابط في متصفحك:',
+      footer: 'نراكم في البطولة!',
+      team: 'فريق PadelO₂',
+      receivingEmail: 'أنت تتلقى هذا البريد الإلكتروني لأنك سجلت كضيف لبطولة على',
+      followJourney: 'تابع الرحلة:',
+    },
+    zh: {
+      subject: `确认您作为嘉宾对 ${tournamentName} 的注册`,
+      greeting: '您好',
+      thankYou: '感谢您作为嘉宾注册',
+      thankYouFor: '感谢您作为嘉宾注册',
+      message: '我们已收到您作为嘉宾对',
+      confirmMessage: '请确认您的电子邮件地址以完成注册并接收所有活动详情。',
+      confirmButton: '确认电子邮件',
+      ifButtonDoesntWork: '如果按钮不起作用，请将此链接粘贴到浏览器中:',
+      footer: '锦标赛见！',
+      team: 'PadelO₂ 团队',
+      receivingEmail: '您收到此电子邮件是因为您在',
+      followJourney: '跟随旅程:',
+    },
+  };
+
+  const t = translations[locale] || translations.en;
+  const tagline = getBrandTagline(locale);
+  const welcomeBadge = getWelcomeBadgeText(locale);
+
+  return `
+<!DOCTYPE html>
+<html lang="${locale}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${t.subject}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0a; color: #ffffff;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #0a0a0a;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table role="presentation" style="max-width: 600px; width: 100%; border-collapse: collapse; background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);">
+          <!-- Header -->
+          <tr>
+            <td style="padding: 40px 40px 30px; text-align: center; background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);">
+              <h1 style="margin: 0; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">PadelO₂</h1>
+              <p style="margin: 8px 0 0; font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 1px;">${tagline}</p>
+            </td>
+          </tr>
+          
+          <!-- Welcome Badge -->
+          <tr>
+            <td style="padding: 0 40px 30px; text-align: center;">
+              <div style="display: inline-block; padding: 8px 20px; background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 20px; font-size: 12px; color: #00d4ff; text-transform: uppercase; letter-spacing: 1px;">${welcomeBadge}</div>
+            </td>
+          </tr>
+          
+          <!-- Main Content -->
+          <tr>
+            <td style="padding: 0 40px 40px;">
+              <h2 style="margin: 0 0 20px; font-size: 24px; font-weight: 600; color: #ffffff;">${t.greeting}, ${firstNameOnly}!</h2>
+              <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #cccccc;">${t.thankYouFor} <strong style="color: #00d4ff;">${tournamentName}</strong>.</p>
+              <p style="margin: 0 0 30px; font-size: 16px; line-height: 1.6; color: #cccccc;">${t.confirmMessage}</p>
+              
+              <!-- CTA Button -->
+              <table role="presentation" style="width: 100%; margin: 30px 0;">
+                <tr>
+                  <td align="center">
+                    <a href="${confirmationUrl}" style="display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #00d4ff 0%, #00ff88 100%); color: #0a0a0a; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; text-align: center;">${t.confirmButton}</a>
+                  </td>
+                </tr>
+              </table>
+              
+              <p style="margin: 30px 0 0; font-size: 14px; line-height: 1.6; color: #888; text-align: center;">${t.ifButtonDoesntWork}</p>
+              <p style="margin: 10px 0 0; font-size: 12px; line-height: 1.6; color: #666; text-align: center; word-break: break-all;">${confirmationUrl}</p>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 30px 40px; text-align: center; background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%); border-top: 1px solid rgba(255, 255, 255, 0.1);">
+              <p style="margin: 0 0 10px; font-size: 14px; color: #888;">${t.footer}</p>
+              <p style="margin: 0; font-size: 12px; color: #666;">${t.team}</p>
+              <p style="margin: 20px 0 0; font-size: 11px; color: #555; line-height: 1.5;">${t.receivingEmail} <a href="${siteUrl}" style="color: #00d4ff; text-decoration: none;">${siteUrl}</a></p>
+              <p style="margin: 10px 0 0; font-size: 11px; color: #555;">${t.followJourney} <a href="${siteUrl}" style="color: #00d4ff; text-decoration: none;">${siteUrl}</a></p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+  `.trim();
+}
+
+export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: GuestTournamentRegistrationConfirmedEmailData): string {
+  const { firstName, lastName, tournament, adultsCount, childrenCount, childrenAges, totalPrice, locale = 'en' } = data;
+  const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Guest';
+  const firstNameOnly = firstName || name.split(' ')[0] || 'Guest';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+
+  // Import localization utilities
+  const { formatLocalizedDate } = require('@/lib/localization-utils');
+  const formatDate = (dateString: string) => formatLocalizedDate(dateString, locale);
+
+  // Получаем переведенное расписание событий для гостей
+  let eventScheduleToDisplay = tournament.guestTicket?.eventSchedule || [];
+  if (tournament.translations?.guestTicketEventSchedule?.[locale]) {
+    eventScheduleToDisplay = tournament.translations.guestTicketEventSchedule[locale];
+  }
+
+  // Получаем переведенное описание гостевого билета
+  let guestDescription = tournament.guestTicket?.description || '';
+  if (tournament.translations?.guestTicketDescription?.[locale]) {
+    guestDescription = tournament.translations.guestTicketDescription[locale];
+  }
+
+  // Получаем переведенный заголовок гостевого билета
+  let guestTitle = tournament.guestTicket?.title || '';
+  if (tournament.translations?.guestTicketTitle?.[locale]) {
+    guestTitle = tournament.translations.guestTicketTitle[locale];
+  }
+
+  const translations: Record<string, Record<string, string>> = {
+    en: {
+      subject: 'Guest registration confirmed - Tournament - PadelO₂',
+      greeting: 'Hello',
+      thankYou: 'Thank you for your registration!',
+      registrationConfirmed: 'Your guest registration is now confirmed.',
+      tournamentDetails: 'Tournament Details',
+      guestTicketInfo: 'Guest Ticket Information',
+      tournamentName: 'Tournament',
+      dates: 'Dates',
+      location: 'Location',
+      adults: 'Adults',
+      children: 'Children',
+      childrenAges: 'Children Ages',
+      totalPrice: 'Total Price',
+      eventSchedule: 'Event Schedule',
+      footer: 'See you at the tournament!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'You\'re receiving this email because your guest registration was confirmed for a tournament on',
+      followJourney: 'Follow the journey:',
+      welcomeToCourt: 'Welcome to the court',
+    },
+    ru: {
+      subject: 'Регистрация гостя подтверждена - Турнир - PadelO₂',
+      greeting: 'Здравствуйте',
+      thankYou: 'Спасибо за регистрацию!',
+      registrationConfirmed: 'Ваша регистрация как гостя теперь подтверждена.',
+      tournamentDetails: 'Детали турнира',
+      guestTicketInfo: 'Информация о гостевом билете',
+      tournamentName: 'Турнир',
+      dates: 'Даты',
+      location: 'Место проведения',
+      adults: 'Взрослые',
+      children: 'Дети',
+      childrenAges: 'Возраст детей',
+      totalPrice: 'Общая стоимость',
+      eventSchedule: 'Расписание событий',
+      footer: 'Увидимся на турнире!',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Вы получаете это письмо, потому что ваша регистрация как гостя была подтверждена за турнир на',
+      followJourney: 'Следите за путешествием:',
+      welcomeToCourt: 'Добро пожаловать на корт',
+    },
+    ua: {
+      subject: 'Реєстрація гостя підтверджена - Турнір - PadelO₂',
+      greeting: 'Вітаємо',
+      thankYou: 'Дякуємо за реєстрацію!',
+      registrationConfirmed: 'Ваша реєстрація як гостя тепер підтверджена.',
+      tournamentDetails: 'Деталі турніру',
+      guestTicketInfo: 'Інформація про гостей білет',
+      tournamentName: 'Турнір',
+      dates: 'Дати',
+      location: 'Місце проведення',
+      adults: 'Дорослі',
+      children: 'Діти',
+      childrenAges: 'Вік дітей',
+      totalPrice: 'Загальна вартість',
+      eventSchedule: 'Розклад подій',
+      footer: 'Побачимося на турнірі!',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Ви отримуєте цей лист, тому що ваша реєстрація як гостя була підтверджена за турнір на',
+      followJourney: 'Слідкуйте за подорожжю:',
+      welcomeToCourt: 'Ласкаво просимо на корт',
+    },
+    es: {
+      subject: 'Registro de invitado confirmado - Torneo - PadelO₂',
+      greeting: 'Hola',
+      thankYou: '¡Gracias por tu registro!',
+      registrationConfirmed: 'Tu registro como invitado ahora está confirmado.',
+      tournamentDetails: 'Detalles del Torneo',
+      guestTicketInfo: 'Información del Boleto de Invitado',
+      tournamentName: 'Torneo',
+      dates: 'Fechas',
+      location: 'Ubicación',
+      adults: 'Adultos',
+      children: 'Niños',
+      childrenAges: 'Edades de los Niños',
+      totalPrice: 'Precio Total',
+      eventSchedule: 'Calendario de Eventos',
+      footer: '¡Nos vemos en el torneo!',
+      team: 'Equipo PadelO₂',
+      receivingEmail: 'Estás recibiendo este correo porque tu registro como invitado fue confirmado para un torneo en',
+      followJourney: 'Sigue el viaje:',
+      welcomeToCourt: 'Bienvenido a la cancha',
+    },
+    fr: {
+      subject: 'Inscription d\'invité confirmée - Tournoi - PadelO₂',
+      greeting: 'Bonjour',
+      thankYou: 'Merci pour votre inscription!',
+      registrationConfirmed: 'Votre inscription en tant qu\'invité est maintenant confirmée.',
+      tournamentDetails: 'Détails du Tournoi',
+      guestTicketInfo: 'Informations sur le Billet d\'Invité',
+      tournamentName: 'Tournoi',
+      dates: 'Dates',
+      location: 'Lieu',
+      adults: 'Adultes',
+      children: 'Enfants',
+      childrenAges: 'Âges des Enfants',
+      totalPrice: 'Prix Total',
+      eventSchedule: 'Calendrier des Événements',
+      footer: 'À bientôt au tournoi!',
+      team: 'Équipe PadelO₂',
+      receivingEmail: 'Vous recevez cet e-mail parce que votre inscription en tant qu\'invité a été confirmée pour un tournoi sur',
+      followJourney: 'Suivez le voyage:',
+      welcomeToCourt: 'Bienvenue sur le court',
+    },
+    de: {
+      subject: 'Gästeregistrierung bestätigt - Turnier - PadelO₂',
+      greeting: 'Hallo',
+      thankYou: 'Vielen Dank für Ihre Registrierung!',
+      registrationConfirmed: 'Ihre Gästeregistrierung ist jetzt bestätigt.',
+      tournamentDetails: 'Turnierdetails',
+      guestTicketInfo: 'Gastticket-Informationen',
+      tournamentName: 'Turnier',
+      dates: 'Termine',
+      location: 'Ort',
+      adults: 'Erwachsene',
+      children: 'Kinder',
+      childrenAges: 'Alter der Kinder',
+      totalPrice: 'Gesamtpreis',
+      eventSchedule: 'Veranstaltungskalender',
+      footer: 'Wir sehen uns beim Turnier!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Sie erhalten diese E-Mail, weil Ihre Gästeregistrierung für ein Turnier auf',
+      followJourney: 'Folgen Sie der Reise:',
+      welcomeToCourt: 'Willkommen auf dem Court',
+    },
+    it: {
+      subject: 'Registrazione ospite confermata - Torneo - PadelO₂',
+      greeting: 'Ciao',
+      thankYou: 'Grazie per la tua registrazione!',
+      registrationConfirmed: 'La tua registrazione come ospite è ora confermata.',
+      tournamentDetails: 'Dettagli del Torneo',
+      guestTicketInfo: 'Informazioni sul Biglietto Ospite',
+      tournamentName: 'Torneo',
+      dates: 'Date',
+      location: 'Posizione',
+      adults: 'Adulti',
+      children: 'Bambini',
+      childrenAges: 'Età dei Bambini',
+      totalPrice: 'Prezzo Totale',
+      eventSchedule: 'Calendario degli Eventi',
+      footer: 'Ci vediamo al torneo!',
+      team: 'Team PadelO₂',
+      receivingEmail: 'Stai ricevendo questa email perché la tua registrazione come ospite è stata confermata per un torneo su',
+      followJourney: 'Segui il viaggio:',
+      welcomeToCourt: 'Benvenuto in campo',
+    },
+    ca: {
+      subject: 'Registre de convidat confirmat - Torneig - PadelO₂',
+      greeting: 'Hola',
+      thankYou: 'Gràcies per la teva inscripció!',
+      registrationConfirmed: 'El teu registre com a convidat ara està confirmat.',
+      tournamentDetails: 'Detalls del Torneig',
+      guestTicketInfo: 'Informació del Bitllet d\'Invitat',
+      tournamentName: 'Torneig',
+      dates: 'Dates',
+      location: 'Ubicació',
+      adults: 'Adults',
+      children: 'Nens',
+      childrenAges: 'Edats dels Nens',
+      totalPrice: 'Preu Total',
+      eventSchedule: 'Calendari d\'Esdeveniments',
+      footer: 'Ens veiem al torneig!',
+      team: 'Equip PadelO₂',
+      receivingEmail: 'Estàs rebent aquest correu perquè el teu registre com a convidat va ser confirmat per a un torneig a',
+      followJourney: 'Segueix el viatge:',
+      welcomeToCourt: 'Benvingut a la pista',
+    },
+    nl: {
+      subject: 'Gastregistratie bevestigd - Toernooi - PadelO₂',
+      greeting: 'Hallo',
+      thankYou: 'Bedankt voor uw registratie!',
+      registrationConfirmed: 'Uw gastregistratie is nu bevestigd.',
+      tournamentDetails: 'Toernooidetails',
+      guestTicketInfo: 'Gastticket Informatie',
+      tournamentName: 'Toernooi',
+      dates: 'Data',
+      location: 'Locatie',
+      adults: 'Volwassenen',
+      children: 'Kinderen',
+      childrenAges: 'Leeftijden van Kinderen',
+      totalPrice: 'Totale Prijs',
+      eventSchedule: 'Evenementenkalender',
+      footer: 'Tot ziens op het toernooi!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'U ontvangt deze e-mail omdat uw gastregistratie is bevestigd voor een toernooi op',
+      followJourney: 'Volg de reis:',
+      welcomeToCourt: 'Welkom op de baan',
+    },
+    da: {
+      subject: 'Gæsteregistrering bekræftet - Turnering - PadelO₂',
+      greeting: 'Hej',
+      thankYou: 'Tak for din registrering!',
+      registrationConfirmed: 'Din gæsteregistrering er nu bekræftet.',
+      tournamentDetails: 'Turneringsdetaljer',
+      guestTicketInfo: 'Gæstebillet Information',
+      tournamentName: 'Turnering',
+      dates: 'Datoer',
+      location: 'Placering',
+      adults: 'Voksne',
+      children: 'Børn',
+      childrenAges: 'Børnenes Aldre',
+      totalPrice: 'Total Pris',
+      eventSchedule: 'Begivenhedskalender',
+      footer: 'Vi ses ved turneringen!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du modtager denne e-mail, fordi din gæsteregistrering blev bekræftet for en turnering på',
+      followJourney: 'Følg rejsen:',
+      welcomeToCourt: 'Velkommen på banen',
+    },
+    sv: {
+      subject: 'Gästregistrering bekräftad - Turnering - PadelO₂',
+      greeting: 'Hej',
+      thankYou: 'Tack för din registrering!',
+      registrationConfirmed: 'Din gästregistrering är nu bekräftad.',
+      tournamentDetails: 'Turneringsdetaljer',
+      guestTicketInfo: 'Gästbiljett Information',
+      tournamentName: 'Turnering',
+      dates: 'Datum',
+      location: 'Plats',
+      adults: 'Vuxna',
+      children: 'Barn',
+      childrenAges: 'Barnens Åldrar',
+      totalPrice: 'Totalt Pris',
+      eventSchedule: 'Evenemangskalender',
+      footer: 'Vi ses vid turneringen!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du får detta e-postmeddelande eftersom din gästregistrering bekräftades för en turnering på',
+      followJourney: 'Följ resan:',
+      welcomeToCourt: 'Välkommen till banan',
+    },
+    no: {
+      subject: 'Gjesteregistrering bekreftet - Turnering - PadelO₂',
+      greeting: 'Hei',
+      thankYou: 'Takk for din registrering!',
+      registrationConfirmed: 'Din gjesteregistrering er nå bekreftet.',
+      tournamentDetails: 'Turneringsdetaljer',
+      guestTicketInfo: 'Gjesterbillett Informasjon',
+      tournamentName: 'Turnering',
+      dates: 'Datoer',
+      location: 'Plassering',
+      adults: 'Voksne',
+      children: 'Barn',
+      childrenAges: 'Barnas Aldre',
+      totalPrice: 'Total Pris',
+      eventSchedule: 'Arrangementskalender',
+      footer: 'Vi sees ved turneringen!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Du mottar denne e-posten fordi din gjesteregistrering ble bekreftet for en turnering på',
+      followJourney: 'Følg reisen:',
+      welcomeToCourt: 'Velkommen på banen',
+    },
+    ar: {
+      subject: 'تم تأكيد تسجيل الضيف - البطولة - PadelO₂',
+      greeting: 'مرحبا',
+      thankYou: 'شكرا لتسجيلك!',
+      registrationConfirmed: 'تم تأكيد تسجيلك كضيف الآن.',
+      tournamentDetails: 'تفاصيل البطولة',
+      guestTicketInfo: 'معلومات تذكرة الضيف',
+      tournamentName: 'البطولة',
+      dates: 'التواريخ',
+      location: 'الموقع',
+      adults: 'البالغون',
+      children: 'الأطفال',
+      childrenAges: 'أعمار الأطفال',
+      totalPrice: 'السعر الإجمالي',
+      eventSchedule: 'جدول الأحداث',
+      footer: 'نراكم في البطولة!',
+      team: 'فريق PadelO₂',
+      receivingEmail: 'أنت تتلقى هذا البريد الإلكتروني لأنه تم تأكيد تسجيلك كضيف لبطولة على',
+      followJourney: 'تابع الرحلة:',
+      welcomeToCourt: 'مرحبًا بك في الملعب',
+    },
+    zh: {
+      subject: '嘉宾注册已确认 - 锦标赛 - PadelO₂',
+      greeting: '您好',
+      thankYou: '感谢您的注册！',
+      registrationConfirmed: '您的嘉宾注册现已确认。',
+      tournamentDetails: '锦标赛详情',
+      guestTicketInfo: '嘉宾票信息',
+      tournamentName: '锦标赛',
+      dates: '日期',
+      location: '地点',
+      adults: '成人',
+      children: '儿童',
+      childrenAges: '儿童年龄',
+      totalPrice: '总价',
+      eventSchedule: '活动日程',
+      footer: '锦标赛见！',
+      team: 'PadelO₂ 团队',
+      receivingEmail: '您收到此电子邮件是因为您在',
+      followJourney: '跟随旅程:',
+      welcomeToCourt: '欢迎来到球场',
+    },
+  };
+
+  const t = translations[locale] || translations.en;
+  const tagline = getBrandTagline(locale);
+  const welcomeBadge = getWelcomeBadgeText(locale);
+
+  return `
+<!DOCTYPE html>
+<html lang="${locale}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="margin:0;padding:0;">
+  <head>
+    <meta charset="UTF-8" />
+    <title>${t.subject}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body { 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8fafc;
+      }
+      table { border-spacing: 0; border-collapse: collapse; }
+      a { text-decoration: none; }
+      .wrapper { width: 100%; padding: 32px 10px; }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.2); }
+      .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
+      .h1 { font-size: 26px; line-height: 1.3; font-weight: 700; color: #0f172a; }
+      .lead { font-size: 15px; line-height: 1.7; color: #1f2937; }
+      .muted { font-size: 12px; line-height: 1.6; color: #6b7280; }
+      .info-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .success-box { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 8px; margin: 20px 0; }
+      .detail-row { padding: 8px 0; border-bottom: 1px solid rgba(148, 163, 184, 0.2); }
+      .detail-label { font-weight: 600; color: #0c4a6e; font-size: 13px; }
+      .detail-value { color: #1f2937; font-size: 14px; margin-top: 4px; }
+      .social-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f1f5f9; border-radius: 999px; font-size: 11px; color: #475569; text-decoration: none; }
+      .social-icon-circle { width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; }
+      .social-ig { background-color: #E4405F; }
+      .social-yt { background-color: #FF0000; }
+      .social-tt { background-color: #000000; }
+      .social-fb { background-color: #1877F2; }
+      .hide-mobile { display: table-cell; }
+      @media screen and (max-width: 600px) {
+        .p-body { padding: 0 18px 20px 18px !important; }
+        .p-footer { padding: 14px 18px 24px 18px !important; }
+        .center-mobile { text-align: center !important; }
+        .hide-mobile { display: none !important; }
+        .p-hero { padding: 20px 18px 10px 18px !important; }
+      }
+    </style>
+  </head>
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc;">
+      <tr>
+        <td align="center" style="background-color:#f8fafc;">
+          <table role="presentation" class="main" style="background-color:#ffffff;">
+            <tr>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 600; font-size: 22px; color: #0f172a; letter-spacing: 0.05em;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.1em;">
+                        ${tagline}
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table role="presentation" style="border-radius: 999px; background: linear-gradient(135deg, #e0f2fe, #bbf7d0); padding: 1px;">
+                        <tr>
+                          <td align="center" valign="middle" style="background: #ffffff; border-radius: 999px; padding: 6px 18px 7px 18px;">
+                            <span style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a;">${welcomeBadge}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td style="height: 3px; background: #06b6d4;"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="p-body" style="padding: 20px 30px 10px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default">
+                      <div class="h1" style="margin: 0 0 10px 0;">${t.greeting} ${firstNameOnly}!</div>
+                      <p class="lead" style="margin: 0 0 12px 0;">${t.thankYou}</p>
+                      
+                      <div class="success-box">
+                        <p class="muted" style="margin: 0; color: #166534; font-weight: 600; font-size: 14px;">✓ ${t.registrationConfirmed}</p>
+                      </div>
+
+                      <div class="info-box">
+                        <p class="muted" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e; font-size: 14px;">${t.tournamentDetails}:</p>
+                        
+                        <div class="detail-row">
+                          <div class="detail-label">${t.tournamentName}:</div>
+                          <div class="detail-value"><strong>${tournament.name}</strong></div>
+                        </div>
+                        
+                        <div class="detail-row">
+                          <div class="detail-label">${t.dates}:</div>
+                          <div class="detail-value">${formatDate(tournament.startDate)}${tournament.endDate && tournament.endDate !== tournament.startDate ? ' - ' + formatDate(tournament.endDate) : ''}</div>
+                        </div>
+                        
+                        ${tournament.location ? `
+                        <div class="detail-row">
+                          <div class="detail-label">${t.location}:</div>
+                          <div class="detail-value">${tournament.location}${tournament.locationAddress ? ', ' + tournament.locationAddress : ''}</div>
+                        </div>
+                        ` : ''}
+                      </div>
+
+                      ${guestTitle || guestDescription ? `
+                      <div class="info-box" style="background: #fef3c7; border-left-color: #f59e0b;">
+                        <p class="muted" style="margin: 0 0 12px 0; font-weight: 600; color: #92400e; font-size: 14px;">${t.guestTicketInfo}:</p>
+                        ${guestTitle ? `
+                        <div class="detail-row">
+                          <div class="detail-label">${t.tournamentName}:</div>
+                          <div class="detail-value"><strong>${guestTitle}</strong></div>
+                        </div>
+                        ` : ''}
+                        ${guestDescription ? `
+                        <div class="detail-row" style="border-bottom: none;">
+                          <div class="detail-value" style="margin-top: 8px; white-space: pre-line;">${guestDescription}</div>
+                        </div>
+                        ` : ''}
+                      </div>
+                      ` : ''}
+
+                      <div class="info-box" style="background: #f0fdf4; border-left-color: #22c55e;">
+                        <p class="muted" style="margin: 0 0 12px 0; font-weight: 600; color: #166534; font-size: 14px;">${t.guestTicketInfo}:</p>
+                        
+                        <div class="detail-row">
+                          <div class="detail-label">${t.adults}:</div>
+                          <div class="detail-value"><strong>${adultsCount}</strong></div>
+                        </div>
+                        
+                        ${childrenCount > 0 ? `
+                        <div class="detail-row">
+                          <div class="detail-label">${t.children}:</div>
+                          <div class="detail-value"><strong>${childrenCount}</strong>${childrenAges && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => `${t.childrenAges} ${idx + 1}: ${age} ${locale === 'ru' || locale === 'ua' ? 'лет' : locale === 'es' ? 'años' : locale === 'fr' ? 'ans' : locale === 'de' ? 'Jahre' : locale === 'it' ? 'anni' : locale === 'ca' ? 'anys' : locale === 'nl' ? 'jaar' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'år' : locale === 'ar' ? 'سنوات' : locale === 'zh' ? '岁' : 'years'})`).join(', ') + ')' : ''}</div>
+                        </div>
+                        ` : ''}
+                        
+                        <div class="detail-row" style="border-bottom: none;">
+                          <div class="detail-label">${t.totalPrice}:</div>
+                          <div class="detail-value"><strong>${totalPrice.toFixed(2)} EUR</strong></div>
+                        </div>
+                      </div>
+
+                      ${eventScheduleToDisplay && eventScheduleToDisplay.length > 0 ? `
+                      <div class="info-box" style="margin-top: 20px;">
+                        <p class="muted" style="margin: 0 0 12px 0; font-weight: 600; color: #0c4a6e; font-size: 14px;">${t.eventSchedule}:</p>
+                        ${eventScheduleToDisplay.map((event: any) => `
+                          <div class="detail-row">
+                            <div class="detail-value"><strong>${event.title || 'Event'}</strong> - ${formatDate(event.date)} ${event.time ? (locale === 'ua' || locale === 'ru' ? 'в' : 'at') + ' ' + event.time : ''}</div>
+                            ${event.description ? `<div class="detail-value" style="margin-top: 4px; font-size: 12px; color: #6b7280;">${event.description}</div>` : ''}
+                          </div>
+                        `).join('')}
+                      </div>
+                      ` : ''}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="p-footer" style="padding: 10px 30px 24px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" style="padding-bottom: 6px;">
+                      <span class="muted" style="font-size: 11px;">${t.followJourney}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table role="presentation" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="padding: 3px 4px 3px 0%;">
+                            <a href="https://www.instagram.com/padelo2com/" class="social-pill">
+                              <span class="social-icon-circle social-ig">IG</span>
+                              <span>Instagram</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 4px;">
+                            <a href="https://www.youtube.com/@PadelO2" class="social-pill">
+                              <span class="social-icon-circle social-yt">YT</span>
+                              <span>YouTube</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 4px;">
+                            <a href="https://www.tiktok.com/@padelo2com" class="social-pill">
+                              <span class="social-icon-circle social-tt">TT</span>
+                              <span>TikTok</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 0 3px 4px;">
+                            <a href="https://www.facebook.com/profile.php?id=61583860325680" class="social-pill">
+                              <span class="social-icon-circle social-fb">f</span>
+                              <span>Facebook</span>
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding-top: 16px;">
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
+                      <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
+                      <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+  `.trim();
+}
