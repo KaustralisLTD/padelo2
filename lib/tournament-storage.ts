@@ -89,8 +89,43 @@ export async function saveRegistration(token: string, registration: TournamentRe
       // Убеждаемся, что tshirt_size не null (если поле не заполнено, используем пустую строку)
       const tshirtSize = registration.tshirtSize || '';
       
-      // Проверяем, какие поля есть в таблице, и строим запрос динамически
-      // Используем NOW() для created_at вместо передачи Date объекта
+      // Подготавливаем значения для INSERT (29 значений, created_at использует DEFAULT)
+      const values = [
+        token,
+        registration.tournamentId,
+        registration.userId || null,
+        registration.tournamentName,
+        registration.locale,
+        registration.firstName,
+        registration.lastName,
+        registration.email,
+        registration.telegram || null,
+        registration.phone,
+        JSON.stringify(categoriesArray),
+        tshirtSize,
+        registration.message || null,
+        registration.partner?.name || null,
+        registration.partner?.email || null,
+        registration.partner?.phone || null,
+        registration.partner?.tshirtSize || null,
+        registration.partner?.photoName || null,
+        registration.partner?.photoData || null,
+        registration.categoryPartners ? JSON.stringify(registration.categoryPartners) : null,
+        registration.userPhoto?.name || null,
+        registration.userPhoto?.data || null,
+        registration.childData ? JSON.stringify(registration.childData) : null,
+        registration.parentUserId || null,
+        registration.registrationType || 'participant',
+        registration.adultsCount || null,
+        registration.childrenCount || null,
+        registration.guestChildren ? JSON.stringify(registration.guestChildren) : null,
+        registration.confirmed !== undefined ? registration.confirmed : false,
+      ];
+      
+      // Логируем для отладки
+      console.log(`[saveRegistration] Inserting ${values.length} values into 29 columns (created_at uses DEFAULT)`);
+      
+      // Используем DEFAULT для created_at вместо явного указания значения
       const [result] = await pool.execute(
         `INSERT INTO tournament_registrations (
           token, tournament_id, user_id, tournament_name, locale,
@@ -101,40 +136,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           category_partners, user_photo_name, user_photo_data,
           child_data, parent_user_id, registration_type,
           adults_count, children_count, guest_children,
-          confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          token,
-          registration.tournamentId,
-          registration.userId || null,
-          registration.tournamentName,
-          registration.locale,
-          registration.firstName,
-          registration.lastName,
-          registration.email,
-          registration.telegram || null,
-          registration.phone,
-          JSON.stringify(categoriesArray),
-          tshirtSize,
-          registration.message || null,
-          registration.partner?.name || null,
-          registration.partner?.email || null,
-          registration.partner?.phone || null,
-          registration.partner?.tshirtSize || null,
-          registration.partner?.photoName || null,
-          registration.partner?.photoData || null,
-          registration.categoryPartners ? JSON.stringify(registration.categoryPartners) : null,
-          registration.userPhoto?.name || null,
-          registration.userPhoto?.data || null,
-          registration.childData ? JSON.stringify(registration.childData) : null,
-          registration.parentUserId || null,
-          registration.registrationType || 'participant',
-          registration.adultsCount || null,
-          registration.childrenCount || null,
-          registration.guestChildren ? JSON.stringify(registration.guestChildren) : null,
-          registration.confirmed !== undefined ? registration.confirmed : false,
-          registration.createdAt ? new Date(registration.createdAt) : new Date(),
-        ]
+          confirmed
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        values
       ) as any;
       
       // НЕ создаем отдельную регистрацию для ребенка
