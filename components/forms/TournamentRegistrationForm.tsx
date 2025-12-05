@@ -1701,9 +1701,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
             </h3>
           </div>
           
-          {/* Name Fields для гостей */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
+          {/* Name Fields для гостей - улучшенная адаптивность */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div>
               <label className="block text-sm font-poppins font-semibold text-text mb-2">
                 {t('form.firstName')} *
               </label>
@@ -1712,23 +1712,23 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 required
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+                className="w-full px-4 py-3 sm:py-3.5 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins text-base touch-manipulation"
               />
             </div>
             <div>
               <label className="block text-sm font-poppins font-semibold text-text mb-2">
-                {t('form.lastName')} ({t('form.optional')})
+                {t('form.lastName')} <span className="text-text-tertiary font-normal text-xs">({t('form.optional')})</span>
               </label>
               <input
                 type="text"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+                className="w-full px-4 py-3 sm:py-3.5 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins text-base touch-manipulation"
               />
             </div>
           </div>
 
-          {/* Email для гостей */}
+          {/* Email для гостей - улучшенная адаптивность */}
           <div>
             <label className="block text-sm font-poppins font-semibold text-text mb-2">
               {t('form.email')} *
@@ -1738,11 +1738,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+              className="w-full px-4 py-3 sm:py-3.5 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins text-base touch-manipulation"
             />
           </div>
 
-          {/* Phone для гостей */}
+          {/* Phone для гостей - улучшенная адаптивность */}
           <div>
             <label className="block text-sm font-poppins font-semibold text-text mb-2">
               {t('form.phone')} *
@@ -1752,39 +1752,39 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
               required
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
+              className="w-full px-4 py-3 sm:py-3.5 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins text-base touch-manipulation"
             />
           </div>
 
-          {/* Расчет цены */}
+          {/* Расчет цены - улучшенная адаптивность */}
           {(() => {
             const guestPrice = tournamentData?.guestTicket?.price || 0;
             const childrenWithPrice = guestChildren.filter(child => child.age >= 5).length;
             const totalPrice = (adultsCount * guestPrice) + (childrenWithPrice * guestPrice);
             return totalPrice > 0 ? (
-              <div className="p-4 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 border-2 border-primary/30 rounded-xl">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-poppins text-text-secondary mb-1">
+              <div className="p-4 sm:p-5 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 border-2 border-primary/30 rounded-xl shadow-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                  <div className="flex-1">
+                    <p className="text-sm font-poppins font-semibold text-text mb-2 sm:mb-1">
                       {t('form.priceCalculation') || 'Price Calculation'}
                     </p>
-                    <div className="text-xs text-text-tertiary space-y-0.5">
-                      <div>{adultsCount} {t('form.adults') || 'adults'} × {guestPrice.toFixed(2)} EUR = {(adultsCount * guestPrice).toFixed(2)} EUR</div>
+                    <div className="text-xs sm:text-xs text-text-tertiary space-y-1">
+                      <div className="break-words">{adultsCount} {t('form.adults') || 'adults'} × {guestPrice.toFixed(2)} EUR = <span className="font-semibold text-text">{(adultsCount * guestPrice).toFixed(2)} EUR</span></div>
                       {childrenWithPrice > 0 && (
-                        <div>{childrenWithPrice} {t('form.children') || 'children'} (≥5 years) × {guestPrice.toFixed(2)} EUR = {(childrenWithPrice * guestPrice).toFixed(2)} EUR</div>
+                        <div className="break-words">{childrenWithPrice} {t('form.children') || 'children'} (≥5 years) × {guestPrice.toFixed(2)} EUR = <span className="font-semibold text-text">{(childrenWithPrice * guestPrice).toFixed(2)} EUR</span></div>
                       )}
                       {guestChildren.filter(child => child.age > 0 && child.age < 5).length > 0 && (
-                        <div className="text-accent">
+                        <div className="text-accent font-semibold break-words">
                           {guestChildren.filter(child => child.age > 0 && child.age < 5).length} {t('form.children') || 'children'} (&lt;5 years) = {t('form.free') || 'FREE'}
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-poppins text-text-secondary mb-1">
+                  <div className="text-left sm:text-right flex-shrink-0 border-t sm:border-t-0 sm:border-l border-primary/20 pt-3 sm:pt-0 sm:pl-4 sm:border-t-0">
+                    <p className="text-xs sm:text-sm font-poppins text-text-secondary mb-1">
                       {t('form.total') || 'Total'}
                     </p>
-                    <p className="text-2xl font-orbitron font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    <p className="text-2xl sm:text-3xl font-orbitron font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       {totalPrice.toFixed(2)} EUR
                     </p>
                   </div>
@@ -1793,23 +1793,23 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
             ) : null;
           })()}
 
-          {/* Компактный блок для количества взрослых и детей */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Компактный блок для количества взрослых и детей - улучшенная адаптивность */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4">
             {/* Количество взрослых */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-poppins font-semibold text-text">
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-                {t('form.adultsCount') || 'Number of Adults'} *
+                <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
+                <span className="truncate">{t('form.adultsCount') || 'Number of Adults'} *</span>
               </label>
-              <div className="flex items-center gap-2 bg-background-secondary/80 border-2 border-primary/30 rounded-xl overflow-hidden">
+              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-primary/30 rounded-xl overflow-hidden shadow-lg shadow-primary/10">
                 <button
                   type="button"
                   onClick={() => setAdultsCount(Math.max(1, adultsCount - 1))}
-                  className="px-3 py-3 bg-primary/20 hover:bg-primary/30 text-primary transition-colors flex-shrink-0"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center"
                   disabled={adultsCount <= 1}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
                   </svg>
                 </button>
                 <input
@@ -1819,15 +1819,15 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                   value={adultsCount}
                   onChange={(e) => setAdultsCount(Math.max(1, parseInt(e.target.value) || 1))}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="flex-1 px-2 py-3 bg-transparent text-text text-center focus:outline-none font-poppins text-base [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation"
                 />
                 <button
                   type="button"
                   onClick={() => setAdultsCount(adultsCount + 1)}
-                  className="px-3 py-3 bg-primary/20 hover:bg-primary/30 text-primary transition-colors flex-shrink-0"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                   </svg>
                 </button>
               </div>
@@ -1836,10 +1836,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
             {/* Количество детей */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-poppins font-semibold text-text">
-                <span className="w-2 h-2 rounded-full bg-accent"></span>
-                {t('form.childrenCount') || 'Number of Children'} <span className="text-text-tertiary font-normal">({t('form.optional')})</span>
+                <span className="w-2 h-2 rounded-full bg-accent flex-shrink-0"></span>
+                <span className="truncate">{t('form.childrenCount') || 'Number of Children'}</span>
+                <span className="text-text-tertiary font-normal text-xs hidden sm:inline">({t('form.optional')})</span>
               </label>
-              <div className="flex items-center gap-2 bg-background-secondary/80 border-2 border-accent/30 rounded-xl overflow-hidden">
+              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-accent/30 rounded-xl overflow-hidden shadow-lg shadow-accent/10">
                 <button
                   type="button"
                   onClick={() => {
@@ -1847,11 +1848,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                       setGuestChildren(guestChildren.slice(0, guestChildren.length - 1));
                     }
                   }}
-                  className="px-3 py-3 bg-accent/20 hover:bg-accent/30 text-accent transition-colors flex-shrink-0"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
                   disabled={guestChildren.length === 0}
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
                   </svg>
                 </button>
                 <input
@@ -1869,37 +1870,37 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                     }
                   }}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="flex-1 px-2 py-3 bg-transparent text-text text-center focus:outline-none font-poppins text-base [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation"
                 />
                 <button
                   type="button"
                   onClick={() => setGuestChildren([...guestChildren, { age: 0 }])}
-                  className="px-3 py-3 bg-accent/20 hover:bg-accent/30 text-accent transition-colors flex-shrink-0"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                   </svg>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Возраст каждого ребенка - выпадающее меню */}
+          {/* Возраст каждого ребенка - выпадающее меню - улучшенная адаптивность */}
           {guestChildren.length > 0 && (
-            <div className="space-y-4 pt-4 border-t border-primary/20">
+            <div className="space-y-3 sm:space-y-4 pt-4 border-t border-primary/20">
               <label className="flex items-center gap-2 text-sm font-poppins font-semibold text-text">
-                <span className="w-2 h-2 rounded-full bg-accent"></span>
-                {t('form.childrenAges') || 'Children Ages'} *
+                <span className="w-2 h-2 rounded-full bg-accent flex-shrink-0"></span>
+                <span className="truncate">{t('form.childrenAges') || 'Children Ages'} *</span>
               </label>
-              <div className={`grid gap-3 ${guestChildren.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+              <div className={`grid gap-3 ${guestChildren.length === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2'}`}>
                 {guestChildren.map((child, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-background-secondary/60 border border-accent/20 rounded-xl hover:border-accent/40 transition-all">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center border-2 border-accent/30">
-                      <span className="text-xs font-orbitron font-bold text-accent">{index + 1}</span>
+                  <div key={index} className="flex items-center gap-2 sm:gap-3 p-3 sm:p-3.5 bg-background-secondary/60 border border-accent/20 rounded-xl hover:border-accent/40 transition-all shadow-sm">
+                    <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center border-2 border-accent/30 shadow-sm">
+                      <span className="text-xs sm:text-sm font-orbitron font-bold text-accent">{index + 1}</span>
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <label className="block text-xs font-poppins text-text-secondary mb-1.5">
-                        {t('form.child') || 'Child'} {index + 1} - {t('form.age') || 'Age'}
+                        <span className="hidden sm:inline">{t('form.child') || 'Child'} {index + 1} - </span>{t('form.age') || 'Age'}
                       </label>
                       <select
                         required
@@ -1909,7 +1910,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                           newChildren[index] = { age: parseInt(e.target.value) || 0 };
                           setGuestChildren(newChildren);
                         }}
-                        className="w-full px-3 py-2 bg-background border border-accent/30 rounded-lg text-text focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all font-poppins text-sm"
+                        className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-background border border-accent/30 rounded-lg text-text focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all font-poppins text-base touch-manipulation"
                       >
                         <option value="">{t('form.selectAge') || 'Select age'}</option>
                         {Array.from({ length: 14 }, (_, i) => i + 1).map((age) => (
@@ -1925,19 +1926,19 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
             </div>
           )}
 
-          {/* Message для гостей */}
+          {/* Message для гостей - улучшенная адаптивность */}
           <div>
             <label className="block text-sm font-poppins font-semibold text-text mb-2">
-          {t('form.message')} ({t('form.optional')})
-        </label>
-        <textarea
-          rows={4}
-          value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-          placeholder={t('form.messagePlaceholder')}
-              className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins resize-none"
-        />
-      </div>
+              {t('form.message')} <span className="text-text-tertiary font-normal text-xs">({t('form.optional')})</span>
+            </label>
+            <textarea
+              rows={4}
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              placeholder={t('form.messagePlaceholder')}
+              className="w-full px-4 py-3 sm:py-3.5 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins resize-none text-base touch-manipulation"
+            />
+          </div>
         </div>
       )}
 
@@ -2055,7 +2056,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full px-8 py-4 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 text-lg"
+          className="w-full px-6 sm:px-8 py-4 sm:py-4.5 bg-gradient-primary text-background font-orbitron font-semibold rounded-xl hover:opacity-90 active:opacity-80 transition-all disabled:opacity-50 text-base sm:text-lg shadow-lg shadow-primary/30 touch-manipulation"
         >
           {isSubmitting ? t('form.submitting') : t('form.registerButton')}
         </button>
