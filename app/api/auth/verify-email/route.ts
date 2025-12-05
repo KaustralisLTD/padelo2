@@ -139,15 +139,76 @@ export async function GET(request: NextRequest) {
         [result.user.email]
       ) as any[];
       
-      // Получаем информацию о подтвержденных регистрациях для логирования
+      // Получаем информацию о подтвержденных регистрациях для логирования и отправки писем
       const [confirmedRegistrations] = await pool.execute(
-        `SELECT id, tournament_id, tournament_name, categories 
+        `SELECT id, tournament_id, tournament_name, categories, registration_type, first_name, last_name, adults_count, children_count, guest_children
          FROM tournament_registrations 
          WHERE email = ? AND confirmed = TRUE`,
         [result.user.email]
       ) as any[];
       
       console.log(`[verify-email] Confirmed tournament registrations and updated user_id for user ${result.user.id} (${result.user.email})`);
+      
+      // Отправляем письма подтверждения для гостевых регистраций
+      for (const reg of confirmedRegistrations) {
+        if (reg.registration_type === 'guest') {
+          try {
+            const { getTournament } = await import('@/lib/tournaments');
+            const tournament = reg.tournament_id ? await getTournament(reg.tournament_id) : null;
+            
+            if (tournament) {
+              const { sendGuestTournamentRegistrationConfirmedEmail } = await import('@/lib/email');
+              
+              // Парсим данные о детях
+              let childrenAges: number[] = [];
+              if (reg.guest_children) {
+                try {
+                  const guestChildren = JSON.parse(reg.guest_children);
+                  childrenAges = guestChildren.map((child: any) => child.age).filter((age: number) => age !== undefined);
+                } catch (e) {
+                  console.error('[verify-email] Error parsing guest_children:', e);
+                }
+              }
+              
+              const adultsCount = reg.adults_count || 1;
+              const childrenCount = reg.children_count || 0;
+              const guestPrice = tournament.guestTicket?.price || 0;
+              
+              // Дети до 5 лет бесплатно, остальные платят полную цену
+              const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
+              const paidChildrenCount = childrenCount - freeChildrenCount;
+              const totalPrice = (adultsCount * guestPrice) + (paidChildrenCount * guestPrice);
+              
+              await sendGuestTournamentRegistrationConfirmedEmail({
+                email: result.user.email,
+                firstName: reg.first_name || result.user.firstName,
+                lastName: reg.last_name || result.user.lastName,
+                tournament: {
+                  id: tournament.id,
+                  name: tournament.name,
+                  startDate: tournament.startDate,
+                  endDate: tournament.endDate,
+                  location: tournament.location,
+                  locationAddress: tournament.locationAddress,
+                  locationCoordinates: tournament.locationCoordinates,
+                  guestTicket: tournament.guestTicket,
+                  translations: tournament.translations,
+                },
+                adultsCount,
+                childrenCount,
+                childrenAges,
+                totalPrice,
+                locale: locale,
+              });
+              
+              console.log(`[verify-email] Sent guest registration confirmed email for tournament ${tournament.id} to ${result.user.email}`);
+            }
+          } catch (emailError: any) {
+            console.error(`[verify-email] Error sending guest confirmation email for registration ${reg.id}:`, emailError);
+            // Не прерываем процесс, если письмо не отправилось
+          }
+        }
+      }
       
       // Логируем подтверждение регистраций на турниры
       if (confirmedRegistrations.length > 0) {

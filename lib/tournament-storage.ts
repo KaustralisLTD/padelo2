@@ -44,6 +44,9 @@ interface TournamentRegistration {
   } | null;
   parentUserId?: string | null; // Для регистраций детей - ID родителя
   registrationType?: 'participant' | 'guest'; // Тип регистрации
+  adultsCount?: number; // Для гостей - количество взрослых
+  childrenCount?: number; // Для гостей - количество детей
+  guestChildren?: Array<{ age: number }>; // Для гостей - возраст детей
   token: string;
   createdAt: string;
   confirmed: boolean;
@@ -68,10 +71,19 @@ export async function saveRegistration(token: string, registration: TournamentRe
       const pool = getDbPool();
       
       // Убеждаемся, что categories всегда массив
-      const categoriesArray = Array.isArray(registration.categories) ? registration.categories : [];
-      // Для гостей категории не обязательны
-      if (registration.registrationType !== 'guest' && categoriesArray.length === 0) {
-        throw new Error('At least one category must be selected');
+      let categoriesArray = Array.isArray(registration.categories) ? registration.categories : [];
+      
+      // Для гостей автоматически присваиваем категорию "Guest"
+      if (registration.registrationType === 'guest') {
+        // Если категория "Guest" еще не добавлена, добавляем её
+        if (!categoriesArray.includes('Guest') && !categoriesArray.includes('guest')) {
+          categoriesArray = ['Guest', ...categoriesArray];
+        }
+      } else {
+        // Для участников категории обязательны
+        if (categoriesArray.length === 0) {
+          throw new Error('At least one category must be selected');
+        }
       }
       
       // Убеждаемся, что tshirt_size не null (если поле не заполнено, используем пустую строку)
@@ -88,8 +100,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           partner_tshirt_size, partner_photo_name, partner_photo_data,
           category_partners, user_photo_name, user_photo_data,
           child_data, parent_user_id, registration_type,
+          adults_count, children_count, guest_children,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
         [
           token,
           registration.tournamentId,
@@ -116,6 +129,9 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.childData ? JSON.stringify(registration.childData) : null,
           registration.parentUserId || null,
           registration.registrationType || 'participant',
+          registration.adultsCount || null,
+          registration.childrenCount || null,
+          registration.guestChildren ? JSON.stringify(registration.guestChildren) : null,
         ]
       ) as any;
       

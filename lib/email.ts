@@ -1101,3 +1101,217 @@ export async function sendTournamentRegistrationEmail(data: {
   });
 }
 
+/**
+ * Send guest tournament registration email (We got your registration)
+ */
+export async function sendGuestTournamentRegistrationEmail(data: {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  tournament: {
+    id: number;
+    name: string;
+    startDate: string;
+    endDate: string;
+    location?: string;
+    locationAddress?: string;
+    locationCoordinates?: { lat: number; lng: number };
+    guestTicket?: {
+      title?: string;
+      description?: string;
+      price?: number;
+      eventSchedule?: Array<{ title: string; date: string; time: string; description?: string }>;
+    };
+    translations?: {
+      guestTicketTitle?: Record<string, string>;
+      guestTicketDescription?: Record<string, string>;
+      guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    };
+  };
+  adultsCount: number;
+  childrenCount: number;
+  childrenAges?: Array<number>;
+  totalPrice: number;
+  locale?: string;
+}): Promise<boolean> {
+  const { getGuestTournamentRegistrationEmailTemplate } = await import('@/lib/email-templates-tournament');
+  
+  const html = getGuestTournamentRegistrationEmailTemplate({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    tournament: data.tournament,
+    adultsCount: data.adultsCount,
+    childrenCount: data.childrenCount,
+    childrenAges: data.childrenAges,
+    totalPrice: data.totalPrice,
+    locale: data.locale || 'en',
+  });
+
+  // Generate plain text version
+  const text = htmlToText(html);
+
+  // Get subject with tournament name
+  const subjectTranslations: Record<string, (name: string) => string> = {
+    en: (name: string) => `We got your guest registration for ${name} - PadelO₂`,
+    ru: (name: string) => `Мы получили вашу регистрацию как гостя на ${name} - PadelO₂`,
+    ua: (name: string) => `Ми отримали вашу реєстрацію як гостя на ${name} - PadelO₂`,
+    es: (name: string) => `Recibimos tu registro como invitado para ${name} - PadelO₂`,
+    fr: (name: string) => `Nous avons reçu votre inscription en tant qu'invité pour ${name} - PadelO₂`,
+    de: (name: string) => `Wir haben Ihre Gästeregistrierung für ${name} erhalten - PadelO₂`,
+    it: (name: string) => `Abbiamo ricevuto la tua registrazione come ospite per ${name} - PadelO₂`,
+    ca: (name: string) => `Hem rebut el teu registre com a convidat per a ${name} - PadelO₂`,
+    nl: (name: string) => `We hebben uw gastregistratie voor ${name} ontvangen - PadelO₂`,
+    da: (name: string) => `Vi har modtaget din gæsteregistrering for ${name} - PadelO₂`,
+    sv: (name: string) => `Vi har mottagit din gästregistrering för ${name} - PadelO₂`,
+    no: (name: string) => `Vi har mottatt din gjesteregistrering for ${name} - PadelO₂`,
+    ar: (name: string) => `لقد استلمنا تسجيلك كضيف لـ ${name} - PadelO₂`,
+    zh: (name: string) => `我们已收到您作为嘉宾对 ${name} 的注册 - PadelO₂`,
+  };
+
+  const locale = data.locale || 'en';
+  const getSubject = subjectTranslations[locale] || subjectTranslations.en;
+  const subject = getSubject(data.tournament.name);
+
+  return await sendEmail({
+    to: data.email,
+    subject,
+    html,
+    text,
+    locale: data.locale || 'en',
+  });
+}
+
+/**
+ * Send guest tournament verification email
+ */
+export async function sendGuestTournamentVerificationEmail(data: {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  tournamentName: string;
+  confirmationUrl: string;
+  locale?: string;
+}): Promise<boolean> {
+  const { getGuestTournamentVerificationEmailTemplate } = await import('@/lib/email-templates-tournament');
+  
+  const html = getGuestTournamentVerificationEmailTemplate({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    tournamentName: data.tournamentName,
+    confirmationUrl: data.confirmationUrl,
+    locale: data.locale || 'en',
+  });
+
+  // Generate plain text version
+  const text = htmlToText(html);
+
+  // Get subject with tournament name
+  const subjectTranslations: Record<string, (name: string) => string> = {
+    en: (name: string) => `Confirm your guest registration for ${name}`,
+    ru: (name: string) => `Подтвердите вашу регистрацию как гостя на ${name}`,
+    ua: (name: string) => `Підтвердіть вашу реєстрацію як гостя на ${name}`,
+    es: (name: string) => `Confirma tu registro como invitado para ${name}`,
+    fr: (name: string) => `Confirmez votre inscription en tant qu'invité pour ${name}`,
+    de: (name: string) => `Bestätigen Sie Ihre Gästeregistrierung für ${name}`,
+    it: (name: string) => `Conferma la tua registrazione come ospite per ${name}`,
+    ca: (name: string) => `Confirma el teu registre com a convidat per a ${name}`,
+    nl: (name: string) => `Bevestig uw gastregistratie voor ${name}`,
+    da: (name: string) => `Bekræft din gæsteregistrering for ${name}`,
+    sv: (name: string) => `Bekräfta din gästregistrering för ${name}`,
+    no: (name: string) => `Bekreft din gjesteregistrering for ${name}`,
+    ar: (name: string) => `أكد تسجيلك كضيف لـ ${name}`,
+    zh: (name: string) => `确认您作为嘉宾对 ${name} 的注册`,
+  };
+
+  const locale = data.locale || 'en';
+  const getSubject = subjectTranslations[locale] || subjectTranslations.en;
+  const subject = getSubject(data.tournamentName);
+
+  return await sendEmail({
+    to: data.email,
+    subject,
+    html,
+    text,
+    locale: data.locale || 'en',
+  });
+}
+
+/**
+ * Send guest tournament registration confirmed email with details and schedule
+ */
+export async function sendGuestTournamentRegistrationConfirmedEmail(data: {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  tournament: {
+    id: number;
+    name: string;
+    startDate: string;
+    endDate: string;
+    location?: string;
+    locationAddress?: string;
+    locationCoordinates?: { lat: number; lng: number };
+    guestTicket?: {
+      title?: string;
+      description?: string;
+      price?: number;
+      eventSchedule?: Array<{ title: string; date: string; time: string; description?: string }>;
+    };
+    translations?: {
+      guestTicketTitle?: Record<string, string>;
+      guestTicketDescription?: Record<string, string>;
+      guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    };
+  };
+  adultsCount: number;
+  childrenCount: number;
+  childrenAges?: Array<number>;
+  totalPrice: number;
+  locale?: string;
+}): Promise<boolean> {
+  const { getGuestTournamentRegistrationConfirmedEmailTemplate } = await import('@/lib/email-templates-tournament');
+  
+  const html = getGuestTournamentRegistrationConfirmedEmailTemplate({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    tournament: data.tournament,
+    adultsCount: data.adultsCount,
+    childrenCount: data.childrenCount,
+    childrenAges: data.childrenAges,
+    totalPrice: data.totalPrice,
+    locale: data.locale || 'en',
+  });
+
+  // Generate plain text version
+  const text = htmlToText(html);
+
+  // Get subject
+  const subjectTranslations: Record<string, string> = {
+    en: 'Guest registration confirmed - Tournament - PadelO₂',
+    ru: 'Регистрация гостя подтверждена - Турнир - PadelO₂',
+    ua: 'Реєстрація гостя підтверджена - Турнір - PadelO₂',
+    es: 'Registro de invitado confirmado - Torneo - PadelO₂',
+    fr: 'Inscription d\'invité confirmée - Tournoi - PadelO₂',
+    de: 'Gästeregistrierung bestätigt - Turnier - PadelO₂',
+    it: 'Registrazione ospite confermata - Torneo - PadelO₂',
+    ca: 'Registre de convidat confirmat - Torneig - PadelO₂',
+    nl: 'Gastregistratie bevestigd - Toernooi - PadelO₂',
+    da: 'Gæsteregistrering bekræftet - Turnering - PadelO₂',
+    sv: 'Gästregistrering bekräftad - Turnering - PadelO₂',
+    no: 'Gjesteregistrering bekreftet - Turnering - PadelO₂',
+    ar: 'تم تأكيد تسجيل الضيف - البطولة - PadelO₂',
+    zh: '嘉宾注册已确认 - 锦标赛 - PadelO₂',
+  };
+
+  const locale = data.locale || 'en';
+  const subject = subjectTranslations[locale] || subjectTranslations.en;
+
+  return await sendEmail({
+    to: data.email,
+    subject,
+    html,
+    text,
+    locale: data.locale || 'en',
+  });
+}
+

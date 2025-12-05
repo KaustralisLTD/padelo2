@@ -1199,6 +1199,23 @@ export async function initDatabase() {
       if (!e.message.includes('Duplicate column name')) throw e;
     }
 
+    // Add guest registration fields to tournament_registrations table
+    try {
+      await pool.execute('ALTER TABLE tournament_registrations ADD COLUMN adults_count INT DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE tournament_registrations ADD COLUMN children_count INT DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE tournament_registrations ADD COLUMN guest_children JSON DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
+
     // Create first club "Padel La Masia"
     try {
       const [existingClubs] = await pool.execute(
