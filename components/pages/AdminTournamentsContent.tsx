@@ -45,6 +45,13 @@ interface Tournament {
   kidsCategoryEnabled?: boolean; // Включена ли категория KIDS
   bannerImageName?: string | null;
   bannerImageData?: string | null;
+  guestTicket?: {
+    enabled: boolean;
+    price?: number;
+    eventSchedule?: EventScheduleItem[];
+    description?: string;
+    pricing?: Record<string, number>;
+  };
 }
 
 export default function AdminTournamentsContent() {
