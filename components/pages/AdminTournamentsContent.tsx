@@ -123,6 +123,7 @@ export default function AdminTournamentsContent() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [editingStatusId, setEditingStatusId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'participant' | 'guest'>('participant');
   
   // Фильтры для таблицы турниров
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -1897,23 +1898,26 @@ export default function AdminTournamentsContent() {
                     </button>
                   </div>
                 </div>
+                  </div>
+                )}
 
-                {/* Guest Ticket Section */}
-                <div className="p-4 bg-background border border-border rounded-lg space-y-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.guestTicketEnabled}
-                      onChange={(e) => setFormData({ ...formData, guestTicketEnabled: e.target.checked })}
-                      className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
-                    />
-                    <span className="text-sm font-poppins font-semibold text-text">
-                      {t('tournaments.guestTicketEnabled') || 'Enable Guest Ticket'}
-                    </span>
-                  </label>
+                {/* Контент вкладки Guest Ticket */}
+                {activeTab === 'guest' && (
+                  <div className="space-y-4">
+                    <label className="flex items-center gap-2 cursor-pointer p-4 bg-background border border-border rounded-lg">
+                      <input
+                        type="checkbox"
+                        checked={formData.guestTicketEnabled}
+                        onChange={(e) => setFormData({ ...formData, guestTicketEnabled: e.target.checked })}
+                        className="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary"
+                      />
+                      <span className="text-sm font-poppins font-semibold text-text">
+                        {t('tournaments.guestTicketEnabled') || 'Enable Guest Ticket'}
+                      </span>
+                    </label>
 
-                  {formData.guestTicketEnabled && (
-                    <div className="space-y-4 pl-6">
+                    {formData.guestTicketEnabled && (
+                      <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
                           {t('tournaments.guestTicketTitle') || 'Guest Ticket Title'} *
@@ -2032,6 +2036,7 @@ export default function AdminTournamentsContent() {
                     </div>
                   )}
                 </div>
+                )}
 
                 <div className="flex justify-end space-x-4 pt-4 border-t border-border">
                   <button

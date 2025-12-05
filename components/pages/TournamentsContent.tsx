@@ -359,6 +359,7 @@ export default function TournamentsContent() {
                   tournamentId={selectedTournament}
                   tournamentName={tournaments.find(t => t.id === selectedTournament)?.name || ''}
                   registrationType={registrationType}
+                  tournamentData={selectedTournamentData}
                 />
               </>
             )}

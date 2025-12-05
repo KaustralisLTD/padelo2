@@ -26,9 +26,10 @@ interface TournamentRegistrationFormProps {
   tournamentId: number;
   tournamentName: string;
   registrationType?: 'participant' | 'guest';
+  tournamentData?: any;
 }
 
-const TournamentRegistrationForm = ({ tournamentId, tournamentName, registrationType: propRegistrationType }: TournamentRegistrationFormProps) => {
+const TournamentRegistrationForm = ({ tournamentId, tournamentName, registrationType: propRegistrationType, tournamentData }: TournamentRegistrationFormProps) => {
   const t = useTranslations('Tournaments');
   const locale = useLocale();
   const [formData, setFormData] = useState({
@@ -1754,6 +1755,43 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
               className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
             />
           </div>
+
+          {/* Расчет цены */}
+          {(() => {
+            const guestPrice = tournamentData?.guestTicket?.price || 0;
+            const childrenWithPrice = guestChildren.filter(child => child.age >= 5).length;
+            const totalPrice = (adultsCount * guestPrice) + (childrenWithPrice * guestPrice);
+            return totalPrice > 0 ? (
+              <div className="p-4 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10 border-2 border-primary/30 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-poppins text-text-secondary mb-1">
+                      {t('form.priceCalculation') || 'Price Calculation'}
+                    </p>
+                    <div className="text-xs text-text-tertiary space-y-0.5">
+                      <div>{adultsCount} {t('form.adults') || 'adults'} × {guestPrice.toFixed(2)} EUR = {(adultsCount * guestPrice).toFixed(2)} EUR</div>
+                      {childrenWithPrice > 0 && (
+                        <div>{childrenWithPrice} {t('form.children') || 'children'} (≥5 years) × {guestPrice.toFixed(2)} EUR = {(childrenWithPrice * guestPrice).toFixed(2)} EUR</div>
+                      )}
+                      {guestChildren.filter(child => child.age > 0 && child.age < 5).length > 0 && (
+                        <div className="text-accent">
+                          {guestChildren.filter(child => child.age > 0 && child.age < 5).length} {t('form.children') || 'children'} (&lt;5 years) = {t('form.free') || 'FREE'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-poppins text-text-secondary mb-1">
+                      {t('form.total') || 'Total'}
+                    </p>
+                    <p className="text-2xl font-orbitron font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                      {totalPrice.toFixed(2)} EUR
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : null;
+          })()}
 
           {/* Компактный блок для количества взрослых и детей */}
           <div className="grid grid-cols-2 gap-4">
