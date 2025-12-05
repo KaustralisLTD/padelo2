@@ -2002,70 +2002,126 @@ export default function AdminTournamentsContent() {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-poppins text-text-secondary mb-2">
-                          {t('tournaments.guestTicketEventSchedule') || 'Guest Ticket Event Schedule'}
-                        </label>
-                        <div className="space-y-2">
-                          {formData.guestTicketEventSchedule.map((event, index) => (
-                            <div key={index} className="flex gap-2 items-start">
-                              <input
-                                type="text"
-                                value={event.title}
-                                onChange={(e) => {
-                                  const newSchedule = [...formData.guestTicketEventSchedule];
-                                  newSchedule[index] = { ...event, title: e.target.value };
-                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
-                                }}
-                                placeholder={t('tournaments.eventTitlePlaceholder') || 'Event title'}
-                                className="flex-1 px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
-                              />
-                              <input
-                                type="date"
-                                value={event.date}
-                                onChange={(e) => {
-                                  const newSchedule = [...formData.guestTicketEventSchedule];
-                                  newSchedule[index] = { ...event, date: e.target.value };
-                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
-                                }}
-                                className="px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
-                              />
-                              <input
-                                type="time"
-                                value={event.time}
-                                onChange={(e) => {
-                                  const newSchedule = [...formData.guestTicketEventSchedule];
-                                  newSchedule[index] = { ...event, time: e.target.value };
-                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
-                                }}
-                                className="px-3 py-2 bg-background border border-border rounded text-text text-sm focus:outline-none focus:border-primary"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const newSchedule = formData.guestTicketEventSchedule.filter((_, i) => i !== index);
-                                  setFormData({ ...formData, guestTicketEventSchedule: newSchedule });
-                                }}
-                                className="px-3 py-2 text-sm text-red-400 hover:bg-red-400/20 rounded transition-colors"
-                              >
-                                {t('tournaments.removeEvent') || 'Remove'}
-                              </button>
-                            </div>
-                          ))}
+                        <div className="flex items-center justify-between mb-3">
+                          <label className="block text-sm font-poppins text-text-secondary">
+                            {t('tournaments.guestTicketEventSchedule') || 'Guest Ticket Event Schedule'}
+                          </label>
                           <button
                             type="button"
-                            onClick={() => {
-                              setFormData({
-                                ...formData,
-                                guestTicketEventSchedule: [
-                                  ...formData.guestTicketEventSchedule,
-                                  { title: '', date: '', time: '' },
-                                ],
-                              });
-                            }}
-                            className="px-4 py-2 text-sm font-poppins font-semibold rounded-lg border border-border hover:border-primary hover:text-primary transition-colors"
+                            onClick={() => setFormData({
+                              ...formData,
+                              guestTicketEventSchedule: [...formData.guestTicketEventSchedule, { title: '', date: '', time: '', description: '' }]
+                            })}
+                            className="px-3 py-1 bg-primary/20 text-primary rounded hover:bg-primary/30 transition-colors font-poppins text-sm"
                           >
-                            {t('tournaments.addEvent') || 'Add Event'}
+                            + {t('tournaments.addEvent')}
                           </button>
+                        </div>
+                        <div className="space-y-4">
+                          {formData.guestTicketEventSchedule.map((event, index) => (
+                            <div 
+                              key={index} 
+                              draggable
+                              onDragStart={(e) => {
+                                e.dataTransfer.setData('text/plain', index.toString());
+                                e.currentTarget.style.opacity = '0.5';
+                              }}
+                              onDragEnd={(e) => {
+                                e.currentTarget.style.opacity = '1';
+                              }}
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                e.currentTarget.style.borderColor = '#3b82f6';
+                              }}
+                              onDragLeave={(e) => {
+                                e.currentTarget.style.borderColor = '';
+                              }}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                e.currentTarget.style.borderColor = '';
+                                const draggedIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                                if (draggedIndex !== index) {
+                                  const updated = [...formData.guestTicketEventSchedule];
+                                  const [removed] = updated.splice(draggedIndex, 1);
+                                  updated.splice(index, 0, removed);
+                                  setFormData({ ...formData, guestTicketEventSchedule: updated });
+                                }
+                              }}
+                              className="p-4 bg-background rounded-lg border border-border cursor-move hover:border-primary transition-colors"
+                            >
+                              <div className="flex justify-between items-center mb-3">
+                                <div className="flex items-center gap-2">
+                                  <svg className="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+                                  </svg>
+                                  <span className="text-sm font-poppins font-semibold text-text">
+                                    {t('tournaments.eventNumber')} {index + 1}
+                                  </span>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => setFormData({
+                                    ...formData,
+                                    guestTicketEventSchedule: formData.guestTicketEventSchedule.filter((_, i) => i !== index)
+                                  })}
+                                  className="text-red-500 hover:text-red-700 font-poppins text-sm"
+                                >
+                                  {t('tournaments.removeEvent')}
+                                </button>
+                              </div>
+                              <div className="space-y-3">
+                                <input
+                                  type="text"
+                                  placeholder={t('tournaments.eventTitlePlaceholder')}
+                                  value={event.title}
+                                  onChange={(e) => {
+                                    const updated = [...formData.guestTicketEventSchedule];
+                                    updated[index].title = e.target.value;
+                                    setFormData({ ...formData, guestTicketEventSchedule: updated });
+                                  }}
+                                  className="w-full px-4 py-2 bg-background-secondary border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                                />
+                                <div className="grid grid-cols-2 gap-3">
+                                  <input
+                                    type="date"
+                                    value={event.date}
+                                    onChange={(e) => {
+                                      const updated = [...formData.guestTicketEventSchedule];
+                                      updated[index].date = e.target.value;
+                                      setFormData({ ...formData, guestTicketEventSchedule: updated });
+                                    }}
+                                    className="px-4 py-2 bg-background-secondary border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                                  />
+                                  <input
+                                    type="time"
+                                    value={event.time}
+                                    onChange={(e) => {
+                                      const updated = [...formData.guestTicketEventSchedule];
+                                      updated[index].time = e.target.value;
+                                      setFormData({ ...formData, guestTicketEventSchedule: updated });
+                                    }}
+                                    className="px-4 py-2 bg-background-secondary border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                                  />
+                                </div>
+                                <textarea
+                                  placeholder={t('tournaments.eventDescriptionPlaceholder')}
+                                  value={event.description || ''}
+                                  onChange={(e) => {
+                                    const updated = [...formData.guestTicketEventSchedule];
+                                    updated[index].description = e.target.value;
+                                    setFormData({ ...formData, guestTicketEventSchedule: updated });
+                                  }}
+                                  rows={2}
+                                  className="w-full px-4 py-2 bg-background-secondary border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                          {formData.guestTicketEventSchedule.length === 0 && (
+                            <p className="text-sm text-text-secondary font-poppins text-center py-4">
+                              {t('tournaments.noEvents')}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
