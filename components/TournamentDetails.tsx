@@ -155,6 +155,11 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
 
     if (!targetDescription) return '';
     
+    // Если нет переводов, возвращаем оригинал
+    if (!targetTranslations || Object.keys(targetTranslations).length === 0) {
+      return targetDescription;
+    }
+    
     // Определяем приоритетный порядок проверки ключей для текущей локали
     let keysToTry: string[] = [locale];
     
@@ -169,15 +174,25 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
     }
     
     // Пробуем найти перевод по приоритету
-    let descriptionToDisplay = targetDescription;
     for (const key of keysToTry) {
-      if (targetTranslations?.[key]) {
-        descriptionToDisplay = targetTranslations[key];
-        break;
+      if (targetTranslations[key]) {
+        return targetTranslations[key];
       }
     }
     
-    return descriptionToDisplay;
+    // Если не нашли перевод, пробуем найти любой доступный перевод (кроме оригинального языка)
+    const availableKeys = Object.keys(targetTranslations);
+    if (availableKeys.length > 0) {
+      // Пробуем английский, если есть
+      if (targetTranslations['en']) {
+        return targetTranslations['en'];
+      }
+      // Иначе берем первый доступный
+      return targetTranslations[availableKeys[0]];
+    }
+    
+    // В крайнем случае возвращаем оригинал
+    return targetDescription;
   };
 
   // Helper function to get translated event schedule
@@ -189,6 +204,11 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
       return [];
     }
     
+    // Если нет переводов, возвращаем оригинал
+    if (!targetTranslations || Object.keys(targetTranslations).length === 0) {
+      return targetSchedule;
+    }
+    
     // Определяем приоритетный порядок проверки ключей для текущей локали
     let keysToTry: string[] = [locale];
     
@@ -203,15 +223,25 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
     }
     
     // Пробуем найти перевод по приоритету
-    let eventScheduleToDisplay = targetSchedule;
     for (const key of keysToTry) {
-      if (targetTranslations?.[key]) {
-        eventScheduleToDisplay = targetTranslations[key];
-        break;
+      if (targetTranslations[key]) {
+        return targetTranslations[key];
       }
     }
     
-    return eventScheduleToDisplay;
+    // Если не нашли перевод, пробуем найти любой доступный перевод (кроме оригинального языка)
+    const availableKeys = Object.keys(targetTranslations);
+    if (availableKeys.length > 0) {
+      // Пробуем английский, если есть
+      if (targetTranslations['en']) {
+        return targetTranslations['en'];
+      }
+      // Иначе берем первый доступный
+      return targetTranslations[availableKeys[0]];
+    }
+    
+    // В крайнем случае возвращаем оригинал
+    return targetSchedule;
   };
 
   return (
@@ -474,4 +504,6 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
     </div>
   );
 }
+
+
 

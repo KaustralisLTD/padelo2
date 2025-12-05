@@ -276,6 +276,7 @@ export default function AdminTournamentsContent() {
             description: formData.guestTicketDescription || undefined,
             pricing: Object.keys(formData.guestTicketPricing).length > 0 ? formData.guestTicketPricing : undefined,
           },
+          sourceLocale: locale, // Передаем текущую локаль админа как sourceLocale
         }),
       });
 
@@ -340,6 +341,7 @@ export default function AdminTournamentsContent() {
             description: formData.guestTicketDescription || undefined,
             pricing: Object.keys(formData.guestTicketPricing).length > 0 ? formData.guestTicketPricing : undefined,
           },
+          sourceLocale: locale, // Передаем текущую локаль админа как sourceLocale
         }),
       });
 
