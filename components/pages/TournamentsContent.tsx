@@ -19,11 +19,14 @@ interface Tournament {
 
 export default function TournamentsContent() {
   const t = useTranslations('Tournaments');
+  const locale = useLocale();
   const [showForm, setShowForm] = useState(false);
   const [selectedTournament, setSelectedTournament] = useState<number | null>(null);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const hashHandledRef = useRef(false);
+  const [registrationType, setRegistrationType] = useState<'participant' | 'guest'>('participant');
+  const [selectedTournamentData, setSelectedTournamentData] = useState<any>(null);
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -52,6 +55,32 @@ export default function TournamentsContent() {
 
     fetchTournaments();
   }, []);
+
+  // Загружаем данные турнира при выборе
+  useEffect(() => {
+    if (!selectedTournament) {
+      setSelectedTournamentData(null);
+      return;
+    }
+
+    const fetchTournamentData = async () => {
+      try {
+        const response = await fetch(`/api/tournament/${selectedTournament}`);
+        if (response.ok) {
+          const data = await response.json();
+          setSelectedTournamentData(data.tournament);
+          // Если гостевой билет включен, по умолчанию выбираем участника
+          if (data.tournament?.guestTicket?.enabled) {
+            setRegistrationType('participant');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch tournament data:', error);
+      }
+    };
+
+    fetchTournamentData();
+  }, [selectedTournament]);
 
   useEffect(() => {
     if (loading || hashHandledRef.current) {
@@ -255,17 +284,99 @@ export default function TournamentsContent() {
             <div className="mb-6">
               <h3
                 id={selectedTournament ? `register-${selectedTournament}` : undefined}
-                className="text-2xl font-poppins font-bold mb-2 text-text"
+                className="text-2xl font-poppins font-bold mb-4 text-text"
               >
                 {t('registerFor')} {tournaments.find(t => t.id === selectedTournament)?.name || ''}
               </h3>
+              
+              {/* Registration Type Selection - только если гостевой билет включен */}
+              {selectedTournamentData?.guestTicket?.enabled && (
+                <div className="mb-6 p-4 bg-background-secondary border border-border rounded-lg max-w-4xl">
+                  <label className="block text-sm font-poppins font-semibold text-text mb-4">
+                    {t('form.registrationType') || 'Registration Type'} *
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      registrationType === 'participant'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50'
+                    }`}>
+                      <input
+                        type="radio"
+                        name="registrationType"
+                        value="participant"
+                        checked={registrationType === 'participant'}
+                        onChange={(e) => setRegistrationType(e.target.value as 'participant' | 'guest')}
+                        className="w-5 h-5 text-primary mr-3"
+                      />
+                      <div>
+                        <div className="font-poppins font-semibold text-text">
+                          {t('form.registerAsParticipant') || 'Register as Participant'}
+                        </div>
+                        <div className="text-sm text-text-secondary">
+                          {t('form.registerAsParticipantDesc') || 'Participate in tournament categories'}
+                        </div>
+                      </div>
+                    </label>
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      registrationType === 'guest'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50'
+                    }`}>
+                      <input
+                        type="radio"
+                        name="registrationType"
+                        value="guest"
+                        checked={registrationType === 'guest'}
+                        onChange={(e) => setRegistrationType(e.target.value as 'participant' | 'guest')}
+                        className="w-5 h-5 text-primary mr-3"
+                      />
+                      <div>
+                        <div className="font-poppins font-semibold text-text">
+                          {t('form.registerAsGuest') || 'Register as Guest'}
+                        </div>
+                        <div className="text-sm text-text-secondary">
+                          {(() => {
+                            // Получаем переведенное описание гостевого билета
+                            let guestDescription = selectedTournamentData.guestTicket.description || 'Attend as a guest';
+                            
+                            if (selectedTournamentData.translations?.guestTicketDescription) {
+                              let keysToTry: string[] = [locale];
+                              
+                              if (locale === 'ua') {
+                                keysToTry = ['ua', 'uk', 'ru', 'en'];
+                              } else if (locale === 'uk') {
+                                keysToTry = ['uk', 'ua', 'ru', 'en'];
+                              } else {
+                                keysToTry = [locale, 'en'];
+                              }
+                              
+                              for (const key of keysToTry) {
+                                if (selectedTournamentData.translations.guestTicketDescription[key]) {
+                                  guestDescription = selectedTournamentData.translations.guestTicketDescription[key];
+                                  break;
+                                }
+                              }
+                            }
+                            
+                            return selectedTournamentData.guestTicket.price 
+                              ? `${selectedTournamentData.guestTicket.price} EUR - ${guestDescription}`
+                              : guestDescription;
+                          })()}
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              )}
             </div>
             {selectedTournament && (
               <>
-                <TournamentDetails tournamentId={selectedTournament} />
+                <TournamentDetails tournamentId={selectedTournament} registrationType={registrationType} />
                 <TournamentRegistrationForm
                   tournamentId={selectedTournament}
                   tournamentName={tournaments.find(t => t.id === selectedTournament)?.name || ''}
+                  registrationType={registrationType}
                 />
               </>
             )}

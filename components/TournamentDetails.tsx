@@ -34,9 +34,10 @@ interface Tournament {
 
 interface TournamentDetailsProps {
   tournamentId: number;
+  registrationType?: 'participant' | 'guest';
 }
 
-export default function TournamentDetails({ tournamentId }: TournamentDetailsProps) {
+export default function TournamentDetails({ tournamentId, registrationType = 'participant' }: TournamentDetailsProps) {
   const t = useTranslations('Tournaments');
   const locale = useLocale();
   const [tournament, setTournament] = useState<Tournament | null>(null);
@@ -247,10 +248,47 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
         {t('tournamentDetails.title')}
       </h2>
       
-      {tournament.description && (
+      {tournament.description && registrationType === 'participant' && (
         <div className="mb-4">
           <p className="text-text-secondary font-poppins whitespace-pre-line">
             {getTranslatedDescription()}
+          </p>
+        </div>
+      )}
+      
+      {/* Описание для гостей */}
+      {registrationType === 'guest' && tournament.guestTicket?.description && (
+        <div className="mb-4">
+          <p className="text-text-secondary font-poppins whitespace-pre-line">
+            {(() => {
+              // Получаем переведенное описание гостевого билета
+              let guestDescription = tournament.guestTicket.description;
+              
+              if (tournament.translations?.guestTicketDescription) {
+                // Определяем приоритетный порядок проверки ключей для текущей локали
+                let keysToTry: string[] = [locale];
+                
+                // Для украинского пробуем оба варианта
+                if (locale === 'ua') {
+                  keysToTry = ['ua', 'uk', 'ru', 'en'];
+                } else if (locale === 'uk') {
+                  keysToTry = ['uk', 'ua', 'ru', 'en'];
+                } else {
+                  // Для других языков пробуем текущую локаль, затем английский
+                  keysToTry = [locale, 'en'];
+                }
+                
+                // Пробуем найти перевод по приоритету
+                for (const key of keysToTry) {
+                  if (tournament.translations.guestTicketDescription[key]) {
+                    guestDescription = tournament.translations.guestTicketDescription[key];
+                    break;
+                  }
+                }
+              }
+              
+              return guestDescription;
+            })()}
           </p>
         </div>
       )}
@@ -368,54 +406,110 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
         )}
       </div>
 
-      {(tournament.priceSingleCategory || tournament.priceDoubleCategory) && (
-        <div className="mt-4 pt-4 border-t border-border">
-          <h3 className="font-poppins font-semibold text-text mb-2">
-            {t('tournamentDetails.pricing')}:
-          </h3>
-          {tournament.priceSingleCategory && (
-            <div className="mb-2">
-              <span className="font-poppins text-text-secondary">
-                {t('tournamentDetails.priceSingleCategory')}:
-              </span>
-              <span className="ml-2 font-poppins font-semibold text-primary">
-                {tournament.priceSingleCategory.toFixed(2)} EUR
-              </span>
+      {/* Pricing - для участников или гостей */}
+      {(() => {
+        if (registrationType === 'guest' && tournament.guestTicket?.price) {
+          // Для гостей показываем цену гостевого билета
+          return (
+            <div className="mt-4 pt-4 border-t border-border">
+              <h3 className="font-poppins font-semibold text-text mb-2">
+                {t('tournamentDetails.pricing')}:
+              </h3>
+              <div>
+                <span className="font-poppins text-text-secondary">
+                  {t('tournamentDetails.guestTicketPrice') || 'Guest Ticket'}:
+                </span>
+                <span className="ml-2 font-poppins font-semibold text-primary">
+                  {tournament.guestTicket.price.toFixed(2)} EUR
+                </span>
+              </div>
             </div>
-          )}
-          {tournament.priceDoubleCategory && (
-            <div>
-              <span className="font-poppins text-text-secondary">
-                {t('tournamentDetails.priceDoubleCategory')}:
-              </span>
-              <span className="ml-2 font-poppins font-semibold text-primary">
-                {tournament.priceDoubleCategory.toFixed(2)} EUR {t('tournamentDetails.perCategory')}
-              </span>
+          );
+        } else if (registrationType === 'participant' && (tournament.priceSingleCategory || tournament.priceDoubleCategory)) {
+          // Для участников показываем обычные цены
+          return (
+            <div className="mt-4 pt-4 border-t border-border">
+              <h3 className="font-poppins font-semibold text-text mb-2">
+                {t('tournamentDetails.pricing')}:
+              </h3>
+              {tournament.priceSingleCategory && (
+                <div className="mb-2">
+                  <span className="font-poppins text-text-secondary">
+                    {t('tournamentDetails.priceSingleCategory')}:
+                  </span>
+                  <span className="ml-2 font-poppins font-semibold text-primary">
+                    {tournament.priceSingleCategory.toFixed(2)} EUR
+                  </span>
+                </div>
+              )}
+              {tournament.priceDoubleCategory && (
+                <div>
+                  <span className="font-poppins text-text-secondary">
+                    {t('tournamentDetails.priceDoubleCategory')}:
+                  </span>
+                  <span className="ml-2 font-poppins font-semibold text-primary">
+                    {tournament.priceDoubleCategory.toFixed(2)} EUR {t('tournamentDetails.perCategory')}
+                  </span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
+          );
+        }
+        return null;
+      })()}
 
-      {/* Расписание событий */}
-      {tournament.eventSchedule && tournament.eventSchedule.length > 0 && (
-        <div className="mt-6 pt-6 border-t border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-poppins font-semibold text-text">
-              {t('tournamentDetails.eventSchedule')}:
-            </h3>
-            <button
-              onClick={() => setShowEventSchedule(!showEventSchedule)}
-              className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors font-poppins text-sm"
-            >
-              {showEventSchedule ? t('tournamentDetails.hideEvents') : t('tournamentDetails.showEvents')}
-            </button>
-          </div>
-          {showEventSchedule && (() => {
-            // Используем helper функцию, которая использует ТОЧНО ТУ ЖЕ логику, что и в письмах
-            const schedule = getTranslatedEventSchedule();
-            return (
+      {/* Расписание событий - для участников или гостей */}
+      {(() => {
+        // Определяем какое расписание показывать
+        let scheduleToShow: EventScheduleItem[] | null = null;
+        
+        if (registrationType === 'guest' && tournament.guestTicket?.eventSchedule) {
+          // Для гостей используем расписание гостевого билета
+          scheduleToShow = tournament.guestTicket.eventSchedule;
+          
+          // Пробуем найти переведенное расписание
+          if (tournament.translations?.guestTicketEventSchedule) {
+            let keysToTry: string[] = [locale];
+            if (locale === 'ua') {
+              keysToTry = ['ua', 'uk', 'ru', 'en'];
+            } else if (locale === 'uk') {
+              keysToTry = ['uk', 'ua', 'ru', 'en'];
+            } else {
+              keysToTry = [locale, 'en'];
+            }
+            
+            for (const key of keysToTry) {
+              if (tournament.translations.guestTicketEventSchedule[key]) {
+                scheduleToShow = tournament.translations.guestTicketEventSchedule[key];
+                break;
+              }
+            }
+          }
+        } else if (registrationType === 'participant' && tournament.eventSchedule) {
+          // Для участников используем обычное расписание
+          scheduleToShow = getTranslatedEventSchedule();
+        }
+        
+        if (!scheduleToShow || scheduleToShow.length === 0) {
+          return null;
+        }
+        
+        return (
+          <div className="mt-6 pt-6 border-t border-border">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-poppins font-semibold text-text">
+                {t('tournamentDetails.eventSchedule')}:
+              </h3>
+              <button
+                onClick={() => setShowEventSchedule(!showEventSchedule)}
+                className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors font-poppins text-sm"
+              >
+                {showEventSchedule ? t('tournamentDetails.hideEvents') : t('tournamentDetails.showEvents')}
+              </button>
+            </div>
+            {showEventSchedule && (
               <div className="space-y-4">
-                {schedule.map((event, index) => (
+                {scheduleToShow.map((event, index) => (
                   <div
                     key={index}
                     className="p-4 bg-background rounded-lg border border-border hover:border-primary/50 transition-colors"
@@ -445,20 +539,22 @@ export default function TournamentDetails({ tournamentId }: TournamentDetailsPro
                   </div>
                 ))}
               </div>
-            );
-          })()}
+            )}
+          </div>
+        );
+      })()}
+
+      {/* Prizes placeholder - только для участников */}
+      {registrationType === 'participant' && (
+        <div className="mt-4 pt-4 border-t border-border">
+          <h3 className="font-poppins font-semibold text-text mb-2">
+            {t('tournamentDetails.prizes')}:
+          </h3>
+          <p className="text-text-secondary font-poppins text-sm">
+            {t('tournamentDetails.prizesInfo')}
+          </p>
         </div>
       )}
-
-      {/* Prizes placeholder - можно добавить отдельное поле в БД позже */}
-      <div className="mt-4 pt-4 border-t border-border">
-        <h3 className="font-poppins font-semibold text-text mb-2">
-          {t('tournamentDetails.prizes')}:
-        </h3>
-        <p className="text-text-secondary font-poppins text-sm">
-          {t('tournamentDetails.prizesInfo')}
-        </p>
-      </div>
     </div>
   );
 }
