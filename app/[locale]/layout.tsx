@@ -59,6 +59,49 @@ export default async function RootLayout({
               (function() {
                 const theme = localStorage.getItem('theme') || 'dark';
                 document.documentElement.setAttribute('data-theme', theme);
+                
+                // Обработка hash при редиректе на локаль
+                if (typeof window !== 'undefined') {
+                  const pathname = window.location.pathname;
+                  const hash = window.location.hash;
+                  const hasLocale = /^\/(en|es|ua|ru|ca|zh|nl|da|sv|de|no|it|fr|ar)(\/|$)/.test(pathname);
+                  
+                  // Если путь не содержит локали и есть hash, сохраняем hash и делаем редирект
+                  if (!hasLocale && hash && pathname !== '/' && !pathname.startsWith('/api') && !pathname.startsWith('/_next')) {
+                    // Определяем язык из Accept-Language
+                    const acceptLanguage = navigator.language || navigator.languages?.[0] || 'en';
+                    const browserLang = acceptLanguage.toLowerCase().split('-')[0];
+                    
+                    const localeMap = {
+                      'uk': 'ua',
+                      'ru': 'ru',
+                      'en': 'en',
+                      'es': 'es',
+                      'fr': 'fr',
+                      'de': 'de',
+                      'it': 'it',
+                      'ca': 'ca',
+                      'nl': 'nl',
+                      'da': 'da',
+                      'sv': 'sv',
+                      'no': 'no',
+                      'ar': 'ar',
+                      'zh': 'zh'
+                    };
+                    
+                    const detectedLocale = localeMap[browserLang] || 'en';
+                    const newPath = '/' + detectedLocale + pathname + hash;
+                    window.location.replace(newPath);
+                    return; // Прерываем выполнение, так как будет редирект
+                  }
+                  
+                  // Если был редирект на локаль и hash был потерян, проверяем sessionStorage
+                  const savedHash = sessionStorage.getItem('_pendingHash');
+                  if (savedHash && hash !== savedHash) {
+                    sessionStorage.removeItem('_pendingHash');
+                    window.location.hash = savedHash;
+                  }
+                }
               })();
             `,
           }}

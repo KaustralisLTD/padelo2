@@ -898,6 +898,7 @@
     "settings": {
       "title": "Indstillinger",
       "description": "Administrer generelle platformindstillinger, klubmoduler, virksomhedsoplysninger og dine kontopræferencer.",
+      "backToSettings": "Tilbage til Indstillinger",
       "clubModules": {
         "title": "Klubmoduler",
         "description": "Konfigurer indstillinger relateret til baner, ekstraer, priser, helligdage og politikker for din klub.",

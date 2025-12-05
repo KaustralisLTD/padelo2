@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     const pool = getDbPool();
     const [company] = await pool.execute(
-      'SELECT id, name, description, email, phone, address, logo_url, website, created_at, updated_at FROM company_info ORDER BY id DESC LIMIT 1'
+      'SELECT id, name, description, email, phone, address, logo_url, website, iban, swift, bank_name, bank_address, tax_id, vat_number, currency, account_holder, created_at, updated_at FROM company_info ORDER BY id DESC LIMIT 1'
     ) as any[];
 
     if (company.length === 0) {
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, description, email, phone, address, logoUrl, website } = body;
+    const { name, description, email, phone, address, logoUrl, website, iban, swift, bankName, bankAddress, taxId, vatNumber, currency, accountHolder } = body;
 
     if (!name) {
       return NextResponse.json({ error: 'Company name is required' }, { status: 400 });
@@ -72,7 +72,8 @@ export async function POST(request: NextRequest) {
       companyId = existing[0].id;
       await pool.execute(
         `UPDATE company_info 
-         SET name = ?, description = ?, email = ?, phone = ?, address = ?, logo_url = ?, website = ?, updated_at = NOW()
+         SET name = ?, description = ?, email = ?, phone = ?, address = ?, logo_url = ?, website = ?, 
+             iban = ?, swift = ?, bank_name = ?, bank_address = ?, tax_id = ?, vat_number = ?, currency = ?, account_holder = ?, updated_at = NOW()
          WHERE id = ?`,
         [
           name,
@@ -82,14 +83,22 @@ export async function POST(request: NextRequest) {
           address || null,
           logoUrl || null,
           website || null,
+          iban || null,
+          swift || null,
+          bankName || null,
+          bankAddress || null,
+          taxId || null,
+          vatNumber || null,
+          currency || 'EUR',
+          accountHolder || null,
           companyId,
         ]
       );
     } else {
       // Создаем новую запись
       const [result] = await pool.execute(
-        `INSERT INTO company_info (name, description, email, phone, address, logo_url, website, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+        `INSERT INTO company_info (name, description, email, phone, address, logo_url, website, iban, swift, bank_name, bank_address, tax_id, vat_number, currency, account_holder, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
         [
           name,
           description || null,
@@ -98,6 +107,14 @@ export async function POST(request: NextRequest) {
           address || null,
           logoUrl || null,
           website || null,
+          iban || null,
+          swift || null,
+          bankName || null,
+          bankAddress || null,
+          taxId || null,
+          vatNumber || null,
+          currency || 'EUR',
+          accountHolder || null,
         ]
       ) as any[];
       companyId = (result as any).insertId;

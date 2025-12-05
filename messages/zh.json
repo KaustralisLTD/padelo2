@@ -898,6 +898,7 @@
     "settings": {
       "title": "设置",
       "description": "管理平台的一般设置、俱乐部模块、公司信息和您的账户偏好。",
+      "backToSettings": "返回设置",
       "clubModules": {
         "title": "俱乐部模块",
         "description": "配置与球场、额外服务、定价、节假日和俱乐部政策相关的设置。",

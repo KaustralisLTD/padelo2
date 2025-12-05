@@ -1104,6 +1104,7 @@
     "settings": {
       "title": "Configuració",
       "description": "Gestioneu la configuració general de la plataforma, els mòduls del club, la informació de l'empresa i les preferències del vostre compte.",
+      "backToSettings": "Tornar a Configuració",
       "clubModules": {
         "title": "Mòduls del Club",
         "description": "Configureu els ajustos relacionats amb les pistes, extres, preus, dies festius i polítiques del vostre club.",

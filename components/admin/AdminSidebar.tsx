@@ -216,7 +216,7 @@ export default function AdminSidebar() {
         )}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg hover:bg-background-hover transition-colors ${isCollapsed ? 'right-1/2 translate-x-1/2' : ''}`}
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 p-2 rounded-lg hover:bg-background-hover transition-colors bg-background-secondary border border-border z-10 ${isCollapsed ? '' : ''}`}
           title={isCollapsed ? 'Expand menu' : 'Collapse menu'}
         >
           <svg

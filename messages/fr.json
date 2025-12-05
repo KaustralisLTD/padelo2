@@ -898,6 +898,7 @@
     "settings": {
       "title": "Paramètres",
       "description": "Gérez les paramètres généraux de la plateforme, les modules du club, les informations sur l'entreprise et les préférences de votre compte.",
+      "backToSettings": "Retour aux paramètres",
       "clubModules": {
         "title": "Modules du Club",
         "description": "Configurez les paramètres liés aux courts, aux extras, aux prix, aux jours fériés et aux politiques de votre club.",

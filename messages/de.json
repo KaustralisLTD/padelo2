@@ -849,6 +849,7 @@
     "settings": {
       "title": "Einstellungen",
       "description": "Verwalten Sie allgemeine Plattformeinstellungen, Clubmodule, Unternehmensinformationen und Ihre Kontoeinstellungen.",
+      "backToSettings": "Zurück zu Einstellungen",
       "clubModules": {
         "title": "Clubmodule",
         "description": "Konfigurieren Sie Einstellungen für Plätze, Extras, Preise, Feiertage und Richtlinien Ihres Clubs.",

@@ -1101,6 +1101,48 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
+    // Add payment fields to company_info table
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN iban VARCHAR(50) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN swift VARCHAR(20) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN bank_name VARCHAR(255) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN bank_address TEXT DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN tax_id VARCHAR(100) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN vat_number VARCHAR(100) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN currency VARCHAR(3) DEFAULT "EUR"');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+    try {
+      await pool.execute('ALTER TABLE company_info ADD COLUMN account_holder VARCHAR(255) DEFAULT NULL');
+    } catch (e: any) {
+      if (!e.message?.toLowerCase().includes('duplicate column name')) throw e;
+    }
+
     // Create terms table
     await pool.execute(`
       CREATE TABLE IF NOT EXISTS terms (

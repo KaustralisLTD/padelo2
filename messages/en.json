@@ -956,6 +956,7 @@
     "settings": {
       "title": "Settings",
       "description": "Manage your system settings and configurations",
+      "backToSettings": "Back to Settings",
       "clubModules": {
         "title": "Club Modules",
         "description": "Manage your club related settings",

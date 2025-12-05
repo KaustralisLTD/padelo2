@@ -898,6 +898,7 @@
     "settings": {
       "title": "Impostazioni",
       "description": "Gestisci le impostazioni generali della piattaforma, i moduli del club, le informazioni aziendali e le preferenze del tuo account.",
+      "backToSettings": "Torna alle impostazioni",
       "clubModules": {
         "title": "Moduli del Club",
         "description": "Configura le impostazioni relative ai campi, agli extra, ai prezzi, alle festività e alle politiche del tuo club.",

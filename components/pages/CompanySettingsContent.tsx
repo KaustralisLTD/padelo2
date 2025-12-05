@@ -14,6 +14,14 @@ interface Company {
   address?: string;
   logo_url?: string;
   website?: string;
+  iban?: string;
+  swift?: string;
+  bank_name?: string;
+  bank_address?: string;
+  tax_id?: string;
+  vat_number?: string;
+  currency?: string;
+  account_holder?: string;
   created_at: string;
   updated_at?: string;
 }
@@ -33,6 +41,14 @@ export default function CompanySettingsContent() {
     address: '',
     logoUrl: '',
     website: '',
+    iban: '',
+    swift: '',
+    bankName: '',
+    bankAddress: '',
+    taxId: '',
+    vatNumber: '',
+    currency: 'EUR',
+    accountHolder: '',
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -88,6 +104,14 @@ export default function CompanySettingsContent() {
             address: data.company.address || '',
             logoUrl: data.company.logo_url || '',
             website: data.company.website || '',
+            iban: data.company.iban || '',
+            swift: data.company.swift || '',
+            bankName: data.company.bank_name || '',
+            bankAddress: data.company.bank_address || '',
+            taxId: data.company.tax_id || '',
+            vatNumber: data.company.vat_number || '',
+            currency: data.company.currency || 'EUR',
+            accountHolder: data.company.account_holder || '',
           });
         }
       } else {
@@ -142,6 +166,14 @@ export default function CompanySettingsContent() {
         address: company.address || '',
         logoUrl: company.logo_url || '',
         website: company.website || '',
+        iban: company.iban || '',
+        swift: company.swift || '',
+        bankName: company.bank_name || '',
+        bankAddress: company.bank_address || '',
+        taxId: company.tax_id || '',
+        vatNumber: company.vat_number || '',
+        currency: company.currency || 'EUR',
+        accountHolder: company.account_holder || '',
       });
     }
     setShowEditModal(true);
@@ -158,6 +190,14 @@ export default function CompanySettingsContent() {
         address: company.address || '',
         logoUrl: company.logo_url || '',
         website: company.website || '',
+        iban: company.iban || '',
+        swift: company.swift || '',
+        bankName: company.bank_name || '',
+        bankAddress: company.bank_address || '',
+        taxId: company.tax_id || '',
+        vatNumber: company.vat_number || '',
+        currency: company.currency || 'EUR',
+        accountHolder: company.account_holder || '',
       });
     }
   };
@@ -248,6 +288,54 @@ export default function CompanySettingsContent() {
                   </p>
                 )}
               </div>
+              {/* Payment Information */}
+              {(company.iban || company.swift || company.bank_name || company.tax_id || company.vat_number) && (
+                <div className="mt-6 pt-6 border-t border-border">
+                  <h3 className="text-xl font-poppins font-semibold text-text mb-4">Payment Information</h3>
+                  <div className="space-y-2">
+                    {company.account_holder && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">Account Holder:</span> {company.account_holder}
+                      </p>
+                    )}
+                    {company.iban && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">IBAN:</span> {company.iban}
+                      </p>
+                    )}
+                    {company.swift && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">SWIFT/BIC:</span> {company.swift}
+                      </p>
+                    )}
+                    {company.bank_name && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">Bank Name:</span> {company.bank_name}
+                      </p>
+                    )}
+                    {company.bank_address && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">Bank Address:</span> {company.bank_address}
+                      </p>
+                    )}
+                    {company.tax_id && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">Tax ID:</span> {company.tax_id}
+                      </p>
+                    )}
+                    {company.vat_number && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">VAT Number:</span> {company.vat_number}
+                      </p>
+                    )}
+                    {company.currency && (
+                      <p className="text-text font-poppins">
+                        <span className="font-semibold">Currency:</span> {company.currency}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {isSuperAdmin && (
@@ -369,6 +457,117 @@ export default function CompanySettingsContent() {
                     className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
                     placeholder="https://example.com"
                   />
+                </div>
+              </div>
+
+              {/* Payment Information Section */}
+              <div className="pt-6 border-t border-border">
+                <h3 className="text-xl font-poppins font-semibold text-text mb-4">Payment Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      Account Holder
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.accountHolder}
+                      onChange={(e) => setFormData({ ...formData, accountHolder: e.target.value })}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      placeholder="Company Name or Account Holder"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      Currency
+                    </label>
+                    <select
+                      value={formData.currency}
+                      onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                    >
+                      <option value="EUR">EUR</option>
+                      <option value="USD">USD</option>
+                      <option value="GBP">GBP</option>
+                      <option value="UAH">UAH</option>
+                      <option value="RUB">RUB</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      IBAN
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.iban}
+                      onChange={(e) => setFormData({ ...formData, iban: e.target.value })}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      placeholder="GB82 WEST 1234 5698 7654 32"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      SWIFT/BIC
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.swift}
+                      onChange={(e) => setFormData({ ...formData, swift: e.target.value })}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      placeholder="CHASUS33"
+                    />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    Bank Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.bankName}
+                    onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                    placeholder="Bank Name"
+                  />
+                </div>
+                <div className="mt-4">
+                  <label className="block text-sm font-poppins text-text-secondary mb-2">
+                    Bank Address
+                  </label>
+                  <textarea
+                    value={formData.bankAddress}
+                    onChange={(e) => setFormData({ ...formData, bankAddress: e.target.value })}
+                    rows={2}
+                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                    placeholder="Bank Address"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      Tax ID
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.taxId}
+                      onChange={(e) => setFormData({ ...formData, taxId: e.target.value })}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      placeholder="Tax Identification Number"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-poppins text-text-secondary mb-2">
+                      VAT Number
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.vatNumber}
+                      onChange={(e) => setFormData({ ...formData, vatNumber: e.target.value })}
+                      className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                      placeholder="VAT Registration Number"
+                    />
+                  </div>
                 </div>
               </div>
 

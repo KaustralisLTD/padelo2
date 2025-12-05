@@ -867,6 +867,7 @@
     "settings": {
       "title": "Configuración",
       "description": "Administre la configuración general de la plataforma, los módulos del club, la información de la empresa y las preferencias de su cuenta.",
+      "backToSettings": "Volver a Configuración",
       "clubModules": {
         "title": "Módulos del Club",
         "description": "Configure los ajustes relacionados con las pistas, extras, precios, días festivos y políticas de su club.",
