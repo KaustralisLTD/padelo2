@@ -263,14 +263,14 @@ export async function POST(request: NextRequest) {
           console.log(`[POST /api/tournament/register] Guest email verification sent to: ${body.email} with token: ${verificationToken.substring(0, 8)}...`);
         } else {
           // Для участников отправляем стандартное письмо верификации
-          const { sendEmailVerification } = await import('@/lib/email');
-          await sendEmailVerification(
-            body.email,
-            body.firstName || 'User',
-            verificationToken,
-            locale
-          );
-          console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email} with token: ${verificationToken.substring(0, 8)}...`);
+        const { sendEmailVerification } = await import('@/lib/email');
+        await sendEmailVerification(
+          body.email,
+          body.firstName || 'User',
+          verificationToken,
+          locale
+        );
+        console.log(`[POST /api/tournament/register] Email verification sent to: ${body.email} with token: ${verificationToken.substring(0, 8)}...`);
         }
       } else {
         // Если email верифицирован - отправляем детальное письмо о турнире
@@ -321,41 +321,41 @@ export async function POST(request: NextRequest) {
           console.log(`[POST /api/tournament/register] Guest tournament registration email sent to: ${body.email}`);
         } else {
           // Для участников отправляем стандартное письмо регистрации
-          const { sendTournamentRegistrationEmail } = await import('@/lib/email');
-          const tournamentData = tournament ? {
-            id: tournament.id,
-            name: tournament.name,
-            startDate: tournament.startDate,
-            endDate: tournament.endDate,
-            location: tournament.location || undefined,
-            locationAddress: tournament.locationAddress || undefined,
-            locationCoordinates: tournament.locationCoordinates || undefined,
-            eventSchedule: tournament.eventSchedule || undefined,
-            priceSingleCategory: tournament.priceSingleCategory || undefined,
-            priceDoubleCategory: tournament.priceDoubleCategory || undefined,
-            description: tournament.description || undefined,
-            bannerImageData: tournament.bannerImageData || undefined,
-            translations: tournament.translations || undefined,
-          } : {
-            id: body.tournamentId ? parseInt(body.tournamentId, 10) : 0,
-            name: body.tournamentName,
-            startDate: body.startDate || '',
-            endDate: body.endDate || '',
-            location: body.location,
-            locationAddress: body.locationAddress,
-            eventSchedule: body.eventSchedule,
-            priceSingleCategory: body.priceSingleCategory,
-            priceDoubleCategory: body.priceDoubleCategory,
-          };
-          await sendTournamentRegistrationEmail({
-            email: body.email,
-            firstName: body.firstName,
-            lastName: body.lastName,
-            tournament: tournamentData,
-            categories: body.categories || [],
-            locale: body.locale || 'en',
-          });
-          console.log(`[POST /api/tournament/register] Tournament registration email sent to: ${body.email} (registration already confirmed)`);
+        const { sendTournamentRegistrationEmail } = await import('@/lib/email');
+        const tournamentData = tournament ? {
+          id: tournament.id,
+          name: tournament.name,
+          startDate: tournament.startDate,
+          endDate: tournament.endDate,
+          location: tournament.location || undefined,
+          locationAddress: tournament.locationAddress || undefined,
+          locationCoordinates: tournament.locationCoordinates || undefined,
+          eventSchedule: tournament.eventSchedule || undefined,
+          priceSingleCategory: tournament.priceSingleCategory || undefined,
+          priceDoubleCategory: tournament.priceDoubleCategory || undefined,
+          description: tournament.description || undefined,
+          bannerImageData: tournament.bannerImageData || undefined,
+          translations: tournament.translations || undefined,
+        } : {
+          id: body.tournamentId ? parseInt(body.tournamentId, 10) : 0,
+          name: body.tournamentName,
+          startDate: body.startDate || '',
+          endDate: body.endDate || '',
+          location: body.location,
+          locationAddress: body.locationAddress,
+          eventSchedule: body.eventSchedule,
+          priceSingleCategory: body.priceSingleCategory,
+          priceDoubleCategory: body.priceDoubleCategory,
+        };
+        await sendTournamentRegistrationEmail({
+          email: body.email,
+          firstName: body.firstName,
+          lastName: body.lastName,
+          tournament: tournamentData,
+          categories: body.categories || [],
+          locale: body.locale || 'en',
+        });
+        console.log(`[POST /api/tournament/register] Tournament registration email sent to: ${body.email} (registration already confirmed)`);
         }
       }
     } catch (emailError: any) {

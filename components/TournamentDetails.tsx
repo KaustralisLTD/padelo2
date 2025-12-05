@@ -402,31 +402,31 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
         } else if (registrationType === 'participant' && (tournament.priceSingleCategory || tournament.priceDoubleCategory)) {
           // Для участников показываем обычные цены
           return (
-            <div className="mt-4 pt-4 border-t border-border">
-              <h3 className="font-poppins font-semibold text-text mb-2">
-                {t('tournamentDetails.pricing')}:
-              </h3>
-              {tournament.priceSingleCategory && (
-                <div className="mb-2">
-                  <span className="font-poppins text-text-secondary">
-                    {t('tournamentDetails.priceSingleCategory')}:
-                  </span>
-                  <span className="ml-2 font-poppins font-semibold text-primary">
-                    {tournament.priceSingleCategory.toFixed(2)} EUR
-                  </span>
-                </div>
-              )}
-              {tournament.priceDoubleCategory && (
-                <div>
-                  <span className="font-poppins text-text-secondary">
-                    {t('tournamentDetails.priceDoubleCategory')}:
-                  </span>
-                  <span className="ml-2 font-poppins font-semibold text-primary">
-                    {tournament.priceDoubleCategory.toFixed(2)} EUR {t('tournamentDetails.perCategory')}
-                  </span>
-                </div>
-              )}
+        <div className="mt-4 pt-4 border-t border-border">
+          <h3 className="font-poppins font-semibold text-text mb-2">
+            {t('tournamentDetails.pricing')}:
+          </h3>
+          {tournament.priceSingleCategory && (
+            <div className="mb-2">
+              <span className="font-poppins text-text-secondary">
+                {t('tournamentDetails.priceSingleCategory')}:
+              </span>
+              <span className="ml-2 font-poppins font-semibold text-primary">
+                {tournament.priceSingleCategory.toFixed(2)} EUR
+              </span>
             </div>
+          )}
+          {tournament.priceDoubleCategory && (
+            <div>
+              <span className="font-poppins text-text-secondary">
+                {t('tournamentDetails.priceDoubleCategory')}:
+              </span>
+              <span className="ml-2 font-poppins font-semibold text-primary">
+                {tournament.priceDoubleCategory.toFixed(2)} EUR {t('tournamentDetails.perCategory')}
+              </span>
+            </div>
+          )}
+        </div>
           );
         }
         return null;
@@ -441,18 +441,18 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
         }
         
         return (
-          <div className="mt-6 pt-6 border-t border-border">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-poppins font-semibold text-text">
-                {t('tournamentDetails.eventSchedule')}:
-              </h3>
-              <button
-                onClick={() => setShowEventSchedule(!showEventSchedule)}
-                className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors font-poppins text-sm"
-              >
-                {showEventSchedule ? t('tournamentDetails.hideEvents') : t('tournamentDetails.showEvents')}
-              </button>
-            </div>
+        <div className="mt-6 pt-6 border-t border-border">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-poppins font-semibold text-text">
+              {t('tournamentDetails.eventSchedule')}:
+            </h3>
+            <button
+              onClick={() => setShowEventSchedule(!showEventSchedule)}
+              className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors font-poppins text-sm"
+            >
+              {showEventSchedule ? t('tournamentDetails.hideEvents') : t('tournamentDetails.showEvents')}
+            </button>
+          </div>
             {showEventSchedule && (
               <div className="space-y-4">
                 {scheduleToShow.map((event, index) => (
@@ -486,20 +486,20 @@ export default function TournamentDetails({ tournamentId, registrationType = 'pa
                 ))}
               </div>
             )}
-          </div>
-        );
-      })()}
+              </div>
+            );
+          })()}
 
       {/* Prizes placeholder - только для участников */}
       {registrationType === 'participant' && (
-        <div className="mt-4 pt-4 border-t border-border">
-          <h3 className="font-poppins font-semibold text-text mb-2">
-            {t('tournamentDetails.prizes')}:
-          </h3>
-          <p className="text-text-secondary font-poppins text-sm">
-            {t('tournamentDetails.prizesInfo')}
-          </p>
-        </div>
+      <div className="mt-4 pt-4 border-t border-border">
+        <h3 className="font-poppins font-semibold text-text mb-2">
+          {t('tournamentDetails.prizes')}:
+        </h3>
+        <p className="text-text-secondary font-poppins text-sm">
+          {t('tournamentDetails.prizesInfo')}
+        </p>
+      </div>
       )}
     </div>
   );

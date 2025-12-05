@@ -81,8 +81,8 @@ export async function saveRegistration(token: string, registration: TournamentRe
         }
       } else {
         // Для участников категории обязательны
-        if (categoriesArray.length === 0) {
-          throw new Error('At least one category must be selected');
+      if (categoriesArray.length === 0) {
+        throw new Error('At least one category must be selected');
         }
       }
       
@@ -102,7 +102,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           child_data, parent_user_id, registration_type,
           adults_count, children_count, guest_children,
           confirmed, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, NOW())`,
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
         [
           token,
           registration.tournamentId,
@@ -132,6 +132,7 @@ export async function saveRegistration(token: string, registration: TournamentRe
           registration.adultsCount || null,
           registration.childrenCount || null,
           registration.guestChildren ? JSON.stringify(registration.guestChildren) : null,
+          registration.confirmed !== undefined ? registration.confirmed : false,
         ]
       ) as any;
       
