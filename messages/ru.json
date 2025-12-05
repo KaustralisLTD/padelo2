@@ -438,6 +438,8 @@
       "priceSingleCategory": "Одна категория",
       "priceDoubleCategory": "Две категории",
       "perCategory": "за категорию",
+      "guestPrice": "Цена гостевого билета",
+      "guestTicketPrice": "Цена гостевого билета",
       "prizes": "Призы",
       "prizesInfo": "Информация о призах будет объявлена в ближайшее время. Следите за обновлениями!"
     },
@@ -1556,6 +1558,8 @@
       "priceSingleCategory": "Одна категория",
       "priceDoubleCategory": "Две категории",
       "perCategory": "за категорию",
+      "guestPrice": "Цена гостевого билета",
+      "guestTicketPrice": "Цена гостевого билета",
       "prizes": "Призы",
       "prizesInfo": "Информация о призах будет объявлена в ближайшее время. Следите за обновлениями!"
     }

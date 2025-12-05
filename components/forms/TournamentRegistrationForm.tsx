@@ -787,74 +787,74 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
       {/* Name Fields - только для участников */}
       {registrationType === 'participant' && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
               <label className="block text-sm font-poppins font-semibold text-text mb-2">
-                {t('form.firstName')} *
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            {t('form.firstName')} *
+          </label>
+          <input
+            type="text"
+            required
+            value={formData.firstName}
+            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                 className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
-              />
-            </div>
-            <div>
+          />
+        </div>
+        <div>
               <label className="block text-sm font-poppins font-semibold text-text mb-2">
-                {t('form.lastName')} *
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            {t('form.lastName')} *
+          </label>
+          <input
+            type="text"
+            required
+            value={formData.lastName}
+            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
-              />
-            </div>
-          </div>
+          />
+        </div>
+      </div>
 
           {/* Email для участников */}
-          <div>
+      <div>
             <label className="block text-sm font-poppins font-semibold text-text mb-2">
-              {t('form.email')} *
-            </label>
-            <input
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          {t('form.email')} *
+        </label>
+        <input
+          type="email"
+          required
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
-            />
-          </div>
+        />
+      </div>
 
           {/* Telegram - только для участников */}
-          <div>
+      <div>
             <label className="block text-sm font-poppins font-semibold text-text mb-2">
-              {t('form.telegram')} ({t('form.optional')})
-            </label>
-            <input
-              type="text"
-              value={formData.telegram}
-              onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
-              placeholder="@username"
+          {t('form.telegram')} ({t('form.optional')})
+        </label>
+        <input
+          type="text"
+          value={formData.telegram}
+          onChange={(e) => setFormData({ ...formData, telegram: e.target.value })}
+          placeholder="@username"
               className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
-            />
-          </div>
+        />
+      </div>
 
           {/* Phone для участников */}
-          <div>
+      <div>
             <label className="block text-sm font-poppins font-semibold text-text mb-2">
-              {t('form.phone')} *
-            </label>
-            <input
-              type="tel"
-              required
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          {t('form.phone')} *
+        </label>
+        <input
+          type="tel"
+          required
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 focus:border-primary rounded-xl text-text focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-poppins"
-            />
-          </div>
+        />
+      </div>
         </>
       )}
 
@@ -1703,7 +1703,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
           
           {/* Name Fields для гостей - улучшенная адаптивность */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <div>
+      <div>
               <label className="block text-sm font-poppins font-semibold text-text mb-2">
                 {t('form.firstName')} *
               </label>
@@ -1801,11 +1801,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
                 <span className="truncate">{t('form.adultsCount') || 'Number of Adults'} *</span>
               </label>
-              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-primary/30 rounded-xl overflow-hidden shadow-lg shadow-primary/10">
+              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-primary/30 rounded-xl shadow-lg shadow-primary/10">
                 <button
                   type="button"
                   onClick={() => setAdultsCount(Math.max(1, adultsCount - 1))}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center rounded-l-xl"
                   disabled={adultsCount <= 1}
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -1819,12 +1819,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                   value={adultsCount}
                   onChange={(e) => setAdultsCount(Math.max(1, parseInt(e.target.value) || 1))}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation"
+                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0"
                 />
                 <button
                   type="button"
                   onClick={() => setAdultsCount(adultsCount + 1)}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-primary/20 hover:bg-primary/30 active:bg-primary/40 text-primary transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center rounded-r-xl"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1840,7 +1840,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 <span className="truncate">{t('form.childrenCount') || 'Number of Children'}</span>
                 <span className="text-text-tertiary font-normal text-xs hidden sm:inline">({t('form.optional')})</span>
               </label>
-              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-accent/30 rounded-xl overflow-hidden shadow-lg shadow-accent/10">
+              <div className="flex items-center gap-1 sm:gap-2 bg-background-secondary/80 border-2 border-accent/30 rounded-xl shadow-lg shadow-accent/10">
                 <button
                   type="button"
                   onClick={() => {
@@ -1848,7 +1848,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                       setGuestChildren(guestChildren.slice(0, guestChildren.length - 1));
                     }
                   }}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed rounded-l-xl"
                   disabled={guestChildren.length === 0}
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
@@ -1870,12 +1870,12 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                     }
                   }}
                   onWheel={(e) => e.currentTarget.blur()}
-                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation"
+                  className="flex-1 px-2 sm:px-3 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0"
                 />
                 <button
                   type="button"
                   onClick={() => setGuestChildren([...guestChildren, { age: 0 }])}
-                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center"
+                  className="px-3 sm:px-4 py-3 sm:py-3.5 bg-accent/20 hover:bg-accent/30 active:bg-accent/40 text-accent transition-all flex-shrink-0 touch-manipulation min-w-[44px] sm:min-w-[48px] flex items-center justify-center rounded-r-xl"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1946,16 +1946,16 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
       {registrationType === 'participant' && (
         <div>
           <label className="block text-sm font-poppins font-semibold text-text mb-2">
-            {t('form.message')} ({t('form.optional')})
-          </label>
-          <textarea
-            rows={4}
-            value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            placeholder={t('form.messagePlaceholder')}
+          {t('form.message')} ({t('form.optional')})
+        </label>
+        <textarea
+          rows={4}
+          value={formData.message}
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          placeholder={t('form.messagePlaceholder')}
             className="w-full px-4 py-3 bg-background-secondary border-2 border-primary/30 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-poppins resize-none"
-          />
-        </div>
+        />
+      </div>
       )}
 
 
