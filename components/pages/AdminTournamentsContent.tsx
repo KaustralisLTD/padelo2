@@ -640,6 +640,7 @@ export default function AdminTournamentsContent() {
   const closeModal = () => {
     setShowCreateModal(false);
     setEditingTournament(null);
+    setActiveTab('participant');
     resetForm();
   };
 
@@ -1062,6 +1063,37 @@ export default function AdminTournamentsContent() {
                   />
                 </div>
 
+                {/* Вкладки для Participant и Guest Ticket */}
+                <div className="border-b border-border">
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('participant')}
+                      className={`px-4 py-2 font-poppins font-semibold transition-colors border-b-2 ${
+                        activeTab === 'participant'
+                          ? 'border-primary text-primary'
+                          : 'border-transparent text-text-secondary hover:text-text'
+                      }`}
+                    >
+                      {t('tournaments.participantTab') || 'Participant'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('guest')}
+                      className={`px-4 py-2 font-poppins font-semibold transition-colors border-b-2 ${
+                        activeTab === 'guest'
+                          ? 'border-primary text-primary'
+                          : 'border-transparent text-text-secondary hover:text-text'
+                      }`}
+                    >
+                      {t('tournaments.guestTicketTab') || 'Guest Ticket'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Контент вкладки Participant */}
+                {activeTab === 'participant' && (
+                  <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-poppins text-text-secondary mb-2">
@@ -1900,6 +1932,8 @@ export default function AdminTournamentsContent() {
                 </div>
                   </div>
                 )}
+
+                {/* Контент вкладки Guest Ticket */}
 
                 {/* Контент вкладки Guest Ticket */}
                 {activeTab === 'guest' && (
