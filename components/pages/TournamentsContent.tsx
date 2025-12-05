@@ -333,17 +333,43 @@ export default function TournamentsContent() {
                       />
                       <div>
                         <div className="font-poppins font-semibold text-text">
-                          {t('form.registerAsGuest') || 'Register as Guest'}
+                          {(() => {
+                            // Используем переведенный title гостевого билета
+                            let guestTitle = selectedTournamentData.guestTicket.title || t('form.registerAsGuest') || 'Register as Guest';
+                            if (selectedTournamentData.translations?.guestTicketTitle) {
+                              let keysToTry: string[] = [locale];
+                              if (locale === 'ua') { keysToTry = ['ua', 'uk', 'ru', 'en']; }
+                              else if (locale === 'uk') { keysToTry = ['uk', 'ua', 'ru', 'en']; }
+                              else { keysToTry = [locale, 'en']; }
+                              for (const key of keysToTry) {
+                                if (selectedTournamentData.translations.guestTicketTitle[key]) {
+                                  guestTitle = selectedTournamentData.translations.guestTicketTitle[key];
+                                  break;
+                                }
+                              }
+                            }
+                            return guestTitle;
+                          })()}
                         </div>
                         <div className="text-sm text-text-secondary">
                           {(() => {
-                            // Показываем title гостевого билета
-                            const guestTitle = selectedTournamentData.guestTicket.title || 'Register as Guest';
+                            let guestDescription = selectedTournamentData.guestTicket.description || 'Attend as a guest';
+                            if (selectedTournamentData.translations?.guestTicketDescription) {
+                              let keysToTry: string[] = [locale];
+                              if (locale === 'ua') { keysToTry = ['ua', 'uk', 'ru', 'en']; }
+                              else if (locale === 'uk') { keysToTry = ['uk', 'ua', 'ru', 'en']; }
+                              else { keysToTry = [locale, 'en']; }
+                              for (const key of keysToTry) {
+                                if (selectedTournamentData.translations.guestTicketDescription[key]) {
+                                  guestDescription = selectedTournamentData.translations.guestTicketDescription[key];
+                                  break;
+                                }
+                              }
+                            }
                             const guestPrice = selectedTournamentData.guestTicket.price;
-                            
                             return guestPrice 
-                              ? `${guestPrice} EUR - ${guestTitle}`
-                              : guestTitle;
+                              ? `${guestPrice} EUR - ${guestDescription}`
+                              : guestDescription;
                           })()}
                         </div>
                       </div>

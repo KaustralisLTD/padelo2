@@ -133,6 +133,18 @@ export async function translateEventSchedule(
 }
 
 /**
+ * Translate guest ticket title to all supported languages
+ */
+export async function translateGuestTicketTitle(
+  title: string | undefined,
+  sourceLocale: string = 'en'
+): Promise<Record<string, string> | undefined> {
+  if (!title || title.trim() === '') return undefined;
+  
+  return translateTournamentDescription(title, sourceLocale);
+}
+
+/**
  * Translate guest ticket description to all supported languages
  */
 export async function translateGuestTicketDescription(
@@ -165,6 +177,7 @@ export async function storeTournamentTranslations(
   translations: {
     description?: Record<string, string>;
     eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    guestTicketTitle?: Record<string, string>;
     guestTicketDescription?: Record<string, string>;
     guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
   }

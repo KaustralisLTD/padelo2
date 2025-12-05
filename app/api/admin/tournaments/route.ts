@@ -96,6 +96,7 @@ export async function POST(request: NextRequest) {
     // Auto-translate description and eventSchedule if provided
     let translatedDescription: Record<string, string> | undefined;
     let translatedEventSchedule: Record<string, any> | undefined;
+    let translatedGuestTicketTitle: Record<string, string> | undefined;
     let translatedGuestTicketDescription: Record<string, string> | undefined;
     let translatedGuestTicketEventSchedule: Record<string, any> | undefined;
     
@@ -104,6 +105,7 @@ export async function POST(request: NextRequest) {
       const { 
         translateTournamentDescription, 
         translateEventSchedule, 
+        translateGuestTicketTitle,
         translateGuestTicketDescription,
         translateGuestTicketEventSchedule,
         storeTournamentTranslations 
@@ -119,6 +121,10 @@ export async function POST(request: NextRequest) {
       
       // Translate guest ticket fields if provided
       if (guestTicket) {
+        if (guestTicket.title) {
+          translatedGuestTicketTitle = await translateGuestTicketTitle(guestTicket.title, sourceLocale);
+        }
+        
         if (guestTicket.description) {
           translatedGuestTicketDescription = await translateGuestTicketDescription(guestTicket.description, sourceLocale);
         }
@@ -150,11 +156,12 @@ export async function POST(request: NextRequest) {
     });
 
     // Store translations in database
-    if (translatedDescription || translatedEventSchedule || translatedGuestTicketDescription || translatedGuestTicketEventSchedule) {
+    if (translatedDescription || translatedEventSchedule || translatedGuestTicketTitle || translatedGuestTicketDescription || translatedGuestTicketEventSchedule) {
       const { storeTournamentTranslations } = await import('@/lib/translation-utils');
       await storeTournamentTranslations(tournament.id, {
         description: translatedDescription,
         eventSchedule: translatedEventSchedule,
+        guestTicketTitle: translatedGuestTicketTitle,
         guestTicketDescription: translatedGuestTicketDescription,
         guestTicketEventSchedule: translatedGuestTicketEventSchedule,
       });
@@ -207,6 +214,7 @@ export async function PUT(request: NextRequest) {
     // Auto-translate description and eventSchedule if updated
     let translatedDescription: Record<string, string> | undefined;
     let translatedEventSchedule: Record<string, any> | undefined;
+    let translatedGuestTicketTitle: Record<string, string> | undefined;
     let translatedGuestTicketDescription: Record<string, string> | undefined;
     let translatedGuestTicketEventSchedule: Record<string, any> | undefined;
     
@@ -215,6 +223,7 @@ export async function PUT(request: NextRequest) {
       const { 
         translateTournamentDescription, 
         translateEventSchedule, 
+        translateGuestTicketTitle,
         translateGuestTicketDescription,
         translateGuestTicketEventSchedule,
         storeTournamentTranslations 
@@ -230,6 +239,10 @@ export async function PUT(request: NextRequest) {
       
       // Translate guest ticket fields if updated
       if (updates.guestTicket) {
+        if (updates.guestTicket.title) {
+          translatedGuestTicketTitle = await translateGuestTicketTitle(updates.guestTicket.title, sourceLocale);
+        }
+        
         if (updates.guestTicket.description) {
           translatedGuestTicketDescription = await translateGuestTicketDescription(updates.guestTicket.description, sourceLocale);
         }
@@ -246,11 +259,12 @@ export async function PUT(request: NextRequest) {
     });
 
     // Store translations in database
-    if (translatedDescription || translatedEventSchedule || translatedGuestTicketDescription || translatedGuestTicketEventSchedule) {
+    if (translatedDescription || translatedEventSchedule || translatedGuestTicketTitle || translatedGuestTicketDescription || translatedGuestTicketEventSchedule) {
       const { storeTournamentTranslations } = await import('@/lib/translation-utils');
       await storeTournamentTranslations(tournament.id, {
         description: translatedDescription,
         eventSchedule: translatedEventSchedule,
+        guestTicketTitle: translatedGuestTicketTitle,
         guestTicketDescription: translatedGuestTicketDescription,
         guestTicketEventSchedule: translatedGuestTicketEventSchedule,
       });

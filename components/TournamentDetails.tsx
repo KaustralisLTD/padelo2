@@ -28,6 +28,7 @@ interface Tournament {
   status: string;
   guestTicket?: {
     enabled: boolean;
+    title?: string;
     price?: number;
     description?: string;
     eventSchedule?: EventScheduleItem[];
@@ -35,6 +36,7 @@ interface Tournament {
   translations?: {
     description?: Record<string, string>;
     eventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
+    guestTicketTitle?: Record<string, string>;
     guestTicketDescription?: Record<string, string>;
     guestTicketEventSchedule?: Record<string, Array<{ title: string; date: string; time: string; description?: string }>>;
   };
