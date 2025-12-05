@@ -249,6 +249,13 @@ export async function POST(request: NextRequest) {
         const locale = body.locale || 'en';
         confirmationUrl = `${siteUrl}/${locale}/verify-email?token=${verificationToken}`;
         
+        // Логируем locale для отладки
+        console.log(`[POST /api/tournament/register] Guest verification email locale:`, {
+          bodyLocale: body.locale,
+          usedLocale: locale,
+          email: body.email,
+        });
+        
         if (isGuest) {
           // Для гостей отправляем специальное письмо верификации
           const { sendGuestTournamentVerificationEmail } = await import('@/lib/email');
@@ -306,6 +313,18 @@ export async function POST(request: NextRequest) {
           const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
           const paidChildrenCount = childrenCount - freeChildrenCount;
           const totalPrice = (adultsCount * guestPrice) + (paidChildrenCount * guestPrice);
+          
+          // Логируем для отладки
+          console.log(`[POST /api/tournament/register] Guest registration price calculation:`, {
+            adultsCount,
+            childrenCount,
+            childrenAges,
+            freeChildrenCount,
+            paidChildrenCount,
+            guestPrice,
+            totalPrice,
+            locale: body.locale || 'en',
+          });
           
           await sendGuestTournamentRegistrationEmail({
             email: body.email,
