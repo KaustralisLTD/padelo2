@@ -706,13 +706,22 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
         const data = await response.json();
         console.log('[TournamentRegistrationForm] Registration successful:', data);
         setSubmitStatus('success');
-        setFormCollapsed(true);
+        // Не сворачиваем форму, чтобы показать сообщение об успешной регистрации
+        setFormCollapsed(false);
         setIsAlreadyRegistered(true);
         setExistingToken(data.token);
         // Store token in localStorage for dashboard access
         localStorage.setItem('tournament_token', data.token);
         // Store emailVerified status to show appropriate message
         setEmailVerified(data.emailVerified || false);
+        
+        // Прокручиваем к сообщению об успешной регистрации
+        setTimeout(() => {
+          const successElement = document.getElementById('registration-success-message');
+          if (successElement) {
+            successElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 100);
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.error('[TournamentRegistrationForm] Registration failed:', errorData);
@@ -1970,7 +1979,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
 
 
       {submitStatus === 'success' && (
-        <div className="p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3 max-w-full overflow-hidden">
+        <div id="registration-success-message" className="p-4 sm:p-6 bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30 rounded-xl shadow-lg backdrop-blur-sm font-poppins space-y-3 max-w-full overflow-hidden">
           <div className="flex items-start gap-3 sm:gap-4">
             <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-lg">
               <svg className="w-5 h-5 sm:w-6 sm:h-6 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
