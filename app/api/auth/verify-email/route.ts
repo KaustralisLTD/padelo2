@@ -148,66 +148,159 @@ export async function GET(request: NextRequest) {
         [result.user.email]
       ) as any[];
       
-      console.log(`[verify-email] Found ${confirmedRegistrations.length} confirmed registrations for ${result.user.email}`);
+      console.log(`[verify-email] STEP 1: Found ${confirmedRegistrations.length} confirmed registrations for ${result.user.email}`);
+      
+      // Детальное логирование каждой регистрации
+      confirmedRegistrations.forEach((reg: any, index: number) => {
+        console.log(`[verify-email] STEP 1.${index + 1}: Registration ${reg.id}:`, {
+          registration_type: reg.registration_type,
+          adults_count: reg.adults_count,
+          children_count: reg.children_count,
+          guest_children_raw: reg.guest_children,
+          guest_children_type: typeof reg.guest_children,
+          guest_children_is_null: reg.guest_children === null,
+          guest_children_is_undefined: reg.guest_children === undefined,
+          locale: reg.locale,
+        });
+      });
       
       console.log(`[verify-email] Confirmed tournament registrations and updated user_id for user ${result.user.id} (${result.user.email})`);
       
       // Отправляем письма подтверждения для гостевых регистраций
       for (const reg of confirmedRegistrations) {
         if (reg.registration_type === 'guest') {
+          console.log(`[verify-email] STEP 2: Processing guest registration ${reg.id}`);
+          
           try {
             const { getTournament } = await import('@/lib/tournaments');
             const tournament = reg.tournament_id ? await getTournament(reg.tournament_id) : null;
             
             if (tournament) {
+              console.log(`[verify-email] STEP 3: Tournament found: ${tournament.id}, guest price: ${tournament.guestTicket?.price}`);
+              
               const { sendGuestTournamentRegistrationConfirmedEmail } = await import('@/lib/email');
               
               // Парсим данные о детях
+              console.log(`[verify-email] STEP 4: Parsing guest_children for registration ${reg.id}`);
+              console.log(`[verify-email] STEP 4.1: guest_children value:`, {
+                value: reg.guest_children,
+                type: typeof reg.guest_children,
+                is_null: reg.guest_children === null,
+                is_undefined: reg.guest_children === undefined,
+                is_string: typeof reg.guest_children === 'string',
+                is_object: typeof reg.guest_children === 'object',
+                string_length: typeof reg.guest_children === 'string' ? reg.guest_children.length : 'N/A',
+              });
+              
               let childrenAges: number[] = [];
               if (reg.guest_children) {
                 try {
+                  console.log(`[verify-email] STEP 4.2: Attempting to parse guest_children`);
                   const guestChildren = typeof reg.guest_children === 'string' 
                     ? JSON.parse(reg.guest_children) 
                     : reg.guest_children;
+                  
+                  console.log(`[verify-email] STEP 4.3: Parsed guestChildren:`, {
+                    parsed: guestChildren,
+                    type: typeof guestChildren,
+                    is_array: Array.isArray(guestChildren),
+                    length: Array.isArray(guestChildren) ? guestChildren.length : 'N/A',
+                  });
+                  
                   childrenAges = Array.isArray(guestChildren) 
-                    ? guestChildren.map((child: any) => child.age).filter((age: number) => age !== undefined)
+                    ? guestChildren.map((child: any) => {
+                        console.log(`[verify-email] STEP 4.4: Processing child:`, child);
+                        return child.age;
+                      }).filter((age: number) => {
+                        const isValid = age !== undefined && age !== null;
+                        console.log(`[verify-email] STEP 4.5: Child age ${age} is valid: ${isValid}`);
+                        return isValid;
+                      })
                     : [];
+                  
+                  console.log(`[verify-email] STEP 4.6: Final childrenAges array:`, childrenAges);
                 } catch (e) {
-                  console.error('[verify-email] Error parsing guest_children:', e);
+                  console.error(`[verify-email] STEP 4.ERROR: Error parsing guest_children:`, {
+                    error: e,
+                    message: e instanceof Error ? e.message : String(e),
+                    stack: e instanceof Error ? e.stack : undefined,
+                    guest_children_value: reg.guest_children,
+                  });
                 }
+              } else {
+                console.log(`[verify-email] STEP 4.SKIP: guest_children is falsy, skipping parsing`);
               }
+              
+              console.log(`[verify-email] STEP 5: Calculating counts and prices`);
               
               const adultsCount = reg.adults_count ? parseInt(String(reg.adults_count)) : 1;
               const childrenCount = reg.children_count ? parseInt(String(reg.children_count)) : 0;
               const guestPrice = tournament.guestTicket?.price ? parseFloat(String(tournament.guestTicket.price)) : 0;
               
+              console.log(`[verify-email] STEP 5.1: Raw values from DB:`, {
+                adults_count_raw: reg.adults_count,
+                children_count_raw: reg.children_count,
+                adultsCount_parsed: adultsCount,
+                childrenCount_parsed: childrenCount,
+                guestPrice: guestPrice,
+              });
+              
               // Дети до 5 лет бесплатно, остальные платят полную цену
               const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
+              console.log(`[verify-email] STEP 5.2: Children analysis:`, {
+                childrenAges_length: childrenAges.length,
+                childrenAges_array: childrenAges,
+                freeChildrenCount: freeChildrenCount,
+                childrenCount: childrenCount,
+              });
+              
               // Если childrenCount > 0, но childrenAges пустой, считаем всех платными
               const paidChildrenCount = childrenCount > 0 && childrenAges.length === 0 
                 ? childrenCount 
                 : Math.max(0, childrenCount - freeChildrenCount);
               
+              console.log(`[verify-email] STEP 5.3: Paid children calculation:`, {
+                condition: childrenCount > 0 && childrenAges.length === 0,
+                paidChildrenCount: paidChildrenCount,
+              });
+              
               const adultsTotal = adultsCount * guestPrice;
               const childrenTotal = paidChildrenCount * guestPrice;
               const totalPrice = adultsTotal + childrenTotal;
               
+              console.log(`[verify-email] STEP 5.4: Price calculation:`, {
+                adultsTotal: adultsTotal,
+                childrenTotal: childrenTotal,
+                totalPrice: totalPrice,
+                formula: `${adultsCount} × ${guestPrice} + ${paidChildrenCount} × ${guestPrice} = ${totalPrice}`,
+              });
+              
               // Дополнительная проверка и логирование
               if (childrenCount > 0 && childrenAges.length === 0) {
-                console.warn(`[verify-email] Warning: childrenCount=${childrenCount} but childrenAges is empty. All children will be considered paid.`);
+                console.warn(`[verify-email] STEP 5.WARNING: childrenCount=${childrenCount} but childrenAges is empty. All children will be considered paid.`);
               }
               
               // Проверяем, что totalPrice правильно рассчитан
-              if (totalPrice !== (adultsCount * guestPrice + paidChildrenCount * guestPrice)) {
-                console.error(`[verify-email] Price calculation mismatch! adultsCount=${adultsCount}, childrenCount=${childrenCount}, paidChildrenCount=${paidChildrenCount}, guestPrice=${guestPrice}, totalPrice=${totalPrice}`);
+              const expectedTotal = adultsCount * guestPrice + paidChildrenCount * guestPrice;
+              if (Math.abs(totalPrice - expectedTotal) > 0.01) {
+                console.error(`[verify-email] STEP 5.ERROR: Price calculation mismatch!`, {
+                  adultsCount,
+                  childrenCount,
+                  paidChildrenCount,
+                  guestPrice,
+                  totalPrice,
+                  expectedTotal,
+                  difference: Math.abs(totalPrice - expectedTotal),
+                });
               }
               
               // Используем locale из регистрации, если есть, иначе из пользователя
               const registrationLocale = reg.locale || locale;
               
-              // Логируем для отладки
-              console.log(`[verify-email] Guest registration confirmed email data:`, {
+              console.log(`[verify-email] STEP 6: Preparing email data:`, {
                 email: result.user.email,
+                firstName: reg.first_name || result.user.firstName,
+                lastName: reg.last_name || result.user.lastName,
                 adultsCount,
                 childrenCount,
                 childrenAges,
@@ -218,7 +311,17 @@ export async function GET(request: NextRequest) {
                 registrationLocale,
                 userLocale: locale,
                 regLocale: reg.locale,
-                guest_children: reg.guest_children,
+                guest_children_raw: reg.guest_children,
+              });
+              
+              console.log(`[verify-email] STEP 7: Calling sendGuestTournamentRegistrationConfirmedEmail with:`, {
+                email: result.user.email,
+                adultsCount,
+                childrenCount,
+                childrenAges,
+                totalPrice,
+                locale: registrationLocale,
+                tournament_guestTicket_price: tournament.guestTicket?.price,
               });
               
               await sendGuestTournamentRegistrationConfirmedEmail({
@@ -243,7 +346,7 @@ export async function GET(request: NextRequest) {
                 locale: registrationLocale,
               });
               
-              console.log(`[verify-email] Sent guest registration confirmed email for tournament ${tournament.id} to ${result.user.email}`);
+              console.log(`[verify-email] STEP 8: Email sent successfully for tournament ${tournament.id} to ${result.user.email}`);
             }
           } catch (emailError: any) {
             console.error(`[verify-email] Error sending guest confirmation email for registration ${reg.id}:`, emailError);

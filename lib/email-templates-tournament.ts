@@ -8511,18 +8511,32 @@ export function getGuestTournamentVerificationEmailTemplate(data: GuestTournamen
 }
 
 export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: GuestTournamentRegistrationConfirmedEmailData): string {
+  console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 9: Template function called with data:', {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    adultsCount: data.adultsCount,
+    childrenCount: data.childrenCount,
+    childrenAges: data.childrenAges,
+    childrenAges_type: typeof data.childrenAges,
+    childrenAges_is_array: Array.isArray(data.childrenAges),
+    childrenAges_length: Array.isArray(data.childrenAges) ? data.childrenAges.length : 'N/A',
+    totalPrice: data.totalPrice,
+    locale: data.locale,
+    guestPrice: data.tournament.guestTicket?.price,
+  });
+  
   const { firstName, lastName, tournament, adultsCount, childrenCount, childrenAges, totalPrice, locale = 'en' } = data;
   
-  // Логируем для отладки (только в development)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] Data received:', {
-      adultsCount,
-      childrenCount,
-      childrenAges,
-      totalPrice,
-      guestPrice: tournament.guestTicket?.price,
-    });
-  }
+  console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 10: Destructured values:', {
+    adultsCount,
+    childrenCount,
+    childrenAges,
+    childrenAges_type: typeof childrenAges,
+    childrenAges_is_array: Array.isArray(childrenAges),
+    childrenAges_length: Array.isArray(childrenAges) ? childrenAges.length : 'N/A',
+    totalPrice,
+    locale,
+  });
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Guest';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Guest';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
@@ -8989,10 +9003,31 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
                           <div class="detail-value"><strong>${adultsCount}</strong></div>
                         </div>
                         
+                        ${(() => {
+                          console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 11: Checking children display condition:', {
+                            childrenCount,
+                            childrenCount_type: typeof childrenCount,
+                            childrenCount_truthy: !!childrenCount,
+                            childrenCount_gt_zero: childrenCount > 0,
+                            childrenAges,
+                            childrenAges_type: typeof childrenAges,
+                            childrenAges_is_array: Array.isArray(childrenAges),
+                            childrenAges_length: Array.isArray(childrenAges) ? childrenAges.length : 'N/A',
+                            condition_result: (childrenCount && childrenCount > 0),
+                          });
+                          return '';
+                        })()}
                         ${(childrenCount && childrenCount > 0) ? `
                         <div class="detail-row">
                           <div class="detail-label">${t.children}:</div>
-                          <div class="detail-value"><strong>${childrenCount}</strong>${childrenAges && Array.isArray(childrenAges) && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => {
+                          <div class="detail-value"><strong>${childrenCount}</strong>${(() => {
+                            console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 12: Building children ages display:', {
+                              childrenAges,
+                              is_array: Array.isArray(childrenAges),
+                              length: Array.isArray(childrenAges) ? childrenAges.length : 'N/A',
+                            });
+                            return '';
+                          })()}${childrenAges && Array.isArray(childrenAges) && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => {
                             const childLabel = locale === 'ru' || locale === 'ua' ? 'Ребенок' : locale === 'es' ? 'Niño' : locale === 'fr' ? 'Enfant' : locale === 'de' ? 'Kind' : locale === 'it' ? 'Bambino' : locale === 'ca' ? 'Nen' : locale === 'nl' ? 'Kind' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'Barn' : locale === 'ar' ? 'طفل' : locale === 'zh' ? '孩子' : 'Child';
                             const ageLabel = locale === 'ru' || locale === 'ua' ? 'лет' : locale === 'es' ? 'años' : locale === 'fr' ? 'ans' : locale === 'de' ? 'Jahre' : locale === 'it' ? 'anni' : locale === 'ca' ? 'anys' : locale === 'nl' ? 'jaar' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'år' : locale === 'ar' ? 'سنوات' : locale === 'zh' ? '岁' : 'years';
                             return `${childLabel} ${idx + 1}: ${age} ${ageLabel}`;
@@ -9001,15 +9036,43 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
                         ` : ''}
                         
                         ${(() => {
+                          console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 13: Starting price calculation in template:', {
+                            guestPrice: tournament.guestTicket?.price,
+                            adultsCount,
+                            childrenCount,
+                            childrenAges,
+                            childrenAges_type: typeof childrenAges,
+                            childrenAges_is_array: Array.isArray(childrenAges),
+                          });
+                          
                           // Рассчитываем детали цены для отображения
                           const guestPrice = tournament.guestTicket?.price || 0;
                           const actualChildrenCount = childrenCount || 0;
                           const actualChildrenAges = (childrenAges && Array.isArray(childrenAges)) ? childrenAges : [];
+                          
+                          console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 14: After initial calculations:', {
+                            guestPrice,
+                            actualChildrenCount,
+                            actualChildrenAges,
+                            actualChildrenAges_length: actualChildrenAges.length,
+                          });
+                          
                           const freeChildrenCount = actualChildrenAges.filter((age: number) => age < 5).length;
-                          const paidChildrenCount = Math.max(0, actualChildrenCount - freeChildrenCount);
+                          const paidChildrenCount = actualChildrenCount > 0 && actualChildrenAges.length === 0 
+                            ? actualChildrenCount 
+                            : Math.max(0, actualChildrenCount - freeChildrenCount);
                           const adultsTotal = (adultsCount || 1) * guestPrice;
                           const childrenTotal = paidChildrenCount * guestPrice;
                           const calculatedTotal = adultsTotal + childrenTotal;
+                          
+                          console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] STEP 15: Final price calculations:', {
+                            freeChildrenCount,
+                            paidChildrenCount,
+                            adultsTotal,
+                            childrenTotal,
+                            calculatedTotal,
+                            totalPrice_received: totalPrice,
+                          });
                           
                           // Показываем детали расчета, если есть взрослые или дети
                           if (adultsCount > 0 || actualChildrenCount > 0) {
