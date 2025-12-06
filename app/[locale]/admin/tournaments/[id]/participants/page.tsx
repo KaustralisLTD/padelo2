@@ -692,7 +692,12 @@ export default function TournamentParticipantsPage() {
       });
 
       if (response.ok) {
-        setSuccess(tTournaments('participantDeleted') || 'Участник успешно удален');
+        const deletedTranslation = tTournaments('participantDeleted');
+        // Если перевод не найден (возвращается ключ), используем fallback
+        const deletedMessage = deletedTranslation && deletedTranslation.startsWith('Tournaments.participantDeleted')
+          ? 'Participant deleted successfully.'
+          : deletedTranslation || 'Participant deleted successfully.';
+        setSuccess(deletedMessage);
         // Снимаем выделение после удаления
         setSelectedParticipants(prev => {
           const newSet = new Set(prev);
@@ -1940,7 +1945,20 @@ export default function TournamentParticipantsPage() {
         <ConfirmDialog
           isOpen={deleteConfirm.isOpen}
           title={tTournaments('delete') || 'Delete Participant'}
-          message={tTournaments('confirmDeleteParticipant', { name: deleteConfirm.name }) || `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`}
+          message={(() => {
+            // Получаем перевод
+            let translation = tTournaments('confirmDeleteParticipant');
+            
+            // Если перевод не найден (возвращается ключ), используем fallback
+            if (translation && translation.startsWith('Tournaments.confirmDeleteParticipant')) {
+              translation = `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`;
+            } else if (translation && translation.includes('{name}')) {
+              // Заменяем {name} на реальное имя
+              translation = translation.replace('{name}', deleteConfirm.name);
+            }
+            
+            return translation || `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`;
+          })()}
           confirmText={tTournaments('delete') || 'Delete'}
           cancelText={tTournaments('cancel') || 'Cancel'}
           onConfirm={handleDeleteConfirm}
