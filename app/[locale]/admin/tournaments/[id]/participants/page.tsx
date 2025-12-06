@@ -162,7 +162,13 @@ export default function TournamentParticipantsPage() {
     participant: Participant,
     onToggle: (category: string) => void
   ) => {
-    if (categoryEntries.length === 0) {
+    // Добавляем категорию Guest к списку категорий
+    const allCategoryEntries = [
+      ...categoryEntries,
+      ['Guest', tTournaments('categories.Guest') || 'Guest']
+    ];
+
+    if (allCategoryEntries.length === 0) {
       return <span className="text-xs text-text-secondary">-</span>;
     }
 
@@ -183,7 +189,7 @@ export default function TournamentParticipantsPage() {
           <div className="flex flex-wrap gap-1.5 flex-1">
             {selectedCategories.length > 0 ? (
               selectedCategories.map((cat) => {
-                const categoryName = customCategories[cat] || cat;
+                const categoryName = customCategories[cat] || (cat === 'Guest' ? (tTournaments('categories.Guest') || 'Guest') : cat);
                 return (
                   <span
                     key={cat}
@@ -216,7 +222,7 @@ export default function TournamentParticipantsPage() {
             />
             <div className="absolute z-20 mt-1 w-64 bg-background-secondary border border-border rounded-lg shadow-xl p-2 max-h-64 overflow-y-auto">
               <div className="space-y-1">
-                {categoryEntries.map(([code, name]) => {
+                {allCategoryEntries.map(([code, name]) => {
                   const isSelected = selectedCategories.includes(code);
                   return (
                     <label
@@ -865,7 +871,7 @@ export default function TournamentParticipantsPage() {
                       <span className="text-text-secondary">{tTournaments('filterAll')}</span>
                     ) : (
                       filterCategories.map((code) => {
-                        const categoryName = customCategories[code] || code;
+                        const categoryName = customCategories[code] || (code === 'Guest' ? (tTournaments('categories.Guest') || 'Guest') : code);
                         return (
                           <span
                             key={code}
@@ -903,7 +909,10 @@ export default function TournamentParticipantsPage() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="p-2 space-y-1">
-                    {categoryEntries.map(([code, name]) => {
+                    {[
+                      ...categoryEntries,
+                      ['Guest', tTournaments('categories.Guest') || 'Guest']
+                    ].map(([code, name]) => {
                       const isSelected = filterCategories.includes(code);
                       return (
                         <label
@@ -1304,7 +1313,7 @@ export default function TournamentParticipantsPage() {
                             {participant.categories.map((cat) => {
                               const partner = participant.categoryPartners?.[cat];
                               const partnerName = partner?.name || participant.partnerName || '—';
-                              const categoryName = customCategories[cat] || cat;
+                              const categoryName = customCategories[cat] || (cat === 'Guest' ? (tTournaments('categories.Guest') || 'Guest') : cat);
                               // Проверка на одинакового партнера в разных категориях
                               const samePartnerInOtherCategories = participant.categories.filter(
                                 otherCat => otherCat !== cat && 
@@ -1567,7 +1576,7 @@ export default function TournamentParticipantsPage() {
                     </h4>
                     <div className="space-y-4">
                       {(editFormData.categories || []).map((category) => {
-                        const categoryName = customCategories[category] || category;
+                        const categoryName = customCategories[category] || (category === 'Guest' ? (tTournaments('categories.Guest') || 'Guest') : category);
                         const partner = (editFormData.categoryPartners as Record<string, CategoryPartner>)?.[category] || {
                           name: editFormData.partnerName || '',
                           email: editFormData.partnerEmail || '',
