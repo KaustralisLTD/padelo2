@@ -141,7 +141,7 @@ export async function GET(request: NextRequest) {
       
       // Получаем информацию о подтвержденных регистрациях для логирования и отправки писем
       const [confirmedRegistrations] = await pool.execute(
-        `SELECT id, tournament_id, tournament_name, categories, registration_type, first_name, last_name, adults_count, children_count, guest_children
+        `SELECT id, tournament_id, tournament_name, categories, registration_type, first_name, last_name, adults_count, children_count, guest_children, locale
          FROM tournament_registrations 
          WHERE email = ? AND confirmed = TRUE`,
         [result.user.email]
@@ -163,8 +163,12 @@ export async function GET(request: NextRequest) {
               let childrenAges: number[] = [];
               if (reg.guest_children) {
                 try {
-                  const guestChildren = JSON.parse(reg.guest_children);
-                  childrenAges = guestChildren.map((child: any) => child.age).filter((age: number) => age !== undefined);
+                  const guestChildren = typeof reg.guest_children === 'string' 
+                    ? JSON.parse(reg.guest_children) 
+                    : reg.guest_children;
+                  childrenAges = Array.isArray(guestChildren) 
+                    ? guestChildren.map((child: any) => child.age).filter((age: number) => age !== undefined)
+                    : [];
                 } catch (e) {
                   console.error('[verify-email] Error parsing guest_children:', e);
                 }
@@ -178,6 +182,25 @@ export async function GET(request: NextRequest) {
               const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
               const paidChildrenCount = childrenCount - freeChildrenCount;
               const totalPrice = (adultsCount * guestPrice) + (paidChildrenCount * guestPrice);
+              
+              // Используем locale из регистрации, если есть, иначе из пользователя
+              const registrationLocale = reg.locale || locale;
+              
+              // Логируем для отладки
+              console.log(`[verify-email] Guest registration confirmed email data:`, {
+                email: result.user.email,
+                adultsCount,
+                childrenCount,
+                childrenAges,
+                freeChildrenCount,
+                paidChildrenCount,
+                guestPrice,
+                totalPrice,
+                registrationLocale,
+                userLocale: locale,
+                regLocale: reg.locale,
+                guest_children: reg.guest_children,
+              });
               
               await sendGuestTournamentRegistrationConfirmedEmail({
                 email: result.user.email,
@@ -198,7 +221,7 @@ export async function GET(request: NextRequest) {
                 childrenCount,
                 childrenAges,
                 totalPrice,
-                locale: locale,
+                locale: registrationLocale,
               });
               
               console.log(`[verify-email] Sent guest registration confirmed email for tournament ${tournament.id} to ${result.user.email}`);
