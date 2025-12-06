@@ -221,7 +221,25 @@ export async function GET(request: NextRequest) {
             details: {
               tournamentId: registration.tournament_id,
               tournamentName: registration.tournament_name,
-              categories: registration.categories ? JSON.parse(registration.categories) : [],
+              categories: (() => {
+                try {
+                  if (registration.categories) {
+                    if (typeof registration.categories === 'string') {
+                      try {
+                        const parsed = JSON.parse(registration.categories);
+                        return Array.isArray(parsed) ? parsed : typeof parsed === 'string' ? [parsed] : [];
+                      } catch {
+                        return [registration.categories];
+                      }
+                    } else if (Array.isArray(registration.categories)) {
+                      return registration.categories;
+                    }
+                  }
+                } catch (e) {
+                  console.error('[verify-email] Error parsing categories:', e);
+                }
+                return [];
+              })(),
               confirmedAt: new Date().toISOString(),
             },
             ipAddress: getIpAddress(request),
