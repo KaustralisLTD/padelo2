@@ -143,9 +143,12 @@ export async function GET(request: NextRequest) {
       const [confirmedRegistrations] = await pool.execute(
         `SELECT id, tournament_id, tournament_name, categories, registration_type, first_name, last_name, adults_count, children_count, guest_children, locale
          FROM tournament_registrations 
-         WHERE email = ? AND confirmed = TRUE`,
+         WHERE email = ? AND confirmed = TRUE
+         ORDER BY created_at DESC`,
         [result.user.email]
       ) as any[];
+      
+      console.log(`[verify-email] Found ${confirmedRegistrations.length} confirmed registrations for ${result.user.email}`);
       
       console.log(`[verify-email] Confirmed tournament registrations and updated user_id for user ${result.user.id} (${result.user.email})`);
       
@@ -180,8 +183,15 @@ export async function GET(request: NextRequest) {
               
               // Дети до 5 лет бесплатно, остальные платят полную цену
               const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
-              const paidChildrenCount = childrenCount - freeChildrenCount;
-              const totalPrice = (adultsCount * guestPrice) + (paidChildrenCount * guestPrice);
+              const paidChildrenCount = Math.max(0, childrenCount - freeChildrenCount);
+              const adultsTotal = adultsCount * guestPrice;
+              const childrenTotal = paidChildrenCount * guestPrice;
+              const totalPrice = adultsTotal + childrenTotal;
+              
+              // Дополнительная проверка: если childrenCount > 0, но childrenAges пустой, считаем всех платными
+              if (childrenCount > 0 && childrenAges.length === 0) {
+                console.warn(`[verify-email] Warning: childrenCount=${childrenCount} but childrenAges is empty. All children will be considered paid.`);
+              }
               
               // Используем locale из регистрации, если есть, иначе из пользователя
               const registrationLocale = reg.locale || locale;
