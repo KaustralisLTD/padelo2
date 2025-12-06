@@ -1183,7 +1183,11 @@ export default function DashboardContent() {
             <div className="space-y-2 text-text-secondary font-poppins">
               <p><strong className="text-text">{t('dashboard.tournament')}:</strong> {selectedRegistration.tournamentName}</p>
               <p><strong className="text-text">{t('form.categories')}:</strong> {
-                selectedRegistration.categories.map((cat: string) => t(`categories.${cat}`)).join(', ')
+                selectedRegistration.categories.map((cat: string) => {
+                  const translation = t(`categories.${cat}`);
+                  // Если перевод не найден (возвращается ключ), используем fallback
+                  return translation.startsWith('Tournaments.categories.') ? cat : translation;
+                }).join(', ')
               }</p>
               <p><strong className="text-text">{t('form.tshirtSize')}:</strong> {selectedRegistration.tshirtSize}</p>
               <p><strong className="text-text">{t('dashboard.status')}:</strong> {

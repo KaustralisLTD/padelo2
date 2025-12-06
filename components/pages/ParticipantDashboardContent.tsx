@@ -156,6 +156,8 @@ export function ParticipantDashboardContent() {
       female2: t('categories.female2'),
       mixed1: t('categories.mixed1'),
       mixed2: t('categories.mixed2'),
+      Guest: t('categories.Guest') || 'Guest',
+      guest: t('categories.Guest') || 'Guest',
     };
     return categoryMap[category] || category;
   };
