@@ -8512,6 +8512,17 @@ export function getGuestTournamentVerificationEmailTemplate(data: GuestTournamen
 
 export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: GuestTournamentRegistrationConfirmedEmailData): string {
   const { firstName, lastName, tournament, adultsCount, childrenCount, childrenAges, totalPrice, locale = 'en' } = data;
+  
+  // Логируем для отладки (только в development)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('[getGuestTournamentRegistrationConfirmedEmailTemplate] Data received:', {
+      adultsCount,
+      childrenCount,
+      childrenAges,
+      totalPrice,
+      guestPrice: tournament.guestTicket?.price,
+    });
+  }
   const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName || 'Guest';
   const firstNameOnly = firstName || name.split(' ')[0] || 'Guest';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
@@ -8978,10 +8989,10 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
                           <div class="detail-value"><strong>${adultsCount}</strong></div>
                         </div>
                         
-                        ${childrenCount > 0 ? `
+                        ${(childrenCount && childrenCount > 0) ? `
                         <div class="detail-row">
                           <div class="detail-label">${t.children}:</div>
-                          <div class="detail-value"><strong>${childrenCount}</strong>${childrenAges && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => {
+                          <div class="detail-value"><strong>${childrenCount}</strong>${childrenAges && Array.isArray(childrenAges) && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => {
                             const childLabel = locale === 'ru' || locale === 'ua' ? 'Ребенок' : locale === 'es' ? 'Niño' : locale === 'fr' ? 'Enfant' : locale === 'de' ? 'Kind' : locale === 'it' ? 'Bambino' : locale === 'ca' ? 'Nen' : locale === 'nl' ? 'Kind' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'Barn' : locale === 'ar' ? 'طفل' : locale === 'zh' ? '孩子' : 'Child';
                             const ageLabel = locale === 'ru' || locale === 'ua' ? 'лет' : locale === 'es' ? 'años' : locale === 'fr' ? 'ans' : locale === 'de' ? 'Jahre' : locale === 'it' ? 'anni' : locale === 'ca' ? 'anys' : locale === 'nl' ? 'jaar' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'år' : locale === 'ar' ? 'سنوات' : locale === 'zh' ? '岁' : 'years';
                             return `${childLabel} ${idx + 1}: ${age} ${ageLabel}`;
@@ -8992,20 +9003,31 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
                         ${(() => {
                           // Рассчитываем детали цены для отображения
                           const guestPrice = tournament.guestTicket?.price || 0;
-                          const freeChildrenCount = childrenAges ? childrenAges.filter((age: number) => age < 5).length : 0;
-                          const paidChildrenCount = childrenCount - freeChildrenCount;
-                          const adultsTotal = adultsCount * guestPrice;
+                          const actualChildrenCount = childrenCount || 0;
+                          const actualChildrenAges = (childrenAges && Array.isArray(childrenAges)) ? childrenAges : [];
+                          const freeChildrenCount = actualChildrenAges.filter((age: number) => age < 5).length;
+                          const paidChildrenCount = Math.max(0, actualChildrenCount - freeChildrenCount);
+                          const adultsTotal = (adultsCount || 1) * guestPrice;
                           const childrenTotal = paidChildrenCount * guestPrice;
                           const calculatedTotal = adultsTotal + childrenTotal;
                           
-                          // Показываем детали расчета, если есть дети
-                          if (childrenCount > 0 && paidChildrenCount > 0) {
+                          // Показываем детали расчета, если есть взрослые или дети
+                          if (adultsCount > 0 || actualChildrenCount > 0) {
+                            const calculationParts = [];
+                            if (adultsCount > 0) {
+                              const adultsLabel = locale === 'ru' || locale === 'ua' ? 'взрослые' : locale === 'es' ? 'adultos' : locale === 'fr' ? 'adultes' : locale === 'de' ? 'Erwachsene' : locale === 'it' ? 'adulti' : locale === 'ca' ? 'adults' : locale === 'nl' ? 'volwassenen' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'voksne' : locale === 'ar' ? 'بالغون' : locale === 'zh' ? '成人' : 'adults';
+                              calculationParts.push(`${adultsCount} × ${guestPrice.toFixed(2)} EUR = ${adultsTotal.toFixed(2)} EUR (${adultsLabel})`);
+                            }
+                            if (paidChildrenCount > 0) {
+                              const childrenLabel = locale === 'ru' || locale === 'ua' ? 'дети' : locale === 'es' ? 'niños' : locale === 'fr' ? 'enfants' : locale === 'de' ? 'Kinder' : locale === 'it' ? 'bambini' : locale === 'ca' ? 'nens' : locale === 'nl' ? 'kinderen' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'børn' : locale === 'ar' ? 'أطفال' : locale === 'zh' ? '儿童' : 'children';
+                              calculationParts.push(`${paidChildrenCount} × ${guestPrice.toFixed(2)} EUR = ${childrenTotal.toFixed(2)} EUR (${childrenLabel})`);
+                            }
+                            
                             return `
                             <div class="detail-row" style="border-top: 1px solid #d1d5db; padding-top: 8px; margin-top: 8px;">
                               <div class="detail-label" style="font-size: 12px; color: #6b7280;">${locale === 'ru' || locale === 'ua' ? 'Расчет:' : locale === 'es' ? 'Cálculo:' : locale === 'fr' ? 'Calcul:' : locale === 'de' ? 'Berechnung:' : locale === 'it' ? 'Calcolo:' : locale === 'ca' ? 'Càlcul:' : locale === 'nl' ? 'Berekening:' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'Beregning:' : locale === 'ar' ? 'حساب:' : locale === 'zh' ? '计算:' : 'Calculation:'}</div>
                               <div class="detail-value" style="font-size: 12px; color: #6b7280;">
-                                ${adultsCount} × ${guestPrice.toFixed(2)} EUR = ${adultsTotal.toFixed(2)} EUR<br/>
-                                ${paidChildrenCount} ${locale === 'ru' || locale === 'ua' ? 'детей' : locale === 'es' ? 'niños' : locale === 'fr' ? 'enfants' : locale === 'de' ? 'Kinder' : locale === 'it' ? 'bambini' : locale === 'ca' ? 'nens' : locale === 'nl' ? 'kinderen' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'børn' : locale === 'ar' ? 'أطفال' : locale === 'zh' ? '儿童' : 'children'} × ${guestPrice.toFixed(2)} EUR = ${childrenTotal.toFixed(2)} EUR
+                                ${calculationParts.join(' + ')} = ${calculatedTotal.toFixed(2)} EUR
                                 ${freeChildrenCount > 0 ? `<br/><span style="color: #22c55e;">${freeChildrenCount} ${locale === 'ru' || locale === 'ua' ? 'детей до 5 лет бесплатно' : locale === 'es' ? 'niños menores de 5 años gratis' : locale === 'fr' ? 'enfants de moins de 5 ans gratuits' : locale === 'de' ? 'Kinder unter 5 Jahren kostenlos' : locale === 'it' ? 'bambini sotto i 5 anni gratuiti' : locale === 'ca' ? 'nens menors de 5 anys gratuïts' : locale === 'nl' ? 'kinderen onder 5 jaar gratis' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'børn under 5 år gratis' : locale === 'ar' ? 'أطفال أقل من 5 سنوات مجاناً' : locale === 'zh' ? '5岁以下儿童免费' : 'children under 5 years free'}</span>` : ''}
                               </div>
                             </div>
@@ -9014,10 +9036,27 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
                           return '';
                         })()}
                         
-                        <div class="detail-row" style="border-bottom: none; ${childrenCount > 0 ? 'border-top: 2px solid #22c55e; padding-top: 8px; margin-top: 8px;' : ''}">
+                        ${(() => {
+                          // Пересчитываем totalPrice для проверки
+                          const guestPrice = tournament.guestTicket?.price || 0;
+                          const actualAdultsCount = adultsCount || 1;
+                          const actualChildrenCount = childrenCount || 0;
+                          const actualChildrenAges = (childrenAges && Array.isArray(childrenAges)) ? childrenAges : [];
+                          const freeChildrenCount = actualChildrenAges.filter((age: number) => age < 5).length;
+                          const paidChildrenCount = actualChildrenCount > 0 && actualChildrenAges.length === 0 
+                            ? actualChildrenCount 
+                            : Math.max(0, actualChildrenCount - freeChildrenCount);
+                          const recalculatedTotal = (actualAdultsCount * guestPrice) + (paidChildrenCount * guestPrice);
+                          // Используем переданный totalPrice, но если он не совпадает с пересчитанным, используем пересчитанный
+                          const finalTotalPrice = totalPrice && totalPrice > 0 ? totalPrice : recalculatedTotal;
+                          
+                          return `
+                        <div class="detail-row" style="border-bottom: none; ${actualChildrenCount > 0 ? 'border-top: 2px solid #22c55e; padding-top: 8px; margin-top: 8px;' : ''}">
                           <div class="detail-label" style="font-weight: 600;">${t.totalPrice}:</div>
-                          <div class="detail-value" style="font-weight: 600;"><strong>${totalPrice.toFixed(2)} EUR</strong></div>
+                          <div class="detail-value" style="font-weight: 600;"><strong>${finalTotalPrice.toFixed(2)} EUR</strong></div>
                         </div>
+                          `;
+                        })()}
                       </div>
 
                       ${eventScheduleToDisplay && eventScheduleToDisplay.length > 0 ? `

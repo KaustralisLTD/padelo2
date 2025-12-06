@@ -177,20 +177,29 @@ export async function GET(request: NextRequest) {
                 }
               }
               
-              const adultsCount = reg.adults_count || 1;
-              const childrenCount = reg.children_count || 0;
-              const guestPrice = tournament.guestTicket?.price || 0;
+              const adultsCount = reg.adults_count ? parseInt(String(reg.adults_count)) : 1;
+              const childrenCount = reg.children_count ? parseInt(String(reg.children_count)) : 0;
+              const guestPrice = tournament.guestTicket?.price ? parseFloat(String(tournament.guestTicket.price)) : 0;
               
               // Дети до 5 лет бесплатно, остальные платят полную цену
               const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
-              const paidChildrenCount = Math.max(0, childrenCount - freeChildrenCount);
+              // Если childrenCount > 0, но childrenAges пустой, считаем всех платными
+              const paidChildrenCount = childrenCount > 0 && childrenAges.length === 0 
+                ? childrenCount 
+                : Math.max(0, childrenCount - freeChildrenCount);
+              
               const adultsTotal = adultsCount * guestPrice;
               const childrenTotal = paidChildrenCount * guestPrice;
               const totalPrice = adultsTotal + childrenTotal;
               
-              // Дополнительная проверка: если childrenCount > 0, но childrenAges пустой, считаем всех платными
+              // Дополнительная проверка и логирование
               if (childrenCount > 0 && childrenAges.length === 0) {
                 console.warn(`[verify-email] Warning: childrenCount=${childrenCount} but childrenAges is empty. All children will be considered paid.`);
+              }
+              
+              // Проверяем, что totalPrice правильно рассчитан
+              if (totalPrice !== (adultsCount * guestPrice + paidChildrenCount * guestPrice)) {
+                console.error(`[verify-email] Price calculation mismatch! adultsCount=${adultsCount}, childrenCount=${childrenCount}, paidChildrenCount=${paidChildrenCount}, guestPrice=${guestPrice}, totalPrice=${totalPrice}`);
               }
               
               // Используем locale из регистрации, если есть, иначе из пользователя
