@@ -698,6 +698,7 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
           userPhoto: userPhoto.data ? { data: userPhoto.data, name: userPhoto.name } : undefined,
           registrationType: registrationType,
           adultsCount: registrationType === 'guest' ? adultsCount : undefined,
+          childrenCount: registrationType === 'guest' ? guestChildren.length : undefined,
           guestChildren: registrationType === 'guest' && guestChildren.length > 0 ? guestChildren : undefined,
         }),
       });

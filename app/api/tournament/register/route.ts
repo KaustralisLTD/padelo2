@@ -215,7 +215,11 @@ export async function POST(request: NextRequest) {
       confirmed: emailVerified, // Если email уже подтвержден, регистрация сразу подтверждена
       // Для гостей сохраняем данные о количестве взрослых/детей
       adultsCount: body.registrationType === 'guest' ? (body.adultsCount || 1) : undefined,
-      childrenCount: body.registrationType === 'guest' ? (body.childrenCount || 0) : undefined,
+      childrenCount: body.registrationType === 'guest' 
+        ? (body.childrenCount !== undefined 
+            ? body.childrenCount 
+            : (body.guestChildren?.length || 0)) 
+        : undefined,
       guestChildren: body.registrationType === 'guest' && body.guestChildren ? body.guestChildren : undefined,
     };
     
@@ -307,13 +311,19 @@ export async function POST(request: NextRequest) {
           
           // Вычисляем общую цену для гостей
           const adultsCount = body.adultsCount || 1;
-          const childrenCount = body.childrenCount || 0;
           const childrenAges = body.guestChildren?.map((child: any) => child.age).filter((age: number) => age !== undefined) || [];
+          // childrenCount должен быть равен количеству детей из guestChildren, если не передан явно
+          const childrenCount = body.childrenCount !== undefined 
+            ? body.childrenCount 
+            : (body.guestChildren?.length || 0);
           const guestPrice = tournament?.guestTicket?.price || body.guestTicketPrice || 0;
           
           // Дети до 5 лет бесплатно, остальные платят полную цену
           const freeChildrenCount = childrenAges.filter((age: number) => age < 5).length;
-          const paidChildrenCount = childrenCount - freeChildrenCount;
+          // Если childrenCount > 0, но childrenAges пустой, считаем всех платными
+          const paidChildrenCount = childrenCount > 0 && childrenAges.length === 0 
+            ? childrenCount 
+            : Math.max(0, childrenCount - freeChildrenCount);
           const totalPrice = (adultsCount * guestPrice) + (paidChildrenCount * guestPrice);
           
           // Логируем для отладки

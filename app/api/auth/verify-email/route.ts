@@ -193,6 +193,7 @@ export async function GET(request: NextRequest) {
               });
               
               let childrenAges: number[] = [];
+              let parsedGuestChildren: Array<{ age: number }> = [];
               if (reg.guest_children) {
                 try {
                   console.log(`[verify-email] STEP 4.2: Attempting to parse guest_children`);
@@ -207,16 +208,17 @@ export async function GET(request: NextRequest) {
                     length: Array.isArray(guestChildren) ? guestChildren.length : 'N/A',
                   });
                   
-                  childrenAges = Array.isArray(guestChildren) 
-                    ? guestChildren.map((child: any) => {
+                  if (Array.isArray(guestChildren)) {
+                    parsedGuestChildren = guestChildren;
+                    childrenAges = guestChildren.map((child: any) => {
                         console.log(`[verify-email] STEP 4.4: Processing child:`, child);
                         return child.age;
                       }).filter((age: number) => {
                         const isValid = age !== undefined && age !== null;
                         console.log(`[verify-email] STEP 4.5: Child age ${age} is valid: ${isValid}`);
                         return isValid;
-                      })
-                    : [];
+                      });
+                  }
                   
                   console.log(`[verify-email] STEP 4.6: Final childrenAges array:`, childrenAges);
                 } catch (e) {
@@ -234,7 +236,10 @@ export async function GET(request: NextRequest) {
               console.log(`[verify-email] STEP 5: Calculating counts and prices`);
               
               const adultsCount = reg.adults_count ? parseInt(String(reg.adults_count)) : 1;
-              const childrenCount = reg.children_count ? parseInt(String(reg.children_count)) : 0;
+              // Если childrenCount равен 0 или null, но есть guestChildren, используем длину массива
+              const childrenCount = reg.children_count !== null && reg.children_count !== undefined && reg.children_count !== 0
+                ? parseInt(String(reg.children_count))
+                : (Array.isArray(parsedGuestChildren) ? parsedGuestChildren.length : 0);
               const guestPrice = tournament.guestTicket?.price ? parseFloat(String(tournament.guestTicket.price)) : 0;
               
               console.log(`[verify-email] STEP 5.1: Raw values from DB:`, {
