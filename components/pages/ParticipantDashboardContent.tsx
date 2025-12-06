@@ -74,6 +74,17 @@ export function ParticipantDashboardContent() {
       if (response.ok) {
         const data = await response.json();
         const allTournaments = data.tournaments || [];
+        console.log('[ParticipantDashboard] Fetched tournaments:', {
+          count: allTournaments.length,
+          tournaments: allTournaments.map((t: any) => ({
+            id: t.id,
+            tournamentName: t.tournamentName,
+            categories: t.categories,
+            confirmed: t.confirmed,
+            startDate: t.startDate,
+            endDate: t.endDate,
+          })),
+        });
         setTournaments(allTournaments);
         
         // Calculate stats and sort tournaments
@@ -131,9 +142,16 @@ export function ParticipantDashboardContent() {
       } else if (response.status === 401) {
         localStorage.removeItem('auth_token');
         router.push(`/${locale}/login`);
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('[ParticipantDashboard] Error fetching tournaments:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorData,
+        });
       }
     } catch (error) {
-      console.error('Error fetching tournaments:', error);
+      console.error('[ParticipantDashboard] Error fetching tournaments:', error);
     } finally {
       setLoading(false);
     }
