@@ -439,6 +439,8 @@
       "children": "children",
       "free": "FREE",
       "total": "Total",
+      "childrenPaid": "5 years and older - paid",
+      "childrenFree": "under 5 years - free",
       "guestInfo": "Guest Information",
       "registerButton": "REGISTER NOW",
       "submitting": "Submitting...",

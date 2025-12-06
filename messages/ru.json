@@ -336,6 +336,8 @@
       "children": "детей",
       "free": "БЕСПЛАТНО",
       "total": "Итого",
+      "childrenPaid": "старше 5 лет - платно",
+      "childrenFree": "младше 5 лет - бесплатно",
       "guestInfo": "Информация о гостях",
       "registerButton": "ЗАРЕГИСТРИРОВАТЬСЯ",
       "submitting": "Отправка...",

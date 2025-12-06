@@ -312,6 +312,8 @@
       "children": "kinderen",
       "free": "GRATIS",
       "total": "Totaal",
+      "childrenPaid": "5 jaar en ouder - betaald",
+      "childrenFree": "onder 5 jaar - gratis",
       "guestInfo": "Gastinformatie",
       "registerButton": "REGISTREER NU",
       "submitting": "Verzenden...",

@@ -40,6 +40,10 @@ interface Participant {
   locale?: string;
   parentUserId?: string | null; // ID родителя для детей
   parentName?: string | null; // Имя родителя для детей
+  registrationType?: 'participant' | 'guest'; // Тип регистрации
+  adultsCount?: number | null; // Для гостей - количество взрослых
+  childrenCount?: number | null; // Для гостей - количество детей
+  guestChildren?: Array<{ age: number }> | null; // Для гостей - возраст детей
 }
 
 export default function TournamentParticipantsPage() {
@@ -365,6 +369,10 @@ export default function TournamentParticipantsPage() {
           orderNumber: participant.orderNumber ?? participant.order_number ?? index + 1,
           categories: participant.categories || [],
           categoryPartners: participant.categoryPartners || participant.category_partners || {},
+          registrationType: participant.registrationType || 'participant',
+          adultsCount: participant.adultsCount ?? null,
+          childrenCount: participant.childrenCount ?? null,
+          guestChildren: participant.guestChildren ?? null,
         }));
         setParticipants(formattedParticipants);
         setError(null);
@@ -399,6 +407,10 @@ export default function TournamentParticipantsPage() {
       categories: participant.categories || [],
       categoryPartners: participant.categoryPartners || {},
       userId: participant.userId || null,
+      registrationType: participant.registrationType || 'participant',
+      adultsCount: participant.adultsCount || null,
+      childrenCount: participant.childrenCount || null,
+      guestChildren: participant.guestChildren || null,
     });
     
     // Инициализируем режимы выбора партнера для каждой категории
@@ -433,6 +445,9 @@ export default function TournamentParticipantsPage() {
         ...editFormData,
         categories: editFormData.categories || [],
         categoryPartners: editFormData.categoryPartners || {},
+        adultsCount: editFormData.adultsCount,
+        childrenCount: editFormData.childrenCount,
+        guestChildren: editFormData.guestChildren,
       };
 
       const response = await fetch(`/api/tournament/${tournamentId}/registrations/${editingParticipant.id}`, {
@@ -1350,7 +1365,26 @@ export default function TournamentParticipantsPage() {
                         )}
                       </td>
                       <td className="px-3 py-2 text-xs text-text">
-                        {participant.categories && participant.categories.length > 0 ? (
+                        {participant.registrationType === 'guest' ? (
+                          // Отображение информации о гостях
+                          <div className="space-y-1">
+                            {participant.adultsCount && participant.adultsCount > 0 && (
+                              <div className="text-text-secondary">
+                                <span className="font-semibold">{participant.adultsCount}</span> {participant.adultsCount === 1 ? (tTournaments('form.adults')?.toLowerCase() || 'adult') : (tTournaments('form.adults') || 'adults')}
+                              </div>
+                            )}
+                            {participant.childrenCount && participant.childrenCount > 0 && (
+                              <div className="text-text-secondary">
+                                <span className="font-semibold">{participant.childrenCount}</span> {participant.childrenCount === 1 ? (tTournaments('form.children')?.toLowerCase() || 'child') : (tTournaments('form.children') || 'children')}
+                                {participant.guestChildren && Array.isArray(participant.guestChildren) && participant.guestChildren.length > 0 && (
+                                  <span className="text-text-tertiary ml-1">
+                                    ({participant.guestChildren.map((child: any) => child.age).filter((age: number) => age > 0).join(', ')} {tTournaments('form.yearsOld') || 'years old'})
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        ) : participant.categories && participant.categories.length > 0 ? (
                           <div className="space-y-1">
                             {participant.categories.map((cat) => {
                               const partner = participant.categoryPartners?.[cat];
@@ -1610,11 +1644,91 @@ export default function TournamentParticipantsPage() {
                   )}
                 </div>
 
-                {/* Партнеры для каждой категории */}
-                {(editFormData.categories || []).length > 0 && (
+                {/* Форма редактирования для гостей */}
+                {editingParticipant?.registrationType === 'guest' && (
                   <div className="pt-4 border-t border-border">
                     <h4 className="text-lg font-poppins font-semibold text-text mb-4">
-                      {tTournaments('partnerInfo')} {tTournaments('byCategories')}
+                      {tTournaments('form.guestInfo') || 'Guest Information'}
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {tTournaments('form.adultsCount') || 'Number of Adults'} * (max 10)
+                        </label>
+                        <input
+                          type="number"
+                          min="1"
+                          max="10"
+                          required
+                          value={editFormData.adultsCount || 1}
+                          onChange={(e) => setEditFormData({ ...editFormData, adultsCount: Math.max(1, Math.min(10, parseInt(e.target.value) || 1)) })}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {tTournaments('form.childrenCount') || 'Number of Children'} (max 10)
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          max="10"
+                          value={editFormData.childrenCount || 0}
+                          onChange={(e) => {
+                            const count = Math.max(0, Math.min(10, parseInt(e.target.value) || 0));
+                            setEditFormData({ 
+                              ...editFormData, 
+                              childrenCount: count,
+                              guestChildren: count > 0 && (!editFormData.guestChildren || editFormData.guestChildren.length !== count)
+                                ? Array.from({ length: count }, (_, i) => editFormData.guestChildren?.[i] || { age: 0 })
+                                : editFormData.guestChildren
+                            });
+                          }}
+                          className="w-full px-4 py-3 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary"
+                        />
+                      </div>
+                    </div>
+                    {editFormData.childrenCount && editFormData.childrenCount > 0 && editFormData.guestChildren && (
+                      <div className="mt-4">
+                        <label className="block text-sm font-poppins text-text-secondary mb-2">
+                          {tTournaments('form.childrenAges') || 'Children Ages'} *
+                        </label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {Array.from({ length: editFormData.childrenCount }, (_, index) => (
+                            <div key={index}>
+                              <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                {tTournaments('form.child') || 'Child'} {index + 1} - {tTournaments('form.age') || 'Age'}
+                              </label>
+                              <select
+                                required
+                                value={editFormData.guestChildren[index]?.age || ''}
+                                onChange={(e) => {
+                                  const newGuestChildren = [...(editFormData.guestChildren || [])];
+                                  newGuestChildren[index] = { age: parseInt(e.target.value) || 0 };
+                                  setEditFormData({ ...editFormData, guestChildren: newGuestChildren });
+                                }}
+                                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                              >
+                                <option value="">{tTournaments('form.selectAge') || 'Select age'}</option>
+                                {Array.from({ length: 14 }, (_, i) => i + 1).map((age) => (
+                                  <option key={age} value={age}>
+                                    {age} {tTournaments('form.yearsOld') || 'years old'}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Партнеры для каждой категории */}
+                {(editFormData.categories || []).length > 0 && editingParticipant?.registrationType !== 'guest' && (
+                  <div className="pt-4 border-t border-border">
+                    <h4 className="text-lg font-poppins font-semibold text-text mb-4">
+                      {tTournaments('partnerInfo') || 'Partner Information'} {tTournaments('byCategories') || 'by categories'}
                     </h4>
                     <div className="space-y-4">
                       {(editFormData.categories || []).map((category) => {

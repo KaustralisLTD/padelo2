@@ -312,6 +312,8 @@
       "children": "børn",
       "free": "GRATIS",
       "total": "I alt",
+      "childrenPaid": "5 år og ældre - betalt",
+      "childrenFree": "under 5 år - gratis",
       "guestInfo": "Gæsteinformation",
       "registerButton": "REGISTRER DIG NU",
       "submitting": "Sender...",

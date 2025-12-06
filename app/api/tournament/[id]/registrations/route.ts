@@ -106,6 +106,11 @@ export async function GET(
         tr.token,
         tr.payment_status,
         tr.payment_date,
+        tr.registration_type,
+        tr.adults_count,
+        tr.children_count,
+        tr.guest_children,
+        tr.locale,
         tr.created_at
       FROM tournament_registrations tr
       LEFT JOIN tournament_registrations parent ON tr.parent_user_id = parent.user_id
@@ -155,6 +160,16 @@ export async function GET(
         categoryPartners = {};
       }
 
+      let guestChildren = null;
+      try {
+        if (reg.guest_children) {
+          guestChildren = typeof reg.guest_children === 'string' ? JSON.parse(reg.guest_children) : reg.guest_children;
+        }
+      } catch (e) {
+        console.error('Error parsing guest_children for registration', reg.id, e);
+        guestChildren = null;
+      }
+
       return {
         id: reg.id,
         userId: reg.user_id || null,
@@ -180,6 +195,10 @@ export async function GET(
         paymentStatus: reg.payment_status || 'pending',
         paymentDate: reg.payment_date ? new Date(reg.payment_date).toISOString() : undefined,
         locale: reg.locale || 'en',
+        registrationType: reg.registration_type || 'participant',
+        adultsCount: reg.adults_count || null,
+        childrenCount: reg.children_count || null,
+        guestChildren: guestChildren,
         createdAt: reg.created_at.toISOString(),
         orderNumber: index + 1,
         isDemo: reg.token?.startsWith(`demo-${tournamentId}-`) || false,

@@ -310,6 +310,8 @@
       "children": "Kinder",
       "free": "KOSTENLOS",
       "total": "Gesamt",
+      "childrenPaid": "5 Jahre und älter - kostenpflichtig",
+      "childrenFree": "unter 5 Jahre - kostenlos",
       "guestInfo": "Gastinformationen",
       "registerButton": "JETZT REGISTRIEREN",
       "submitting": "Wird gesendet...",

@@ -312,6 +312,8 @@
       "children": "أطفال",
       "free": "مجاناً",
       "total": "الإجمالي",
+      "childrenPaid": "5 سنوات فما فوق - مدفوع",
+      "childrenFree": "أقل من 5 سنوات - مجاني",
       "guestInfo": "معلومات الضيوف",
       "registerButton": "سجل الآن",
       "submitting": "جارٍ الإرسال...",

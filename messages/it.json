@@ -310,6 +310,8 @@
       "children": "bambini",
       "free": "GRATIS",
       "total": "Totale",
+      "childrenPaid": "5 anni e oltre - a pagamento",
+      "childrenFree": "sotto i 5 anni - gratuito",
       "guestInfo": "Informazioni sugli Ospiti",
       "registerButton": "REGISTRATI ORA",
       "submitting": "Invio in corso...",

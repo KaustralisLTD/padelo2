@@ -191,6 +191,9 @@ export async function PATCH(
       categories,
       paymentStatus,
       paymentDate,
+      adultsCount,
+      childrenCount,
+      guestChildren,
     } = body;
 
     const pool = getDbPool();
@@ -268,6 +271,18 @@ export async function PATCH(
     if (paymentDate !== undefined) {
       updates.push('payment_date = ?');
       values.push(paymentDate);
+    }
+    if (adultsCount !== undefined) {
+      updates.push('adults_count = ?');
+      values.push(adultsCount);
+    }
+    if (childrenCount !== undefined) {
+      updates.push('children_count = ?');
+      values.push(childrenCount);
+    }
+    if (guestChildren !== undefined) {
+      updates.push('guest_children = ?');
+      values.push(guestChildren ? JSON.stringify(guestChildren) : null);
     }
 
     if (updates.length === 0) {

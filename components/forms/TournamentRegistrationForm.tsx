@@ -1791,11 +1791,11 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                     <div className="text-xs sm:text-xs text-text-tertiary space-y-1">
                       <div className="break-words">{adultsCount} {t('form.adults') || 'adults'} × {guestPrice.toFixed(2)} EUR = <span className="font-semibold text-text">{(adultsCount * guestPrice).toFixed(2)} EUR</span></div>
                       {childrenWithPrice > 0 && (
-                        <div className="break-words">{childrenWithPrice} {t('form.children') || 'children'} (≥5 years) × {guestPrice.toFixed(2)} EUR = <span className="font-semibold text-text">{(childrenWithPrice * guestPrice).toFixed(2)} EUR</span></div>
+                        <div className="break-words">{childrenWithPrice} {t('form.children') || 'children'} ({t('form.childrenPaid') || '5 years and older - paid'}) × {guestPrice.toFixed(2)} EUR = <span className="font-semibold text-text">{(childrenWithPrice * guestPrice).toFixed(2)} EUR</span></div>
                       )}
                       {guestChildren.filter(child => child.age > 0 && child.age < 5).length > 0 && (
                         <div className="text-accent font-semibold break-words">
-                          {guestChildren.filter(child => child.age > 0 && child.age < 5).length} {t('form.children') || 'children'} (&lt;5 years) = {t('form.free') || 'FREE'}
+                          {guestChildren.filter(child => child.age > 0 && child.age < 5).length} {t('form.children') || 'children'} ({t('form.childrenFree') || 'under 5 years - free'}) = {t('form.free') || 'FREE'}
                         </div>
                       )}
                     </div>
@@ -1825,9 +1825,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 <input
                   type="number"
                   min="1"
+                  max="10"
                   required
                   value={adultsCount}
-                  onChange={(e) => setAdultsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                  onChange={(e) => setAdultsCount(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
                   onWheel={(e) => e.currentTarget.blur()}
                   className="w-full px-12 sm:px-14 py-3 sm:py-3.5 bg-transparent text-text text-center focus:outline-none font-poppins text-lg sm:text-xl font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none touch-manipulation border-0 rounded-xl"
                 />
@@ -1843,8 +1844,9 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 </button>
                 <button
                   type="button"
-                  onClick={() => setAdultsCount(adultsCount + 1)}
-                  className="absolute right-0 top-0 bottom-0 w-11 sm:w-12 flex items-center justify-center bg-primary/10 hover:bg-primary/20 active:bg-primary/30 text-primary transition-all touch-manipulation rounded-r-xl"
+                  onClick={() => setAdultsCount(Math.min(10, adultsCount + 1))}
+                  className="absolute right-0 top-0 bottom-0 w-11 sm:w-12 flex items-center justify-center bg-primary/10 hover:bg-primary/20 active:bg-primary/30 text-primary transition-all touch-manipulation disabled:opacity-30 disabled:cursor-not-allowed rounded-r-xl"
+                  disabled={adultsCount >= 10}
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1864,9 +1866,10 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 <input
                   type="number"
                   min="0"
+                  max="10"
                   value={guestChildren.length}
                   onChange={(e) => {
-                    const count = Math.max(0, parseInt(e.target.value) || 0);
+                    const count = Math.max(0, Math.min(10, parseInt(e.target.value) || 0));
                     if (count > guestChildren.length) {
                       // Добавляем детей
                       setGuestChildren([...guestChildren, ...Array(count - guestChildren.length).fill(null).map(() => ({ age: 0 }))]);
@@ -1894,8 +1897,13 @@ const TournamentRegistrationForm = ({ tournamentId, tournamentName, registration
                 </button>
                 <button
                   type="button"
-                  onClick={() => setGuestChildren([...guestChildren, { age: 0 }])}
-                  className="absolute right-0 top-0 bottom-0 w-11 sm:w-12 flex items-center justify-center bg-accent/10 hover:bg-accent/20 active:bg-accent/30 text-accent transition-all touch-manipulation rounded-r-xl"
+                  onClick={() => {
+                    if (guestChildren.length < 10) {
+                      setGuestChildren([...guestChildren, { age: 0 }]);
+                    }
+                  }}
+                  className="absolute right-0 top-0 bottom-0 w-11 sm:w-12 flex items-center justify-center bg-accent/10 hover:bg-accent/20 active:bg-accent/30 text-accent transition-all touch-manipulation disabled:opacity-30 disabled:cursor-not-allowed rounded-r-xl"
+                  disabled={guestChildren.length >= 10}
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
