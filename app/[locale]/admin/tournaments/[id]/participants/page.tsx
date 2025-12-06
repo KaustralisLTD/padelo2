@@ -1688,36 +1688,39 @@ export default function TournamentParticipantsPage() {
                         />
                       </div>
                     </div>
-                    {editFormData.childrenCount && editFormData.childrenCount > 0 && editFormData.guestChildren && (
+                    {editFormData.childrenCount && editFormData.childrenCount > 0 && editFormData.guestChildren && Array.isArray(editFormData.guestChildren) && (
                       <div className="mt-4">
                         <label className="block text-sm font-poppins text-text-secondary mb-2">
                           {tTournaments('form.childrenAges') || 'Children Ages'} *
                         </label>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {Array.from({ length: editFormData.childrenCount }, (_, index) => (
-                            <div key={index}>
-                              <label className="block text-xs font-poppins text-text-secondary mb-1">
-                                {tTournaments('form.child') || 'Child'} {index + 1} - {tTournaments('form.age') || 'Age'}
-                              </label>
-                              <select
-                                required
-                                value={editFormData.guestChildren[index]?.age || ''}
-                                onChange={(e) => {
-                                  const newGuestChildren = [...(editFormData.guestChildren || [])];
-                                  newGuestChildren[index] = { age: parseInt(e.target.value) || 0 };
-                                  setEditFormData({ ...editFormData, guestChildren: newGuestChildren });
-                                }}
-                                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
-                              >
-                                <option value="">{tTournaments('form.selectAge') || 'Select age'}</option>
-                                {Array.from({ length: 14 }, (_, i) => i + 1).map((age) => (
-                                  <option key={age} value={age}>
-                                    {age} {tTournaments('form.yearsOld') || 'years old'}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          ))}
+                          {Array.from({ length: editFormData.childrenCount }, (_, index) => {
+                            const guestChildrenArray = editFormData.guestChildren as Array<{ age: number }>;
+                            return (
+                              <div key={index}>
+                                <label className="block text-xs font-poppins text-text-secondary mb-1">
+                                  {tTournaments('form.child') || 'Child'} {index + 1} - {tTournaments('form.age') || 'Age'}
+                                </label>
+                                <select
+                                  required
+                                  value={guestChildrenArray[index]?.age || ''}
+                                  onChange={(e) => {
+                                    const newGuestChildren = [...guestChildrenArray];
+                                    newGuestChildren[index] = { age: parseInt(e.target.value) || 0 };
+                                    setEditFormData({ ...editFormData, guestChildren: newGuestChildren });
+                                  }}
+                                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                                >
+                                  <option value="">{tTournaments('form.selectAge') || 'Select age'}</option>
+                                  {Array.from({ length: 14 }, (_, i) => i + 1).map((age) => (
+                                    <option key={age} value={age}>
+                                      {age} {tTournaments('form.yearsOld') || 'years old'}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
