@@ -32,6 +32,11 @@ export async function GET(request: NextRequest) {
 
     const userEmail = userRows[0].email;
 
+    console.log(`[user/tournaments] Fetching tournaments for user:`, {
+      userId: session.userId,
+      userEmail,
+    });
+
     // Get all registrations for this user (by email and user_id)
     const [registrations] = await pool.execute(
       `SELECT 
@@ -42,6 +47,8 @@ export async function GET(request: NextRequest) {
         tr.confirmed,
         tr.confirmed_at,
         tr.created_at,
+        tr.email,
+        tr.user_id,
         t.start_date,
         t.end_date,
         t.status as tournament_status,
@@ -52,6 +59,14 @@ export async function GET(request: NextRequest) {
        ORDER BY tr.created_at DESC`,
       [userEmail, session.userId]
     ) as any[];
+
+    console.log(`[user/tournaments] Found ${registrations.length} registrations:`, registrations.map((r: any) => ({
+      id: r.id,
+      tournamentName: r.tournament_name,
+      email: r.email,
+      userId: r.user_id,
+      categories: r.categories,
+    })));
 
     const tournaments = registrations.map((row: any) => {
       // Безопасный парсинг categories - может быть JSON массив или строка
