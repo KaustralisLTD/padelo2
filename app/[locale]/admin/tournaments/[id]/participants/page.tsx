@@ -81,7 +81,22 @@ export default function TournamentParticipantsPage() {
 
   const categoryEntries = Object.entries(customCategories);
 
+  // Функция для получения цвета категории
+  const getCategoryColor = (code: string): string => {
+    const colorMap: Record<string, string> = {
+      male1: '#3b82f6',    // blue
+      male2: '#8b5cf6',    // purple
+      female1: '#ec4899',  // pink
+      female2: '#f59e0b',  // amber
+      mixed1: '#10b981',   // emerald
+      mixed2: '#ef4444',   // red
+      Guest: '#6b7280',    // gray
+    };
+    return colorMap[code] || '#6b7280';
+  };
+
   const [openCategoryDropdown, setOpenCategoryDropdown] = useState<number | null>(null);
+  const [categoryFilterOpen, setCategoryFilterOpen] = useState(false);
   
   // Состояния для выбора партнера (из списка или вручную) для каждой категории
   const [partnerManualMode, setPartnerManualMode] = useState<Record<string, boolean>>({});
@@ -291,13 +306,14 @@ export default function TournamentParticipantsPage() {
 
   // Close category filter dropdown when clicking outside
   useEffect(() => {
+    if (!categoryFilterOpen) return;
+    
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const dropdown = document.getElementById('category-filter-dropdown');
-      const trigger = target.closest('.category-filter-trigger');
+      const categoryFilterElement = target.closest('[data-category-filter]');
       
-      if (dropdown && !dropdown.contains(target) && !trigger) {
-        dropdown.classList.add('hidden');
+      if (!categoryFilterElement) {
+        setCategoryFilterOpen(false);
       }
     };
 
@@ -305,7 +321,7 @@ export default function TournamentParticipantsPage() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [categoryFilterOpen]);
 
   const fetchTournament = async () => {
     if (!token) return;
@@ -885,46 +901,43 @@ export default function TournamentParticipantsPage() {
               <label className="block text-sm font-poppins text-text-secondary mb-2">
                 {tTournaments('filterCategory')}
               </label>
-              <div className="relative">
+              <div className="relative" data-category-filter>
                 <div 
-                  className="category-filter-trigger w-full px-4 py-2.5 bg-background border border-border rounded-lg text-text text-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all cursor-pointer min-h-[42px] flex items-center justify-between"
-                  onClick={() => {
-                    const dropdown = document.getElementById('category-filter-dropdown');
-                    if (dropdown) {
-                      dropdown.classList.toggle('hidden');
-                    }
-                  }}
+                  className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text text-sm focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all cursor-pointer min-h-[40px] flex items-center justify-between"
+                  onClick={() => setCategoryFilterOpen(!categoryFilterOpen)}
+                  data-category-filter
                 >
-                  <div className="flex flex-wrap gap-1.5 flex-1">
-                    {filterCategories.length === 0 ? (
-                      <span className="text-text-secondary">{tTournaments('filterAll')}</span>
-                    ) : (
-                      filterCategories.map((code) => {
-                        const categoryName = customCategories[code] || (code === 'Guest' ? (tTournaments('categories.Guest') || 'Guest') : code);
-                        return (
-                          <span
-                            key={code}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-primary/20 text-primary rounded-md text-xs font-poppins font-medium"
-                          >
-                            {categoryName}
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setFilterCategories(filterCategories.filter(c => c !== code));
-                              }}
-                              className="hover:bg-primary/30 rounded-full p-0.5 transition-colors"
-                            >
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          </span>
-                        );
-                      })
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    {/* Цветные индикаторы выбранных категорий */}
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {filterCategories.length === 0 ? (
+                        <>
+                          <span className="text-text text-xs font-medium">{tTournaments('filterCategory')}</span>
+                          <span className="text-text-secondary text-xs">({tTournaments('filterAll')})</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-text text-xs font-medium">{tTournaments('filterCategory')}</span>
+                          {filterCategories.slice(0, 6).map((code) => (
+                            <div
+                              key={code}
+                              className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: getCategoryColor(code) }}
+                              title={customCategories[code] || (code === 'Guest' ? (tTournaments('categories.Guest') || 'Guest') : code)}
+                            />
+                          ))}
+                        </>
+                      )}
+                    </div>
+                    {/* Счетчик выбранных категорий */}
+                    {filterCategories.length > 0 && (
+                      <span className="text-xs font-medium text-text-secondary bg-background-secondary px-2 py-0.5 rounded-full flex-shrink-0">
+                        {filterCategories.length}/{categoryEntries.length + 1}
+                      </span>
                     )}
                   </div>
                   <svg 
-                    className="w-5 h-5 text-text-secondary flex-shrink-0 ml-2" 
+                    className={`w-4 h-4 text-text-secondary flex-shrink-0 ml-2 transition-transform ${categoryFilterOpen ? 'rotate-180' : ''}`}
                     fill="none" 
                     stroke="currentColor" 
                     viewBox="0 0 24 24"
@@ -932,23 +945,24 @@ export default function TournamentParticipantsPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
-                <div
-                  id="category-filter-dropdown"
-                  className="hidden absolute z-50 w-full mt-1 bg-background-secondary border border-border rounded-lg shadow-xl max-h-64 overflow-y-auto"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="p-2 space-y-1">
-                    {[
-                      ...categoryEntries,
-                      ['Guest', tTournaments('categories.Guest') || 'Guest']
-                    ].map(([code, name]) => {
-                      const isSelected = filterCategories.includes(code);
-                      return (
-                        <label
-                          key={code}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-background cursor-pointer transition-colors group"
-                        >
-                          <div className="relative flex items-center">
+                {categoryFilterOpen && (
+                  <div
+                    className="absolute z-50 w-full mt-1 bg-background-secondary border border-border rounded-lg shadow-xl max-h-72 overflow-y-auto"
+                    onClick={(e) => e.stopPropagation()}
+                    data-category-filter
+                  >
+                    <div className="p-1.5 space-y-0.5">
+                      {[
+                        ...categoryEntries,
+                        ['Guest', tTournaments('categories.Guest') || 'Guest']
+                      ].map(([code, name]) => {
+                        const isSelected = filterCategories.includes(code);
+                        const categoryColor = getCategoryColor(code);
+                        return (
+                          <label
+                            key={code}
+                            className="flex items-center gap-2.5 px-2.5 py-2 rounded-md hover:bg-background cursor-pointer transition-colors group"
+                          >
                             <input
                               type="checkbox"
                               checked={isSelected}
@@ -959,7 +973,7 @@ export default function TournamentParticipantsPage() {
                                   setFilterCategories(filterCategories.filter(c => c !== code));
                                 }
                               }}
-                              className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all"
+                              className="w-3.5 h-3.5 rounded border-2 border-primary/50 bg-background text-primary focus:ring-1 focus:ring-primary/50 focus:ring-offset-0 cursor-pointer appearance-none checked:bg-primary checked:border-primary transition-all flex-shrink-0"
                               style={{
                                 backgroundImage: isSelected
                                   ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-3.5-3.5a1 1 0 011.414-1.414L5 10.586l6.293-6.293a1 1 0 011.414 0z'/%3E%3C/svg%3E\")"
@@ -969,20 +983,19 @@ export default function TournamentParticipantsPage() {
                                 backgroundRepeat: 'no-repeat',
                               }}
                             />
-                          </div>
-                          <span className={`text-sm font-medium flex-1 ${isSelected ? 'text-primary' : 'text-text'}`}>
-                            {name}
-                          </span>
-                          {isSelected && (
-                            <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                        </label>
-                      );
-                    })}
+                            <div 
+                              className="w-2 h-2 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: categoryColor }}
+                            />
+                            <span className={`text-xs font-medium flex-1 ${isSelected ? 'text-primary' : 'text-text'}`}>
+                              {name}
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
