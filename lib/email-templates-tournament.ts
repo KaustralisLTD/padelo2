@@ -8981,7 +8981,11 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
                         ${childrenCount > 0 ? `
                         <div class="detail-row">
                           <div class="detail-label">${t.children}:</div>
-                          <div class="detail-value"><strong>${childrenCount}</strong>${childrenAges && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => `${t.childrenAges} ${idx + 1}: ${age} ${locale === 'ru' || locale === 'ua' ? 'лет' : locale === 'es' ? 'años' : locale === 'fr' ? 'ans' : locale === 'de' ? 'Jahre' : locale === 'it' ? 'anni' : locale === 'ca' ? 'anys' : locale === 'nl' ? 'jaar' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'år' : locale === 'ar' ? 'سنوات' : locale === 'zh' ? '岁' : 'years'})`).join(', ') + ')' : ''}</div>
+                          <div class="detail-value"><strong>${childrenCount}</strong>${childrenAges && childrenAges.length > 0 ? ' (' + childrenAges.map((age, idx) => {
+                            const childLabel = locale === 'ru' || locale === 'ua' ? 'Ребенок' : locale === 'es' ? 'Niño' : locale === 'fr' ? 'Enfant' : locale === 'de' ? 'Kind' : locale === 'it' ? 'Bambino' : locale === 'ca' ? 'Nen' : locale === 'nl' ? 'Kind' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'Barn' : locale === 'ar' ? 'طفل' : locale === 'zh' ? '孩子' : 'Child';
+                            const ageLabel = locale === 'ru' || locale === 'ua' ? 'лет' : locale === 'es' ? 'años' : locale === 'fr' ? 'ans' : locale === 'de' ? 'Jahre' : locale === 'it' ? 'anni' : locale === 'ca' ? 'anys' : locale === 'nl' ? 'jaar' : locale === 'da' || locale === 'sv' || locale === 'no' ? 'år' : locale === 'ar' ? 'سنوات' : locale === 'zh' ? '岁' : 'years';
+                            return `${childLabel} ${idx + 1}: ${age} ${ageLabel}`;
+                          }).join(', ') + ')' : ''}</div>
                         </div>
                         ` : ''}
                         
