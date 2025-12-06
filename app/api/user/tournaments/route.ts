@@ -53,19 +53,43 @@ export async function GET(request: NextRequest) {
       [userEmail, session.userId]
     ) as any[];
 
-    const tournaments = registrations.map((row: any) => ({
-      id: row.id,
-      tournamentId: row.tournament_id,
-      tournamentName: row.tournament_name,
-      categories: JSON.parse(row.categories || '[]'),
-      confirmed: !!row.confirmed,
-      confirmedAt: row.confirmed_at ? row.confirmed_at.toISOString() : null,
-      createdAt: row.created_at.toISOString(),
-      startDate: row.start_date ? row.start_date.toISOString() : null,
-      endDate: row.end_date ? row.end_date.toISOString() : null,
-      tournamentStatus: row.tournament_status,
-      location: row.location,
-    }));
+    const tournaments = registrations.map((row: any) => {
+      // Безопасный парсинг categories - может быть JSON массив или строка
+      let categories: string[] = [];
+      try {
+        if (row.categories) {
+          if (typeof row.categories === 'string') {
+            // Пытаемся распарсить как JSON
+            try {
+              const parsed = JSON.parse(row.categories);
+              categories = Array.isArray(parsed) ? parsed : typeof parsed === 'string' ? [parsed] : [];
+            } catch (jsonError) {
+              // Если не JSON, значит это строка - преобразуем в массив
+              categories = [row.categories];
+            }
+          } else if (Array.isArray(row.categories)) {
+            categories = row.categories;
+          }
+        }
+      } catch (e) {
+        console.error(`[user/tournaments] Error parsing categories for registration ${row.id}:`, e);
+        categories = [];
+      }
+
+      return {
+        id: row.id,
+        tournamentId: row.tournament_id,
+        tournamentName: row.tournament_name,
+        categories,
+        confirmed: !!row.confirmed,
+        confirmedAt: row.confirmed_at ? row.confirmed_at.toISOString() : null,
+        createdAt: row.created_at.toISOString(),
+        startDate: row.start_date ? row.start_date.toISOString() : null,
+        endDate: row.end_date ? row.end_date.toISOString() : null,
+        tournamentStatus: row.tournament_status,
+        location: row.location,
+      };
+    });
 
     return NextResponse.json({ tournaments });
   } catch (error: any) {

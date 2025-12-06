@@ -39,12 +39,14 @@ async function getOrCreateUserByEmail(email: string, firstName: string, lastName
         console.log(`[getOrCreateUserByEmail] Generated temporary password for existing user ${userId}`);
       }
       
-      // Если передан токен верификации и у пользователя его нет, обновляем
-      if (verificationToken && !existingUsers[0].email_verification_token) {
+      // Если передан токен верификации, обновляем его (даже если уже есть старый)
+      // Это нужно для случаев, когда пользователь регистрируется на новый турнир
+      if (verificationToken) {
         await pool.execute(
           'UPDATE users SET email_verification_token = ?, updated_at = NOW() WHERE id = ?',
           [verificationToken, userId]
         );
+        console.log(`[getOrCreateUserByEmail] Updated verification token for existing user ${userId}`);
       }
       return userId;
     }
