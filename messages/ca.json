@@ -321,7 +321,15 @@
           "photoInstructions": {
             "title": "Instruccions per Pujar Foto",
             "text": "Si us plau, puja la teva foto per al torneig. La foto s'usarà per al teu perfil de jugador i materials del torneig."
-          }
+          },
+          "payloadTooLarge": "La mida de les fotos pujades supera el límit permès",
+          "photoUploadSolution": "Si no pots pujar fotos ara, pots fer-ho més tard des del teu compte personal a la pàgina del torneig.",
+          "childInfo": "Informació del Nen",
+          "childFirstName": "Nom del Nen",
+          "childLastName": "Cognom del Nen",
+          "childPhoto": "Foto del Nen",
+          "addChild": "Afegir Nen",
+          "cancel": "Cancel·lar"
         },
         "confirmation": {
           "title": "Registre Confirmat",

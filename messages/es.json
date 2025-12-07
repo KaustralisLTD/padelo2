@@ -376,7 +376,13 @@
       "resendVerificationEmail": "Reenviar Correo de Verificación",
       "fileNotSelected": "No se ha seleccionado ningún archivo",
       "payloadTooLarge": "El tamaño de las fotos subidas excede el límite permitido",
-      "photoUploadSolution": "Si no puede subir fotos ahora, puede hacerlo más tarde desde su cuenta personal en la página del torneo."
+      "photoUploadSolution": "Si no puede subir fotos ahora, puede hacerlo más tarde desde su cuenta personal en la página del torneo.",
+      "childInfo": "Información del Niño",
+      "childFirstName": "Nombre del Niño",
+      "childLastName": "Apellido del Niño",
+      "childPhoto": "Foto del Niño",
+      "addChild": "Añadir Niño",
+      "cancel": "Cancelar"
     },
     "confirmation": {
       "title": "Registro Confirmado",
