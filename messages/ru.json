@@ -357,10 +357,9 @@
       "childLastName": "Фамилия ребенка",
       "childPhoto": "Фото ребенка",
       "addChild": "Добавить ребенка",
-      "cancel": "Отмена"
+      "cancel": "Отмена",
       "remove": "Удалить",
       "close": "Закрыть",
-      "cancel": "Отмена",
       "mixedExplanation": "Мужской + Женский",
       "viewFilledData": "Посмотреть заполненные данные",
       "hideForm": "Скрыть форму",
