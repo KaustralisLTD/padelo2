@@ -378,7 +378,7 @@
 
             <!-- FOOTER -->
             <tr>
-              <td class="p-footer" style="padding: 14px 30px 24px 30px;">
+              <td class="p-footer" style="padding: 10px 30px 24px 30px;">
                 <table role="presentation" width="100%">
                   <tr>
                     <td align="center" class="font-default" style="text-align: center;">
@@ -387,13 +387,17 @@
                         {{footerText}}
                       </p>
                       {{/if}}
-                      <p class="muted" style="margin: 0 0 16px 0; text-align: center;">
+                      <p class="muted" style="margin: 0 0 6px 0; text-align: center; font-size: 11px;">
                         {{followJourney}}
                       </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
                       <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto;">
                         <tr>
                           {{#if instagramUrl}}
-                          <td align="center" style="padding: 0 4px;">
+                          <td style="padding: 3px 4px 3px 0;">
                             <a href="{{instagramUrl}}" class="social-pill" style="text-decoration: none;">
                               <span class="social-icon-circle social-ig">IG</span>
                               <span>Instagram</span>
@@ -401,7 +405,7 @@
                           </td>
                           {{/if}}
                           {{#if youtubeUrl}}
-                          <td align="center" style="padding: 0 4px;">
+                          <td style="padding: 3px 4px;">
                             <a href="{{youtubeUrl}}" class="social-pill" style="text-decoration: none;">
                               <span class="social-icon-circle social-yt">YT</span>
                               <span>YouTube</span>
@@ -409,7 +413,7 @@
                           </td>
                           {{/if}}
                           {{#if tiktokUrl}}
-                          <td align="center" style="padding: 0 4px;">
+                          <td style="padding: 3px 4px;">
                             <a href="{{tiktokUrl}}" class="social-pill" style="text-decoration: none;">
                               <span class="social-icon-circle social-tt">TT</span>
                               <span>TikTok</span>
@@ -417,7 +421,7 @@
                           </td>
                           {{/if}}
                           {{#if facebookUrl}}
-                          <td align="center" style="padding: 0 4px;">
+                          <td style="padding: 3px 0 3px 4px;">
                             <a href="{{facebookUrl}}" class="social-pill" style="text-decoration: none;">
                               <span class="social-icon-circle social-fb">FB</span>
                               <span>Facebook</span>
@@ -426,20 +430,27 @@
                           {{/if}}
                         </tr>
                       </table>
-                      <p class="muted" style="margin: 20px 0 0 0; text-align: center; font-size: 11px;">
-                        {{receivingEmail}} <a href="{{siteUrl}}" style="color: #0284c7; text-decoration: underline;">{{siteUrl}}</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-top: 16px; text-align: center;">
+                      <p class="muted" style="margin: 0 0 4px 0; text-align: center; font-size: 11px;">
+                        {{receivingEmail}} <a href="{{siteUrl}}" style="color: #0369a1; text-decoration: underline;">{{siteUrl}}</a>
                       </p>
-                      <p class="muted" style="margin: 8px 0 0 0; text-align: center; font-size: 11px;">
-                        <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: underline;">{{unsubscribeText}}</a>
+                      <p class="muted" style="margin: 0 0 10px 0; text-align: center; font-size: 11px;">
+                        © 2025 PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.
                       </p>
                       {{#if team}}
-                      <p class="muted" style="margin: 16px 0 0 0; text-align: center; font-size: 12px; color: #9ca3af;">
+                      <p class="muted" style="margin: 0 0 4px 0; text-align: center; font-size: 12px; color: #9ca3af;">
                         {{team}}
                       </p>
                       {{/if}}
+                      <p class="muted" style="margin: 8px 0 0 0; text-align: center; font-size: 11px;">
+                        <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: underline;">{{unsubscribeText}}</a>
+                      </p>
                       
                       {{#if contactName}}
-                      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(148, 163, 184, 0.2);">
+                      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(148, 163, 184, 0.2); text-align: center;">
                         <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 15px; color: #1f2937; font-weight: 600;">
                           Best regards,
                         </p>
