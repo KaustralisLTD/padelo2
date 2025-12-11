@@ -82,39 +82,40 @@ export function replaceTemplateDataAggressive(
   let result = html;
 
   if (partnerName) {
-    // Find and replace name in greeting: "Hi, [name]" pattern
-    const namePattern = /(Hi,?\s*)([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)(,?\s*<)/g;
-    result = result.replace(namePattern, `$1${partnerName}$3`);
-
-    // Replace in any paragraph that starts with "Hi"
-    result = result.replace(/(<p[^>]*class="lead"[^>]*>Hi,?\s*)([^<]+)(<\/p>)/gi, `$1${partnerName}$3`);
-  }
-
-  if (partnerCompany) {
-    // Replace company name in invitation text
-    result = result.replace(/invite\s+<strong>([^<]+)<\/strong>/gi, `invite <strong>${partnerCompany}</strong>`);
-    
-    // Replace standalone company names in strong tags (but not common words)
-    const commonWords = ['Why', 'Audience', 'Visibility', 'Logo', 'Mentions', 'Option', 'Sponsorship', 
-                         'Main', 'Official', 'Best', 'Follow', 'You', 'PadelO', '50+', '2 days', 
-                         'Active', 'Promotion', 'Depending', 'Official', 'On-court', 'Printed', 
-                         'Tournament', 'Social', 'Opening', 'Place', 'Include', 'Sponsor', '€650', 
-                         '€350', 'We\'re', 'If this', 'Sergii', 'Organizer', 'Unsubscribe'];
-    
-    result = result.replace(/<strong>([^<]+)<\/strong>/g, (match, content) => {
-      // Only replace if it's not a common word and looks like a company name
-      if (!commonWords.some(word => content.includes(word)) && 
-          content.length > 2 && 
-          content.length < 100 &&
-          content.match(/^[A-Z]/)) {
-        // Check if this is likely a company name (not in a list item with common patterns)
-        const context = match;
-        if (!context.match(/(players|categories|families|tourists|Guests|Spain|Ukraine|matches|activities|audience|channels|T-shirts|banners|materials|graphics|posts|stories|ceremonies|stand|tasting|demo|gifts|vouchers|samples|Welcome|activities|Party|Lottery|Hours|zone|Partner|Sponsor|€650|€350|visibility|presence|goals|awareness|trials|clients|sounds|interesting|call|discuss|details|regards|Sergii|Organizer|PadelO|com|received|email|Unsubscribe)/i)) {
-          return `<strong>${partnerCompany}</strong>`;
-        }
+    // Pattern 1: "Hi, [name]" or "Hi [name]" in paragraph with class="lead"
+    result = result.replace(/(<p[^>]*class="lead"[^>]*>Hi,?\s*)([^<,]+?)(,?\s*<\/p>)/gi, (match, prefix, oldName, suffix) => {
+      // Only replace if oldName looks like a name (reasonable length, not empty)
+      if (oldName.trim().length > 0 && oldName.trim().length < 100) {
+        return `${prefix}${partnerName}${suffix}`;
       }
       return match;
     });
+
+    // Pattern 2: "Hi, [name]" in any context
+    result = result.replace(/(Hi,?\s*)([A-Z][a-zA-Z\s]+?)(,?\s*[<,])/g, (match, prefix, oldName, suffix) => {
+      // Only replace if it looks like a name
+      if (oldName.trim().length > 0 && oldName.trim().length < 100 && !oldName.match(/^(you|UA PADEL|PadelO|Sergii|Organizer)/i)) {
+        return `${prefix}${partnerName}${suffix}`;
+      }
+      return match;
+    });
+  }
+
+  if (partnerCompany) {
+    // Pattern 1: "invite <strong>[company]</strong>" or "invite [company]"
+    result = result.replace(/invite\s+<strong>([^<]+)<\/strong>/gi, `invite <strong>${partnerCompany}</strong>`);
+    result = result.replace(/invite\s+([A-Z][a-zA-Z\s&]+?)(\s+to|\s+to become|<\/p>)/g, (match, oldCompany, suffix) => {
+      // Only replace if it looks like a company name
+      if (oldCompany.trim().length > 2 && oldCompany.trim().length < 100 && 
+          !oldCompany.match(/^(you|UA PADEL|PadelO|Sergii|Organizer|50\+|players|categories|families|tourists|Guests|Spain|Ukraine)/i)) {
+        return `invite ${partnerCompany}${suffix}`;
+      }
+      return match;
+    });
+
+    // Pattern 2: Replace company name in specific context - after "invite" and before "to become"
+    // This is more specific to avoid replacing other strong tags
+    result = result.replace(/(invite\s+<strong>)([^<]+?)(<\/strong>\s+to become)/gi, `$1${partnerCompany}$3`);
   }
 
   return result;
