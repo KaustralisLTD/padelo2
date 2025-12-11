@@ -227,7 +227,9 @@ export default function EmailTemplatesContent() {
   const [userSearchQuery, setUserSearchQuery] = useState('');
   const [availableUsers, setAvailableUsers] = useState<any[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [selectedUsersData, setSelectedUsersData] = useState<Record<string, { fullName: string; preferredLanguage: string }>>({});
   const [searchingUsers, setSearchingUsers] = useState(false);
+  const [useUserLanguage, setUseUserLanguage] = useState(false);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -713,19 +715,21 @@ export default function EmailTemplatesContent() {
                   />
                 </div>
 
-                {/* Company */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Company Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                    placeholder="Company Name"
-                  />
-                </div>
+                {/* Company - только для Partners */}
+                {selectedCategory !== 'clients' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                      placeholder="Company Name"
+                    />
+                  </div>
+                )}
 
                 {/* Language */}
                 <div>
@@ -733,16 +737,40 @@ export default function EmailTemplatesContent() {
                     Language <span className="text-gray-500 text-xs">(14 languages available)</span>
                   </label>
                   <select
-                    value={formData.locale}
-                    onChange={(e) => setFormData({ ...formData, locale: e.target.value })}
+                    value={useUserLanguage && selectedCategory === 'clients' && selectedUserIds.length > 0 
+                      ? 'user'
+                      : formData.locale}
+                    onChange={(e) => {
+                      if (e.target.value === 'user') {
+                        // Если выбрана опция "User's language"
+                        if (selectedUserIds.length > 0) {
+                          const firstUserLang = selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en';
+                          setUseUserLanguage(true);
+                          setFormData({ ...formData, locale: firstUserLang });
+                        }
+                      } else {
+                        setUseUserLanguage(false);
+                        setFormData({ ...formData, locale: e.target.value });
+                      }
+                    }}
                     className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
                   >
+                    {selectedCategory === 'clients' && selectedUserIds.length > 0 && (
+                      <option value="user">
+                        🌐 User's language ({selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'})
+                      </option>
+                    )}
                     {LANGUAGES.map((lang) => (
                       <option key={lang.code} value={lang.code}>
                         {lang.flag} {lang.name}
                       </option>
                     ))}
                   </select>
+                  {selectedCategory === 'clients' && selectedUserIds.length > 0 && useUserLanguage && (
+                    <p className="mt-2 text-sm text-gray-600">
+                      Using language from user profile: <strong>{selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'}</strong>
+                    </p>
+                  )}
                 </div>
 
                 {/* Contact Info */}
@@ -888,9 +916,58 @@ export default function EmailTemplatesContent() {
                           checked={selectedUserIds.includes(user.id)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setSelectedUserIds([...selectedUserIds, user.id]);
+                              const newSelectedIds = [...selectedUserIds, user.id];
+                              setSelectedUserIds(newSelectedIds);
+                              // Сохраняем данные пользователя
+                              setSelectedUsersData({
+                                ...selectedUsersData,
+                                [user.id]: {
+                                  fullName: user.fullName,
+                                  preferredLanguage: user.preferredLanguage || 'en',
+                                },
+                              });
+                              // Если выбран только один пользователь, заполняем имя автоматически
+                              if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
+                                setFormData({
+                                  ...formData,
+                                  recipientName: user.fullName,
+                                });
+                                // Автоматически включаем использование языка пользователя
+                                setUseUserLanguage(true);
+                                setFormData(prev => ({
+                                  ...prev,
+                                  locale: user.preferredLanguage || 'en',
+                                }));
+                              }
                             } else {
-                              setSelectedUserIds(selectedUserIds.filter(id => id !== user.id));
+                              const newSelectedIds = selectedUserIds.filter(id => id !== user.id);
+                              setSelectedUserIds(newSelectedIds);
+                              // Удаляем данные пользователя
+                              const newUsersData = { ...selectedUsersData };
+                              delete newUsersData[user.id];
+                              setSelectedUsersData(newUsersData);
+                              // Если остался один пользователь, обновляем имя
+                              if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
+                                const remainingUser = availableUsers.find(u => u.id === newSelectedIds[0]);
+                                if (remainingUser) {
+                                  setFormData({
+                                    ...formData,
+                                    recipientName: remainingUser.fullName,
+                                  });
+                                  setUseUserLanguage(true);
+                                  setFormData(prev => ({
+                                    ...prev,
+                                    locale: remainingUser.preferredLanguage || 'en',
+                                  }));
+                                }
+                              } else if (newSelectedIds.length === 0) {
+                                // Если пользователи не выбраны, очищаем имя и сбрасываем язык
+                                setFormData({
+                                  ...formData,
+                                  recipientName: '',
+                                });
+                                setUseUserLanguage(false);
+                              }
                             }
                           }}
                           className="mr-3 w-5 h-5 text-blue-600"

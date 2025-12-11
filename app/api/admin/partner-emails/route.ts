@@ -61,16 +61,27 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Get user emails if userIds provided
+    // Get user emails and data if userIds provided
     let recipientEmails: string[] = [];
+    let userDataMap: Record<string, { email: string; preferredLanguage: string; firstName: string; lastName: string }> = {};
     if (userIds && Array.isArray(userIds) && userIds.length > 0) {
       try {
-        const { getAllUsers } = await import('@/lib/users');
-        const allUsers = await getAllUsers();
-        recipientEmails = allUsers
-          .filter((u: any) => userIds.includes(u.id))
-          .map((u: any) => u.email)
-          .filter((e: string) => e);
+        const { getDbPool } = await import('@/lib/db');
+        const pool = getDbPool();
+        const [rows] = await pool.execute(
+          `SELECT id, email, first_name, last_name, preferred_language FROM users WHERE id IN (${userIds.map(() => '?').join(',')})`,
+          userIds
+        ) as any[];
+        
+        rows.forEach((user: any) => {
+          recipientEmails.push(user.email);
+          userDataMap[user.id] = {
+            email: user.email,
+            preferredLanguage: user.preferred_language || locale || 'en',
+            firstName: user.first_name || '',
+            lastName: user.last_name || '',
+          };
+        });
       } catch (error) {
         console.error('Error fetching users:', error);
         return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
@@ -161,15 +172,66 @@ export async function POST(request: NextRequest) {
     });
 
     // Send emails to all recipients
+    // For clients with userIds, use each user's preferred language
     const emailResults = await Promise.allSettled(
       recipientEmails.map(async (toEmail) => {
         try {
-          console.log(`[Email Send] Attempting to send to ${toEmail}`);
+          // Find user data for this email to get their preferred language
+          let userLocale = locale;
+          let emailHtml = html;
+          
+          if (userIds && userIds.length > 0 && !customHtml) {
+            const userEntry = Object.values(userDataMap).find(u => u.email === toEmail);
+            if (userEntry) {
+              userLocale = userEntry.preferredLanguage;
+              
+              // Regenerate template with user's language if different
+              if (userLocale !== locale) {
+                try {
+                  if (templateId === 'sponsorship-proposal') {
+                    emailHtml = generateSponsorshipProposalEmailHTML({
+                      partnerName: partnerName || userEntry.firstName || '',
+                      partnerCompany: partnerCompany || '',
+                      locale: userLocale,
+                      phone: phone || '+34 662 423 738',
+                      email: contactEmail || 'partner@padelO2.com',
+                      contactName: 'Sergii Shchurenko',
+                      contactTitle: 'Organizer, UA PADEL OPEN',
+                      tournament: tournamentData,
+                    });
+                  } else {
+                    // Use template generator for other templates
+                    let templateData: any = {
+                      locale: userLocale,
+                      tournament: tournamentData,
+                      firstName: userEntry.firstName,
+                      lastName: userEntry.lastName,
+                    };
+                    
+                    if (templateId.includes('tournament')) {
+                      templateData.categories = [];
+                    }
+                    
+                    emailHtml = await generateEmailTemplateHTML({
+                      templateId,
+                      data: templateData,
+                      locale: userLocale,
+                    });
+                  }
+                } catch (error) {
+                  console.error(`[Email Send] Error regenerating template for ${toEmail}:`, error);
+                  // Fall back to original HTML
+                }
+              }
+            }
+          }
+          
+          console.log(`[Email Send] Attempting to send to ${toEmail} (locale: ${userLocale})`);
           const result = await sendEmail({
             to: toEmail,
             subject,
-            html,
-            locale,
+            html: emailHtml,
+            locale: userLocale,
             from: fromAddress,
           });
           console.log(`[Email Send] Result for ${toEmail}:`, result);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAllUsers } from '@/lib/users';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
+import { getDbPool } from '@/lib/db';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean }> {
   const authHeader = request.headers.get('authorization');
@@ -30,35 +31,38 @@ export async function GET(request: NextRequest) {
     const query = searchParams.get('q') || '';
     const limit = parseInt(searchParams.get('limit') || '50', 10);
 
-    const allUsers = await getAllUsers();
+    const pool = getDbPool();
     
-    // Фильтруем активных пользователей (с верифицированным email)
-    const activeUsers = allUsers.filter(user => 
-      user.emailVerified !== false
-    );
-
-    // Поиск по имени, фамилии или email
-    let filteredUsers = activeUsers;
+    // Получаем пользователей с preferred_language напрямую из БД
+    let sql = `SELECT id, email, first_name, last_name, preferred_language, email_verified 
+               FROM users 
+               WHERE email_verified = 1`;
+    const params: any[] = [];
+    
     if (query.trim()) {
-      const searchLower = query.toLowerCase();
-      filteredUsers = activeUsers.filter(user => 
-        (user.firstName && user.firstName.toLowerCase().includes(searchLower)) ||
-        (user.lastName && user.lastName.toLowerCase().includes(searchLower)) ||
-        (user.email && user.email.toLowerCase().includes(searchLower)) ||
-        `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase().includes(searchLower)
-      );
+      sql += ` AND (
+        LOWER(first_name) LIKE ? OR 
+        LOWER(last_name) LIKE ? OR 
+        LOWER(email) LIKE ? OR
+        LOWER(CONCAT(first_name, ' ', last_name)) LIKE ?
+      )`;
+      const searchPattern = `%${query.toLowerCase()}%`;
+      params.push(searchPattern, searchPattern, searchPattern, searchPattern);
     }
-
-    // Ограничиваем количество результатов
-    const limitedUsers = filteredUsers.slice(0, limit);
+    
+    sql += ` ORDER BY created_at DESC LIMIT ?`;
+    params.push(limit);
+    
+    const [rows] = await pool.execute(sql, params) as any[];
 
     return NextResponse.json({ 
-      users: limitedUsers.map(user => ({
+      users: rows.map((user: any) => ({
         id: user.id,
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        fullName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        fullName: `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email,
+        preferredLanguage: user.preferred_language || 'en',
       }))
     });
   } catch (error: any) {
