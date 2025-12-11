@@ -919,13 +919,13 @@ export default function EmailTemplatesContent() {
                               const newSelectedIds = [...selectedUserIds, user.id];
                               setSelectedUserIds(newSelectedIds);
                               // Сохраняем данные пользователя
-                              setSelectedUsersData({
-                                ...selectedUsersData,
+                              setSelectedUsersData(prev => ({
+                                ...prev,
                                 [user.id]: {
                                   fullName: user.fullName,
                                   preferredLanguage: user.preferredLanguage || 'en',
                                 },
-                              });
+                              }));
                               // Если выбран только один пользователь, заполняем имя автоматически
                               if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
                                 // Автоматически включаем использование языка пользователя
@@ -940,9 +940,11 @@ export default function EmailTemplatesContent() {
                               const newSelectedIds = selectedUserIds.filter(id => id !== user.id);
                               setSelectedUserIds(newSelectedIds);
                               // Удаляем данные пользователя
-                              const newUsersData = { ...selectedUsersData };
-                              delete newUsersData[user.id];
-                              setSelectedUsersData(newUsersData);
+                              setSelectedUsersData(prev => {
+                                const newUsersData = { ...prev };
+                                delete newUsersData[user.id];
+                                return newUsersData;
+                              });
                               // Если остался один пользователь, обновляем имя
                               if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
                                 const remainingUser = availableUsers.find(u => u.id === newSelectedIds[0]);
