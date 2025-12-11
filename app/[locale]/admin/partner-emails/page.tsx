@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo';
-import PartnerEmailsContent from '@/components/pages/PartnerEmailsContent';
+import EmailTemplatesContent from '@/components/pages/EmailTemplatesContent';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,9 +11,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const t = await getTranslations({ locale, namespace: 'Admin' });
 
   return generateSEOMetadata({
-    title: 'Partner Emails',
-    description: 'Send sponsorship emails to partners',
-    keywords: ['admin', 'partner emails', 'sponsorship'],
+    title: 'Email Templates',
+    description: 'Send emails to partners, clients, coaches, and staff',
+    keywords: ['admin', 'email templates', 'partners', 'clients', 'coaches', 'staff'],
     path: '/admin/partner-emails',
     noindex: true,
     nofollow: true,
@@ -24,6 +24,6 @@ export default async function PartnerEmailsPage({ params }: { params: Promise<{ 
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <PartnerEmailsContent />;
+  return <EmailTemplatesContent />;
 }
 
