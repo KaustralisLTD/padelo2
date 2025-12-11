@@ -44,10 +44,10 @@ export async function GET(request: NextRequest) {
     
     // Get the latest saved template (version 0 is the latest marker)
     const [templates] = await pool.execute(
-      `SELECT html_content, version, saved_at 
+      `SELECT html_content, version, created_at, updated_at 
        FROM email_templates 
        WHERE template_id = ? AND version = 0 
-       ORDER BY saved_at DESC 
+       ORDER BY created_at DESC 
        LIMIT 1`,
       [templateId]
     ) as any[];
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       html: templates[0].html_content,
       version: templates[0].version,
-      savedAt: templates[0].saved_at,
+      savedAt: templates[0].updated_at || templates[0].created_at,
     });
   } catch (error: any) {
     console.error('[Load Template] Error:', error);
