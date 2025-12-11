@@ -203,6 +203,8 @@ export function generateSponsorshipProposalEmailHTML(data: {
   locale?: string;
   phone?: string;
   email?: string;
+  contactName?: string;
+  contactTitle?: string;
 }): string {
   const {
     partnerName = '',
@@ -210,6 +212,8 @@ export function generateSponsorshipProposalEmailHTML(data: {
     locale = 'en',
     phone = '+34 662 423 738',
     email = 'partner@padelO2.com',
+    contactName = 'Sergii Shchurenko',
+    contactTitle = 'Organizer, UA PADEL OPEN',
   } = data;
 
   const brandTaglines: Record<string, string> = {
