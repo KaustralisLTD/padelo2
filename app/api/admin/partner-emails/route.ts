@@ -219,44 +219,15 @@ export async function POST(request: NextRequest) {
           if (userIds && userIds.length > 0 && !customHtml) {
             const userEntry = Object.values(userDataMap).find(u => u.email === toEmail);
             if (userEntry) {
-              userLocale = userEntry.preferredLanguage;
+              userLocale = userEntry.preferredLanguage || locale;
               
-              // Regenerate template with user's language if different
-              if (userLocale !== locale) {
+              // Translate HTML to user's preferred language if different
+              if (userLocale && userLocale !== locale && emailHtml) {
                 try {
-                  if (templateId === 'sponsorship-proposal') {
-                    emailHtml = generateSponsorshipProposalEmailHTML({
-                      partnerName: partnerName || userEntry.firstName || '',
-                      partnerCompany: partnerCompany || '',
-                      locale: userLocale,
-                      phone: phone || '+34 662 423 738',
-                      email: contactEmail || 'partner@padelO2.com',
-                      contactName: 'Sergii Shchurenko',
-                      contactTitle: 'Organizer, UA PADEL OPEN',
-                      tournament: tournamentData,
-                    });
-                  } else {
-                    // Use template generator for other templates
-                    let templateData: any = {
-                      locale: userLocale,
-                      tournament: tournamentData,
-                      firstName: userEntry.firstName,
-                      lastName: userEntry.lastName,
-                    };
-                    
-                    if (templateId.includes('tournament')) {
-                      templateData.categories = [];
-                    }
-                    
-                    emailHtml = await generateEmailTemplateHTML({
-                      templateId,
-                      data: templateData,
-                      locale: userLocale,
-                    });
-                  }
+                  emailHtml = await translateEmailHTML(emailHtml, userLocale, locale || 'en');
+                  console.log(`[Email Send] Translated email for ${toEmail} to ${userLocale}`);
                 } catch (error) {
-                  console.error(`[Email Send] Error regenerating template for ${toEmail}:`, error);
-                  // Fall back to original HTML
+                  console.error(`[Email Send] Error translating email for ${toEmail}:`, error);
                 }
               }
             }

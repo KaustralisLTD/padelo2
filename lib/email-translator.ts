@@ -24,8 +24,9 @@ const GOOGLE_TRANSLATE_LOCALE_MAP: Record<string, string> = {
 
 /**
  * Extract text content from HTML while preserving structure
+ * Returns text nodes and processed HTML with placeholders
  */
-function extractTextNodes(html: string): Array<{ text: string; placeholder: string }> {
+function extractTextNodes(html: string): { textNodes: Array<{ text: string; placeholder: string }>; processedHtml: string } {
   const textNodes: Array<{ text: string; placeholder: string }> = [];
   let placeholderIndex = 0;
 
