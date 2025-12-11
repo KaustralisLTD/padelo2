@@ -398,8 +398,44 @@ export default function EmailTemplatesContent() {
     }
 
     try {
-      // Always generate preview with current form data
-      // This ensures that partnerName and partnerCompany from form are used
+      // First, try to load saved template from database
+      let savedHtml: string | null = null;
+      try {
+        const loadResponse = await fetch(`/api/admin/email-templates/load?templateId=${selectedTemplate}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (loadResponse.ok) {
+          const loadData = await loadResponse.json();
+          if (loadData.htmlContent) {
+            savedHtml = loadData.htmlContent;
+          } else if (loadData.html) {
+            // Fallback for old API response format
+            savedHtml = loadData.html;
+          }
+        }
+      } catch (loadError) {
+        console.log('No saved template found, will generate new one');
+      }
+
+      // If we have a saved template, use it but replace dynamic data from form
+      if (savedHtml && formData.recipientName) {
+        // Import the replacer function
+        const { replaceTemplateDataAggressive } = await import('@/lib/template-data-replacer');
+        savedHtml = replaceTemplateDataAggressive(
+          savedHtml,
+          formData.recipientName,
+          formData.company || ''
+        );
+        setPreviewHtml(savedHtml);
+        setEditableHtml(savedHtml);
+        setShowPreview(true);
+        return;
+      }
+
+      // Otherwise, generate new template with form data
       const response = await fetch('/api/admin/partner-emails/preview', {
         method: 'POST',
         headers: {
