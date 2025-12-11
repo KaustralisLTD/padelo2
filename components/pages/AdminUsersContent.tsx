@@ -156,7 +156,7 @@ export default function AdminUsersContent() {
   }: {
     label: string;
     onClick?: () => void;
-    Icon: (props: any) => JSX.Element;
+    Icon: (props: any) => React.ReactElement;
     variant?: 'default' | 'danger';
   }) => {
     const baseClasses = "p-2 rounded transition-colors inline-flex items-center justify-center";

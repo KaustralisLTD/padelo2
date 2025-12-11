@@ -1,16 +1,15 @@
-import { useTranslations } from 'next-intl';
 import TournamentBracket from '@/components/TournamentBracket';
 
 interface TournamentBracketPageProps {
-  params: {
+  params: Promise<{
     locale: string;
     id: string;
-  };
+  }>;
 }
 
-export default function TournamentBracketPage({ params }: TournamentBracketPageProps) {
-  const t = useTranslations('Tournaments.bracket');
-  const tournamentId = parseInt(params.id, 10);
+export default async function TournamentBracketPage({ params }: TournamentBracketPageProps) {
+  const { id } = await params;
+  const tournamentId = parseInt(id, 10);
 
   if (isNaN(tournamentId)) {
     return (

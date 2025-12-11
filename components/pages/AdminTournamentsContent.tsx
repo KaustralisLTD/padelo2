@@ -544,7 +544,7 @@ export default function AdminTournamentsContent() {
     label: string;
     onClick?: () => void;
     href?: string;
-    Icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
+    Icon: (props: SVGProps<SVGSVGElement>) => React.ReactElement;
     variant?: 'default' | 'danger';
   }) => {
     const className =

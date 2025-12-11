@@ -1,18 +1,20 @@
-import { useTranslations, useLocale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import TournamentRulesEditor from '@/components/TournamentRulesEditor';
 
 interface TournamentRulesPageProps {
-  params: {
+  params: Promise<{
     locale: string;
     id: string;
-  };
+  }>;
 }
 
-export default function TournamentRulesPage({ params }: TournamentRulesPageProps) {
-  const t = useTranslations('Tournaments.rules');
-  const locale = useLocale();
-  const tournamentId = parseInt(params.id, 10);
+export default async function TournamentRulesPage({ params }: TournamentRulesPageProps) {
+  const { locale, id } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'Tournaments.rules' });
+  const tournamentId = parseInt(id, 10);
 
   return (
     <div className="container mx-auto px-4 py-20 mt-20">

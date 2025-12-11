@@ -5,10 +5,10 @@ import { getDbPool } from '@/lib/db';
 // GET - получить правила турнира
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const tournamentId = parseInt(params.id, 10);
+    const { id } = await params; const tournamentId = parseInt(id, 10);
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
@@ -39,7 +39,7 @@ export async function GET(
 // PUT - обновить правила турнира (только для superadmin)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Проверка авторизации
@@ -55,7 +55,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const tournamentId = parseInt(params.id, 10);
+    const { id } = await params; const tournamentId = parseInt(id, 10);
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
