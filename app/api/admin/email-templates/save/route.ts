@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
-import fs from 'fs/promises';
-import path from 'path';
+import { getDbPool } from '@/lib/db';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -42,45 +41,66 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For now, we'll save custom templates to a custom-templates directory
-    // This allows preserving original templates while allowing customizations
-    const templatesDir = path.join(process.cwd(), 'custom-email-templates');
+    const pool = getDbPool();
     
-    // Ensure directory exists
+    // Create email_templates table if it doesn't exist
     try {
-      await fs.mkdir(templatesDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist, that's fine
+      await pool.execute(`
+        CREATE TABLE IF NOT EXISTS email_templates (
+          id VARCHAR(36) NOT NULL PRIMARY KEY,
+          template_id VARCHAR(255) NOT NULL,
+          html_content LONGTEXT NOT NULL,
+          template_type VARCHAR(50) DEFAULT 'custom',
+          saved_by VARCHAR(36),
+          version BIGINT NOT NULL,
+          created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+          INDEX idx_template_id (template_id),
+          INDEX idx_version (version)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+      `);
+    } catch (error: any) {
+      // Table might already exist, that's fine
+      if (!error.message.includes('already exists')) {
+        console.error('[Save Template] Error creating table:', error);
+      }
     }
 
-    // Save the custom template
-    const templateFileName = `${templateId}-${Date.now()}.html`;
-    const templatePath = path.join(templatesDir, templateFileName);
-    
-    await fs.writeFile(templatePath, html, 'utf-8');
+    // Generate new version
+    const version = Date.now();
+    const templateUuid = require('crypto').randomBytes(16).toString('hex');
 
-    // Also save as the latest version (overwrite)
-    const latestTemplatePath = path.join(templatesDir, `${templateId}-latest.html`);
-    await fs.writeFile(latestTemplatePath, html, 'utf-8');
+    // Save new version
+    await pool.execute(
+      `INSERT INTO email_templates (id, template_id, html_content, template_type, saved_by, version)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [templateUuid, templateId, html, templateType, access.userId, version]
+    );
 
-    // Save metadata about the template
-    const metadataPath = path.join(templatesDir, `${templateId}-metadata.json`);
-    const metadata = {
-      templateId,
-      savedAt: new Date().toISOString(),
-      savedBy: access.userId,
-      templateType,
-      version: Date.now(),
-    };
-    await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8');
+    // Also update the latest version marker (we'll use a special record with version 0)
+    // First, delete any existing latest marker
+    await pool.execute(
+      `DELETE FROM email_templates WHERE template_id = ? AND version = 0`,
+      [templateId]
+    );
+
+    // Insert latest marker pointing to the new version
+    const latestUuid = require('crypto').randomBytes(16).toString('hex');
+    await pool.execute(
+      `INSERT INTO email_templates (id, template_id, html_content, template_type, saved_by, version)
+       VALUES (?, ?, ?, ?, ?, 0)`,
+      [latestUuid, templateId, html, templateType, access.userId]
+    );
 
     return NextResponse.json({
       success: true,
       message: 'Template saved successfully',
-      templatePath: templateFileName,
+      templateId,
+      version,
     });
   } catch (error: any) {
     console.error('[Save Template] Error:', error);
+    console.error('[Save Template] Error stack:', error.stack);
     return NextResponse.json(
       { error: error.message || 'Failed to save template' },
       { status: 500 }

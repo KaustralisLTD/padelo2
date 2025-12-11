@@ -438,6 +438,7 @@ export default function EmailTemplatesContent() {
 
     setSavingTemplate(true);
     setError(null);
+    setSuccess(false);
 
     const token = localStorage.getItem('auth_token');
     if (!token) {
@@ -467,9 +468,14 @@ export default function EmailTemplatesContent() {
       }
 
       setSuccess(true);
-      setTimeout(() => setSuccess(false), 5000);
+      setError(null);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
     } catch (err: any) {
+      console.error('[Save Template] Error:', err);
       setError(err.message || 'Failed to save template');
+      setSuccess(false);
     } finally {
       setSavingTemplate(false);
     }
@@ -1105,10 +1111,34 @@ export default function EmailTemplatesContent() {
               </div>
             </div>
 
+            {/* Success/Error Messages in Modal */}
+            {success && (
+              <div className="px-6 pt-4">
+                <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                  <p className="text-green-800 font-semibold">
+                    ✅ Template saved successfully!
+                  </p>
+                </div>
+              </div>
+            )}
+            {error && (
+              <div className="px-6 pt-4">
+                <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                  <p className="text-red-800 font-semibold">
+                    ❌ {error}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Modal Footer */}
             <div className="p-6 border-t border-gray-200 flex gap-4">
               <button
-                onClick={() => setShowPreview(false)}
+                onClick={() => {
+                  setShowPreview(false);
+                  setError(null);
+                  setSuccess(false);
+                }}
                 className="flex-1 py-3 px-6 bg-gray-200 text-gray-800 font-semibold rounded-xl hover:bg-gray-300 transition-colors"
               >
                 Cancel
