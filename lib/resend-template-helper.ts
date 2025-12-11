@@ -225,6 +225,8 @@ export function generateSponsorshipProposalEmailHTML(data: {
     : '20–21 December 2025';
   const tournamentLocation = tournament?.location || 'Camping La Masia (Blanes, Costa Brava)';
 
+  // Brand taglines - will be translated via Google Translate API
+  // Keeping English as default, translation happens in email-translator
   const brandTaglines: Record<string, string> = {
     en: 'Breathe &amp; live padel',
     ru: 'Дыши и живи паделем',
@@ -318,99 +320,94 @@ export function generateSponsorshipProposalEmailHTML(data: {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const brandTagline = brandTaglines[locale] || brandTaglines.en;
 
-  // Format tournament dates based on locale
-  let formattedDates = tournamentDates;
-  if (locale === 'es' && tournament?.startDate && tournament?.endDate) {
-    formattedDates = `${new Date(tournament.startDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric' })}–${new Date(tournament.endDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}`;
-  }
-
-  // Форматируем текст письма
+  // Generate English template - will be translated via Google Translate API if needed
+  // Форматируем текст письма (на английском, будет переведено автоматически)
   const sponsorshipContent = `
     <div style="margin-bottom: 20px;">
       <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">${tournamentName}</h2>
       
-      <p class="lead" style="margin: 0 0 16px 0;">${t.greeting},</p>
+      <p class="lead" style="margin: 0 0 16px 0;">Hi${partnerName ? `, ${partnerName}` : ''},</p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        ${t.intro}
+        My name is Sergii, I'm the organizer of <strong>${tournamentName}</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.
       </p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        ${locale === 'es' ? t.dates.replace('${tournamentDates}', formattedDates) : t.dates}
+        On <strong>${tournamentDates}</strong> we are hosting a 2-day international padel tournament at <strong>${tournamentLocation}</strong>.
       </p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        ${t.event}
+        It's a Ukrainian–Spanish community event that brings together:
       </p>
       
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">${t.players}</li>
-        <li style="margin-bottom: 8px;">${t.families}</li>
-        <li style="margin-bottom: 8px;">${t.guests}</li>
+        <li style="margin-bottom: 8px;"><strong>50+ players</strong> (men, women, mixed &amp; kids categories)</li>
+        <li style="margin-bottom: 8px;"><strong>Families, tourists</strong> and local padel fans</li>
+        <li style="margin-bottom: 8px;"><strong>Guests from Spain, Ukraine</strong> and other European countries</li>
       </ul>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        ${t.invite}
+        We're currently opening partnership &amp; sponsorship slots and I'd like to invite${partnerCompany ? ` <strong>${partnerCompany}</strong>` : ' you'} to become one of the key partners of the event.
       </p>
     </div>
 
     <div style="margin: 24px 0; padding: 20px; background: #f0f9ff; border-left: 4px solid #0284c7; border-radius: 8px;">
-      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">${t.whyTitle}</h3>
+      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">Why it can be interesting for you</h3>
       
-      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">${t.audienceTitle}</h4>
+      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">Audience &amp; reach</h4>
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">${t.days}</li>
-        <li style="margin-bottom: 8px;">${t.activeAudience}</li>
-        <li style="margin-bottom: 8px;">${t.promotion}</li>
+        <li style="margin-bottom: 8px;"><strong>2 days</strong> of matches, activities and social program on-site</li>
+        <li style="margin-bottom: 8px;"><strong>Active audience:</strong> players 10–80 y.o., families with kids, sport-oriented tourists</li>
+        <li style="margin-bottom: 8px;"><strong>Promotion</strong> through PadelO₂ digital channels (website, social media, email), club channels of Padel La Masia and partners</li>
       </ul>
       
-      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">${t.visibilityTitle}</h4>
-      <p class="lead" style="margin: 0 0 12px 0;">${t.depending}</p>
+      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">Visibility for sponsors</h4>
+      <p class="lead" style="margin: 0 0 12px 0;">Depending on the package, sponsors can receive:</p>
       
-      <p class="lead" style="margin: 0 0 8px 0;">${t.logoPlacement}</p>
+      <p class="lead" style="margin: 0 0 8px 0;"><strong>Logo placement on:</strong></p>
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">${t.tshirts}</li>
-        <li style="margin-bottom: 8px;">${t.banners}</li>
-        <li style="margin-bottom: 8px;">${t.materials}</li>
-        <li style="margin-bottom: 8px;">${t.graphics}</li>
+        <li style="margin-bottom: 8px;">Official tournament T-shirts</li>
+        <li style="margin-bottom: 8px;">On-court banners / backdrops</li>
+        <li style="margin-bottom: 8px;">Printed materials (posters, roll-ups, schedules)</li>
+        <li style="margin-bottom: 8px;">Tournament graphics on social media &amp; website</li>
       </ul>
       
-      <p class="lead" style="margin: 0 0 8px 0;">${t.mentions}</p>
+      <p class="lead" style="margin: 0 0 8px 0;"><strong>Mentions in:</strong></p>
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">${t.socialMedia}</li>
-        <li style="margin-bottom: 8px;">${t.ceremonies}</li>
+        <li style="margin-bottom: 8px;">Social media posts and stories before, during and after the event</li>
+        <li style="margin-bottom: 8px;">Opening &amp; awards ceremonies</li>
       </ul>
       
-      <p class="lead" style="margin: 0 0 8px 0;">${t.optionTo}</p>
+      <p class="lead" style="margin: 0 0 8px 0;"><strong>Option to:</strong></p>
       <ul style="margin: 0 0 0 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">${t.promoStand}</li>
-        <li style="margin-bottom: 8px;">${t.welcomePack}</li>
-        <li style="margin-bottom: 8px;">${t.activities}</li>
+        <li style="margin-bottom: 8px;">Place a promo stand / tasting / product demo during the event</li>
+        <li style="margin-bottom: 8px;">Include gifts, vouchers or samples in the players' Welcome Pack</li>
+        <li style="margin-bottom: 8px;">Sponsor special activities: Varenyky Party, Lottery, Happy Hours, kids' zone etc.</li>
       </ul>
     </div>
 
     <div style="margin: 24px 0; padding: 20px; background: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 8px;">
-      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">${t.formatsTitle}</h3>
-      <p class="lead" style="margin: 0 0 12px 0;">${t.structure}</p>
+      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">Sponsorship formats (flexible)</h3>
+      <p class="lead" style="margin: 0 0 12px 0;">We usually structure partnerships as:</p>
       <ul style="margin: 0 0 12px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">${t.mainPartner}</li>
-        <li style="margin-bottom: 8px;">${t.officialSponsor}</li>
+        <li style="margin-bottom: 8px;"><strong>Main Partner / Title Partner €650</strong> – maximum visibility everywhere</li>
+        <li style="margin-bottom: 8px;"><strong>Official Sponsor €350</strong> – strong presence on-site and online</li>
       </ul>
       <p class="lead" style="margin: 0 0 0 0;">
-        ${t.flexible}
+        We're flexible and can adapt a package to match your marketing goals (local visibility, brand awareness, product trials, new clients, etc.).
       </p>
     </div>
 
     <div style="margin: 24px 0;">
       <p class="lead" style="margin: 0 0 32px 0; text-align: center;">
-        ${t.callToAction}
+        If this sounds interesting, please call me to discuss details.
       </p>
     </div>
 
     <!-- Contact Information -->
     <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(148, 163, 184, 0.2); text-align: center;">
       <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 15px; color: #1f2937; font-weight: 600;">
-        ${t.bestRegards}
+        Best regards,
       </p>
       <p class="muted" style="margin: 16px 0 8px 0; text-align: center; font-size: 14px; font-weight: 600; color: #0f172a;">
         ${contactName}
