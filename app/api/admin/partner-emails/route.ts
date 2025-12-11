@@ -107,20 +107,62 @@ export async function POST(request: NextRequest) {
       ? `Sponsorship Proposal – ${tournamentName}`
       : 'Email from PadelO₂';
 
+    // Determine from address
+    let fromAddress: string;
+    if (category === 'partners') {
+      fromAddress = 'Partner@padelO2.com';
+    } else {
+      fromAddress = 'noreply@padelO2.com';
+    }
+
+    console.log('[Email Send] Starting email send process:', {
+      recipientCount: recipientEmails.length,
+      recipients: recipientEmails,
+      subject,
+      from: fromAddress,
+      templateId,
+      hasCustomHtml: !!customHtml,
+    });
+
     // Send emails to all recipients
-    const results = await Promise.all(
-      recipientEmails.map((toEmail) =>
-        sendEmail({
-          to: toEmail,
-          subject,
-          html,
-          locale,
-          from: category === 'partners' ? 'Partner@padelO2.com' : 'noreply@padelO2.com',
-        })
-      )
+    const emailResults = await Promise.allSettled(
+      recipientEmails.map(async (toEmail) => {
+        try {
+          console.log(`[Email Send] Attempting to send to ${toEmail}`);
+          const result = await sendEmail({
+            to: toEmail,
+            subject,
+            html,
+            locale,
+            from: fromAddress,
+          });
+          console.log(`[Email Send] Result for ${toEmail}:`, result);
+          return { email: toEmail, success: result };
+        } catch (error: any) {
+          console.error(`[Email Send] Exception sending email to ${toEmail}:`, error);
+          return { email: toEmail, success: false, error: error.message || 'Unknown error' };
+        }
+      })
     );
 
-    const successCount = results.filter(r => r).length;
+    const results = emailResults.map(r => {
+      if (r.status === 'fulfilled') {
+        return r.value.success;
+      }
+      console.error('[Email Send] Promise rejected:', r.reason);
+      return false;
+    });
+    const successCount = results.filter(r => r === true).length;
+    
+    // Log detailed results
+    console.log(`[Email Send] Final results: ${successCount}/${recipientEmails.length} successful`);
+    emailResults.forEach((result, index) => {
+      if (result.status === 'fulfilled' && !result.value.success) {
+        console.error(`[Email Send] Failed for ${recipientEmails[index]}:`, result.value.error || 'Unknown error');
+      } else if (result.status === 'rejected') {
+        console.error(`[Email Send] Rejected for ${recipientEmails[index]}:`, result.reason);
+      }
+    });
     
     if (successCount === recipientEmails.length) {
       return NextResponse.json({ 
