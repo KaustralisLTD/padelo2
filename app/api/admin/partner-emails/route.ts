@@ -212,14 +212,30 @@ export async function POST(request: NextRequest) {
         warning: true,
       });
     } else {
+      // Return detailed error information
+      const errorDetails = emailResults
+        .map((result, index) => {
+          if (result.status === 'fulfilled' && !result.value.success) {
+            return `${recipientEmails[index]}: ${result.value.error || 'Unknown error'}`;
+          } else if (result.status === 'rejected') {
+            return `${recipientEmails[index]}: ${result.reason?.message || 'Promise rejected'}`;
+          }
+          return null;
+        })
+        .filter(Boolean);
+      
+      console.error('[Email Send] All emails failed:', errorDetails);
       return NextResponse.json({ 
-        error: 'Failed to send email to any recipients' 
+        error: 'Failed to send email to any recipients',
+        details: errorDetails.length > 0 ? errorDetails : ['No error details available'],
       }, { status: 500 });
     }
   } catch (error: any) {
-    console.error('Error sending email:', error);
+    console.error('[Email Send] Exception in POST handler:', error);
+    console.error('[Email Send] Error stack:', error.stack);
     return NextResponse.json({ 
-      error: error.message || 'Internal server error' 
+      error: error.message || 'Internal server error',
+      details: error.stack ? error.stack.split('\n').slice(0, 5) : [],
     }, { status: 500 });
   }
 }
