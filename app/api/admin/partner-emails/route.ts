@@ -135,41 +135,42 @@ export async function POST(request: NextRequest) {
               tournament: tournamentData,
             });
           } else {
-          // Use the template generator for other templates
-          // For Clients templates, we need user data
-          let templateData: any = {
-            locale: locale || 'en',
-            tournament: tournamentData,
-          };
-          
-          // Add user-specific data if available
-          if (userIds && userIds.length > 0) {
-            // For bulk sending, we'll generate template per user
-            // But for now, use generic data
-            templateData.firstName = partnerName || '';
-            templateData.lastName = '';
-          } else if (email) {
-            templateData.firstName = partnerName || '';
-            templateData.lastName = '';
+            // Use the template generator for other templates
+            // For Clients templates, we need user data
+            let templateData: any = {
+              locale: locale || 'en',
+              tournament: tournamentData,
+            };
+            
+            // Add user-specific data if available
+            if (userIds && userIds.length > 0) {
+              // For bulk sending, we'll generate template per user
+              // But for now, use generic data
+              templateData.firstName = partnerName || '';
+              templateData.lastName = '';
+            } else if (email) {
+              templateData.firstName = partnerName || '';
+              templateData.lastName = '';
+            }
+            
+            // Add template-specific data
+            if (templateId.includes('tournament')) {
+              templateData.categories = [];
+              templateData.tournament = tournamentData;
+            }
+            
+            html = await generateEmailTemplateHTML({
+              templateId,
+              data: templateData,
+              locale: locale || 'en',
+            });
           }
-          
-          // Add template-specific data
-          if (templateId.includes('tournament')) {
-            templateData.categories = [];
-            templateData.tournament = tournamentData;
-          }
-          
-          html = await generateEmailTemplateHTML({
-            templateId,
-            data: templateData,
-            locale: locale || 'en',
-          });
+        } catch (error: any) {
+          console.error(`[Email Send] Error generating template ${templateId}:`, error);
+          return NextResponse.json({ 
+            error: `Failed to generate template: ${error.message}` 
+          }, { status: 500 });
         }
-      } catch (error: any) {
-        console.error(`[Email Send] Error generating template ${templateId}:`, error);
-        return NextResponse.json({ 
-          error: `Failed to generate template: ${error.message}` 
-        }, { status: 500 });
       }
     }
 
