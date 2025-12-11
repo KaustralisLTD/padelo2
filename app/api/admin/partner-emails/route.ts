@@ -188,6 +188,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Translate HTML to target locale if not English
+    if (locale && locale !== 'en' && html) {
+      try {
+        html = await translateEmailHTML(html, locale, 'en');
+        console.log(`[Email Send] Translated email HTML to ${locale}`);
+      } catch (translateError) {
+        console.warn(`[Email Send] Failed to translate email HTML, using original:`, translateError);
+      }
+    }
+
+    // Generate subject
     const tournamentName = tournamentData?.name || 'UA PADEL OPEN 2025';
     const subject = templateId === 'sponsorship-proposal' 
       ? `Sponsorship Proposal – ${tournamentName}`
