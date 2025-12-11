@@ -404,7 +404,7 @@ export async function generateEmailTemplateHTML(options: TemplateGeneratorOption
     followJourney: 'Follow us:',
     receivingEmail: 'You received this email from',
     siteUrl,
-    unsubscribeUrl: `${siteUrl}/unsubscribe`,
+    unsubscribeUrl: `${siteUrl}/${locale}/unsubscribe`,
     unsubscribeText: 'Unsubscribe',
     team: '',
     contactPhone: '',
