@@ -184,6 +184,23 @@ export default function AdminDashboardContent() {
           </Link>
 
           <Link
+            href={`/${locale}/admin/partner-emails`}
+            className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
+          >
+            <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+              <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
+              Emails
+            </h3>
+            <p className="text-text-secondary font-poppins text-sm">
+              Send emails to partners, clients, coaches, and staff
+            </p>
+          </Link>
+
+          <Link
             href={`/${locale}/admin/settings`}
             className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
           >

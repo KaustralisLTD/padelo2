@@ -58,6 +58,9 @@ export default function EmailTemplatesContent() {
   const [selectedCategory, setSelectedCategory] = useState<EmailCategory>('partners');
   const [selectedTemplate, setSelectedTemplate] = useState<string>('sponsorship-proposal');
   const [translating, setTranslating] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewHtml, setPreviewHtml] = useState<string>('');
+  const [editableHtml, setEditableHtml] = useState<string>('');
   
   const [formData, setFormData] = useState({
     email: '',
@@ -132,7 +135,36 @@ export default function EmailTemplatesContent() {
     return text;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const generatePreviewHtml = async () => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
+    try {
+      const response = await fetch('/api/admin/partner-emails/preview', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...formData,
+          partnerName: formData.recipientName,
+          partnerCompany: formData.company,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPreviewHtml(data.html || '');
+        setEditableHtml(data.html || '');
+        setShowPreview(true);
+      }
+    } catch (error) {
+      console.error('Error generating preview:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent, useCustomHtml?: boolean) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -156,6 +188,7 @@ export default function EmailTemplatesContent() {
           ...formData,
           partnerName: formData.recipientName,
           partnerCompany: formData.company,
+          customHtml: useCustomHtml ? editableHtml : undefined,
         }),
       });
 
@@ -166,6 +199,7 @@ export default function EmailTemplatesContent() {
       }
 
       setSuccess(true);
+      setShowPreview(false);
       setTimeout(() => setSuccess(false), 5000);
       // Reset form
       setFormData({
@@ -392,24 +426,34 @@ export default function EmailTemplatesContent() {
                   </div>
                 )}
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={loading || translating}
-                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                >
-                  {loading ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </span>
-                  ) : (
-                    '🚀 Send Email'
-                  )}
-                </button>
+                {/* Action Buttons */}
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    onClick={generatePreviewHtml}
+                    disabled={loading || !formData.email}
+                    className="flex-1 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  >
+                    👁️ Preview
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading || translating}
+                    className="flex-1 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  >
+                    {loading ? (
+                      <span className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </span>
+                    ) : (
+                      '🚀 Send Email'
+                    )}
+                  </button>
+                </div>
               </form>
             </div>
 
@@ -428,6 +472,76 @@ export default function EmailTemplatesContent() {
           </div>
         </div>
       </div>
+
+      {/* Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">📧 Email Preview</h2>
+              <button
+                onClick={() => setShowPreview(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-hidden flex">
+              {/* HTML Editor */}
+              <div className="w-1/2 border-r border-gray-200 flex flex-col">
+                <div className="p-4 bg-gray-50 border-b border-gray-200">
+                  <h3 className="font-semibold text-gray-900">HTML Editor</h3>
+                  <p className="text-xs text-gray-600">Edit the email HTML directly</p>
+                </div>
+                <textarea
+                  value={editableHtml}
+                  onChange={(e) => setEditableHtml(e.target.value)}
+                  className="flex-1 p-4 font-mono text-sm border-0 resize-none focus:outline-none"
+                  spellCheck={false}
+                />
+              </div>
+
+              {/* Preview */}
+              <div className="w-1/2 flex flex-col overflow-hidden">
+                <div className="p-4 bg-gray-50 border-b border-gray-200">
+                  <h3 className="font-semibold text-gray-900">Preview</h3>
+                  <p className="text-xs text-gray-600">How the email will look</p>
+                </div>
+                <div className="flex-1 overflow-auto p-4 bg-gray-100">
+                  <div 
+                    className="bg-white rounded-lg shadow-lg p-4 mx-auto max-w-2xl"
+                    dangerouslySetInnerHTML={{ __html: editableHtml }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-6 border-t border-gray-200 flex gap-4">
+              <button
+                onClick={() => setShowPreview(false)}
+                className="flex-1 py-3 px-6 bg-gray-200 text-gray-800 font-semibold rounded-xl hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={(e) => {
+                  handleSubmit(e, true);
+                }}
+                disabled={loading}
+                className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {loading ? 'Sending...' : '✅ Send with Custom HTML'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendEmail } from '@/lib/email';
 import { generateSponsorshipProposalEmailHTML } from '@/lib/resend-template-helper';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
@@ -17,7 +16,6 @@ async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boo
     return { authorized: false };
   }
 
-  // Only superadmin can send partner emails
   if (session.role !== 'superadmin') {
     return { authorized: false };
   }
@@ -42,12 +40,7 @@ export async function POST(request: NextRequest) {
       contactEmail = 'partner@padelO2.com',
     } = body;
 
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-    }
-
-    // Use custom HTML if provided, otherwise generate from template
-    const html = body.customHtml || generateSponsorshipProposalEmailHTML({
+    const html = generateSponsorshipProposalEmailHTML({
       partnerName: partnerName || '',
       partnerCompany: partnerCompany || '',
       locale: locale || 'en',
@@ -57,26 +50,9 @@ export async function POST(request: NextRequest) {
       contactTitle: 'Organizer, UA PADEL OPEN',
     });
 
-    const result = await sendEmail({
-      to: email,
-      subject: 'Sponsorship Proposal – UA PADEL OPEN 2025 (Costa Brava)',
-      html,
-      locale,
-      from: 'Partner@padelO2.com',
-    });
-
-    if (result) {
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Email sent successfully' 
-      });
-    } else {
-      return NextResponse.json({ 
-        error: 'Failed to send email' 
-      }, { status: 500 });
-    }
+    return NextResponse.json({ html });
   } catch (error: any) {
-    console.error('Error sending partner email:', error);
+    console.error('Error generating preview:', error);
     return NextResponse.json({ 
       error: error.message || 'Internal server error' 
     }, { status: 500 });
