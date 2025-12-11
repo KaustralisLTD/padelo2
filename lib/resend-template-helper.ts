@@ -316,28 +316,6 @@ export function generateSponsorshipProposalEmailHTML(data: {
         If this sounds interesting, please call me to discuss details.
       </p>
     </div>
-
-    <!-- FOOTER -->
-    <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(148, 163, 184, 0.2); text-align: center;">
-      <p class="lead" style="margin: 0 0 20px 0; text-align: center; font-size: 15px; color: #1f2937;">
-        Best regards,
-      </p>
-      
-      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(148, 163, 184, 0.2);">
-        <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 14px; font-weight: 600; color: #0f172a;">
-          ${data.contactName || 'Sergii Shchurenko'}
-        </p>
-        <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 12px; color: #6b7280;">
-          ${data.contactTitle || 'Organizer, UA PADEL OPEN'}
-        </p>
-        <p class="muted" style="margin: 0 0 4px 0; text-align: center; font-size: 12px; color: #6b7280;">
-          PadelO<span style="font-size:1.3em; vertical-align:-1px;">₂</span>.com
-        </p>
-        <p class="muted" style="margin: 0; text-align: center; font-size: 12px; color: #0284c7;">
-          ${phone} · <a href="mailto:${email}" style="color: #0284c7; text-decoration: underline;">${email}</a>
-        </p>
-      </div>
-    </div>
   `;
 
   // Используем базовый шаблон из resend-template.html
