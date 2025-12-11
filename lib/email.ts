@@ -118,6 +118,17 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       
       if (result.error) {
         console.error('❌ Resend API error:', result.error);
+        
+        // Если ошибка связана с неверифицированным доменом и мы еще не использовали тестовый домен
+        if (result.error.message?.includes('not verified') && !useTestDomain && isUnverifiedDomain) {
+          console.warn('⚠️  [Email] Domain not verified, retrying with test domain...');
+          // Рекурсивно вызываем с тестовым доменом
+          return sendEmail({
+            ...options,
+            from: 'onboarding@resend.dev',
+          });
+        }
+        
         return false;
       }
       
