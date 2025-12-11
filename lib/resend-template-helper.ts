@@ -33,8 +33,16 @@ export function renderTemplate(html: string, variables: TemplateVariables): stri
     result = result.replace(ifRegex, (match, varName, content) => {
       const value = variables[varName];
       // Проверяем, что значение существует и не является false/пустой строкой
-      if (value && value !== 'false' && value !== false && String(value).trim() !== '') {
-        return content;
+      if (value !== undefined && value !== null) {
+        // Если это boolean false, пропускаем
+        if (typeof value === 'boolean' && value === false) {
+          return '';
+        }
+        const stringValue = String(value);
+        // Если это строка 'false' или пустая строка, пропускаем
+        if (stringValue !== 'false' && stringValue.trim() !== '') {
+          return content;
+        }
       }
       return '';
     });
