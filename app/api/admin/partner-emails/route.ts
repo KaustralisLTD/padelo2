@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
           console.log(`[Email Send] Found saved template for ${templateId}`);
           
           // Replace dynamic data (partnerName, partnerCompany) with form values
-          if (partnerName || partnerCompany) {
+          if (savedHtml && (partnerName || partnerCompany)) {
             savedHtml = replaceTemplateDataAggressive(
               savedHtml,
               partnerName || '',
@@ -128,7 +128,9 @@ export async function POST(request: NextRequest) {
             console.log(`[Email Send] Replaced dynamic data in saved template`);
           }
           
-          html = savedHtml;
+          if (savedHtml) {
+            html = savedHtml;
+          }
         }
       } catch (loadError) {
         console.log(`[Email Send] No saved template found for ${templateId}, generating new one`);
