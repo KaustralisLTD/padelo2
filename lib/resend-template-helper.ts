@@ -323,47 +323,6 @@ export function generateSponsorshipProposalEmailHTML(data: {
         Best regards,
       </p>
       
-      <p class="muted" style="margin: 0 0 16px 0; text-align: center; font-size: 12px; color: #6b7280;">
-        Follow us:
-      </p>
-      
-      <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto 24px auto;">
-        <tr>
-          <td align="center" style="padding: 0 4px;">
-            <a href="https://www.instagram.com/padelo2com/" style="border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.55); padding: 5px 10px 5px 7px; font-size: 11px; color: #111827; background-color: #ffffff; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-              <span style="width: 18px; height: 18px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #ffffff; background-color: #e1306c;">IG</span>
-              <span>Instagram</span>
-            </a>
-          </td>
-          <td align="center" style="padding: 0 4px;">
-            <a href="https://www.youtube.com/@PadelO2" style="border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.55); padding: 5px 10px 5px 7px; font-size: 11px; color: #111827; background-color: #ffffff; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-              <span style="width: 18px; height: 18px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #ffffff; background-color: #ff0000;">YT</span>
-              <span>YouTube</span>
-            </a>
-          </td>
-          <td align="center" style="padding: 0 4px;">
-            <a href="https://www.tiktok.com/@padelo2com" style="border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.55); padding: 5px 10px 5px 7px; font-size: 11px; color: #111827; background-color: #ffffff; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-              <span style="width: 18px; height: 18px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #ffffff; background-color: #000000;">TT</span>
-              <span>TikTok</span>
-            </a>
-          </td>
-          <td align="center" style="padding: 0 4px;">
-            <a href="https://www.facebook.com/profile.php?id=61583860325680" style="border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.55); padding: 5px 10px 5px 7px; font-size: 11px; color: #111827; background-color: #ffffff; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
-              <span style="width: 18px; height: 18px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #ffffff; background-color: #1877f2;">FB</span>
-              <span>Facebook</span>
-            </a>
-          </td>
-        </tr>
-      </table>
-      
-      <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 11px; color: #6b7280;">
-        You received this email from <a href="${siteUrl}" style="color: #0284c7; text-decoration: underline;">${siteUrl}</a>
-      </p>
-      
-      <p class="muted" style="margin: 0 0 24px 0; text-align: center; font-size: 11px; color: #6b7280;">
-        <a href="${siteUrl}/unsubscribe" style="color: #6b7280; text-decoration: underline;">Unsubscribe</a>
-      </p>
-      
       <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(148, 163, 184, 0.2);">
         <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 14px; font-weight: 600; color: #0f172a;">
           ${data.contactName || 'Sergii Shchurenko'}
@@ -402,11 +361,11 @@ export function generateSponsorshipProposalEmailHTML(data: {
       linkNote: '',
       showFeatures: false,
       footerText: '',
-      followJourney: '',
-      receivingEmail: '',
+      followJourney: 'Follow us:',
+      receivingEmail: 'You received this email from',
       siteUrl,
       unsubscribeUrl: `${siteUrl}/unsubscribe`,
-      unsubscribeText: '',
+      unsubscribeText: 'Unsubscribe',
       team: '',
       contactPhone: phone,
       contactEmail: email,

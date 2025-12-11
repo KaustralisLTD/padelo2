@@ -48,9 +48,13 @@ export async function POST(request: NextRequest) {
     // Get tournament data if needed
     let tournamentData = null;
     if (tournamentId) {
-      const { getAllTournaments } = require('@/lib/tournaments');
-      const tournaments = await getAllTournaments();
-      tournamentData = tournaments.find((t: any) => t.id === parseInt(tournamentId));
+      try {
+        const { getAllTournaments } = await import('@/lib/tournaments');
+        const tournaments = await getAllTournaments();
+        tournamentData = tournaments.find((t: any) => t.id === parseInt(tournamentId));
+      } catch (error) {
+        console.error('Error fetching tournament:', error);
+      }
     }
 
     // Generate HTML based on template

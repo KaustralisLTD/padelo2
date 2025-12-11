@@ -51,20 +51,29 @@ export async function POST(request: NextRequest) {
     // Get tournament data if needed
     let tournamentData = null;
     if (tournamentId) {
-      const { getAllTournaments } = require('@/lib/tournaments');
-      const tournaments = await getAllTournaments();
-      tournamentData = tournaments.find((t: any) => t.id === parseInt(tournamentId));
+      try {
+        const { getAllTournaments } = await import('@/lib/tournaments');
+        const tournaments = await getAllTournaments();
+        tournamentData = tournaments.find((t: any) => t.id === parseInt(tournamentId));
+      } catch (error) {
+        console.error('Error fetching tournament:', error);
+      }
     }
 
     // Get user emails if userIds provided
     let recipientEmails: string[] = [];
     if (userIds && Array.isArray(userIds) && userIds.length > 0) {
-      const { getAllUsers } = require('@/lib/users');
-      const allUsers = await getAllUsers();
-      recipientEmails = allUsers
-        .filter((u: any) => userIds.includes(u.id))
-        .map((u: any) => u.email)
-        .filter((e: string) => e);
+      try {
+        const { getAllUsers } = await import('@/lib/users');
+        const allUsers = await getAllUsers();
+        recipientEmails = allUsers
+          .filter((u: any) => userIds.includes(u.id))
+          .map((u: any) => u.email)
+          .filter((e: string) => e);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
+      }
     } else if (email) {
       recipientEmails = [email];
     }
