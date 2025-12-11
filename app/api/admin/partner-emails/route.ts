@@ -152,9 +152,8 @@ export async function POST(request: NextRequest) {
         }, { status: 500 });
       }
     }
-  }
 
-    // Generate subject
+    // Translate HTML to target locale if not English
     const tournamentName = tournamentData?.name || 'UA PADEL OPEN 2025';
     const subject = templateId === 'sponsorship-proposal' 
       ? `Sponsorship Proposal – ${tournamentName}`
