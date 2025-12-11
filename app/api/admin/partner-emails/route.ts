@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email';
 import { generateSponsorshipProposalEmailHTML } from '@/lib/resend-template-helper';
+import { generateEmailTemplateHTML } from '@/lib/email-template-generator';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
 
@@ -85,19 +86,54 @@ export async function POST(request: NextRequest) {
     // Generate HTML based on template
     let html = customHtml;
     if (!html) {
-      if (templateId === 'sponsorship-proposal') {
-        html = generateSponsorshipProposalEmailHTML({
-          partnerName: partnerName || '',
-          partnerCompany: partnerCompany || '',
-          locale: locale || 'en',
-          phone: phone || '+34 662 423 738',
-          email: contactEmail || 'partner@padelO2.com',
-          contactName: 'Sergii Shchurenko',
-          contactTitle: 'Organizer, UA PADEL OPEN',
-          tournament: tournamentData,
-        });
-      } else {
-        return NextResponse.json({ error: 'Template not implemented yet' }, { status: 400 });
+      try {
+        if (templateId === 'sponsorship-proposal') {
+          html = generateSponsorshipProposalEmailHTML({
+            partnerName: partnerName || '',
+            partnerCompany: partnerCompany || '',
+            locale: locale || 'en',
+            phone: phone || '+34 662 423 738',
+            email: contactEmail || 'partner@padelO2.com',
+            contactName: 'Sergii Shchurenko',
+            contactTitle: 'Organizer, UA PADEL OPEN',
+            tournament: tournamentData,
+          });
+        } else {
+          // Use the template generator for other templates
+          // For Clients templates, we need user data
+          let templateData: any = {
+            locale: locale || 'en',
+            tournament: tournamentData,
+          };
+          
+          // Add user-specific data if available
+          if (userIds && userIds.length > 0) {
+            // For bulk sending, we'll generate template per user
+            // But for now, use generic data
+            templateData.firstName = recipientName || '';
+            templateData.lastName = '';
+          } else if (email) {
+            templateData.firstName = recipientName || '';
+            templateData.lastName = '';
+          }
+          
+          // Add template-specific data
+          if (templateId.includes('tournament')) {
+            templateData.categories = [];
+            templateData.tournament = tournamentData;
+          }
+          
+          html = await generateEmailTemplateHTML({
+            templateId,
+            data: templateData,
+            locale: locale || 'en',
+          });
+        }
+      } catch (error: any) {
+        console.error(`[Email Send] Error generating template ${templateId}:`, error);
+        return NextResponse.json({ 
+          error: `Failed to generate template: ${error.message}` 
+        }, { status: 500 });
       }
     }
 
