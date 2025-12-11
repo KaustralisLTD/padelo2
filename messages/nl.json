@@ -1848,5 +1848,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Uitschrijven van e-mails",
+    "description": "Het spijt ons dat je weggaat. Je kunt je op elk moment uitschrijven van onze e-maillijst.",
+    "emailLabel": "E-mailadres",
+    "emailPlaceholder": "jouw@email.com",
+    "emailRequired": "Voer een e-mailadres in",
+    "unsubscribeButton": "Uitschrijven",
+    "processing": "Verwerken...",
+    "successTitle": "Succesvol uitgeschreven",
+    "successMessage": "Je bent succesvol uitgeschreven van onze e-maillijst.",
+    "errorMessage": "Er is een fout opgetreden. Probeer het opnieuw.",
+    "backToHome": "Terug naar home",
+    "note": "Als je van gedachten verandert, kun je je altijd weer inschrijven door contact met ons op te nemen of je voorkeuren bij te werken in je accountinstellingen."
   }
 }

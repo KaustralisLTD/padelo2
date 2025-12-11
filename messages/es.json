@@ -1849,5 +1849,19 @@
       "winRate": "Tasa de Victoria",
       "games": "Juegos"
     }
+  },
+  "Unsubscribe": {
+    "title": "Cancelar suscripción de correos",
+    "description": "Lamentamos verte ir. Puedes cancelar tu suscripción a nuestra lista de correo en cualquier momento.",
+    "emailLabel": "Dirección de correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "emailRequired": "Por favor, introduce una dirección de correo electrónico",
+    "unsubscribeButton": "Cancelar suscripción",
+    "processing": "Procesando...",
+    "successTitle": "Suscripción cancelada exitosamente",
+    "successMessage": "Has cancelado tu suscripción a nuestra lista de correo exitosamente.",
+    "errorMessage": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+    "backToHome": "Volver al inicio",
+    "note": "Si cambias de opinión, siempre puedes volver a suscribirte contactándonos o actualizando tus preferencias en la configuración de tu cuenta."
   }
 }

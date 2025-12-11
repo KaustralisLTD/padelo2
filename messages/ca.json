@@ -2121,5 +2121,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Cancel·lar subscripció de correus",
+    "description": "Ens sap greu veure't marxar. Pots cancel·lar la subscripció a la nostra llista de correu en qualsevol moment.",
+    "emailLabel": "Adreça de correu electrònic",
+    "emailPlaceholder": "el@email.com",
+    "emailRequired": "Si us plau, introdueix una adreça de correu electrònic",
+    "unsubscribeButton": "Cancel·lar subscripció",
+    "processing": "Processant...",
+    "successTitle": "Subscripció cancel·lada amb èxit",
+    "successMessage": "Has cancel·lat la subscripció a la nostra llista de correu amb èxit.",
+    "errorMessage": "S'ha produït un error. Si us plau, torna-ho a provar.",
+    "backToHome": "Tornar a l'inici",
+    "note": "Si canvies d'opinió, sempre pots tornar-te a subscriure contactant-nos o actualitzant les teves preferències a la configuració del compte."
   }
 }

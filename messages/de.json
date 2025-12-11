@@ -1836,5 +1836,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "E-Mails abbestellen",
+    "description": "Es tut uns leid, dass Sie gehen. Sie können sich jederzeit von unserer E-Mail-Liste abmelden.",
+    "emailLabel": "E-Mail-Adresse",
+    "emailPlaceholder": "ihre@email.com",
+    "emailRequired": "Bitte geben Sie eine E-Mail-Adresse ein",
+    "unsubscribeButton": "Abbestellen",
+    "processing": "Wird verarbeitet...",
+    "successTitle": "Erfolgreich abgemeldet",
+    "successMessage": "Sie haben sich erfolgreich von unserer E-Mail-Liste abgemeldet.",
+    "errorMessage": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "backToHome": "Zurück zur Startseite",
+    "note": "Wenn Sie es sich anders überlegen, können Sie sich jederzeit wieder anmelden, indem Sie uns kontaktieren oder Ihre Einstellungen in den Kontoeinstellungen aktualisieren."
   }
 }

@@ -1857,5 +1857,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Avslutt e-postabonnement",
+    "description": "Vi er lei for å se deg gå. Du kan når som helst avslutte abonnementet på e-postlisten vår.",
+    "emailLabel": "E-postadresse",
+    "emailPlaceholder": "din@email.com",
+    "emailRequired": "Vennligst oppgi en e-postadresse",
+    "unsubscribeButton": "Avslutt abonnement",
+    "processing": "Behandler...",
+    "successTitle": "Vellykket avsluttet abonnement",
+    "successMessage": "Du har vellykket avsluttet abonnementet på e-postlisten vår.",
+    "errorMessage": "En feil oppstod. Vennligst prøv igjen.",
+    "backToHome": "Tilbake til hjem",
+    "note": "Hvis du angrer, kan du alltid abonnere igjen ved å kontakte oss eller oppdatere preferansene dine i kontoinnstillingene."
   }
 }

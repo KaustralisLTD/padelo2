@@ -1857,5 +1857,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Avsluta e-postprenumeration",
+    "description": "Vi är ledsna att se dig gå. Du kan när som helst avsluta din prenumeration på vår e-postlista.",
+    "emailLabel": "E-postadress",
+    "emailPlaceholder": "din@email.com",
+    "emailRequired": "Vänligen ange en e-postadress",
+    "unsubscribeButton": "Avsluta prenumeration",
+    "processing": "Bearbetar...",
+    "successTitle": "Framgångsrikt avslutad prenumeration",
+    "successMessage": "Du har framgångsrikt avslutat din prenumeration på vår e-postlista.",
+    "errorMessage": "Ett fel uppstod. Vänligen försök igen.",
+    "backToHome": "Tillbaka till startsidan",
+    "note": "Om du ångrar dig kan du alltid återprenumerera genom att kontakta oss eller uppdatera dina inställningar i dina kontoinställningar."
   }
 }

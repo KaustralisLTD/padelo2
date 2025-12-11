@@ -1875,5 +1875,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "取消订阅邮件",
+    "description": "很遗憾看到您离开。您可以随时取消订阅我们的邮件列表。",
+    "emailLabel": "电子邮件地址",
+    "emailPlaceholder": "您的@email.com",
+    "emailRequired": "请输入电子邮件地址",
+    "unsubscribeButton": "取消订阅",
+    "processing": "处理中...",
+    "successTitle": "成功取消订阅",
+    "successMessage": "您已成功取消订阅我们的邮件列表。",
+    "errorMessage": "发生错误。请重试。",
+    "backToHome": "返回首页",
+    "note": "如果您改变主意，可以随时通过联系我们或更新您账户设置中的偏好来重新订阅。"
   }
 }

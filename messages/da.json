@@ -1857,5 +1857,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Afmeld fra e-mails",
+    "description": "Vi er kede af at se dig gå. Du kan til enhver tid afmelde dig fra vores e-mailliste.",
+    "emailLabel": "E-mailadresse",
+    "emailPlaceholder": "din@email.com",
+    "emailRequired": "Indtast venligst en e-mailadresse",
+    "unsubscribeButton": "Afmeld",
+    "processing": "Behandler...",
+    "successTitle": "Succesfuldt afmeldt",
+    "successMessage": "Du er blevet succesfuldt afmeldt fra vores e-mailliste.",
+    "errorMessage": "Der opstod en fejl. Prøv venligst igen.",
+    "backToHome": "Tilbage til hjem",
+    "note": "Hvis du ændrer mening, kan du altid tilmelde dig igen ved at kontakte os eller opdatere dine præferencer i dine kontoindstillinger."
   }
 }

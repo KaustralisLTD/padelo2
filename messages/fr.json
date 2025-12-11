@@ -1874,5 +1874,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Se désabonner des e-mails",
+    "description": "Nous sommes désolés de vous voir partir. Vous pouvez vous désabonner de notre liste de diffusion à tout moment.",
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "votre@email.com",
+    "emailRequired": "Veuillez entrer une adresse e-mail",
+    "unsubscribeButton": "Se désabonner",
+    "processing": "Traitement en cours...",
+    "successTitle": "Désabonnement réussi",
+    "successMessage": "Vous avez été désabonné avec succès de notre liste de diffusion.",
+    "errorMessage": "Une erreur s'est produite. Veuillez réessayer.",
+    "backToHome": "Retour à l'accueil",
+    "note": "Si vous changez d'avis, vous pouvez toujours vous réabonner en nous contactant ou en mettant à jour vos préférences dans les paramètres de votre compte."
   }
 }

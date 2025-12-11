@@ -1857,5 +1857,19 @@
       "winRate": "Win Rate",
       "games": "Games"
     }
+  },
+  "Unsubscribe": {
+    "title": "Annulla iscrizione e-mail",
+    "description": "Ci dispiace vederti andare. Puoi annullare l'iscrizione alla nostra mailing list in qualsiasi momento.",
+    "emailLabel": "Indirizzo e-mail",
+    "emailPlaceholder": "tua@email.com",
+    "emailRequired": "Inserisci un indirizzo e-mail",
+    "unsubscribeButton": "Annulla iscrizione",
+    "processing": "Elaborazione...",
+    "successTitle": "Iscrizione annullata con successo",
+    "successMessage": "Hai annullato con successo l'iscrizione alla nostra mailing list.",
+    "errorMessage": "Si è verificato un errore. Riprova.",
+    "backToHome": "Torna alla home",
+    "note": "Se cambi idea, puoi sempre ri-iscriverti contattandoci o aggiornando le tue preferenze nelle impostazioni dell'account."
   }
 }
