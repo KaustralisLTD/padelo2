@@ -361,7 +361,7 @@ export function generateSponsorshipProposalEmailHTML(data: {
       followJourney: 'Follow us:',
       receivingEmail: 'You received this email from',
       siteUrl,
-      unsubscribeUrl: `${siteUrl}/unsubscribe`,
+      unsubscribeUrl: `${siteUrl}/${locale}/unsubscribe`,
       unsubscribeText: 'Unsubscribe',
       team: '',
       contactPhone: phone,
