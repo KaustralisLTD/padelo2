@@ -5,6 +5,7 @@ import { generateEmailTemplateHTML } from '@/lib/email-template-generator';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
 import { getDbPool } from '@/lib/db';
+import { translateEmailHTML } from '@/lib/email-translator';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -111,10 +112,19 @@ export async function POST(request: NextRequest) {
         ) as any[];
         
         if (savedTemplates.length > 0) {
-          // Use saved template, but we need to replace variables if needed
-          // For now, use it as-is since it's already rendered HTML
+          // Use saved template and translate it if needed
           html = savedTemplates[0].html_content;
           console.log(`[Email Send] Using saved template for ${templateId}`);
+          
+          // Translate saved template to target locale if not English
+          if (locale && locale !== 'en') {
+            try {
+              html = await translateEmailHTML(html, locale, 'en');
+              console.log(`[Email Send] Translated saved template to ${locale}`);
+            } catch (translateError) {
+              console.warn(`[Email Send] Failed to translate saved template, using original:`, translateError);
+            }
+          }
         }
       } catch (loadError) {
         console.log(`[Email Send] No saved template found for ${templateId}, generating new one`);
