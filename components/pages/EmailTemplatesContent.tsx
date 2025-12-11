@@ -757,7 +757,7 @@ export default function EmailTemplatesContent() {
                   >
                     {selectedCategory === 'clients' && selectedUserIds.length > 0 && (
                       <option value="user">
-                        🌐 User's language ({selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'})
+                        🌐 User&apos;s language ({selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'})
                       </option>
                     )}
                     {LANGUAGES.map((lang) => (
