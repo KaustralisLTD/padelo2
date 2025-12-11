@@ -54,10 +54,25 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const { to, subject, html, text, from, replyTo, locale = 'en' } = options;
   // Используем верифицированный домен из переменной окружения или padelo2.com по умолчанию
   const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'padelo2.com';
-  const fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
+  let fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
+  
+  // Проверяем, используется ли неверифицированный домен
+  // Если домен содержит padelO2.com или padelo2.com и не верифицирован, используем тестовый домен Resend
+  const isUnverifiedDomain = fromEmail.includes('padelO2.com') || fromEmail.includes('padelo2.com');
+  let useTestDomain = false;
+  
+  if (isUnverifiedDomain) {
+    // Используем тестовый домен Resend для неверифицированных доменов
+    useTestDomain = true;
+    fromEmail = 'onboarding@resend.dev';
+    console.warn(`⚠️  [Email] Domain ${verifiedDomain} is not verified in Resend.`);
+    console.warn(`⚠️  [Email] Using test domain: ${fromEmail}`);
+    console.warn(`⚠️  [Email] To send to arbitrary emails, verify your domain at https://resend.com/domains`);
+  }
+  
   // Правильный формат для Resend: "Display Name <email@domain.com>" или просто "email@domain.com"
   // Используем простой формат без специальных символов для максимальной совместимости
-  const fromName = `PadelO2 <${fromEmail}>`;
+  const fromName = useTestDomain ? `PadelO2 <${fromEmail}>` : `PadelO2 <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
   
   // Generate plain text version if not provided
@@ -72,7 +87,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       console.log(`[Email] Attempting to send via Resend to ${recipients.join(', ')}`);
       console.log(`[Email] From: ${fromName}`);
       console.log(`[Email] Subject: ${subject}`);
-      console.log(`[Email] Using domain: ${verifiedDomain}`);
+      console.log(`[Email] Using domain: ${useTestDomain ? 'resend.dev (test)' : verifiedDomain}`);
       
       const result = await resend.emails.send({
         from: fromName,
