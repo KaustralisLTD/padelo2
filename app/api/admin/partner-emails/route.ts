@@ -97,54 +97,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate HTML based on template
+    // Always use form data (partnerName, partnerCompany) to ensure dynamic values are used
     let html = customHtml;
     if (!html) {
-      // Try to load saved template from database first
+      // Always generate new template with current form data
+      // This ensures partnerName and partnerCompany from form are used, not old saved values
       try {
-        const pool = getDbPool();
-        const [savedTemplates] = await pool.execute(
-          `SELECT html_content 
-           FROM email_templates 
-           WHERE template_id = ? AND version = 0 
-           ORDER BY created_at DESC 
-           LIMIT 1`,
-          [templateId]
-        ) as any[];
-        
-        if (savedTemplates.length > 0) {
-          // Use saved template and translate it if needed
-          html = savedTemplates[0].html_content;
-          console.log(`[Email Send] Using saved template for ${templateId}`);
-          
-          // Translate saved template to target locale if not English
-          if (locale && locale !== 'en') {
-            try {
-              html = await translateEmailHTML(html, locale, 'en');
-              console.log(`[Email Send] Translated saved template to ${locale}`);
-            } catch (translateError) {
-              console.warn(`[Email Send] Failed to translate saved template, using original:`, translateError);
-            }
-          }
-        }
-      } catch (loadError) {
-        console.log(`[Email Send] No saved template found for ${templateId}, generating new one`);
-      }
-      
-      // If no saved template, generate new one
-      if (!html) {
-        try {
-          if (templateId === 'sponsorship-proposal') {
-            html = generateSponsorshipProposalEmailHTML({
-              partnerName: partnerName || '',
-              partnerCompany: partnerCompany || '',
-              locale: locale || 'en',
-              phone: phone || '+34 662 423 738',
-              email: contactEmail || 'partner@padelO2.com',
-              contactName: 'Sergii Shchurenko',
-              contactTitle: 'Organizer, UA PADEL OPEN',
-              tournament: tournamentData,
-            });
-          } else {
+        if (templateId === 'sponsorship-proposal') {
+          html = generateSponsorshipProposalEmailHTML({
+            partnerName: partnerName || '',
+            partnerCompany: partnerCompany || '',
+            locale: locale || 'en',
+            phone: phone || '+34 662 423 738',
+            email: contactEmail || 'partner@padelO2.com',
+            contactName: 'Sergii Shchurenko',
+            contactTitle: 'Organizer, UA PADEL OPEN',
+            tournament: tournamentData,
+          });
+        } else {
             // Use the template generator for other templates
             // For Clients templates, we need user data
             let templateData: any = {
