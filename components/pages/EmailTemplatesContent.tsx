@@ -421,12 +421,13 @@ export default function EmailTemplatesContent() {
       }
 
       // If we have a saved template, use it but replace dynamic data from form
-      if (savedHtml && formData.recipientName) {
+      if (savedHtml) {
         // Import the replacer function
         const { replaceTemplateDataAggressive } = await import('@/lib/template-data-replacer');
+        // Replace dynamic data even if form fields are empty (to clear old values)
         savedHtml = replaceTemplateDataAggressive(
           savedHtml,
-          formData.recipientName,
+          formData.recipientName || '',
           formData.company || ''
         );
         setPreviewHtml(savedHtml);
