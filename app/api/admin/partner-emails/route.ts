@@ -4,6 +4,7 @@ import { generateSponsorshipProposalEmailHTML } from '@/lib/resend-template-help
 import { generateEmailTemplateHTML } from '@/lib/email-template-generator';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
+import { getDbPool } from '@/lib/db';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -97,19 +98,43 @@ export async function POST(request: NextRequest) {
     // Generate HTML based on template
     let html = customHtml;
     if (!html) {
+      // Try to load saved template from database first
       try {
-        if (templateId === 'sponsorship-proposal') {
-          html = generateSponsorshipProposalEmailHTML({
-            partnerName: partnerName || '',
-            partnerCompany: partnerCompany || '',
-            locale: locale || 'en',
-            phone: phone || '+34 662 423 738',
-            email: contactEmail || 'partner@padelO2.com',
-            contactName: 'Sergii Shchurenko',
-            contactTitle: 'Organizer, UA PADEL OPEN',
-            tournament: tournamentData,
-          });
-        } else {
+        const pool = getDbPool();
+        const [savedTemplates] = await pool.execute(
+          `SELECT html_content 
+           FROM email_templates 
+           WHERE template_id = ? AND version = 0 
+           ORDER BY created_at DESC 
+           LIMIT 1`,
+          [templateId]
+        ) as any[];
+        
+        if (savedTemplates.length > 0) {
+          // Use saved template, but we need to replace variables if needed
+          // For now, use it as-is since it's already rendered HTML
+          html = savedTemplates[0].html_content;
+          console.log(`[Email Send] Using saved template for ${templateId}`);
+        }
+      } catch (loadError) {
+        console.log(`[Email Send] No saved template found for ${templateId}, generating new one`);
+      }
+      
+      // If no saved template, generate new one
+      if (!html) {
+        try {
+          if (templateId === 'sponsorship-proposal') {
+            html = generateSponsorshipProposalEmailHTML({
+              partnerName: partnerName || '',
+              partnerCompany: partnerCompany || '',
+              locale: locale || 'en',
+              phone: phone || '+34 662 423 738',
+              email: contactEmail || 'partner@padelO2.com',
+              contactName: 'Sergii Shchurenko',
+              contactTitle: 'Organizer, UA PADEL OPEN',
+              tournament: tournamentData,
+            });
+          } else {
           // Use the template generator for other templates
           // For Clients templates, we need user data
           let templateData: any = {

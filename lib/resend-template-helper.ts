@@ -229,98 +229,188 @@ export function generateSponsorshipProposalEmailHTML(data: {
     en: 'Breathe &amp; live padel',
     ru: 'Дыши и живи паделем',
     ua: 'Дихай та живи паделем',
+    es: 'Respira y vive el pádel',
   };
 
+  // Translations for sponsorship email
+  const translations: Record<string, any> = {
+    en: {
+      greeting: `Hi${partnerName ? `, ${partnerName}` : ''}`,
+      intro: `My name is Sergii, I'm the organizer of <strong>${tournamentName}</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.`,
+      dates: `On <strong>${tournamentDates}</strong> we are hosting a 2-day international padel tournament at <strong>${tournamentLocation}</strong>.`,
+      event: `It's a Ukrainian–Spanish community event that brings together:`,
+      players: `<strong>50+ players</strong> (men, women, mixed &amp; kids categories)`,
+      families: `<strong>Families, tourists</strong> and local padel fans`,
+      guests: `<strong>Guests from Spain, Ukraine</strong> and other European countries`,
+      invite: `We're currently opening partnership &amp; sponsorship slots and I'd like to invite${partnerCompany ? ` <strong>${partnerCompany}</strong>` : ' you'} to become one of the key partners of the event.`,
+      whyTitle: 'Why it can be interesting for you',
+      audienceTitle: 'Audience &amp; reach',
+      days: `<strong>2 days</strong> of matches, activities and social program on-site`,
+      activeAudience: `<strong>Active audience:</strong> players 10–80 y.o., families with kids, sport-oriented tourists`,
+      promotion: `<strong>Promotion</strong> through PadelO₂ digital channels (website, social media, email), club channels of Padel La Masia and partners`,
+      visibilityTitle: 'Visibility for sponsors',
+      depending: 'Depending on the package, sponsors can receive:',
+      logoPlacement: '<strong>Logo placement on:</strong>',
+      tshirts: 'Official tournament T-shirts',
+      banners: 'On-court banners / backdrops',
+      materials: 'Printed materials (posters, roll-ups, schedules)',
+      graphics: 'Tournament graphics on social media &amp; website',
+      mentions: '<strong>Mentions in:</strong>',
+      socialMedia: 'Social media posts and stories before, during and after the event',
+      ceremonies: 'Opening &amp; awards ceremonies',
+      optionTo: '<strong>Option to:</strong>',
+      promoStand: 'Place a promo stand / tasting / product demo during the event',
+      welcomePack: 'Include gifts, vouchers or samples in the players\' Welcome Pack',
+      activities: 'Sponsor special activities: Varenyky Party, Lottery, Happy Hours, kids\' zone etc.',
+      formatsTitle: 'Sponsorship formats (flexible)',
+      structure: 'We usually structure partnerships as:',
+      mainPartner: '<strong>Main Partner / Title Partner €650</strong> – maximum visibility everywhere',
+      officialSponsor: '<strong>Official Sponsor €350</strong> – strong presence on-site and online',
+      flexible: 'We\'re flexible and can adapt a package to match your marketing goals (local visibility, brand awareness, product trials, new clients, etc.).',
+      callToAction: 'If this sounds interesting, please call me to discuss details.',
+      bestRegards: 'Best regards,',
+      followUs: 'Follow us:',
+      receivingEmail: 'You received this email from',
+      unsubscribe: 'Unsubscribe',
+    },
+    es: {
+      greeting: `Hola${partnerName ? `, ${partnerName}` : ''}`,
+      intro: `Mi nombre es Sergii, soy el organizador de <strong>${tournamentName}</strong> junto con <strong>PadelO₂.com</strong> y <strong>Padel La Masia</strong>.`,
+      dates: `El <strong>${tournamentDates}</strong> organizamos un torneo internacional de pádel de 2 días en <strong>${tournamentLocation}</strong>.`,
+      event: `Es un evento comunitario ucraniano-español que reúne:`,
+      players: `<strong>Más de 50 jugadores</strong> (categorías masculina, femenina, mixta e infantil)`,
+      families: `<strong>Familias, turistas</strong> y aficionados locales al pádel`,
+      guests: `<strong>Invitados de España, Ucrania</strong> y otros países europeos`,
+      invite: `Actualmente estamos abriendo espacios de asociación y patrocinio y me gustaría invitar${partnerCompany ? ` a <strong>${partnerCompany}</strong>` : 'te'} a convertirte en uno de los socios clave del evento.`,
+      whyTitle: 'Por qué puede ser interesante para ti',
+      audienceTitle: 'Audiencia y alcance',
+      days: `<strong>2 días</strong> de partidos, actividades y programa social en el lugar`,
+      activeAudience: `<strong>Audiencia activa:</strong> jugadores de 10 a 80 años, familias con niños, turistas orientados al deporte`,
+      promotion: `<strong>Promoción</strong> a través de los canales digitales de PadelO₂ (sitio web, redes sociales, correo electrónico), canales del club Padel La Masia y socios`,
+      visibilityTitle: 'Visibilidad para patrocinadores',
+      depending: 'Dependiendo del paquete, los patrocinadores pueden recibir:',
+      logoPlacement: '<strong>Colocación de logo en:</strong>',
+      tshirts: 'Camisetas oficiales del torneo',
+      banners: 'Banderas / fondos en la cancha',
+      materials: 'Materiales impresos (carteles, roll-ups, horarios)',
+      graphics: 'Gráficos del torneo en redes sociales y sitio web',
+      mentions: '<strong>Menciones en:</strong>',
+      socialMedia: 'Publicaciones y historias en redes sociales antes, durante y después del evento',
+      ceremonies: 'Ceremonias de apertura y premiación',
+      optionTo: '<strong>Opción de:</strong>',
+      promoStand: 'Colocar un stand promocional / degustación / demostración de productos durante el evento',
+      welcomePack: 'Incluir regalos, vales o muestras en el Welcome Pack de los jugadores',
+      activities: 'Patrocinar actividades especiales: Fiesta de Varenyky, Lotería, Happy Hours, zona infantil, etc.',
+      formatsTitle: 'Formatos de patrocinio (flexibles)',
+      structure: 'Normalmente estructuramos las asociaciones como:',
+      mainPartner: '<strong>Patrocinador Principal / Patrocinador Titular €650</strong> – máxima visibilidad en todas partes',
+      officialSponsor: '<strong>Patrocinador Oficial €350</strong> – fuerte presencia en el lugar y en línea',
+      flexible: 'Somos flexibles y podemos adaptar un paquete para que coincida con tus objetivos de marketing (visibilidad local, reconocimiento de marca, pruebas de productos, nuevos clientes, etc.).',
+      callToAction: 'Si esto te parece interesante, por favor llámame para discutir los detalles.',
+      bestRegards: 'Saludos cordiales,',
+      followUs: 'Síguenos:',
+      receivingEmail: 'Recibiste este correo de',
+      unsubscribe: 'Cancelar suscripción',
+    },
+  };
+
+  const t = translations[locale] || translations.en;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
   const brandTagline = brandTaglines[locale] || brandTaglines.en;
+
+  // Format tournament dates based on locale
+  let formattedDates = tournamentDates;
+  if (locale === 'es' && tournament?.startDate && tournament?.endDate) {
+    formattedDates = `${new Date(tournament.startDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric' })}–${new Date(tournament.endDate).toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+  }
 
   // Форматируем текст письма
   const sponsorshipContent = `
     <div style="margin-bottom: 20px;">
       <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">${tournamentName}</h2>
       
-      <p class="lead" style="margin: 0 0 16px 0;">Hi${partnerName ? `, ${partnerName}` : ''},</p>
+      <p class="lead" style="margin: 0 0 16px 0;">${t.greeting},</p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        My name is Sergii, I'm the organizer of <strong>${tournamentName}</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.
+        ${t.intro}
       </p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        On <strong>${tournamentDates}</strong> we are hosting a 2-day international padel tournament at <strong>${tournamentLocation}</strong>.
+        ${locale === 'es' ? t.dates.replace('${tournamentDates}', formattedDates) : t.dates}
       </p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        It's a Ukrainian–Spanish community event that brings together:
+        ${t.event}
       </p>
       
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;"><strong>50+ players</strong> (men, women, mixed &amp; kids categories)</li>
-        <li style="margin-bottom: 8px;"><strong>Families, tourists</strong> and local padel fans</li>
-        <li style="margin-bottom: 8px;"><strong>Guests from Spain, Ukraine</strong> and other European countries</li>
+        <li style="margin-bottom: 8px;">${t.players}</li>
+        <li style="margin-bottom: 8px;">${t.families}</li>
+        <li style="margin-bottom: 8px;">${t.guests}</li>
       </ul>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        We're currently opening partnership &amp; sponsorship slots and I'd like to invite${partnerCompany ? ` <strong>${partnerCompany}</strong>` : ' you'} to become one of the key partners of the event.
+        ${t.invite}
       </p>
     </div>
 
     <div style="margin: 24px 0; padding: 20px; background: #f0f9ff; border-left: 4px solid #0284c7; border-radius: 8px;">
-      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">Why it can be interesting for you</h3>
+      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">${t.whyTitle}</h3>
       
-      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">Audience &amp; reach</h4>
+      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">${t.audienceTitle}</h4>
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;"><strong>2 days</strong> of matches, activities and social program on-site</li>
-        <li style="margin-bottom: 8px;"><strong>Active audience:</strong> players 10–80 y.o., families with kids, sport-oriented tourists</li>
-        <li style="margin-bottom: 8px;"><strong>Promotion</strong> through PadelO₂ digital channels (website, social media, email), club channels of Padel La Masia and partners</li>
+        <li style="margin-bottom: 8px;">${t.days}</li>
+        <li style="margin-bottom: 8px;">${t.activeAudience}</li>
+        <li style="margin-bottom: 8px;">${t.promotion}</li>
       </ul>
       
-      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">Visibility for sponsors</h4>
-      <p class="lead" style="margin: 0 0 12px 0;">Depending on the package, sponsors can receive:</p>
+      <h4 style="font-size: 16px; font-weight: 600; color: #0f172a; margin: 16px 0 8px 0;">${t.visibilityTitle}</h4>
+      <p class="lead" style="margin: 0 0 12px 0;">${t.depending}</p>
       
-      <p class="lead" style="margin: 0 0 8px 0;"><strong>Logo placement on:</strong></p>
+      <p class="lead" style="margin: 0 0 8px 0;">${t.logoPlacement}</p>
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">Official tournament T-shirts</li>
-        <li style="margin-bottom: 8px;">On-court banners / backdrops</li>
-        <li style="margin-bottom: 8px;">Printed materials (posters, roll-ups, schedules)</li>
-        <li style="margin-bottom: 8px;">Tournament graphics on social media &amp; website</li>
+        <li style="margin-bottom: 8px;">${t.tshirts}</li>
+        <li style="margin-bottom: 8px;">${t.banners}</li>
+        <li style="margin-bottom: 8px;">${t.materials}</li>
+        <li style="margin-bottom: 8px;">${t.graphics}</li>
       </ul>
       
-      <p class="lead" style="margin: 0 0 8px 0;"><strong>Mentions in:</strong></p>
+      <p class="lead" style="margin: 0 0 8px 0;">${t.mentions}</p>
       <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">Social media posts and stories before, during and after the event</li>
-        <li style="margin-bottom: 8px;">Opening &amp; awards ceremonies</li>
+        <li style="margin-bottom: 8px;">${t.socialMedia}</li>
+        <li style="margin-bottom: 8px;">${t.ceremonies}</li>
       </ul>
       
-      <p class="lead" style="margin: 0 0 8px 0;"><strong>Option to:</strong></p>
+      <p class="lead" style="margin: 0 0 8px 0;">${t.optionTo}</p>
       <ul style="margin: 0 0 0 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;">Place a promo stand / tasting / product demo during the event</li>
-        <li style="margin-bottom: 8px;">Include gifts, vouchers or samples in the players' Welcome Pack</li>
-        <li style="margin-bottom: 8px;">Sponsor special activities: Varenyky Party, Lottery, Happy Hours, kids' zone etc.</li>
+        <li style="margin-bottom: 8px;">${t.promoStand}</li>
+        <li style="margin-bottom: 8px;">${t.welcomePack}</li>
+        <li style="margin-bottom: 8px;">${t.activities}</li>
       </ul>
     </div>
 
     <div style="margin: 24px 0; padding: 20px; background: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 8px;">
-      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">Sponsorship formats (flexible)</h3>
-      <p class="lead" style="margin: 0 0 12px 0;">We usually structure partnerships as:</p>
+      <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0;">${t.formatsTitle}</h3>
+      <p class="lead" style="margin: 0 0 12px 0;">${t.structure}</p>
       <ul style="margin: 0 0 12px 0; padding-left: 20px; color: #1f2937;">
-        <li style="margin-bottom: 8px;"><strong>Main Partner / Title Partner €650</strong> – maximum visibility everywhere</li>
-        <li style="margin-bottom: 8px;"><strong>Official Sponsor €350</strong> – strong presence on-site and online</li>
+        <li style="margin-bottom: 8px;">${t.mainPartner}</li>
+        <li style="margin-bottom: 8px;">${t.officialSponsor}</li>
       </ul>
       <p class="lead" style="margin: 0 0 0 0;">
-        We're flexible and can adapt a package to match your marketing goals (local visibility, brand awareness, product trials, new clients, etc.).
+        ${t.flexible}
       </p>
     </div>
 
     <div style="margin: 24px 0;">
       <p class="lead" style="margin: 0 0 32px 0; text-align: center;">
-        If this sounds interesting, please call me to discuss details.
+        ${t.callToAction}
       </p>
     </div>
 
     <!-- Contact Information -->
     <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(148, 163, 184, 0.2); text-align: center;">
       <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 15px; color: #1f2937; font-weight: 600;">
-        Best regards,
+        ${t.bestRegards}
       </p>
       <p class="muted" style="margin: 16px 0 8px 0; text-align: center; font-size: 14px; font-weight: 600; color: #0f172a;">
         ${contactName}
