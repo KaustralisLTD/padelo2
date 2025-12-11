@@ -64,11 +64,11 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   
   // Правильный формат для Resend: "Display Name <email@domain.com>" или просто "email@domain.com"
   // Определяем имя отправителя в зависимости от email
-  let displayName = 'PadelO2';
+  let displayName = 'PadelO₂';
   if (fromEmail.toLowerCase().includes('partner')) {
-    displayName = 'Partner';
+    displayName = 'Partner PadelO₂';
   } else if (fromEmail.toLowerCase().includes('noreply') || fromEmail.toLowerCase().includes('no-reply')) {
-    displayName = 'PadelO2';
+    displayName = 'PadelO₂';
   }
   
   const fromName = `${displayName} <${fromEmail}>`;

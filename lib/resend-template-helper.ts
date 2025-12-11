@@ -239,7 +239,7 @@ export function generateSponsorshipProposalEmailHTML(data: {
     <div style="margin-bottom: 20px;">
       <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">${tournamentName}</h2>
       
-      <p class="lead" style="margin: 0 0 16px 0;">Hi${partnerCompany ? `, ${partnerCompany}` : ''},</p>
+      <p class="lead" style="margin: 0 0 16px 0;">Hi${partnerName ? `, ${partnerName}` : ''},</p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
         My name is Sergii, I'm the organizer of <strong>${tournamentName}</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.
@@ -314,6 +314,25 @@ export function generateSponsorshipProposalEmailHTML(data: {
     <div style="margin: 24px 0;">
       <p class="lead" style="margin: 0 0 32px 0; text-align: center;">
         If this sounds interesting, please call me to discuss details.
+      </p>
+    </div>
+
+    <!-- Contact Information -->
+    <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(148, 163, 184, 0.2); text-align: center;">
+      <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 15px; color: #1f2937; font-weight: 600;">
+        Best regards,
+      </p>
+      <p class="muted" style="margin: 16px 0 8px 0; text-align: center; font-size: 14px; font-weight: 600; color: #0f172a;">
+        ${contactName}
+      </p>
+      <p class="muted" style="margin: 0 0 8px 0; text-align: center; font-size: 12px; color: #6b7280;">
+        ${contactTitle}
+      </p>
+      <p class="muted" style="margin: 0 0 4px 0; text-align: center; font-size: 12px; color: #6b7280;">
+        PadelO<span style="font-size:1.3em; vertical-align:-1px;">₂</span>.com
+      </p>
+      <p class="muted" style="margin: 0; text-align: center; font-size: 12px; color: #0284c7;">
+        ${phone} · <a href="mailto:${email}" style="color: #0284c7; text-decoration: underline;">${email}</a>
       </p>
     </div>
   `;
