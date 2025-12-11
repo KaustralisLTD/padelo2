@@ -56,9 +56,22 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'padelo2.com';
   let fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
   
+  // Нормализуем email адрес (приводим к нижнему регистру домен)
+  if (fromEmail.includes('@')) {
+    const [localPart, domain] = fromEmail.split('@');
+    fromEmail = `${localPart}@${domain.toLowerCase()}`;
+  }
+  
   // Правильный формат для Resend: "Display Name <email@domain.com>" или просто "email@domain.com"
-  // Используем простой формат без специальных символов для максимальной совместимости
-  const fromName = `PadelO2 <${fromEmail}>`;
+  // Определяем имя отправителя в зависимости от email
+  let displayName = 'PadelO2';
+  if (fromEmail.toLowerCase().includes('partner')) {
+    displayName = 'Partner';
+  } else if (fromEmail.toLowerCase().includes('noreply') || fromEmail.toLowerCase().includes('no-reply')) {
+    displayName = 'PadelO2';
+  }
+  
+  const fromName = `${displayName} <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
   
   // Generate plain text version if not provided
