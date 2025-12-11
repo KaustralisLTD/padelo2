@@ -205,6 +205,7 @@ export function generateSponsorshipProposalEmailHTML(data: {
   email?: string;
   contactName?: string;
   contactTitle?: string;
+  tournament?: any;
 }): string {
   const {
     partnerName = '',
@@ -214,7 +215,15 @@ export function generateSponsorshipProposalEmailHTML(data: {
     email = 'partner@padelO2.com',
     contactName = 'Sergii Shchurenko',
     contactTitle = 'Organizer, UA PADEL OPEN',
+    tournament,
   } = data;
+
+  // Extract tournament info
+  const tournamentName = tournament?.name || 'UA PADEL OPEN 2025';
+  const tournamentDates = tournament?.startDate && tournament?.endDate
+    ? `${new Date(tournament.startDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}–${new Date(tournament.endDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+    : '20–21 December 2025';
+  const tournamentLocation = tournament?.location || 'Camping La Masia (Blanes, Costa Brava)';
 
   const brandTaglines: Record<string, string> = {
     en: 'Breathe &amp; live padel',
@@ -228,16 +237,16 @@ export function generateSponsorshipProposalEmailHTML(data: {
   // Форматируем текст письма
   const sponsorshipContent = `
     <div style="margin-bottom: 20px;">
-      <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">UA PADEL OPEN 2025 (Costa Brava)</h2>
+      <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">${tournamentName}</h2>
       
       <p class="lead" style="margin: 0 0 16px 0;">Hi${partnerCompany ? `, ${partnerCompany}` : ''},</p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        My name is Sergii, I'm the organizer of <strong>UA PADEL OPEN 2025</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.
+        My name is Sergii, I'm the organizer of <strong>${tournamentName}</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.
       </p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
-        On <strong>20–21 December 2025</strong> we are hosting a 2-day international padel tournament at <strong>Camping La Masia</strong> (Blanes, Costa Brava).
+        On <strong>${tournamentDates}</strong> we are hosting a 2-day international padel tournament at <strong>${tournamentLocation}</strong>.
       </p>
       
       <p class="lead" style="margin: 0 0 16px 0;">

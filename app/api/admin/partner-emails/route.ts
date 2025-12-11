@@ -40,43 +40,97 @@ export async function POST(request: NextRequest) {
       locale = 'en',
       phone = '+34 662 423 738',
       contactEmail = 'partner@padelO2.com',
+      templateId,
+      category,
+      tournamentId,
+      tournamentScope,
+      userIds,
+      customHtml,
     } = body;
 
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
+    // Get tournament data if needed
+    let tournamentData = null;
+    if (tournamentId) {
+      const { getAllTournaments } = require('@/lib/tournaments');
+      const tournaments = await getAllTournaments();
+      tournamentData = tournaments.find((t: any) => t.id === parseInt(tournamentId));
     }
 
-    // Use custom HTML if provided, otherwise generate from template
-    const html = body.customHtml || generateSponsorshipProposalEmailHTML({
-      partnerName: partnerName || '',
-      partnerCompany: partnerCompany || '',
-      locale: locale || 'en',
-      phone: phone || '+34 662 423 738',
-      email: contactEmail || 'partner@padelO2.com',
-      contactName: 'Sergii Shchurenko',
-      contactTitle: 'Organizer, UA PADEL OPEN',
-    });
+    // Get user emails if userIds provided
+    let recipientEmails: string[] = [];
+    if (userIds && Array.isArray(userIds) && userIds.length > 0) {
+      const { getAllUsers } = require('@/lib/users');
+      const allUsers = await getAllUsers();
+      recipientEmails = allUsers
+        .filter((u: any) => userIds.includes(u.id))
+        .map((u: any) => u.email)
+        .filter((e: string) => e);
+    } else if (email) {
+      recipientEmails = [email];
+    }
 
-    const result = await sendEmail({
-      to: email,
-      subject: 'Sponsorship Proposal – UA PADEL OPEN 2025 (Costa Brava)',
-      html,
-      locale,
-      from: 'Partner@padelO2.com',
-    });
+    if (recipientEmails.length === 0) {
+      return NextResponse.json({ error: 'No recipients specified' }, { status: 400 });
+    }
 
-    if (result) {
+    // Generate HTML based on template
+    let html = customHtml;
+    if (!html) {
+      if (templateId === 'sponsorship-proposal') {
+        html = generateSponsorshipProposalEmailHTML({
+          partnerName: partnerName || '',
+          partnerCompany: partnerCompany || '',
+          locale: locale || 'en',
+          phone: phone || '+34 662 423 738',
+          email: contactEmail || 'partner@padelO2.com',
+          contactName: 'Sergii Shchurenko',
+          contactTitle: 'Organizer, UA PADEL OPEN',
+          tournament: tournamentData,
+        });
+      } else {
+        return NextResponse.json({ error: 'Template not implemented yet' }, { status: 400 });
+      }
+    }
+
+    // Generate subject
+    const tournamentName = tournamentData?.name || 'UA PADEL OPEN 2025';
+    const subject = templateId === 'sponsorship-proposal' 
+      ? `Sponsorship Proposal – ${tournamentName}`
+      : 'Email from PadelO₂';
+
+    // Send emails to all recipients
+    const results = await Promise.all(
+      recipientEmails.map((toEmail) =>
+        sendEmail({
+          to: toEmail,
+          subject,
+          html,
+          locale,
+          from: category === 'partners' ? 'Partner@padelO2.com' : 'noreply@padelO2.com',
+        })
+      )
+    );
+
+    const successCount = results.filter(r => r).length;
+    
+    if (successCount === recipientEmails.length) {
       return NextResponse.json({ 
         success: true, 
-        message: 'Email sent successfully' 
+        message: `Email sent successfully to ${successCount} recipient(s)` 
+      });
+    } else if (successCount > 0) {
+      return NextResponse.json({ 
+        success: true, 
+        message: `Email sent to ${successCount} of ${recipientEmails.length} recipient(s)`,
+        warning: true,
       });
     } else {
       return NextResponse.json({ 
-        error: 'Failed to send email' 
+        error: 'Failed to send email to any recipients' 
       }, { status: 500 });
     }
   } catch (error: any) {
-    console.error('Error sending partner email:', error);
+    console.error('Error sending email:', error);
     return NextResponse.json({ 
       error: error.message || 'Internal server error' 
     }, { status: 500 });

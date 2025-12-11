@@ -38,17 +38,37 @@ export async function POST(request: NextRequest) {
       locale = 'en',
       phone = '+34 662 423 738',
       contactEmail = 'partner@padelO2.com',
+      templateId,
+      tournamentId,
+      tournamentScope,
     } = body;
 
-    const html = generateSponsorshipProposalEmailHTML({
-      partnerName: partnerName || '',
-      partnerCompany: partnerCompany || '',
-      locale: locale || 'en',
-      phone: phone || '+34 662 423 738',
-      email: contactEmail || 'partner@padelO2.com',
-      contactName: 'Sergii Shchurenko',
-      contactTitle: 'Organizer, UA PADEL OPEN',
-    });
+    let html = '';
+
+    // Get tournament data if needed
+    let tournamentData = null;
+    if (tournamentId) {
+      const { getAllTournaments } = require('@/lib/tournaments');
+      const tournaments = await getAllTournaments();
+      tournamentData = tournaments.find((t: any) => t.id === parseInt(tournamentId));
+    }
+
+    // Generate HTML based on template
+    if (templateId === 'sponsorship-proposal') {
+      html = generateSponsorshipProposalEmailHTML({
+        partnerName: partnerName || '',
+        partnerCompany: partnerCompany || '',
+        locale: locale || 'en',
+        phone: phone || '+34 662 423 738',
+        email: contactEmail || 'partner@padelO2.com',
+        contactName: 'Sergii Shchurenko',
+        contactTitle: 'Organizer, UA PADEL OPEN',
+        tournament: tournamentData,
+      });
+    } else {
+      // For other templates, we'll need to implement them
+      html = '<p>Template not yet implemented</p>';
+    }
 
     return NextResponse.json({ html });
   } catch (error: any) {

@@ -13,13 +13,171 @@ type EmailTemplate = {
 };
 
 const EMAIL_TEMPLATES: EmailTemplate[] = [
+  // Partners
   {
     id: 'sponsorship-proposal',
     name: 'Sponsorship Proposal',
-    description: 'UA PADEL OPEN sponsorship proposal for partners',
+    description: 'Tournament sponsorship proposal for partners',
     category: 'partners',
   },
-  // Можно добавить больше шаблонов позже
+  // Clients - Tournament emails
+  {
+    id: 'tournament-registration',
+    name: 'Tournament Registration',
+    description: 'Registration confirmation email',
+    category: 'clients',
+  },
+  {
+    id: 'tournament-registration-confirmed',
+    name: 'Tournament Registration Confirmed',
+    description: 'Registration confirmed with payment',
+    category: 'clients',
+  },
+  {
+    id: 'tournament-waiting-list',
+    name: 'Waiting List',
+    description: 'Player added to waiting list',
+    category: 'clients',
+  },
+  {
+    id: 'tournament-spot-confirmed',
+    name: 'Spot Confirmed',
+    description: 'Spot available confirmation',
+    category: 'clients',
+  },
+  {
+    id: 'payment-received',
+    name: 'Payment Received',
+    description: 'Payment confirmation',
+    category: 'clients',
+  },
+  {
+    id: 'payment-failed',
+    name: 'Payment Failed',
+    description: 'Payment failure notification',
+    category: 'clients',
+  },
+  {
+    id: 'tournament-schedule-published',
+    name: 'Schedule Published',
+    description: 'Tournament schedule notification',
+    category: 'clients',
+  },
+  {
+    id: 'match-reminder-1day',
+    name: 'Match Reminder (1 Day)',
+    description: 'Match reminder 1 day before',
+    category: 'clients',
+  },
+  {
+    id: 'match-reminder-sameday',
+    name: 'Match Reminder (Same Day)',
+    description: 'Match reminder on match day',
+    category: 'clients',
+  },
+  {
+    id: 'schedule-change',
+    name: 'Schedule Change',
+    description: 'Match schedule change notification',
+    category: 'clients',
+  },
+  {
+    id: 'group-stage-results',
+    name: 'Group Stage Results',
+    description: 'Group stage results notification',
+    category: 'clients',
+  },
+  {
+    id: 'finals-winners',
+    name: 'Finals Winners',
+    description: 'Tournament winners announcement',
+    category: 'clients',
+  },
+  {
+    id: 'post-tournament-recap',
+    name: 'Post Tournament Recap',
+    description: 'Tournament recap and media',
+    category: 'clients',
+  },
+  {
+    id: 'tournament-feedback',
+    name: 'Tournament Feedback',
+    description: 'Request for tournament feedback',
+    category: 'clients',
+  },
+  {
+    id: 'tournament-cancelled',
+    name: 'Tournament Cancelled',
+    description: 'Tournament cancellation notification',
+    category: 'clients',
+  },
+  {
+    id: 'guest-tournament-registration',
+    name: 'Guest Registration',
+    description: 'Guest ticket registration',
+    category: 'clients',
+  },
+  {
+    id: 'guest-tournament-verification',
+    name: 'Guest Verification',
+    description: 'Guest verification email',
+    category: 'clients',
+  },
+  {
+    id: 'guest-tournament-registration-confirmed',
+    name: 'Guest Registration Confirmed',
+    description: 'Guest registration confirmed',
+    category: 'clients',
+  },
+  // General emails
+  {
+    id: 'welcome',
+    name: 'Welcome Email',
+    description: 'Welcome new user',
+    category: 'clients',
+  },
+  {
+    id: 'password-reset',
+    name: 'Password Reset',
+    description: 'Password reset request',
+    category: 'clients',
+  },
+  {
+    id: 'password-changed',
+    name: 'Password Changed',
+    description: 'Password change confirmation',
+    category: 'clients',
+  },
+  {
+    id: 'new-device-login',
+    name: 'New Device Login',
+    description: 'New device login notification',
+    category: 'clients',
+  },
+  {
+    id: 'change-email-old',
+    name: 'Change Email (Old Address)',
+    description: 'Email change notification to old address',
+    category: 'clients',
+  },
+  {
+    id: 'change-email-new',
+    name: 'Change Email (New Address)',
+    description: 'Email change confirmation to new address',
+    category: 'clients',
+  },
+  {
+    id: 'account-deletion-confirm',
+    name: 'Account Deletion Confirmation',
+    description: 'Account deletion confirmation request',
+    category: 'clients',
+  },
+  {
+    id: 'account-deleted',
+    name: 'Account Deleted',
+    description: 'Account deletion confirmation',
+    category: 'clients',
+  },
 ];
 
 const LANGUAGES = [
@@ -61,6 +219,15 @@ export default function EmailTemplatesContent() {
   const [showPreview, setShowPreview] = useState(false);
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [editableHtml, setEditableHtml] = useState<string>('');
+  
+  const [tournaments, setTournaments] = useState<any[]>([]);
+  const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
+  const [tournamentScope, setTournamentScope] = useState<'all' | 'specific'>('specific');
+  const [showUserSelector, setShowUserSelector] = useState(false);
+  const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [availableUsers, setAvailableUsers] = useState<any[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [searchingUsers, setSearchingUsers] = useState(false);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -108,6 +275,67 @@ export default function EmailTemplatesContent() {
       .finally(() => setCheckingAuth(false));
   }, [locale, router]);
 
+  // Fetch tournaments
+  useEffect(() => {
+    if (!authorized) return;
+    
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
+    const fetchTournaments = async () => {
+      try {
+        const response = await fetch('/api/admin/tournaments', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setTournaments(data.tournaments || []);
+        }
+      } catch (error) {
+        console.error('Error fetching tournaments:', error);
+      }
+    };
+
+    fetchTournaments();
+  }, [authorized]);
+
+  // Search users
+  useEffect(() => {
+    if (!showUserSelector || !userSearchQuery.trim()) {
+      setAvailableUsers([]);
+      return;
+    }
+
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
+    const searchUsers = async () => {
+      setSearchingUsers(true);
+      try {
+        const response = await fetch(`/api/admin/users/search?q=${encodeURIComponent(userSearchQuery)}&limit=50`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setAvailableUsers(data.users || []);
+        }
+      } catch (error) {
+        console.error('Error searching users:', error);
+      } finally {
+        setSearchingUsers(false);
+      }
+    };
+
+    const timeoutId = setTimeout(searchUsers, 300);
+    return () => clearTimeout(timeoutId);
+  }, [userSearchQuery, showUserSelector]);
+
   const translateText = async (text: string, targetLang: string, sourceLang: string = 'en'): Promise<string> => {
     if (targetLang === sourceLang || !text.trim()) return text;
 
@@ -139,6 +367,16 @@ export default function EmailTemplatesContent() {
     const token = localStorage.getItem('auth_token');
     if (!token) return;
 
+    // Validation
+    if (selectedCategory === 'clients' && selectedUserIds.length === 0 && !formData.email) {
+      setError('Please select at least one user or enter an email');
+      return;
+    }
+    if ((selectedCategory === 'partners' || (selectedCategory === 'clients' && tournamentScope === 'specific')) && !selectedTournamentId) {
+      setError('Please select a tournament');
+      return;
+    }
+
     try {
       const response = await fetch('/api/admin/partner-emails/preview', {
         method: 'POST',
@@ -150,6 +388,10 @@ export default function EmailTemplatesContent() {
           ...formData,
           partnerName: formData.recipientName,
           partnerCompany: formData.company,
+          templateId: selectedTemplate,
+          tournamentId: tournamentScope === 'specific' ? selectedTournamentId : null,
+          tournamentScope: tournamentScope,
+          userIds: selectedCategory === 'clients' ? selectedUserIds : undefined,
         }),
       });
 
@@ -158,9 +400,13 @@ export default function EmailTemplatesContent() {
         setPreviewHtml(data.html || '');
         setEditableHtml(data.html || '');
         setShowPreview(true);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || 'Failed to generate preview');
       }
     } catch (error) {
       console.error('Error generating preview:', error);
+      setError('Failed to generate preview');
     }
   };
 
@@ -177,6 +423,18 @@ export default function EmailTemplatesContent() {
       return;
     }
 
+    // Validation
+    if (selectedCategory === 'clients' && selectedUserIds.length === 0 && !formData.email) {
+      setError('Please select at least one user or enter an email');
+      setLoading(false);
+      return;
+    }
+    if ((selectedCategory === 'partners' || (selectedCategory === 'clients' && tournamentScope === 'specific')) && !selectedTournamentId) {
+      setError('Please select a tournament');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/admin/partner-emails', {
         method: 'POST',
@@ -189,6 +447,11 @@ export default function EmailTemplatesContent() {
           partnerName: formData.recipientName,
           partnerCompany: formData.company,
           customHtml: useCustomHtml ? editableHtml : undefined,
+          templateId: selectedTemplate,
+          category: selectedCategory,
+          tournamentId: tournamentScope === 'specific' ? selectedTournamentId : null,
+          tournamentScope: tournamentScope,
+          userIds: selectedCategory === 'clients' ? selectedUserIds : undefined,
         }),
       });
 
@@ -210,6 +473,8 @@ export default function EmailTemplatesContent() {
         phone: '+34 662 423 738',
         contactEmail: 'partner@padelO2.com',
       });
+      setSelectedUserIds([]);
+      setSelectedTournamentId('');
     } catch (err: any) {
       setError(err.message || 'Failed to send email');
     } finally {
@@ -319,20 +584,103 @@ export default function EmailTemplatesContent() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Recipient Email */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Recipient Email <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                    placeholder="recipient@example.com"
-                  />
-                </div>
+                {/* Tournament Selection (for Partners and Clients) */}
+                {(selectedCategory === 'partners' || selectedCategory === 'clients') && (
+                  <>
+                    {selectedCategory === 'clients' && (
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Tournament Scope
+                        </label>
+                        <div className="flex gap-4">
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              value="specific"
+                              checked={tournamentScope === 'specific'}
+                              onChange={(e) => setTournamentScope(e.target.value as 'all' | 'specific')}
+                              className="mr-2"
+                            />
+                            Specific Tournament
+                          </label>
+                          <label className="flex items-center">
+                            <input
+                              type="radio"
+                              value="all"
+                              checked={tournamentScope === 'all'}
+                              onChange={(e) => setTournamentScope(e.target.value as 'all' | 'specific')}
+                              className="mr-2"
+                            />
+                            All Tournaments
+                          </label>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {tournamentScope === 'specific' && (
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Tournament <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          required={tournamentScope === 'specific'}
+                          value={selectedTournamentId}
+                          onChange={(e) => setSelectedTournamentId(e.target.value)}
+                          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        >
+                          <option value="">Select tournament...</option>
+                          {tournaments.map((tournament) => (
+                            <option key={tournament.id} value={tournament.id}>
+                              {tournament.name} ({tournament.startDate ? new Date(tournament.startDate).toLocaleDateString() : 'TBD'})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* User Selection (for Clients) */}
+                {selectedCategory === 'clients' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Recipients <span className="text-red-500">*</span>
+                    </label>
+                    <div className="space-y-2">
+                      <button
+                        type="button"
+                        onClick={() => setShowUserSelector(true)}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-blue-500 transition-all text-left bg-white"
+                      >
+                        {selectedUserIds.length > 0 
+                          ? `${selectedUserIds.length} user(s) selected`
+                          : 'Click to select users...'}
+                      </button>
+                      {selectedUserIds.length > 0 && (
+                        <div className="text-sm text-gray-600">
+                          Selected: {selectedUserIds.length} user(s)
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Recipient Email (for Partners and other categories) */}
+                {selectedCategory !== 'clients' && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Recipient Email <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                      placeholder="recipient@example.com"
+                    />
+                  </div>
+                )}
 
                 {/* Recipient Name */}
                 <div>
@@ -472,6 +820,106 @@ export default function EmailTemplatesContent() {
           </div>
         </div>
       </div>
+
+      {/* User Selector Modal */}
+      {showUserSelector && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">Select Users</h2>
+              <button
+                onClick={() => {
+                  setShowUserSelector(false);
+                  setUserSearchQuery('');
+                }}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-6 flex-1 overflow-hidden flex flex-col">
+              <input
+                type="text"
+                value={userSearchQuery}
+                onChange={(e) => setUserSearchQuery(e.target.value)}
+                placeholder="Search by name or email..."
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none mb-4"
+              />
+
+              <div className="flex-1 overflow-y-auto">
+                {searchingUsers ? (
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="mt-2 text-gray-600">Searching...</p>
+                  </div>
+                ) : availableUsers.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    {userSearchQuery.trim() ? 'No users found' : 'Start typing to search users...'}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {availableUsers.map((user) => (
+                      <label
+                        key={user.id}
+                        className="flex items-center p-3 rounded-lg border-2 border-gray-200 hover:border-blue-500 cursor-pointer transition-all"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedUserIds.includes(user.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedUserIds([...selectedUserIds, user.id]);
+                            } else {
+                              setSelectedUserIds(selectedUserIds.filter(id => id !== user.id));
+                            }
+                          }}
+                          className="mr-3 w-5 h-5 text-blue-600"
+                        />
+                        <div className="flex-1">
+                          <div className="font-semibold text-gray-900">{user.fullName}</div>
+                          <div className="text-sm text-gray-600">{user.email}</div>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {selectedUserIds.length > 0 && (
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-gray-700">
+                    <strong>{selectedUserIds.length}</strong> user(s) selected
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="p-6 border-t border-gray-200 flex gap-4">
+              <button
+                onClick={() => {
+                  setShowUserSelector(false);
+                  setUserSearchQuery('');
+                }}
+                className="flex-1 py-3 px-6 bg-gray-200 text-gray-800 font-semibold rounded-xl hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowUserSelector(false);
+                  setUserSearchQuery('');
+                }}
+                className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
+              >
+                Done ({selectedUserIds.length})
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Preview Modal */}
       {showPreview && (
