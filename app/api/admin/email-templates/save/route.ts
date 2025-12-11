@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
 import { getDbPool } from '@/lib/db';
+import crypto from 'crypto';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
 
     // Generate new version
     const version = Date.now();
-    const templateUuid = require('crypto').randomBytes(16).toString('hex');
+    const templateUuid = crypto.randomBytes(16).toString('hex');
 
     // Save new version
     await pool.execute(
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Insert latest marker pointing to the new version
-    const latestUuid = require('crypto').randomBytes(16).toString('hex');
+    const latestUuid = crypto.randomBytes(16).toString('hex');
     await pool.execute(
       `INSERT INTO email_templates (id, template_id, html_content, template_type, saved_by, version)
        VALUES (?, ?, ?, ?, ?, 0)`,
