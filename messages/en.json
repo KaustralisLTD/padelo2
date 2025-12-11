@@ -1842,5 +1842,19 @@
     "academy": "Academy",
     "contact": "Contact",
     "goHome": "Go Home"
+  },
+  "Unsubscribe": {
+    "title": "Unsubscribe from Emails",
+    "description": "We're sorry to see you go. You can unsubscribe from our email list at any time.",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your@email.com",
+    "emailRequired": "Please enter an email address",
+    "unsubscribeButton": "Unsubscribe",
+    "processing": "Processing...",
+    "successTitle": "Successfully Unsubscribed",
+    "successMessage": "You have been successfully unsubscribed from our email list.",
+    "errorMessage": "An error occurred. Please try again.",
+    "backToHome": "Back to Home",
+    "note": "If you change your mind, you can always resubscribe by contacting us or updating your preferences in your account settings."
   }
 }
