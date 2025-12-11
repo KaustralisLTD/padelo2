@@ -242,7 +242,10 @@ export default function EmailTemplatesContent() {
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (!token) {
-      router.push(`/${locale}/login`);
+      setCheckingAuth(false);
+      setTimeout(() => {
+        router.push(`/${locale}/login`);
+      }, 0);
       return;
     }
 
@@ -254,25 +257,39 @@ export default function EmailTemplatesContent() {
       .then((res) => {
         if (!res.ok) {
           localStorage.removeItem('auth_token');
-          router.push(`/${locale}/login`);
+          setCheckingAuth(false);
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
           return null;
         }
         return res.json();
       })
       .then((data) => {
-        if (!data) return;
+        if (!data) {
+          setCheckingAuth(false);
+          return;
+        }
         
         if (data.session && data.session.role === 'superadmin') {
           setAuthorized(true);
         } else {
-          router.push(`/${locale}/dashboard`);
+          setCheckingAuth(false);
+          setTimeout(() => {
+            router.push(`/${locale}/dashboard`);
+          }, 0);
         }
       })
       .catch((error) => {
         console.error('Error verifying session:', error);
-        router.push(`/${locale}/login`);
+        setCheckingAuth(false);
+        setTimeout(() => {
+          router.push(`/${locale}/login`);
+        }, 0);
       })
-      .finally(() => setCheckingAuth(false));
+      .finally(() => {
+        setCheckingAuth(false);
+      });
   }, [locale, router]);
 
   // Fetch tournaments
