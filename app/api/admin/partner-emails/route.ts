@@ -5,7 +5,7 @@ import { generateEmailTemplateHTML } from '@/lib/email-template-generator';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
 import { getDbPool } from '@/lib/db';
-import { translateEmailHTML } from '@/lib/email-translator';
+import { translateEmailHTML, translateEmailSubject } from '@/lib/email-translator';
 import { replaceTemplateDataAggressive } from '@/lib/template-data-replacer';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
@@ -200,11 +200,21 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate subject
+    // Generate subject (will be translated if needed)
     const tournamentName = tournamentData?.name || 'UA PADEL OPEN 2025';
-    const subject = templateId === 'sponsorship-proposal' 
+    let subject = templateId === 'sponsorship-proposal' 
       ? `Sponsorship Proposal – ${tournamentName}`
       : 'Email from PadelO₂';
+    
+    // Translate subject if target locale is not English
+    if (locale && locale !== 'en') {
+      try {
+        subject = await translateEmailSubject(subject, locale, 'en');
+        console.log(`[Email Send] Translated subject to ${locale}: ${subject}`);
+      } catch (translateError) {
+        console.warn(`[Email Send] Failed to translate subject, using original:`, translateError);
+      }
+    }
 
     // Determine from address
     let fromAddress: string;
@@ -249,10 +259,21 @@ export async function POST(request: NextRequest) {
             }
           }
           
+          // Translate subject for user's preferred language if different
+          let userSubject = subject;
+          if (userLocale && userLocale !== locale && userLocale !== 'en') {
+            try {
+              userSubject = await translateEmailSubject(subject, userLocale, locale || 'en');
+              console.log(`[Email Send] Translated subject for ${toEmail} to ${userLocale}: ${userSubject}`);
+            } catch (error) {
+              console.error(`[Email Send] Error translating subject for ${toEmail}:`, error);
+            }
+          }
+          
           console.log(`[Email Send] Attempting to send to ${toEmail} (locale: ${userLocale})`);
           const result = await sendEmail({
             to: toEmail,
-            subject,
+            subject: userSubject,
             html: emailHtml,
             locale: userLocale,
             from: fromAddress,

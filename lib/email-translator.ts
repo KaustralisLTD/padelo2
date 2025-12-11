@@ -48,6 +48,7 @@ function extractTextNodes(html: string): { textNodes: Array<{ text: string; plac
 /**
  * Translate HTML content using Google Translate API
  * Preserves HTML structure and only translates text content
+ * Protects tournament names from translation
  */
 export async function translateEmailHTML(html: string, targetLang: string, sourceLang: string = 'en'): Promise<string> {
   if (targetLang === sourceLang || !SUPPORTED_LANGUAGES.includes(targetLang)) {
@@ -63,13 +64,16 @@ export async function translateEmailHTML(html: string, targetLang: string, sourc
   const googleSourceLang = GOOGLE_TRANSLATE_LOCALE_MAP[sourceLang] || sourceLang;
 
   try {
+    // First, protect tournament names in the entire HTML
+    const { protectedText: htmlWithProtectedNames, replacements: tournamentReplacements } = protectTournamentNames(html);
+    
     // Extract text nodes from HTML
     const textNodes: Array<{ text: string; placeholder: string }> = [];
     let placeholderIndex = 0;
-    let processedHtml = html;
+    let processedHtml = htmlWithProtectedNames;
 
     // Match text content between tags (but not inside script/style tags)
-    processedHtml = html.replace(/>([^<]+)</g, (match, text) => {
+    processedHtml = htmlWithProtectedNames.replace(/>([^<]+)</g, (match, text) => {
       const trimmedText = text.trim();
       // Skip if it's just whitespace or very short
       if (trimmedText && trimmedText.length > 2 && !trimmedText.match(/^[\s\n\r]*$/)) {
@@ -95,6 +99,9 @@ export async function translateEmailHTML(html: string, targetLang: string, sourc
       const translatedText = translatedTexts[index] || node.text;
       translatedHtml = translatedHtml.replace(node.placeholder, translatedText);
     });
+
+    // Restore tournament names
+    translatedHtml = restoreTournamentNames(translatedHtml, tournamentReplacements);
 
     return translatedHtml;
   } catch (error) {
@@ -141,6 +148,80 @@ async function translateTextsBatch(texts: string[], targetLang: string, sourceLa
   } catch (error) {
     console.error('[translateTextsBatch] Error:', error);
     return texts;
+  }
+}
+
+/**
+ * Protect tournament names from translation by replacing them with placeholders
+ */
+function protectTournamentNames(text: string): { protectedText: string; replacements: Array<{ placeholder: string; original: string }> } {
+  const replacements: Array<{ placeholder: string; original: string }> = [];
+  let protectedText = text;
+  let placeholderIndex = 0;
+
+  // Pattern to match "UA PADEL OPEN" and variations (case-insensitive)
+  // Also matches tournament names that might include year or other text
+  const tournamentPatterns = [
+    /UA\s+PADEL\s+OPEN/gi,
+    /UA\s+PADEL\s+OPEN\s+\d{4}/gi,
+    /UA\s+PADEL\s+OPEN\s+\|\s*[^–]+/gi,
+  ];
+
+  tournamentPatterns.forEach(pattern => {
+    protectedText = protectedText.replace(pattern, (match) => {
+      const placeholder = `__TOURNAMENT_NAME_${placeholderIndex}__`;
+      replacements.push({ placeholder, original: match });
+      placeholderIndex++;
+      return placeholder;
+    });
+  });
+
+  return { protectedText, replacements };
+}
+
+/**
+ * Restore tournament names from placeholders
+ */
+function restoreTournamentNames(text: string, replacements: Array<{ placeholder: string; original: string }>): string {
+  let restoredText = text;
+  replacements.forEach(({ placeholder, original }) => {
+    restoredText = restoredText.replace(placeholder, original);
+  });
+  return restoredText;
+}
+
+/**
+ * Translate email subject line using Google Translate API
+ * Protects tournament names from translation
+ */
+export async function translateEmailSubject(subject: string, targetLang: string, sourceLang: string = 'en'): Promise<string> {
+  if (targetLang === sourceLang || !SUPPORTED_LANGUAGES.includes(targetLang)) {
+    return subject;
+  }
+
+  if (!process.env.GOOGLE_TRANSLATE_API_KEY) {
+    console.warn('[translateEmailSubject] GOOGLE_TRANSLATE_API_KEY not configured, returning original subject');
+    return subject;
+  }
+
+  const googleTargetLang = GOOGLE_TRANSLATE_LOCALE_MAP[targetLang] || targetLang;
+  const googleSourceLang = GOOGLE_TRANSLATE_LOCALE_MAP[sourceLang] || sourceLang;
+
+  try {
+    // Protect tournament names before translation
+    const { protectedText, replacements } = protectTournamentNames(subject);
+    
+    // Translate protected text
+    const translatedTexts = await translateTextsBatch([protectedText], googleTargetLang, googleSourceLang);
+    let translated = translatedTexts[0] || protectedText;
+    
+    // Restore tournament names
+    translated = restoreTournamentNames(translated, replacements);
+    
+    return translated;
+  } catch (error) {
+    console.error('[translateEmailSubject] Error translating subject:', error);
+    return subject;
   }
 }
 

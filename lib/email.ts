@@ -50,6 +50,50 @@ function htmlToText(html: string): string {
     .trim();
 }
 
+// Translations for sender display names
+const senderNameTranslations: Record<string, Record<string, string>> = {
+  'PadelO₂': {
+    en: 'PadelO₂',
+    ru: 'PadelO₂',
+    ua: 'PadelO₂',
+    es: 'PadelO₂',
+    fr: 'PadelO₂',
+    de: 'PadelO₂',
+    it: 'PadelO₂',
+    ca: 'PadelO₂',
+    nl: 'PadelO₂',
+    da: 'PadelO₂',
+    sv: 'PadelO₂',
+    no: 'PadelO₂',
+    ar: 'PadelO₂',
+    zh: 'PadelO₂',
+  },
+  'Partner PadelO₂': {
+    en: 'Partner PadelO₂',
+    ru: 'Партнер PadelO₂',
+    ua: 'Партнер ПаделО₂',
+    es: 'Socio PadelO₂',
+    fr: 'Partenaire PadelO₂',
+    de: 'Partner PadelO₂',
+    it: 'Partner PadelO₂',
+    ca: 'Soci PadelO₂',
+    nl: 'Partner PadelO₂',
+    da: 'Partner PadelO₂',
+    sv: 'Partner PadelO₂',
+    no: 'Partner PadelO₂',
+    ar: 'شريك PadelO₂',
+    zh: '合作伙伴 PadelO₂',
+  },
+};
+
+function getTranslatedSenderName(baseName: string, locale: string): string {
+  const translations = senderNameTranslations[baseName];
+  if (translations && translations[locale]) {
+    return translations[locale];
+  }
+  return baseName;
+}
+
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const { to, subject, html, text, from, replyTo, locale = 'en' } = options;
   // Используем верифицированный домен из переменной окружения или padelo2.com по умолчанию
@@ -64,13 +108,15 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   
   // Правильный формат для Resend: "Display Name <email@domain.com>" или просто "email@domain.com"
   // Определяем имя отправителя в зависимости от email
-  let displayName = 'PadelO₂';
+  let baseDisplayName = 'PadelO₂';
   if (fromEmail.toLowerCase().includes('partner')) {
-    displayName = 'Partner PadelO₂';
+    baseDisplayName = 'Partner PadelO₂';
   } else if (fromEmail.toLowerCase().includes('noreply') || fromEmail.toLowerCase().includes('no-reply')) {
-    displayName = 'PadelO₂';
+    baseDisplayName = 'PadelO₂';
   }
   
+  // Translate sender name based on locale
+  const displayName = getTranslatedSenderName(baseDisplayName, locale);
   const fromName = `${displayName} <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
   
