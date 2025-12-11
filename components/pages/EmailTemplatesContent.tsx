@@ -398,6 +398,34 @@ export default function EmailTemplatesContent() {
     }
 
     try {
+      // First, try to load saved template from database
+      let savedHtml: string | null = null;
+      try {
+        const loadResponse = await fetch(`/api/admin/email-templates/load?templateId=${selectedTemplate}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (loadResponse.ok) {
+          const loadData = await loadResponse.json();
+          if (loadData.html) {
+            savedHtml = loadData.html;
+          }
+        }
+      } catch (loadError) {
+        console.log('No saved template found, will generate new one');
+      }
+
+      // If we have a saved template, use it directly
+      if (savedHtml) {
+        setPreviewHtml(savedHtml);
+        setEditableHtml(savedHtml);
+        setShowPreview(true);
+        return;
+      }
+
+      // Otherwise, generate new template
       const response = await fetch('/api/admin/partner-emails/preview', {
         method: 'POST',
         headers: {
