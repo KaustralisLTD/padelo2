@@ -928,14 +928,11 @@ export default function EmailTemplatesContent() {
                               });
                               // Если выбран только один пользователь, заполняем имя автоматически
                               if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
-                                setFormData({
-                                  ...formData,
-                                  recipientName: user.fullName,
-                                });
                                 // Автоматически включаем использование языка пользователя
                                 setUseUserLanguage(true);
                                 setFormData(prev => ({
                                   ...prev,
+                                  recipientName: user.fullName,
                                   locale: user.preferredLanguage || 'en',
                                 }));
                               }
@@ -950,23 +947,20 @@ export default function EmailTemplatesContent() {
                               if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
                                 const remainingUser = availableUsers.find(u => u.id === newSelectedIds[0]);
                                 if (remainingUser) {
-                                  setFormData({
-                                    ...formData,
-                                    recipientName: remainingUser.fullName,
-                                  });
                                   setUseUserLanguage(true);
                                   setFormData(prev => ({
                                     ...prev,
+                                    recipientName: remainingUser.fullName,
                                     locale: remainingUser.preferredLanguage || 'en',
                                   }));
                                 }
                               } else if (newSelectedIds.length === 0) {
                                 // Если пользователи не выбраны, очищаем имя и сбрасываем язык
-                                setFormData({
-                                  ...formData,
-                                  recipientName: '',
-                                });
                                 setUseUserLanguage(false);
+                                setFormData(prev => ({
+                                  ...prev,
+                                  recipientName: '',
+                                }));
                               }
                             }
                           }}
