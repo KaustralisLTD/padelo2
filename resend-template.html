@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="{{locale}}" dir="{{dir}}" style="margin:0;padding:0;">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{subject}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle at top, #e5f4ff 0, #f5f7fb 40%, #f8fafc 100%);
+      }
+      table {
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      img {
+        border: 0;
+        display: block;
+        outline: none;
+        text-decoration: none;
+      }
+      a {
+        text-decoration: none;
+      }
+      .wrapper {
+        width: 100%;
+        padding: 32px 10px;
+      }
+      .main {
+        width: 100%;
+        max-width: 640px;
+        margin: 0 auto;
+        background: linear-gradient(145deg, #ffffff 0, #f4f7ff 60%, #edf7ff 100%);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+      .font-default {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        color: #0f172a;
+      }
+      .eyebrow {
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-size: 11px;
+        color: #0284c7;
+      }
+      .h1 {
+        font-size: 26px;
+        line-height: 1.3;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .lead {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #1f2937;
+      }
+      .muted {
+        font-size: 12px;
+        line-height: 1.6;
+        color: #6b7280;
+      }
+      .pill-label {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #0f172a;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #06b6d4, #22c55e);
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #ecfdf5 !important;
+        padding: 11px 30px;
+        display: inline-block;
+        box-shadow: 0 10px 26px rgba(8, 145, 178, 0.35);
+      }
+      .tag {
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        padding: 6px 11px;
+        font-size: 11px;
+        color: #374151;
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+      .feature-card {
+        border-radius: 18px;
+        background: #ffffff;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        padding: 10px 12px 11px 12px;
+      }
+      .feature-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #111827;
+      }
+      .feature-text {
+        font-size: 12px;
+        line-height: 1.5;
+        color: #4b5563;
+      }
+      .social-pill {
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        padding: 5px 10px 5px 7px;
+        font-size: 11px;
+        color: #111827;
+        background-color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .social-icon-circle {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      .social-ig {
+        background-color: #e1306c;
+      }
+      .social-yt {
+        background-color: #ff0000;
+      }
+      .social-tt {
+        background-color: #000000;
+      }
+      .social-fb {
+        background-color: #1877f2;
+      }
+      @media screen and (max-width: 600px) {
+        .stack {
+          display: block !important;
+          width: 100% !important;
+        }
+        .p-hero {
+          padding: 20px 18px 10px 18px !important;
+        }
+        .p-body {
+          padding: 0 18px 20px 18px !important;
+        }
+        .p-footer {
+          padding: 14px 18px 24px 18px !important;
+        }
+        .hide-mobile {
+          display: none !important;
+        }
+        .center-mobile {
+          text-align: center !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+      <tr>
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+            <!-- HEADER -->
+            <tr>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div
+                        style="
+                          font-weight: 800;
+                          font-size: 22px;
+                          color: #0f172a;
+                          letter-spacing: 0.08em;
+                          text-transform: uppercase;
+                        "
+                      >
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div
+                        style="
+                          font-size: 12px;
+                          color: #0369a1;
+                          margin-top: 3px;
+                          letter-spacing: 0.16em;
+                          text-transform: uppercase;
+                        "
+                      >
+                        {{brandTagline}}
+                      </div>
+                    </td>
+                    <td class="hide-mobile" align="right" valign="middle">
+                      <table
+                        role="presentation"
+                        style="
+                          border-radius: 999px;
+                          background: linear-gradient(135deg, #e0f2fe, #bbf7d0);
+                          padding: 1px;
+                        "
+                      >
+                        <tr>
+                          <td
+                            align="center"
+                            valign="middle"
+                            style="
+                              background: #ffffff;
+                              border-radius: 999px;
+                              padding: 6px 18px 7px 18px;
+                            "
+                          >
+                            <span class="pill-label">{{welcomeBadge}}</span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- TOP DIVIDER (PADEL LINE) -->
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td
+                      style="
+                        height: 3px;
+                        background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%);
+                        opacity: 0.9;
+                      "
+                    ></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- BODY -->
+            <tr>
+              <td class="p-body" style="padding: 20px 30px 10px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default">
+                      {{#if eyebrow}}
+                      <div class="eyebrow">{{eyebrow}}</div>
+                      {{/if}}
+                      {{#if title}}
+                      <div class="h1" style="margin: 8px 0 10px 0;">
+                        {{title}}
+                      </div>
+                      {{/if}}
+                      {{#if greeting}}
+                      <p class="lead" style="margin: 0 0 12px 0;">
+                        {{greeting}}
+                      </p>
+                      {{/if}}
+                      {{#if content}}
+                      <div class="lead" style="margin: 0 0 18px 0;">
+                        {{content}}
+                      </div>
+                      {{/if}}
+
+                      {{#if buttonUrl}}
+                      <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 6px 0 18px 0;">
+                        <tr>
+                          <td align="left" class="center-mobile">
+                            <a href="{{buttonUrl}}" class="btn-primary" style="text-decoration: none;">{{buttonText}}</a>
+                          </td>
+                        </tr>
+                      </table>
+                      {{/if}}
+
+                      {{#if linkText}}
+                      <div class="info-box" style="margin: 20px 0;">
+                        <p class="muted" style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.6; color: #0c4a6e;">
+                          {{linkText}}
+                        </p>
+                        {{#if linkUrl}}
+                        <p class="muted" style="margin: 0; font-size: 12px; word-break: break-all;">
+                          <a href="{{linkUrl}}" style="color: #0284c7; text-decoration: underline;">{{linkUrl}}</a>
+                        </p>
+                        {{/if}}
+                        {{#if linkNote}}
+                        <p class="muted" style="margin: 8px 0 0 0; font-size: 12px; color: #6b7280;">
+                          {{linkNote}}
+                        </p>
+                        {{/if}}
+                      </div>
+                      {{/if}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            {{#if showFeatures}}
+            <!-- FEATURES -->
+            <tr>
+              <td style="padding: 6px 22px 18px 22px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="stack" width="33.33%" valign="top" style="padding: 8px 8px;">
+                      <table role="presentation" width="100%">
+                        <tr>
+                          <td style="padding: 0;">
+                            <div class="feature-card">
+                              <div class="feature-title">{{feature1Title}}</div>
+                              <div class="feature-text">
+                                {{feature1Desc}}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+
+                    <td class="stack" width="33.33%" valign="top" style="padding: 8px 8px;">
+                      <table role="presentation" width="100%">
+                        <tr>
+                          <td style="padding: 0;">
+                            <div class="feature-card">
+                              <div class="feature-title">{{feature2Title}}</div>
+                              <div class="feature-text">
+                                {{feature2Desc}}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+
+                    <td class="stack" width="33.33%" valign="top" style="padding: 8px 8px;">
+                      <table role="presentation" width="100%">
+                        <tr>
+                          <td style="padding: 0%;">
+                            <div class="feature-card">
+                              <div class="feature-title">
+                                {{feature3Title}}
+                              </div>
+                              <div class="feature-text">
+                                {{feature3Desc}}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            {{/if}}
+
+            <!-- BOTTOM DIVIDER -->
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td
+                      style="
+                        height: 3px;
+                        background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%);
+                        opacity: 0.9;
+                      "
+                    ></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td class="p-footer" style="padding: 14px 30px 24px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td align="center" class="font-default" style="text-align: center;">
+                      {{#if footerText}}
+                      <p class="lead" style="margin: 0 0 12px 0; text-align: center;">
+                        {{footerText}}
+                      </p>
+                      {{/if}}
+                      <p class="muted" style="margin: 0 0 16px 0; text-align: center;">
+                        {{followJourney}}
+                      </p>
+                      <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto;">
+                        <tr>
+                          {{#if instagramUrl}}
+                          <td align="center" style="padding: 0 4px;">
+                            <a href="{{instagramUrl}}" class="social-pill" style="text-decoration: none;">
+                              <span class="social-icon-circle social-ig">IG</span>
+                              <span>Instagram</span>
+                            </a>
+                          </td>
+                          {{/if}}
+                          {{#if youtubeUrl}}
+                          <td align="center" style="padding: 0 4px;">
+                            <a href="{{youtubeUrl}}" class="social-pill" style="text-decoration: none;">
+                              <span class="social-icon-circle social-yt">YT</span>
+                              <span>YouTube</span>
+                            </a>
+                          </td>
+                          {{/if}}
+                          {{#if tiktokUrl}}
+                          <td align="center" style="padding: 0 4px;">
+                            <a href="{{tiktokUrl}}" class="social-pill" style="text-decoration: none;">
+                              <span class="social-icon-circle social-tt">TT</span>
+                              <span>TikTok</span>
+                            </a>
+                          </td>
+                          {{/if}}
+                          {{#if facebookUrl}}
+                          <td align="center" style="padding: 0 4px;">
+                            <a href="{{facebookUrl}}" class="social-pill" style="text-decoration: none;">
+                              <span class="social-icon-circle social-fb">FB</span>
+                              <span>Facebook</span>
+                            </a>
+                          </td>
+                          {{/if}}
+                        </tr>
+                      </table>
+                      <p class="muted" style="margin: 20px 0 0 0; text-align: center; font-size: 11px;">
+                        {{receivingEmail}} <a href="{{siteUrl}}" style="color: #0284c7; text-decoration: underline;">{{siteUrl}}</a>
+                      </p>
+                      <p class="muted" style="margin: 8px 0 0 0; text-align: center; font-size: 11px;">
+                        <a href="{{unsubscribeUrl}}" style="color: #6b7280; text-decoration: underline;">{{unsubscribeText}}</a>
+                      </p>
+                      {{#if team}}
+                      <p class="muted" style="margin: 16px 0 0 0; text-align: center; font-size: 12px; color: #9ca3af;">
+                        {{team}}
+                      </p>
+                      {{/if}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+
