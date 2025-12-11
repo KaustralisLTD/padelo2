@@ -110,10 +110,10 @@ export async function POST(request: NextRequest) {
           if (userIds && userIds.length > 0) {
             // For bulk sending, we'll generate template per user
             // But for now, use generic data
-            templateData.firstName = recipientName || '';
+            templateData.firstName = partnerName || '';
             templateData.lastName = '';
           } else if (email) {
-            templateData.firstName = recipientName || '';
+            templateData.firstName = partnerName || '';
             templateData.lastName = '';
           }
           
