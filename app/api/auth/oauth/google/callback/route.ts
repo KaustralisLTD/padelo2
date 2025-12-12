@@ -123,12 +123,25 @@ export async function GET(request: NextRequest) {
     }
 
     // Создаем сессию
+    console.log(`[OAuth] Creating session for user ${userId}`);
     const token = await createSession(userId, 30); // 30 дней для OAuth
 
     if (!token) {
-      console.error('Failed to create session token');
+      console.error('[OAuth] Failed to create session token');
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/login?error=session_creation_failed`);
     }
+
+    console.log(`[OAuth] Session created successfully, token: ${token.substring(0, 8)}...`);
+
+    // Проверяем, что сессия действительно создана
+    const { getSession } = await import('@/lib/users');
+    const sessionCheck = await getSession(token);
+    if (!sessionCheck) {
+      console.error('[OAuth] Session verification failed after creation');
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/login?error=session_verification_failed`);
+    }
+
+    console.log(`[OAuth] Session verified, user: ${sessionCheck.userId}, role: ${sessionCheck.role}`);
 
     // Перенаправляем на dashboard напрямую с токеном в URL
     // Клиент сохранит токен в localStorage и перенаправит на dashboard
@@ -148,6 +161,8 @@ export async function GET(request: NextRequest) {
       maxAge: 30 * 24 * 60 * 60, // 30 дней
       path: '/',
     });
+
+    console.log(`[OAuth] Redirecting to: ${redirectUrl.toString()}`);
 
     return response;
   } catch (error: any) {

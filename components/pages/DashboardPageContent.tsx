@@ -16,44 +16,78 @@ export default function DashboardPageContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      router.push(`/${locale}/login`);
-      return;
-    }
+    const verifyAuth = async () => {
+      // Проверяем токен из localStorage
+      let token = localStorage.getItem('auth_token');
+      
+      // Если токена нет в localStorage, проверяем cookie
+      if (!token) {
+        const cookies = document.cookie.split('; ');
+        const authCookie = cookies.find(row => row.startsWith('auth_token='));
+        if (authCookie) {
+          token = authCookie.split('=')[1];
+          // Сохраняем в localStorage для будущих запросов
+          if (token) {
+            localStorage.setItem('auth_token', token);
+          }
+        }
+      }
 
-    // Verify token and get user info
-    fetch('/api/auth/login', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
+      if (!token) {
+        console.log('[Dashboard] No token found, redirecting to login');
+        router.push(`/${locale}/login`);
+        return;
+      }
+
+      console.log('[Dashboard] Verifying token:', token.substring(0, 8) + '...');
+
+      try {
+        // Verify token and get user info
+        const response = await fetch('/api/auth/login', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Включаем cookies
+        });
+
+        console.log('[Dashboard] Auth response status:', response.status);
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          console.error('[Dashboard] Auth failed:', response.status, errorData);
           // If response is not OK, remove token and redirect
           localStorage.removeItem('auth_token');
+          // Удаляем cookie тоже
+          document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
           router.push(`/${locale}/login`);
-          return null;
+          return;
         }
-        return res.json();
-      })
-      .then((data) => {
-        if (!data) return; // Already handled error case
-        
+
+        const data = await response.json();
+        console.log('[Dashboard] Auth success, user data:', data);
+
         if (data.session) {
           setRole(data.session.role);
           setUser(data.session);
         } else {
+          console.error('[Dashboard] No session in response:', data);
           localStorage.removeItem('auth_token');
+          document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
           router.push(`/${locale}/login`);
         }
-      })
-      .catch((error) => {
-        console.error('Error verifying session:', error);
+      } catch (error) {
+        console.error('[Dashboard] Error verifying session:', error);
         localStorage.removeItem('auth_token');
+        document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         router.push(`/${locale}/login`);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    verifyAuth();
   }, [locale, router]);
 
   useEffect(() => {

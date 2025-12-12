@@ -154,21 +154,28 @@ export async function GET(request: NextRequest) {
       token = cookies.get('auth_token')?.value;
     }
 
+    console.log(`[Auth GET] Token received: ${token ? token.substring(0, 8) + '...' : 'none'}`);
+
     if (!token) {
+      console.log('[Auth GET] No token provided');
       return NextResponse.json(
         { error: 'Token required' },
         { status: 401 }
       );
     }
 
+    console.log(`[Auth GET] Verifying session for token: ${token.substring(0, 8)}...`);
     const session = await getSession(token);
 
     if (!session) {
+      console.log(`[Auth GET] Session not found or expired for token: ${token.substring(0, 8)}...`);
       return NextResponse.json(
         { error: 'Invalid or expired token' },
         { status: 401 }
       );
     }
+
+    console.log(`[Auth GET] Session verified: userId=${session.userId}, role=${session.role}`);
 
     // Get full user information from database
     const { findUserById } = await import('@/lib/users');
