@@ -190,11 +190,31 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Collect protected strings (tournament name, person names, company names)
+    const protectedStrings: string[] = [];
+    
+    // Add tournament name
+    if (tournamentData?.name) {
+      protectedStrings.push(tournamentData.name);
+    }
+    
+    // Add person names
+    if (partnerName) {
+      protectedStrings.push(partnerName);
+    }
+    // Contact name is hardcoded in template, but we can add it if needed
+    // 'Sergii Shchurenko' is in the template, but we'll let it translate as it's a standard name
+    
+    // Add company name
+    if (partnerCompany) {
+      protectedStrings.push(partnerCompany);
+    }
+    
     // Translate HTML to target locale if not English
     if (locale && locale !== 'en' && html) {
       try {
-        html = await translateEmailHTML(html, locale, 'en');
-        console.log(`[Email Send] Translated email HTML to ${locale}`);
+        html = await translateEmailHTML(html, locale, 'en', protectedStrings);
+        console.log(`[Email Send] Translated email HTML to ${locale} (protected ${protectedStrings.length} strings)`);
       } catch (translateError) {
         console.warn(`[Email Send] Failed to translate email HTML, using original:`, translateError);
       }
@@ -207,9 +227,10 @@ export async function POST(request: NextRequest) {
       : 'Email from PadelO₂';
     
     // Translate subject if target locale is not English
+    // Use protected strings to preserve tournament name, person names, company names
     if (locale && locale !== 'en') {
       try {
-        subject = await translateEmailSubject(subject, locale, 'en');
+        subject = await translateEmailSubject(subject, locale, 'en', protectedStrings);
         console.log(`[Email Send] Translated subject to ${locale}: ${subject}`);
       } catch (translateError) {
         console.warn(`[Email Send] Failed to translate subject, using original:`, translateError);
@@ -260,10 +281,11 @@ export async function POST(request: NextRequest) {
           }
           
           // Translate subject for user's preferred language if different
+          // Use protected strings to preserve tournament name, person names, company names
           let userSubject = subject;
           if (userLocale && userLocale !== locale && userLocale !== 'en') {
             try {
-              userSubject = await translateEmailSubject(subject, userLocale, locale || 'en');
+              userSubject = await translateEmailSubject(subject, userLocale, locale || 'en', protectedStrings);
               console.log(`[Email Send] Translated subject for ${toEmail} to ${userLocale}: ${userSubject}`);
             } catch (error) {
               console.error(`[Email Send] Error translating subject for ${toEmail}:`, error);
