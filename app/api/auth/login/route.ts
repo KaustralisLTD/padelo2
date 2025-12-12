@@ -182,16 +182,26 @@ export async function GET(request: NextRequest) {
     const user = await findUserById(session.userId);
 
     if (!user) {
+      console.error(`[Auth GET] User not found for userId: ${session.userId}`);
       return NextResponse.json(
         { error: 'User not found' },
         { status: 404 }
       );
     }
 
+    // Используем роль из базы данных, а не из сессии (на случай если роль изменилась)
+    const userRole = user.role || session.role;
+    console.log(`[Auth GET] User found: email=${user.email}, role=${userRole}, sessionRole=${session.role}`);
+
+    // Проверяем, что роль пользователя соответствует роли в сессии
+    if (userRole !== session.role) {
+      console.warn(`[Auth GET] Role mismatch: user.role=${userRole}, session.role=${session.role}. Using user.role.`);
+    }
+
     return NextResponse.json({
       session: {
         userId: session.userId,
-        role: session.role,
+        role: userRole, // Используем роль из базы данных
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
