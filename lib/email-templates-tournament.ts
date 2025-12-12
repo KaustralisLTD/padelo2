@@ -658,7 +658,7 @@ export function getTournamentRegistrationEmailTemplate(data: TournamentRegistrat
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -1393,7 +1393,7 @@ export function getTournamentRegistrationConfirmedEmailTemplate(data: Tournament
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -1933,7 +1933,7 @@ export function getTournamentWaitingListEmailTemplate(data: TournamentWaitingLis
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -2548,7 +2548,7 @@ export function getTournamentSpotConfirmedEmailTemplate(data: TournamentSpotConf
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -3162,7 +3162,7 @@ export function getPaymentReceivedEmailTemplate(data: PaymentReceivedEmailData):
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -3723,7 +3723,7 @@ export function getPaymentFailedEmailTemplate(data: PaymentFailedEmailData): str
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -4103,7 +4103,7 @@ export function getTournamentSchedulePublishedEmailTemplate(data: TournamentSche
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -4545,7 +4545,7 @@ export function getMatchReminder1DayEmailTemplate(data: MatchReminder1DayEmailDa
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -4966,7 +4966,7 @@ export function getMatchReminderSameDayEmailTemplate(data: MatchReminderSameDayE
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -5445,7 +5445,7 @@ export function getScheduleChangeEmailTemplate(data: ScheduleChangeEmailData): s
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -5839,7 +5839,7 @@ export function getGroupStageResultsEmailTemplate(data: GroupStageResultsEmailDa
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -6293,7 +6293,7 @@ export function getFinalsWinnersEmailTemplate(data: FinalsWinnersEmailData): str
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -6705,7 +6705,7 @@ export function getPostTournamentRecapEmailTemplate(data: PostTournamentRecapEma
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -7061,7 +7061,7 @@ export function getTournamentFeedbackEmailTemplate(data: TournamentFeedbackEmail
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -7514,7 +7514,7 @@ export function getTournamentCancelledEmailTemplate(data: TournamentCancelledEma
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -8178,7 +8178,7 @@ export function getGuestTournamentRegistrationEmailTemplate(data: GuestTournamen
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
@@ -9181,7 +9181,7 @@ export function getGuestTournamentRegistrationConfirmedEmailTemplate(data: Guest
 
                   <tr>
                     <td style="padding-top: 16px;">
-                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">padelo2.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
                       <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
                       <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
                       <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>

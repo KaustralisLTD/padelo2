@@ -164,6 +164,7 @@ export function generatePartnerEmailHTML(data: {
       youtubeUrl: 'https://www.youtube.com/@PadelO2',
       tiktokUrl: 'https://www.tiktok.com/@padelo2com',
       facebookUrl: 'https://www.facebook.com/profile.php?id=61583860325680',
+      year: new Date().getFullYear().toString(),
     };
 
     return loadAndRenderTemplate('resend-template.html', variables);
@@ -378,6 +379,7 @@ export function generateSponsorshipProposalEmailHTML(data: {
       youtubeUrl: 'https://www.youtube.com/@PadelO2',
       tiktokUrl: 'https://www.tiktok.com/@padelo2com',
       facebookUrl: 'https://www.facebook.com/profile.php?id=61583860325680',
+      year: new Date().getFullYear().toString(),
     };
 
     return loadAndRenderTemplate('resend-template.html', variables);
