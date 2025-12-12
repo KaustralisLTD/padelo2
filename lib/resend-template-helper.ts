@@ -246,7 +246,7 @@ export function generateSponsorshipProposalEmailHTML(data: {
     <div style="margin-bottom: 20px;">
       <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 16px 0;">${tournamentName}</h2>
       
-      <p class="lead" style="margin: 0 0 16px 0;">Hi${partnerName ? `, ${partnerName}` : ''},</p>
+      <p class="lead" style="margin: 0 0 16px 0;">Hello${partnerName ? `, ${partnerName}` : ''},</p>
       
       <p class="lead" style="margin: 0 0 16px 0;">
         My name is Sergii, I'm the organizer of <strong>${tournamentName}</strong> together with <strong>PadelO₂.com</strong> and <strong>Padel La Masia</strong>.

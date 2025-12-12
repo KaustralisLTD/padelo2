@@ -177,6 +177,8 @@ export async function translateEmailHTML(
     translatedHtml = translatedHtml.replace(/<\/strong>([^\s<.,!?;:])/gi, '</strong> $1');
     // Add space before opening <strong> if previous character is not space
     translatedHtml = translatedHtml.replace(/([^\s>])<strong>/gi, '$1 <strong>');
+    // Fix missing space before "All rights reserved" / "Всі права захищені" etc.
+    translatedHtml = translatedHtml.replace(/PadelO₂\.([А-Яа-яA-Za-z])/gi, 'PadelO₂. $1');
     // Fix double spaces
     translatedHtml = translatedHtml.replace(/\s{2,}/g, ' ');
 
