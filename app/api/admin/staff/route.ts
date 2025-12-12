@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
       canManageUsers = false,
       canManageLogs = false,
       canManageTournaments = false,
+      canSendEmails = false,
     } = body;
 
     if (!userId || !tournamentId) {
@@ -103,6 +104,7 @@ export async function POST(request: NextRequest) {
       canManageUsers,
       canManageLogs,
       canManageTournaments,
+      canSendEmails,
     });
 
     return NextResponse.json({ access }, { status: 201 });

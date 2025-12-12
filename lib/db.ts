@@ -755,6 +755,11 @@ export async function initDatabase() {
     } catch (e: any) {
       if (!e.message.includes('Duplicate column name')) throw e;
     }
+    try {
+      await pool.execute('ALTER TABLE staff_tournament_access ADD COLUMN can_send_emails BOOLEAN DEFAULT FALSE');
+    } catch (e: any) {
+      if (!e.message.includes('Duplicate column name')) throw e;
+    }
 
     // Create investment_requests table
     await pool.execute(`

@@ -252,29 +252,21 @@ export default function EmailTemplatesContent() {
       return;
     }
 
-    fetch('/api/auth/login', {
+    // Check authorization via partner-emails endpoint (it has the proper permission check)
+    fetch('/api/admin/partner-emails/preview', {
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        partnerName: '',
+        partnerCompany: '',
+        templateId: 'sponsorship-proposal',
+      }),
     })
       .then((res) => {
-        if (!res.ok) {
-          localStorage.removeItem('auth_token');
-          setCheckingAuth(false);
-          setTimeout(() => {
-            router.push(`/${locale}/login`);
-          }, 0);
-          return null;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (!data) {
-          setCheckingAuth(false);
-          return;
-        }
-        
-        if (data.session && data.session.role === 'superadmin') {
+        if (res.ok) {
           setAuthorized(true);
         } else {
           setCheckingAuth(false);

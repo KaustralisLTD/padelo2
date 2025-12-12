@@ -15,6 +15,7 @@ interface StaffAccess {
   canManageUsers: boolean;
   canManageLogs: boolean;
   canManageTournaments: boolean;
+  canSendEmails: boolean;
   createdAt: string;
   userName?: string;
   userEmail?: string;
@@ -59,6 +60,7 @@ export default function AdminStaffContent() {
     canManageUsers: false,
     canManageLogs: false,
     canManageTournaments: false,
+    canSendEmails: false,
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -197,6 +199,7 @@ export default function AdminStaffContent() {
               canManageUsers: formData.canManageUsers,
               canManageLogs: formData.canManageLogs,
               canManageTournaments: formData.canManageTournaments,
+              canSendEmails: formData.canSendEmails,
             }),
           })
         ));
@@ -281,6 +284,7 @@ export default function AdminStaffContent() {
           canManageUsers: formData.canManageUsers,
           canManageLogs: formData.canManageLogs,
           canManageTournaments: formData.canManageTournaments,
+          canSendEmails: formData.canSendEmails,
         }),
       });
 
@@ -333,6 +337,7 @@ export default function AdminStaffContent() {
       canManageUsers: false,
       canManageLogs: false,
       canManageTournaments: false,
+      canSendEmails: false,
     });
   };
 
@@ -350,6 +355,7 @@ export default function AdminStaffContent() {
       canManageUsers: access.canManageUsers,
       canManageLogs: access.canManageLogs,
       canManageTournaments: access.canManageTournaments,
+      canSendEmails: access.canSendEmails,
     });
     setShowCreateModal(true);
   };
@@ -395,6 +401,7 @@ export default function AdminStaffContent() {
             canManageUsers: false,
             canManageLogs: false,
             canManageTournaments: false,
+            canSendEmails: false,
           }
         };
       }
@@ -405,6 +412,7 @@ export default function AdminStaffContent() {
       acc[access.userId].permissions.canManageUsers = acc[access.userId].permissions.canManageUsers || access.canManageUsers;
       acc[access.userId].permissions.canManageLogs = acc[access.userId].permissions.canManageLogs || access.canManageLogs;
       acc[access.userId].permissions.canManageTournaments = acc[access.userId].permissions.canManageTournaments || access.canManageTournaments;
+      acc[access.userId].permissions.canSendEmails = acc[access.userId].permissions.canSendEmails || access.canSendEmails;
       return acc;
     }, {} as Record<string, any>),
   };
@@ -450,6 +458,7 @@ export default function AdminStaffContent() {
               canManageUsers: sourceAccess.canManageUsers,
               canManageLogs: sourceAccess.canManageLogs,
               canManageTournaments: sourceAccess.canManageTournaments,
+              canSendEmails: sourceAccess.canSendEmails,
             }),
           });
 
@@ -717,6 +726,11 @@ export default function AdminStaffContent() {
                           {access.canManageTournaments && (
                             <span className="inline-block px-2 py-1 bg-cyan-500/20 text-cyan-400 text-xs font-poppins rounded">
                               {t('staff.canManageTournaments')}
+                            </span>
+                          )}
+                          {access.canSendEmails && (
+                            <span className="inline-block px-2 py-1 bg-pink-500/20 text-pink-400 text-xs font-poppins rounded">
+                              {t('staff.canSendEmails')}
                             </span>
                           )}
                         </div>
@@ -995,6 +1009,16 @@ export default function AdminStaffContent() {
                       className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
                     />
                     <span className="text-text font-poppins">{t('staff.canManageTournaments')}</span>
+                  </label>
+
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={formData.canSendEmails}
+                      onChange={(e) => setFormData({ ...formData, canSendEmails: e.target.checked })}
+                      className="w-5 h-5 text-primary bg-background border-border rounded focus:ring-primary"
+                    />
+                    <span className="text-text font-poppins">{t('staff.canSendEmails')}</span>
                   </label>
                 </div>
 

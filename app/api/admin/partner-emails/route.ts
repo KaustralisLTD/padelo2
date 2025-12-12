@@ -21,12 +21,25 @@ async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boo
     return { authorized: false };
   }
 
-  // Only superadmin can send partner emails
-  if (session.role !== 'superadmin') {
-    return { authorized: false };
+  // Superadmin always has access
+  if (session.role === 'superadmin') {
+    return { authorized: true, userId: session.userId, role: session.role };
   }
 
-  return { authorized: true, userId: session.userId, role: session.role };
+  // Check if user has canSendEmails permission for any tournament
+  try {
+    const { getStaffTournamentAccess } = await import('@/lib/tournaments');
+    const staffAccess = await getStaffTournamentAccess(undefined, session.userId);
+    const hasEmailPermission = staffAccess.some(access => access.canSendEmails);
+    
+    if (hasEmailPermission) {
+      return { authorized: true, userId: session.userId, role: session.role };
+    }
+  } catch (error) {
+    console.error('Error checking staff access:', error);
+  }
+
+  return { authorized: false };
 }
 
 export async function POST(request: NextRequest) {

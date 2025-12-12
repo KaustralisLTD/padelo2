@@ -89,6 +89,7 @@ export interface StaffTournamentAccess {
   canManageUsers: boolean;
   canManageLogs: boolean;
   canManageTournaments: boolean;
+  canSendEmails: boolean;
   createdAt: string;
 }
 
@@ -794,6 +795,7 @@ export async function getStaffTournamentAccess(tournamentId?: number, userId?: s
       canManageUsers: !!row.can_manage_users,
       canManageLogs: !!row.can_manage_logs,
       canManageTournaments: !!row.can_manage_tournaments,
+      canSendEmails: !!row.can_send_emails,
       createdAt: row.created_at.toISOString(),
     }));
   } catch (error) {
@@ -809,15 +811,16 @@ export async function createStaffTournamentAccess(access: Omit<StaffTournamentAc
   
   const pool = getDbPool();
   const [result] = await pool.execute(
-    `INSERT INTO staff_tournament_access (user_id, tournament_id, can_manage_groups, can_manage_matches, can_view_registrations, can_manage_users, can_manage_logs, can_manage_tournaments)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `INSERT INTO staff_tournament_access (user_id, tournament_id, can_manage_groups, can_manage_matches, can_view_registrations, can_manage_users, can_manage_logs, can_manage_tournaments, can_send_emails)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON DUPLICATE KEY UPDATE
        can_manage_groups = VALUES(can_manage_groups),
        can_manage_matches = VALUES(can_manage_matches),
        can_view_registrations = VALUES(can_view_registrations),
        can_manage_users = VALUES(can_manage_users),
        can_manage_logs = VALUES(can_manage_logs),
-       can_manage_tournaments = VALUES(can_manage_tournaments)`,
+       can_manage_tournaments = VALUES(can_manage_tournaments),
+       can_send_emails = VALUES(can_send_emails)`,
     [
       access.userId,
       access.tournamentId,
@@ -827,6 +830,7 @@ export async function createStaffTournamentAccess(access: Omit<StaffTournamentAc
       access.canManageUsers !== undefined ? access.canManageUsers : false,
       access.canManageLogs !== undefined ? access.canManageLogs : false,
       access.canManageTournaments !== undefined ? access.canManageTournaments : false,
+      access.canSendEmails !== undefined ? access.canSendEmails : false,
     ]
   ) as any;
   
@@ -845,10 +849,11 @@ export async function createStaffTournamentAccess(access: Omit<StaffTournamentAc
     canManageGroups: !!row.can_manage_groups,
     canManageMatches: !!row.can_manage_matches,
     canViewRegistrations: !!row.can_view_registrations,
-    canManageUsers: !!row.can_manage_users,
-    canManageLogs: !!row.can_manage_logs,
-    canManageTournaments: !!row.can_manage_tournaments,
-    createdAt: row.created_at.toISOString(),
+      canManageUsers: !!row.can_manage_users,
+      canManageLogs: !!row.can_manage_logs,
+      canManageTournaments: !!row.can_manage_tournaments,
+      canSendEmails: !!row.can_send_emails,
+      createdAt: row.created_at.toISOString(),
   };
 }
 
@@ -889,6 +894,10 @@ export async function updateStaffTournamentAccess(
     updateFields.push('can_manage_tournaments = ?');
     values.push(updates.canManageTournaments);
   }
+  if (updates.canSendEmails !== undefined) {
+    updateFields.push('can_send_emails = ?');
+    values.push(updates.canSendEmails);
+  }
   
   if (updateFields.length === 0) {
     throw new Error('No updates provided');
@@ -915,10 +924,11 @@ export async function updateStaffTournamentAccess(
     canManageGroups: !!row.can_manage_groups,
     canManageMatches: !!row.can_manage_matches,
     canViewRegistrations: !!row.can_view_registrations,
-    canManageUsers: !!row.can_manage_users,
-    canManageLogs: !!row.can_manage_logs,
-    canManageTournaments: !!row.can_manage_tournaments,
-    createdAt: row.created_at.toISOString(),
+      canManageUsers: !!row.can_manage_users,
+      canManageLogs: !!row.can_manage_logs,
+      canManageTournaments: !!row.can_manage_tournaments,
+      canSendEmails: !!row.can_send_emails,
+      createdAt: row.created_at.toISOString(),
   };
 }
 

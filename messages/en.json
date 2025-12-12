@@ -1402,6 +1402,7 @@
       "canManageUsers": "Manage Users",
       "canManageLogs": "Manage Logs",
       "canManageTournaments": "Manage Tournaments",
+      "canSendEmails": "Send Emails",
       "userRole": "User Role",
       "selectRole": "Select Role",
       "roleSuperadmin": "Super Admin",
