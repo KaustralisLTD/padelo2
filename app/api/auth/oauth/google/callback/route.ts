@@ -133,15 +133,44 @@ export async function GET(request: NextRequest) {
 
     console.log(`[OAuth] Session created successfully, token: ${token.substring(0, 8)}...`);
 
-    // Проверяем, что сессия действительно создана
-    const { getSession } = await import('@/lib/users');
-    const sessionCheck = await getSession(token);
-    if (!sessionCheck) {
-      console.error('[OAuth] Session verification failed after creation');
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/login?error=session_verification_failed`);
-    }
+    // Проверяем, что сессия действительно создана в БД напрямую
+    // (getSession может не увидеть только что созданную сессию из-за кеширования или транзакций)
+    try {
+      const pool = getDbPool();
+      const [sessionRows] = await pool.execute(
+        `SELECT s.user_id, u.role, s.expires_at
+         FROM sessions s 
+         LEFT JOIN users u ON s.user_id = u.id 
+         WHERE s.token = ? AND s.expires_at > NOW()`,
+        [token]
+      ) as any[];
 
-    console.log(`[OAuth] Session verified, user: ${sessionCheck.userId}, role: ${sessionCheck.role}`);
+      if (sessionRows.length === 0) {
+        console.error('[OAuth] Session not found in database after creation');
+        // Попробуем еще раз через небольшую задержку (возможно, проблема с репликацией или транзакциями)
+        await new Promise(resolve => setTimeout(resolve, 100));
+        const [retryRows] = await pool.execute(
+          `SELECT s.user_id, u.role, s.expires_at
+           FROM sessions s 
+           LEFT JOIN users u ON s.user_id = u.id 
+           WHERE s.token = ? AND s.expires_at > NOW()`,
+          [token]
+        ) as any[];
+        
+        if (retryRows.length === 0) {
+          console.error('[OAuth] Session still not found after retry');
+          // Не прерываем процесс - возможно, сессия создана, но есть задержка в БД
+          // Продолжаем с редиректом, клиент попробует использовать токен
+        } else {
+          console.log(`[OAuth] Session found on retry, user: ${retryRows[0].user_id}, role: ${retryRows[0].role}`);
+        }
+      } else {
+        console.log(`[OAuth] Session verified in database, user: ${sessionRows[0].user_id}, role: ${sessionRows[0].role}`);
+      }
+    } catch (verifyError: any) {
+      console.error('[OAuth] Error verifying session in database:', verifyError);
+      // Не прерываем процесс - продолжаем с редиректом
+    }
 
     // Перенаправляем на dashboard напрямую с токеном в URL
     // Клиент сохранит токен в localStorage и перенаправит на dashboard

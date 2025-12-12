@@ -591,7 +591,19 @@ export async function createSession(userId: string, expiresInDays: number = 7): 
       [token, userId, expiresAt]
     );
     
+    // Проверяем, что сессия действительно создана
+    const [verifyRows] = await pool.execute(
+      'SELECT token, user_id, expires_at FROM sessions WHERE token = ?',
+      [token]
+    ) as any[];
+    
+    if (verifyRows.length === 0) {
+      console.error(`❌ Session creation failed - session not found after INSERT for user ${userId}`);
+      throw new Error('Session creation failed - verification failed');
+    }
+    
     console.log(`✅ Session created for user ${userId}, token: ${token.substring(0, 8)}..., expires at ${expiresAt.toISOString()}`);
+    console.log(`✅ Session verification: found ${verifyRows.length} session(s) in database`);
     return token;
   } catch (error: any) {
     // Если БД недоступна, используем in-memory режим
@@ -656,7 +668,21 @@ export async function getSession(token: string): Promise<{ userId: string; role:
       [token]
     ) as any[];
 
+    console.log(`[getSession] Query result: ${rows.length} row(s) found for token ${token.substring(0, 8)}...`);
+
     if (rows.length === 0) {
+      // Проверяем, может быть сессия существует, но истекла
+      const [expiredRows] = await pool.execute(
+        'SELECT token, user_id, expires_at FROM sessions WHERE token = ?',
+        [token]
+      ) as any[];
+      
+      if (expiredRows.length > 0) {
+        console.log(`[getSession] Session found but expired. Expires at: ${expiredRows[0].expires_at}, Now: ${new Date().toISOString()}`);
+      } else {
+        console.log(`[getSession] Session not found in database for token ${token.substring(0, 8)}...`);
+      }
+      
       // Удаляем истекшие сессии асинхронно (не блокируем ответ)
       pool.execute('DELETE FROM sessions WHERE token = ? AND expires_at <= NOW()', [token]).catch(() => {});
       return null;
@@ -664,10 +690,13 @@ export async function getSession(token: string): Promise<{ userId: string; role:
 
     // Проверяем, что пользователь существует
     if (!rows[0].user_id || !rows[0].role) {
+      console.error(`[getSession] Session found but user missing: user_id=${rows[0].user_id}, role=${rows[0].role}`);
       // Удаляем сессию с несуществующим пользователем асинхронно
       pool.execute('DELETE FROM sessions WHERE token = ?', [token]).catch(() => {});
       return null;
     }
+
+    console.log(`[getSession] Session valid: userId=${rows[0].user_id}, role=${rows[0].role}`);
 
     return {
       userId: rows[0].user_id,
