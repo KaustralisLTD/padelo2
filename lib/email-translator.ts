@@ -99,8 +99,21 @@ export async function translateEmailHTML(
         // Check if this text contains any protected strings
         const containsProtectedString = protectedStrings.some(protectedStr => {
           if (!protectedStr || protectedStr.trim().length === 0) return false;
+          // Escape special regex characters
+          const escaped = protectedStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           // Case-insensitive check - also check in original text with whitespace
-          const regex = new RegExp(protectedStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          const regex = new RegExp(escaped, 'gi');
+          // Also check for partial matches (e.g., "PadelO" in "PadelO₂" or "ПаделО")
+          // This prevents translation of brand name even if it appears partially
+          const partialMatch = protectedStr.includes('PadelO') || protectedStr.includes('PadelO₂');
+          if (partialMatch) {
+            // Check for common variations that should not be translated
+            const variations = ['PadelO', 'PadelO₂', 'PadelO2', 'padelo', 'padelo2', 'ПаделО', 'ПаделО₂', 'ПадельО'];
+            return variations.some(variation => {
+              const variationRegex = new RegExp(variation.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+              return variationRegex.test(trimmedText) || variationRegex.test(text);
+            });
+          }
           return regex.test(trimmedText) || regex.test(text);
         });
         
