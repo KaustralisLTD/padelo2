@@ -178,6 +178,19 @@ const EMAIL_TEMPLATES: EmailTemplate[] = [
     description: 'Account deletion confirmation',
     category: 'clients',
   },
+  // Staff emails
+  {
+    id: 'staff-access-granted',
+    name: 'Staff Access Granted',
+    description: 'Notify staff member about granted admin access',
+    category: 'staff',
+  },
+  {
+    id: 'role-change',
+    name: 'Role Change Notification',
+    description: 'Notify user about role change',
+    category: 'staff',
+  },
 ];
 
 const LANGUAGES = [
@@ -239,6 +252,9 @@ export default function EmailTemplatesContent() {
     locale: 'en',
     phone: '+34 662 423 738',
     contactEmail: 'partner@padelO2.com',
+    newRole: 'staff',
+    oldRole: '',
+    adminPanelUrl: '',
   });
 
   // Check authorization
@@ -443,6 +459,8 @@ export default function EmailTemplatesContent() {
           tournamentId: tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
           userIds: selectedCategory === 'clients' ? selectedUserIds : undefined,
+          newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
+          oldRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.oldRole : undefined,
         }),
       });
 
@@ -551,9 +569,11 @@ export default function EmailTemplatesContent() {
           customHtml: useCustomHtml ? editableHtml : undefined,
           templateId: selectedTemplate,
           category: selectedCategory,
-          tournamentId: tournamentScope === 'specific' ? selectedTournamentId : null,
+          tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients' || (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted')) && tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
-          userIds: selectedCategory === 'clients' ? selectedUserIds : undefined,
+          userIds: (selectedCategory === 'clients' || selectedCategory === 'staff') ? selectedUserIds : undefined,
+          newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
+          oldRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.oldRole : undefined,
         }),
       });
 
@@ -574,6 +594,9 @@ export default function EmailTemplatesContent() {
         locale: 'en',
         phone: '+34 662 423 738',
         contactEmail: 'partner@padelO2.com',
+        newRole: 'staff',
+        oldRole: '',
+        adminPanelUrl: '',
       });
       setSelectedUserIds([]);
       setSelectedTournamentId('');
@@ -856,33 +879,70 @@ export default function EmailTemplatesContent() {
                   )}
                 </div>
 
-                {/* Contact Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Contact Phone
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                      placeholder="+34 662 423 738"
-                    />
+                {/* Staff-specific fields */}
+                {selectedCategory === 'staff' && selectedTemplate === 'role-change' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        New Role
+                      </label>
+                      <select
+                        value={formData.newRole}
+                        onChange={(e) => setFormData({ ...formData, newRole: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                      >
+                        <option value="superadmin">Super Administrator</option>
+                        <option value="tournament_admin">Tournament Administrator</option>
+                        <option value="manager">Manager</option>
+                        <option value="coach">Coach</option>
+                        <option value="staff">Staff</option>
+                        <option value="participant">Participant</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Previous Role (optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.oldRole}
+                        onChange={(e) => setFormData({ ...formData, oldRole: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        placeholder="participant"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Contact Email
-                    </label>
-                    <input
-                      type="email"
-                      value={formData.contactEmail}
-                      onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                      placeholder="partner@padelO2.com"
-                    />
+                )}
+
+                {/* Contact Info - только для Partners */}
+                {selectedCategory === 'partners' && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Contact Phone
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        placeholder="+34 662 423 738"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Contact Email
+                      </label>
+                      <input
+                        type="email"
+                        value={formData.contactEmail}
+                        onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        placeholder="partner@padelO2.com"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Success Message */}
                 {success && (

@@ -188,6 +188,25 @@ export async function POST(request: NextRequest) {
               templateData.tournament = tournamentData;
             }
             
+            // Staff templates specific data
+            if (templateId === 'staff-access-granted') {
+              templateData.tournamentName = tournamentData?.name || 'Tournament';
+              templateData.permissions = {
+                canManageGroups: false,
+                canManageMatches: false,
+                canViewRegistrations: false,
+                canManageUsers: false,
+                canManageLogs: false,
+                canManageTournaments: false,
+                canSendEmails: false,
+              };
+              templateData.adminPanelUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale || 'en'}/admin/dashboard`;
+            } else if (templateId === 'role-change') {
+              templateData.newRole = body.newRole || 'staff';
+              templateData.oldRole = body.oldRole;
+              templateData.adminPanelUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale || 'en'}/admin/dashboard`;
+            }
+            
             html = await generateEmailTemplateHTML({
               templateId,
               data: templateData,

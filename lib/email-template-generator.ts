@@ -353,6 +353,18 @@ export async function generateEmailTemplateHTML(options: TemplateGeneratorOption
         });
         subject = `Admin Access Granted - ${data.tournamentName || 'Tournament'}`;
         break;
+
+      case 'role-change':
+        innerHTML = staffTemplates.getRoleChangeEmailTemplate({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          newRole: data.newRole,
+          oldRole: data.oldRole,
+          adminPanelUrl: data.adminPanelUrl,
+          locale: data.locale || locale,
+        });
+        subject = `Your Role Has Been Updated - PadelO₂`;
+        break;
         
       default:
         throw new Error(`Template ${templateId} not found`);

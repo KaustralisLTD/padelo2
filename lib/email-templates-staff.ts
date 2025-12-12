@@ -445,3 +445,350 @@ export function getStaffAccessGrantedEmailTemplate(data: StaffAccessGrantedEmail
   `.trim();
 }
 
+// 2. Role Change Notification
+export interface RoleChangeEmailData {
+  firstName: string;
+  lastName?: string;
+  newRole: string;
+  oldRole?: string;
+  adminPanelUrl: string;
+  locale?: string;
+}
+
+export function getRoleChangeEmailTemplate(data: RoleChangeEmailData): string {
+  const { firstName, lastName, newRole, oldRole, adminPanelUrl, locale = 'en' } = data;
+  const name = firstName && lastName ? `${firstName} ${lastName}` : firstName || 'User';
+  const firstNameOnly = firstName || name.split(' ')[0] || 'User';
+
+  const roleTranslations: Record<string, Record<string, string>> = {
+    en: {
+      superadmin: 'Super Administrator',
+      tournament_admin: 'Tournament Administrator',
+      manager: 'Manager',
+      coach: 'Coach',
+      staff: 'Staff',
+      participant: 'Participant',
+    },
+    ru: {
+      superadmin: 'Супер Администратор',
+      tournament_admin: 'Администратор Турнира',
+      manager: 'Менеджер',
+      coach: 'Тренер',
+      staff: 'Персонал',
+      participant: 'Участник',
+    },
+    ua: {
+      superadmin: 'Супер Адміністратор',
+      tournament_admin: 'Адміністратор Турніру',
+      manager: 'Менеджер',
+      coach: 'Тренер',
+      staff: 'Персонал',
+      participant: 'Учасник',
+    },
+    es: {
+      superadmin: 'Super Administrador',
+      tournament_admin: 'Administrador de Torneo',
+      manager: 'Gerente',
+      coach: 'Entrenador',
+      staff: 'Personal',
+      participant: 'Participante',
+    },
+    fr: {
+      superadmin: 'Super Administrateur',
+      tournament_admin: 'Administrateur de Tournoi',
+      manager: 'Gestionnaire',
+      coach: 'Entraîneur',
+      staff: 'Personnel',
+      participant: 'Participant',
+    },
+    de: {
+      superadmin: 'Super Administrator',
+      tournament_admin: 'Turnieradministrator',
+      manager: 'Manager',
+      coach: 'Trainer',
+      staff: 'Personal',
+      participant: 'Teilnehmer',
+    },
+    it: {
+      superadmin: 'Super Amministratore',
+      tournament_admin: 'Amministratore del Torneo',
+      manager: 'Manager',
+      coach: 'Allenatore',
+      staff: 'Personale',
+      participant: 'Partecipante',
+    },
+  };
+
+  const translations: Record<string, Record<string, string>> = {
+    en: {
+      subject: `Your Role Has Been Updated - PadelO₂`,
+      greeting: 'Hello',
+      message: `Your role has been changed to <strong>${roleTranslations.en[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Your New Role',
+      oldRoleLabel: 'Previous Role',
+      button: 'Go to Admin Panel',
+      footer: 'Welcome to the team!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'You are receiving this email because your role was updated on',
+      whatNext: 'What&apos;s Next?',
+      whatNextDesc: 'You now have access to the admin panel where you can manage tournaments, participants, and system settings.',
+    },
+    ru: {
+      subject: `Ваша роль обновлена - PadelO₂`,
+      greeting: 'Здравствуйте',
+      message: `Ваша роль изменена на <strong>${roleTranslations.ru[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Ваша новая роль',
+      oldRoleLabel: 'Предыдущая роль',
+      button: 'Перейти в админ-панель',
+      footer: 'Добро пожаловать в команду!',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Вы получаете это письмо, потому что ваша роль была обновлена на',
+      whatNext: 'Что дальше?',
+      whatNextDesc: 'Теперь у вас есть доступ к админ-панели, где вы можете управлять турнирами, участниками и настройками системы.',
+    },
+    ua: {
+      subject: `Вашу роль оновлено - PadelO₂`,
+      greeting: 'Вітаємо',
+      message: `Вашу роль змінено на <strong>${roleTranslations.ua[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Ваша нова роль',
+      oldRoleLabel: 'Попередня роль',
+      button: 'Перейти до адмін-панелі',
+      footer: 'Ласкаво просимо до команди!',
+      team: 'Команда PadelO₂',
+      receivingEmail: 'Ви отримуєте цей лист, тому що вашу роль було оновлено на',
+      whatNext: 'Що далі?',
+      whatNextDesc: 'Тепер у вас є доступ до адмін-панелі, де ви можете керувати турнірами, учасниками та налаштуваннями системи.',
+    },
+    es: {
+      subject: `Tu rol ha sido actualizado - PadelO₂`,
+      greeting: 'Hola',
+      message: `Tu rol ha sido cambiado a <strong>${roleTranslations.es[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Tu nuevo rol',
+      oldRoleLabel: 'Rol anterior',
+      button: 'Ir al Panel de Administración',
+      footer: '¡Bienvenido al equipo!',
+      team: 'Equipo PadelO₂',
+      receivingEmail: 'Estás recibiendo este correo porque tu rol fue actualizado en',
+      whatNext: '¿Qué sigue?',
+      whatNextDesc: 'Ahora tienes acceso al panel de administración donde puedes gestionar torneos, participantes y configuraciones del sistema.',
+    },
+    fr: {
+      subject: `Votre rôle a été mis à jour - PadelO₂`,
+      greeting: 'Bonjour',
+      message: `Votre rôle a été changé en <strong>${roleTranslations.fr[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Votre nouveau rôle',
+      oldRoleLabel: 'Rôle précédent',
+      button: 'Aller au Panneau d&apos;Administration',
+      footer: 'Bienvenue dans l&apos;équipe!',
+      team: 'Équipe PadelO₂',
+      receivingEmail: 'Vous recevez cet email car votre rôle a été mis à jour sur',
+      whatNext: 'Et maintenant?',
+      whatNextDesc: 'Vous avez maintenant accès au panneau d&apos;administration où vous pouvez gérer les tournois, les participants et les paramètres du système.',
+    },
+    de: {
+      subject: `Ihre Rolle wurde aktualisiert - PadelO₂`,
+      greeting: 'Hallo',
+      message: `Ihre Rolle wurde geändert zu <strong>${roleTranslations.de[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Ihre neue Rolle',
+      oldRoleLabel: 'Vorherige Rolle',
+      button: 'Zum Admin-Panel gehen',
+      footer: 'Willkommen im Team!',
+      team: 'PadelO₂ Team',
+      receivingEmail: 'Sie erhalten diese E-Mail, weil Ihre Rolle auf aktualisiert wurde',
+      whatNext: 'Was kommt als Nächstes?',
+      whatNextDesc: 'Sie haben jetzt Zugriff auf das Admin-Panel, wo Sie Turniere, Teilnehmer und Systemeinstellungen verwalten können.',
+    },
+    it: {
+      subject: `Il tuo ruolo è stato aggiornato - PadelO₂`,
+      greeting: 'Ciao',
+      message: `Il tuo ruolo è stato cambiato in <strong>${roleTranslations.it[newRole] || newRole}</strong>.`,
+      newRoleLabel: 'Il tuo nuovo ruolo',
+      oldRoleLabel: 'Ruolo precedente',
+      button: 'Vai al Pannello di Amministrazione',
+      footer: 'Benvenuto nella squadra!',
+      team: 'Squadra PadelO₂',
+      receivingEmail: 'Stai ricevendo questa email perché il tuo ruolo è stato aggiornato su',
+      whatNext: 'Cosa succede ora?',
+      whatNextDesc: 'Ora hai accesso al pannello di amministrazione dove puoi gestire tornei, partecipanti e impostazioni di sistema.',
+    },
+  };
+
+  const t = translations[locale] || translations.en;
+  const roleT = roleTranslations[locale] || roleTranslations.en;
+
+  function getBrandTagline(locale: string): string {
+    const taglines: Record<string, string> = {
+      en: 'Breathe & live padel',
+      ru: 'Дыши и живи паделем',
+      ua: 'Дихай та живи паделем',
+      es: 'Respira y vive el pádel',
+      fr: 'Respirez et vivez le padel',
+      de: 'Atme und lebe Padel',
+      it: 'Respira e vivi il padel',
+    };
+    return taglines[locale] || taglines.en;
+  }
+
+  return `
+<!DOCTYPE html>
+<html lang="${locale}" dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="margin:0;padding:0;">
+  <head>
+    <meta charset="UTF-8" />
+    <title>${t.subject}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body { margin: 0; padding: 0; background-color: #f8fafc !important; }
+      table { border-spacing: 0; border-collapse: collapse; }
+      img { border: 0; display: block; outline: none; text-decoration: none; }
+      a { text-decoration: none; }
+      .wrapper { width: 100%; padding: 32px 10px; }
+      .main { width: 100%; max-width: 640px; margin: 0 auto; background: #ffffff !important; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); }
+      .font-default { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; }
+      .h1 { font-size: 24px; font-weight: 700; color: #0f172a; margin: 0 0 12px 0; }
+      .lead { font-size: 16px; line-height: 1.6; color: #1f2937; margin: 0 0 16px 0; }
+      .muted { color: #6b7280; font-size: 14px; }
+      .p-hero { padding: 22px 30px 12px 30px; }
+      .p-body { padding: 20px 30px 10px 30px; }
+      .p-footer { padding: 10px 30px 24px 30px; }
+      .social-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f1f5f9; border-radius: 20px; text-decoration: none; color: #475569; font-size: 12px; margin: 3px 4px; }
+      .social-icon-circle { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: white; }
+      .social-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+      .social-yt { background: #ff0000; }
+      .social-tt { background: #000000; }
+      .social-fb { background: #1877f2; }
+    </style>
+  </head>
+  <body class="font-default" style="margin:0;padding:0;background-color:#f8fafc !important;">
+    <table role="presentation" class="wrapper" width="100%" style="background-color:#f8fafc !important;">
+      <tr>
+        <td align="center" style="background-color:#f8fafc !important;">
+          <table role="presentation" class="main" style="background-color:#ffffff !important;">
+            <!-- HEADER -->
+            <tr>
+              <td class="p-hero" style="padding: 22px 30px 12px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <div style="font-weight: 800; font-size: 22px; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase;">
+                        PadelO<span style="font-size:1.55em; vertical-align:-2px; line-height:0;">₂</span>
+                      </div>
+                      <div style="font-size: 12px; color: #0369a1; margin-top: 3px; letter-spacing: 0.16em; text-transform: uppercase;">
+                        ${getBrandTagline(locale)}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- TOP DIVIDER -->
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td style="height: 3px; background: linear-gradient(90deg, #06b6d4 0, #22c55e 45%, #06b6d4 100%); opacity: 0.9;"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- BODY -->
+            <tr>
+              <td class="p-body" style="padding: 20px 30px 10px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default">
+                      <div class="h1" style="margin: 0 0 10px 0;">${t.greeting} ${firstNameOnly}!</div>
+                      <p class="lead" style="margin: 0 0 12px 0;">${t.message}</p>
+                      
+                      <div style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 16px; border-radius: 8px; margin: 20px 0;">
+                        <p style="margin: 0 0 8px 0; font-weight: 600; color: #0f172a; font-size: 14px;">${t.newRoleLabel}:</p>
+                        <p style="margin: 0; font-size: 18px; font-weight: 700; color: #16a34a;">${roleT[newRole] || newRole}</p>
+                        ${oldRole ? `
+                        <p style="margin: 8px 0 0 0; font-weight: 600; color: #0f172a; font-size: 14px;">${t.oldRoleLabel}:</p>
+                        <p style="margin: 0; font-size: 14px; color: #6b7280;">${roleT[oldRole] || oldRole}</p>
+                        ` : ''}
+                      </div>
+
+                      <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin: 20px 0;">
+                        <p style="margin: 0 0 8px 0; font-weight: 600; color: #0f172a; font-size: 16px;">${t.whatNext}</p>
+                        <p style="margin: 0; color: #4a4a4a; font-size: 14px; line-height: 1.6;">${t.whatNextDesc}</p>
+                      </div>
+
+                      <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 20px auto;">
+                        <tr>
+                          <td style="border-radius: 8px; background: linear-gradient(to right, #06b6d4, #22c55e); text-align: center;">
+                            <a href="${adminPanelUrl}" target="_blank" style="background: linear-gradient(to right, #06b6d4, #22c55e); border: 1px solid #06b6d4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.4; text-decoration: none; padding: 12px 24px; color: #ffffff; border-radius: 8px; display: inline-block; font-weight: 600;">
+                              ${t.button}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td class="p-footer" style="padding: 10px 30px 24px 30px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td class="font-default" valign="middle">
+                      <span class="muted" style="font-size: 11px;">${t.receivingEmail || 'Follow the journey:'}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table role="presentation" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="padding: 3px 4px 3px 0%;">
+                            <a href="https://www.instagram.com/padelo2com/" class="social-pill">
+                              <span class="social-icon-circle social-ig">IG</span>
+                              <span>Instagram</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 4px;">
+                            <a href="https://www.youtube.com/@PadelO2" class="social-pill">
+                              <span class="social-icon-circle social-yt">YT</span>
+                              <span>YouTube</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 4px;">
+                            <a href="https://www.tiktok.com/@padelo2com" class="social-pill">
+                              <span class="social-icon-circle social-tt">TT</span>
+                              <span>TikTok</span>
+                            </a>
+                          </td>
+                          <td style="padding: 3px 0 3px 4px;">
+                            <a href="https://www.facebook.com/profile.php?id=61583860325680" class="social-pill">
+                              <span class="social-icon-circle social-fb">f</span>
+                              <span>Facebook</span>
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding-top: 16px;">
+                      <p class="muted" style="margin: 0 0 4px 0;">${t.receivingEmail} <span style="color: #0369a1;">PadelO₂.com</span>.</p>
+                      <p class="muted" style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PadelO<span style="font-size:1.4em; vertical-align:-1px; line-height:0;">₂</span>. All rights reserved.</p>
+                      <p style="margin: 0 0 10px 0; color: #666666; font-size: 16px; font-weight: 600;">${t.footer}</p>
+                      <p style="margin: 0; color: #999999; font-size: 14px;">${t.team}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+  `.trim();
+}
+
