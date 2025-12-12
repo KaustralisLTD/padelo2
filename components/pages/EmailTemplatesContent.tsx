@@ -396,12 +396,16 @@ export default function EmailTemplatesContent() {
     if (!token) return;
 
     // Validation
-    if (selectedCategory === 'clients' && selectedUserIds.length === 0 && !formData.email) {
+    if ((selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length === 0 && !formData.email) {
       setError('Please select at least one user or enter an email');
       return;
     }
     if ((selectedCategory === 'partners' || (selectedCategory === 'clients' && tournamentScope === 'specific')) && !selectedTournamentId) {
       setError('Please select a tournament');
+      return;
+    }
+    if (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted' && !selectedTournamentId) {
+      setError('Please select a tournament for staff access');
       return;
     }
 
@@ -456,7 +460,8 @@ export default function EmailTemplatesContent() {
           partnerName: formData.recipientName,
           partnerCompany: formData.company,
           templateId: selectedTemplate,
-          tournamentId: tournamentScope === 'specific' ? selectedTournamentId : null,
+          category: selectedCategory,
+          tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients' || (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted')) && tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
           userIds: (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') ? selectedUserIds : undefined,
           newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
@@ -822,7 +827,7 @@ export default function EmailTemplatesContent() {
                 </div>
 
                 {/* Company - только для Partners */}
-                {selectedCategory !== 'clients' && (
+                {selectedCategory === 'partners' && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Company Name

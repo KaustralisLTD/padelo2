@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateSponsorshipProposalEmailHTML } from '@/lib/resend-template-helper';
+import { generateEmailTemplateHTML } from '@/lib/email-template-generator';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
 
@@ -55,6 +56,10 @@ export async function POST(request: NextRequest) {
       templateId,
       tournamentId,
       tournamentScope,
+      userIds,
+      newRole,
+      oldRole,
+      category,
     } = body;
 
     let html = '';
@@ -84,8 +89,52 @@ export async function POST(request: NextRequest) {
         tournament: tournamentData,
       });
     } else {
-      // For other templates, we'll need to implement them
-      html = '<p>Template not yet implemented</p>';
+      // Use the template generator for other templates
+      let templateData: any = {
+        locale: locale || 'en',
+        tournament: tournamentData,
+      };
+      
+      // Add user-specific data if available
+      if (userIds && Array.isArray(userIds) && userIds.length > 0) {
+        // For preview, use the first user's data or generic data
+        templateData.firstName = partnerName || '';
+        templateData.lastName = '';
+      } else if (email) {
+        templateData.firstName = partnerName || '';
+        templateData.lastName = '';
+      }
+      
+      // Add template-specific data
+      if (templateId.includes('tournament')) {
+        templateData.categories = [];
+        templateData.tournament = tournamentData;
+      }
+      
+      // Staff templates specific data
+      if (templateId === 'staff-access-granted') {
+        templateData.tournamentName = tournamentData?.name || 'Tournament';
+        templateData.permissions = {
+          canManageGroups: false,
+          canManageMatches: false,
+          canViewRegistrations: false,
+          canManageUsers: false,
+          canManageLogs: false,
+          canManageTournaments: false,
+          canSendEmails: false,
+        };
+        templateData.adminPanelUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale || 'en'}/admin/dashboard`;
+      } else if (templateId === 'role-change') {
+        templateData.newRole = newRole || 'staff';
+        templateData.oldRole = oldRole;
+        templateData.adminPanelUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${locale || 'en'}/admin/dashboard`;
+      }
+      
+      html = await generateEmailTemplateHTML({
+        templateId,
+        data: templateData,
+        locale: locale || 'en',
+      });
     }
 
     return NextResponse.json({ html });
