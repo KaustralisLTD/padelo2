@@ -71,7 +71,7 @@ const senderNameTranslations: Record<string, Record<string, string>> = {
   'Partner PadelO₂': {
     en: 'Partner PadelO₂',
     ru: 'Партнер PadelO₂',
-    ua: 'Партнер ПаделО₂',
+    ua: 'Партнер PadelO₂',
     es: 'Socio PadelO₂',
     fr: 'Partenaire PadelO₂',
     de: 'Partner PadelO₂',

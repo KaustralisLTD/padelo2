@@ -190,8 +190,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Collect protected strings (tournament name, person names, company names)
+    // Collect protected strings (tournament name, person names, company names, brand name)
     const protectedStrings: string[] = [];
+    
+    // Add brand name (always protect PadelO₂ from translation)
+    protectedStrings.push('PadelO₂');
+    protectedStrings.push('PadelO₂.com');
     
     // Add tournament name
     if (tournamentData?.name) {
