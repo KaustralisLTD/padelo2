@@ -75,31 +75,46 @@ export async function translateEmailHTML(
 
   try {
     // Extract text nodes from HTML first
-    const textNodes: Array<{ text: string; placeholder: string; protectedText?: string; replacements?: Array<{ placeholder: string; original: string }> }> = [];
+    const textNodes: Array<{ 
+      text: string; 
+      placeholder: string; 
+      leadingWhitespace?: string;
+      trailingWhitespace?: string;
+      protectedText?: string; 
+      replacements?: Array<{ placeholder: string; original: string }> 
+    }> = [];
     let placeholderIndex = 0;
     let processedHtml = html;
 
     // Match text content between tags (but not inside script/style tags)
+    // Preserve whitespace around tags to maintain spacing
     processedHtml = html.replace(/>([^<]+)</g, (match, text) => {
+      // Preserve leading and trailing whitespace
+      const leadingWhitespace = text.match(/^(\s*)/)?.[1] || '';
+      const trailingWhitespace = text.match(/(\s*)$/)?.[1] || '';
       const trimmedText = text.trim();
+      
       // Skip if it's just whitespace or very short
       if (trimmedText && trimmedText.length > 2 && !trimmedText.match(/^[\s\n\r]*$/)) {
         // Check if this text contains any protected strings
         const containsProtectedString = protectedStrings.some(protectedStr => {
           if (!protectedStr || protectedStr.trim().length === 0) return false;
-          // Case-insensitive check
-          return new RegExp(protectedStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi').test(trimmedText);
+          // Case-insensitive check - also check in original text with whitespace
+          const regex = new RegExp(protectedStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+          return regex.test(trimmedText) || regex.test(text);
         });
         
         const placeholder = `__TRANSLATE_PLACEHOLDER_${placeholderIndex}__`;
         textNodes.push({ 
-          text: trimmedText, 
+          text: trimmedText,
           placeholder,
+          leadingWhitespace,
+          trailingWhitespace,
           protectedText: containsProtectedString ? trimmedText : undefined, // Don't translate if contains protected strings
           replacements: containsProtectedString ? [] : undefined
         });
         placeholderIndex++;
-        return `>${placeholder}<`;
+        return `>${leadingWhitespace}${placeholder}${trailingWhitespace}<`;
       }
       return match;
     });
@@ -131,19 +146,30 @@ export async function translateEmailHTML(
     }
 
     // Replace placeholders with translated or original text
+    // Restore whitespace around text nodes
     let translatedHtml = processedHtml;
     
     // First, restore nodes that were translated
     let translationIndex = 0;
     nodesToTranslate.forEach(({ node }) => {
       const translatedText = translatedTexts[translationIndex] || node.text;
-      translatedHtml = translatedHtml.replace(node.placeholder, translatedText);
+      // Restore with preserved whitespace
+      const restoredText = `${node.leadingWhitespace || ''}${translatedText}${node.trailingWhitespace || ''}`;
+      translatedHtml = translatedHtml.replace(
+        new RegExp(`>\\s*${node.placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*<`, 'g'),
+        `>${restoredText}<`
+      );
       translationIndex++;
     });
     
-    // Then, restore nodes that were skipped (contain tournament names)
+    // Then, restore nodes that were skipped (contain protected strings)
     nodesToSkip.forEach(({ node }) => {
-      translatedHtml = translatedHtml.replace(node.placeholder, node.text);
+      // Restore original text with preserved whitespace
+      const restoredText = `${node.leadingWhitespace || ''}${node.text}${node.trailingWhitespace || ''}`;
+      translatedHtml = translatedHtml.replace(
+        new RegExp(`>\\s*${node.placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*<`, 'g'),
+        `>${restoredText}<`
+      );
     });
 
     return translatedHtml;
