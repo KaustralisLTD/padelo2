@@ -202,8 +202,8 @@ export async function POST(request: NextRequest) {
     if (partnerName) {
       protectedStrings.push(partnerName);
     }
-    // Contact name is hardcoded in template, but we can add it if needed
-    // 'Sergii Shchurenko' is in the template, but we'll let it translate as it's a standard name
+    // Add contact name (hardcoded in template)
+    protectedStrings.push('Sergii Shchurenko');
     
     // Add company name
     if (partnerCompany) {
