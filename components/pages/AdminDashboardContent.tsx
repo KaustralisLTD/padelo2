@@ -85,6 +85,7 @@ export default function AdminDashboardContent() {
     return (
       <>
         {showOnboarding && <AdminDashboardOnboarding />}
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-2 gradient-text">
@@ -250,7 +251,8 @@ export default function AdminDashboardContent() {
             </p>
           </Link>
         </div>
-      </div>
+        </div>
+        </div>
       </>
     );
   }
@@ -260,7 +262,8 @@ export default function AdminDashboardContent() {
     return (
       <>
         {showOnboarding && <AdminDashboardOnboarding />}
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-2 gradient-text">
             {t('staff.title')}
@@ -305,7 +308,8 @@ export default function AdminDashboardContent() {
             </p>
           </Link>
         </div>
-      </div>
+        </div>
+        </div>
       </>
     );
   }
