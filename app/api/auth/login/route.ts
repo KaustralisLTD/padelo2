@@ -146,7 +146,13 @@ export async function GET(request: NextRequest) {
     await ensureInitialized();
     
     const authHeader = request.headers.get('authorization');
-    const token = authHeader?.replace('Bearer ', '');
+    let token = authHeader?.replace('Bearer ', '');
+
+    // Если токен не в заголовке, проверяем cookie
+    if (!token) {
+      const cookies = request.cookies;
+      token = cookies.get('auth_token')?.value;
+    }
 
     if (!token) {
       return NextResponse.json(

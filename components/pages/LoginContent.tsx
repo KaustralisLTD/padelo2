@@ -30,6 +30,7 @@ export default function LoginContent() {
     const token = searchParams.get('token');
     const success = searchParams.get('success');
     const errorParam = searchParams.get('error');
+    const oauth = searchParams.get('oauth');
 
     if (errorParam) {
       setError(t(`errors.${errorParam}`) || t('errors.oauthFailed'));
@@ -37,10 +38,35 @@ export default function LoginContent() {
     }
 
     if (token && success === 'true') {
+      // Сохраняем токен в localStorage
       localStorage.setItem('auth_token', token);
+      
+      // Также проверяем cookie (на случай если установлен)
+      const cookieToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1];
+      
+      if (cookieToken && cookieToken !== token) {
+        // Если cookie отличается, обновляем его
+        document.cookie = `auth_token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`;
+      }
+      
       // Dispatch custom event to notify Header about auth change
       window.dispatchEvent(new Event('auth-changed'));
-      router.push(`/${locale}/dashboard`);
+      
+      // Для OAuth входа сразу перенаправляем на dashboard
+      if (oauth === 'true') {
+        // Небольшая задержка для гарантии сохранения токена
+        setTimeout(() => {
+          router.replace(`/${locale}/dashboard`);
+        }, 50);
+      } else {
+        // Для обычного входа через форму
+        setTimeout(() => {
+          router.replace(`/${locale}/dashboard`);
+        }, 100);
+      }
     }
   }, [searchParams, router, locale, t]);
 

@@ -125,13 +125,29 @@ export async function GET(request: NextRequest) {
     // Создаем сессию
     const token = await createSession(userId, 30); // 30 дней для OAuth
 
-    // Перенаправляем на главную страницу с токеном
-    const redirectUrl = new URL(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/login`);
+    if (!token) {
+      console.error('Failed to create session token');
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/login?error=session_creation_failed`);
+    }
+
+    // Перенаправляем на dashboard напрямую с токеном в URL
+    // Клиент сохранит токен в localStorage и перенаправит на dashboard
+    const redirectUrl = new URL(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com'}/${process.env.DEFAULT_LOCALE || 'en'}/login`);
     redirectUrl.searchParams.set('token', token);
     redirectUrl.searchParams.set('success', 'true');
+    redirectUrl.searchParams.set('oauth', 'true'); // Флаг для OAuth входа
 
     const response = NextResponse.redirect(redirectUrl.toString());
     response.cookies.delete('oauth_state');
+    
+    // Также устанавливаем токен в cookie для дополнительной надежности
+    response.cookies.set('auth_token', token, {
+      httpOnly: false, // Нужно для клиентского доступа
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 30 * 24 * 60 * 60, // 30 дней
+      path: '/',
+    });
 
     return response;
   } catch (error: any) {
