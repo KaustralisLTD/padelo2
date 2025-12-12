@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface MenuItem {
   href: string;
@@ -27,6 +28,9 @@ export default function AdminSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loadingTournaments, setLoadingTournaments] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState(false);
 
   // Load collapsed state from localStorage
   useEffect(() => {
@@ -78,7 +82,39 @@ export default function AdminSidebar() {
     };
 
     fetchTournaments();
+    fetchUserInfo();
   }, []);
+
+  const fetchUserInfo = async () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    if (!token) return;
+
+    try {
+      // Get user role
+      const userResponse = await fetch('/api/auth/login', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setUserRole(userData.session?.role || null);
+        
+        // If not superadmin, get company logo
+        if (userData.session?.role !== 'superadmin') {
+          const companyResponse = await fetch('/api/admin/company', {
+            headers: { 'Authorization': `Bearer ${token}` },
+          });
+          if (companyResponse.ok) {
+            const companyData = await companyResponse.json();
+            if (companyData.company?.logo_url) {
+              setCompanyLogo(companyData.company.logo_url);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
 
   const toggleExpanded = (href: string) => {
     setExpandedItems(prev =>
@@ -209,8 +245,32 @@ export default function AdminSidebar() {
       <div className="p-4 border-b border-border flex items-center justify-between relative">
         {!isCollapsed && (
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-background font-bold text-xl">P</span>
+            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center overflow-hidden">
+              {userRole === 'superadmin' ? (
+                logoError ? (
+                  <span className="text-background font-bold text-xl">P</span>
+                ) : (
+                  <Image
+                    src="/favicon.ico"
+                    alt="PadelO₂"
+                    width={40}
+                    height={40}
+                    className="object-contain"
+                    onError={() => setLogoError(true)}
+                  />
+                )
+              ) : companyLogo && !logoError ? (
+                <Image
+                  src={companyLogo}
+                  alt="Company Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <span className="text-background font-bold text-xl">P</span>
+              )}
             </div>
             <div>
               <h2 className="font-poppins font-bold text-text text-lg">PadelO₂</h2>
@@ -219,8 +279,32 @@ export default function AdminSidebar() {
           </div>
         )}
         {isCollapsed && (
-          <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto">
-            <span className="text-background font-bold text-xl">P</span>
+          <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto overflow-hidden">
+            {userRole === 'superadmin' ? (
+              logoError ? (
+                <span className="text-background font-bold text-xl">P</span>
+              ) : (
+                <Image
+                  src="/favicon.ico"
+                  alt="PadelO₂"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                  onError={() => setLogoError(true)}
+                />
+              )
+            ) : companyLogo && !logoError ? (
+              <Image
+                src={companyLogo}
+                alt="Company Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <span className="text-background font-bold text-xl">P</span>
+            )}
           </div>
         )}
         <button

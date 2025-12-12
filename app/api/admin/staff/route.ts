@@ -107,6 +107,64 @@ export async function POST(request: NextRequest) {
       canSendEmails,
     });
 
+    // Send email notification to the staff member
+    try {
+      const { findUserById } = await import('@/lib/users');
+      const { getTournament } = await import('@/lib/tournaments');
+      const { sendEmail } = await import('@/lib/email');
+      const { generateEmailTemplateHTML } = await import('@/lib/email-template-generator');
+      
+      const user = await findUserById(userId);
+      const tournament = await getTournament(tournamentId);
+      
+      if (user && tournament && user.email) {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+        const userLocale = (user as any).preferredLanguage || 'en';
+        const adminPanelUrl = `${siteUrl}/${userLocale}/admin/dashboard`;
+        
+        const emailHTML = await generateEmailTemplateHTML({
+          templateId: 'staff-access-granted',
+          data: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            tournamentName: tournament.name,
+            permissions: {
+              canManageGroups,
+              canManageMatches,
+              canViewRegistrations,
+              canManageUsers,
+              canManageLogs,
+              canManageTournaments,
+              canSendEmails,
+            },
+            adminPanelUrl,
+            locale: userLocale,
+          },
+          locale: userLocale,
+        });
+        
+        const emailSubject = userLocale === 'en' 
+          ? `Admin Access Granted - ${tournament.name}`
+          : userLocale === 'ru'
+          ? `Предоставлен доступ к админ-панели - ${tournament.name}`
+          : userLocale === 'ua'
+          ? `Надано доступ до адмін-панелі - ${tournament.name}`
+          : `Admin Access Granted - ${tournament.name}`;
+        
+        await sendEmail({
+          to: user.email,
+          subject: emailSubject,
+          html: emailHTML,
+          locale: userLocale,
+        });
+        
+        console.log(`[Staff Access] Email notification sent to ${user.email}`);
+      }
+    } catch (emailError) {
+      // Log error but don't fail the request
+      console.error('[Staff Access] Error sending email notification:', emailError);
+    }
+
     return NextResponse.json({ access }, { status: 201 });
   } catch (error: any) {
     console.error('Error creating staff access:', error);

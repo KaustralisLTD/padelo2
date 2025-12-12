@@ -4,6 +4,7 @@
 import { loadAndRenderTemplate } from './resend-template-helper';
 import * as tournamentTemplates from './email-templates-tournament';
 import * as generalTemplates from './email-templates';
+import * as staffTemplates from './email-templates-staff';
 
 interface TemplateGeneratorOptions {
   templateId: string;
@@ -338,6 +339,19 @@ export async function generateEmailTemplateHTML(options: TemplateGeneratorOption
           locale: data.locale || locale,
         });
         subject = 'Account Deleted - PadelO₂';
+        break;
+        
+      // Staff templates
+      case 'staff-access-granted':
+        innerHTML = staffTemplates.getStaffAccessGrantedEmailTemplate({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          tournamentName: data.tournamentName,
+          permissions: data.permissions,
+          adminPanelUrl: data.adminPanelUrl,
+          locale: data.locale || locale,
+        });
+        subject = `Admin Access Granted - ${data.tournamentName || 'Tournament'}`;
         break;
         
       default:
