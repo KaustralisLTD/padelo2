@@ -1434,6 +1434,35 @@
         "uniqueTournaments": "Unique Tournaments"
       }
     },
+    "onboarding": {
+      "welcome": {
+        "title": "Welcome to Admin Panel",
+        "description": "This is your admin dashboard. Here you can manage tournaments, users, and all system settings.",
+        "tip1": "Use the sidebar to navigate between sections",
+        "tip2": "Each section has specific permissions",
+        "tip3": "You can collapse the sidebar for more space"
+      },
+      "navigation": {
+        "title": "Navigation",
+        "description": "The sidebar contains all main sections. Click on any item to navigate.",
+        "tip1": "Dashboard - Overview and quick access",
+        "tip2": "Users - Manage user accounts",
+        "tip3": "Tournaments - Create and manage tournaments",
+        "tip4": "Staff - Assign access to team members"
+      },
+      "permissions": {
+        "title": "Permissions",
+        "description": "Your access level determines what you can do. Super Admins have full access.",
+        "tip1": "Check your permissions in Staff section",
+        "tip2": "Contact Super Admin to request additional access"
+      },
+      "next": "Next",
+      "previous": "Previous",
+      "skip": "Skip",
+      "close": "Close",
+      "getStarted": "Get Started",
+      "tips": "Tips"
+    },
     "logs": {
       "title": "Audit Logs",
       "description": "View all system actions, errors, and user activities",
@@ -1835,14 +1864,22 @@
     "submitting": "Submitting..."
   },
   "NotFound": {
-    "title": "Page Under Development",
-    "description": "This page is currently under development. Please check back later or use the links below to navigate to other sections of our website.",
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or has been moved. Please use the links below to navigate to other sections of our website.",
     "quickLinks": "Quick Links",
     "home": "Home",
     "tournaments": "Tournaments",
     "academy": "Academy",
     "contact": "Contact",
-    "goHome": "Go Home"
+    "goHome": "Go Home",
+    "reportError": "Report Error to Developer",
+    "reportTitle": "Send Error Report",
+    "reportDescription": "Help us improve by sending information about this error. All logs and technical details will be included.",
+    "reportPlaceholder": "Describe what you were trying to do when this error occurred (optional)...",
+    "sendReport": "Send Report",
+    "sending": "Sending...",
+    "cancel": "Cancel",
+    "reportSent": "Thank you! Your error report has been sent to our developers."
   },
   "Unsubscribe": {
     "title": "Unsubscribe from Emails",

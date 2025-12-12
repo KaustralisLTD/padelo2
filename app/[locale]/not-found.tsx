@@ -3,10 +3,73 @@
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { useTranslations } from 'next-intl';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function NotFound() {
   const locale = useLocale();
   const t = useTranslations('NotFound');
+  const pathname = usePathname();
+  const [showReportForm, setShowReportForm] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const [reportSent, setReportSent] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  
+  useEffect(() => {
+    // Collect error information
+    const errorInfo = {
+      url: typeof window !== 'undefined' ? window.location.href : pathname,
+      userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
+      timestamp: new Date().toISOString(),
+      pathname: pathname,
+    };
+    
+    // Store for potential error reporting
+    if (typeof window !== 'undefined') {
+      (window as any).__errorInfo = errorInfo;
+    }
+  }, [pathname]);
+
+  const handleSendReport = async () => {
+    setReporting(true);
+    try {
+      const errorInfo = {
+        url: typeof window !== 'undefined' ? window.location.href : pathname,
+        userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
+        timestamp: new Date().toISOString(),
+        errorMessage: errorMessage || '404 - Page not found',
+        pathname: pathname,
+        consoleLogs: typeof window !== 'undefined' && (window as any).console?.logs ? (window as any).console.logs.slice(-50) : [],
+        networkLogs: typeof window !== 'undefined' && (window as any).__networkLogs ? (window as any).__networkLogs.slice(-20) : [],
+        localStorage: typeof window !== 'undefined' ? Object.fromEntries(Object.entries(localStorage).slice(0, 20)) : {},
+        sessionStorage: typeof window !== 'undefined' ? Object.fromEntries(Object.entries(sessionStorage).slice(0, 20)) : {},
+        userInfo: typeof window !== 'undefined' ? {
+          screen: `${window.screen.width}x${window.screen.height}`,
+          viewport: `${window.innerWidth}x${window.innerHeight}`,
+          language: navigator.language,
+        } : {},
+      };
+
+      const response = await fetch('/api/error-report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(errorInfo),
+      });
+
+      if (response.ok) {
+        setReportSent(true);
+      } else {
+        throw new Error('Failed to send report');
+      }
+    } catch (error) {
+      console.error('Error sending report:', error);
+      alert(t('reportError') || 'Failed to send report. Please try again.');
+    } finally {
+      setReporting(false);
+    }
+  };
   
   return (
     <div className="container mx-auto px-4 py-20 mt-20">
@@ -77,12 +140,66 @@ export default function NotFound() {
           </div>
         </div>
 
-        <Link
-          href={`/${locale}`}
-          className="inline-block px-8 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
-        >
-          {t('goHome')}
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <Link
+            href={`/${locale}`}
+            className="inline-block px-8 py-3 bg-gradient-primary text-background font-orbitron font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
+            {t('goHome')}
+          </Link>
+          <button
+            onClick={() => setShowReportForm(!showReportForm)}
+            className="inline-block px-8 py-3 bg-background-secondary border border-border text-text font-poppins font-semibold rounded-lg hover:bg-background-hover transition-colors"
+          >
+            {t('reportError') || 'Report Error to Developer'}
+          </button>
+        </div>
+
+        {/* Error Report Form */}
+        {showReportForm && !reportSent && (
+          <div className="bg-background-secondary rounded-lg border border-border p-8 mb-8 text-left max-w-2xl mx-auto">
+            <h3 className="text-xl font-poppins font-semibold text-text mb-4">
+              {t('reportTitle') || 'Send Error Report'}
+            </h3>
+            <p className="text-text-secondary font-poppins mb-4 text-sm">
+              {t('reportDescription') || 'Help us improve by sending information about this error. All logs and technical details will be included.'}
+            </p>
+            <textarea
+              value={errorMessage}
+              onChange={(e) => setErrorMessage(e.target.value)}
+              placeholder={t('reportPlaceholder') || 'Describe what you were trying to do when this error occurred (optional)...'}
+              className="w-full h-32 p-4 bg-background border border-border rounded-lg text-text font-poppins mb-4 resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={handleSendReport}
+                disabled={reporting}
+                className="px-6 py-3 bg-gradient-primary text-background font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {reporting ? (t('sending') || 'Sending...') : (t('sendReport') || 'Send Report')}
+              </button>
+              <button
+                onClick={() => setShowReportForm(false)}
+                className="px-6 py-3 bg-background border border-border text-text font-poppins font-semibold rounded-lg hover:bg-background-hover transition-colors"
+              >
+                {t('cancel') || 'Cancel'}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {reportSent && (
+          <div className="bg-green-500/10 border border-green-500/30 text-green-400 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
+            <div className="flex items-center gap-3">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="font-poppins font-semibold">
+                {t('reportSent') || 'Thank you! Your error report has been sent to our developers.'}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

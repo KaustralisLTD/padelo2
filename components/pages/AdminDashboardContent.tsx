@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import AdminDashboardOnboarding from './AdminDashboardOnboarding';
 
 type UserRole = 'superadmin' | 'staff' | 'participant';
 
@@ -15,6 +16,7 @@ export default function AdminDashboardContent() {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
@@ -55,6 +57,17 @@ export default function AdminDashboardContent() {
       .finally(() => setLoading(false));
   }, [locale, router]);
 
+  useEffect(() => {
+    // Check if this is first visit to admin dashboard
+    if (!loading && user && role) {
+      const hasVisited = localStorage.getItem('adminDashboardVisited');
+      if (!hasVisited) {
+        setShowOnboarding(true);
+        localStorage.setItem('adminDashboardVisited', 'true');
+      }
+    }
+  }, [loading, user, role]);
+
   if (loading) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center">
@@ -70,7 +83,9 @@ export default function AdminDashboardContent() {
   // Render based on role
   if (role === 'superadmin') {
     return (
-      <div className="max-w-7xl mx-auto">
+      <>
+        {showOnboarding && <AdminDashboardOnboarding />}
+        <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-2 gradient-text">
             {t('superadmin.title')}
@@ -236,13 +251,16 @@ export default function AdminDashboardContent() {
           </Link>
         </div>
       </div>
+      </>
     );
   }
 
   // Staff dashboard
   if (role === 'staff') {
     return (
-      <div className="max-w-7xl mx-auto">
+      <>
+        {showOnboarding && <AdminDashboardOnboarding />}
+        <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-2 gradient-text">
             {t('staff.title')}
@@ -288,6 +306,7 @@ export default function AdminDashboardContent() {
           </Link>
         </div>
       </div>
+      </>
     );
   }
 
