@@ -291,7 +291,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Send emails to all recipients
-    // For clients with userIds, use each user's preferred language
+    // For clients, coaches, and staff with userIds, use each user's preferred language
     const emailResults = await Promise.allSettled(
       recipientEmails.map(async (toEmail) => {
         try {

@@ -458,7 +458,7 @@ export default function EmailTemplatesContent() {
           templateId: selectedTemplate,
           tournamentId: tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
-          userIds: selectedCategory === 'clients' ? selectedUserIds : undefined,
+          userIds: (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') ? selectedUserIds : undefined,
           newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
           oldRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.oldRole : undefined,
         }),
@@ -544,7 +544,7 @@ export default function EmailTemplatesContent() {
     }
 
     // Validation
-    if (selectedCategory === 'clients' && selectedUserIds.length === 0 && !formData.email) {
+    if ((selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length === 0 && !formData.email) {
       setError('Please select at least one user or enter an email');
       setLoading(false);
       return;
@@ -571,7 +571,7 @@ export default function EmailTemplatesContent() {
           category: selectedCategory,
           tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients' || (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted')) && tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
-          userIds: (selectedCategory === 'clients' || selectedCategory === 'staff') ? selectedUserIds : undefined,
+          userIds: (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') ? selectedUserIds : undefined,
           newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
           oldRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.oldRole : undefined,
         }),
@@ -765,8 +765,8 @@ export default function EmailTemplatesContent() {
                   </>
                 )}
 
-                {/* User Selection (for Clients) */}
-                {selectedCategory === 'clients' && (
+                {/* User Selection (for Clients, Coaches, Staff) */}
+                {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Recipients <span className="text-red-500">*</span>
@@ -790,8 +790,8 @@ export default function EmailTemplatesContent() {
                   </div>
                 )}
 
-                {/* Recipient Email (for Partners and other categories) */}
-                {selectedCategory !== 'clients' && (
+                {/* Recipient Email (for Partners only) */}
+                {selectedCategory === 'partners' && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Recipient Email <span className="text-red-500">*</span>
@@ -843,7 +843,7 @@ export default function EmailTemplatesContent() {
                     Language <span className="text-gray-500 text-xs">(14 languages available)</span>
                   </label>
                   <select
-                    value={useUserLanguage && selectedCategory === 'clients' && selectedUserIds.length > 0 
+                    value={useUserLanguage && (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 
                       ? 'user'
                       : formData.locale}
                     onChange={(e) => {
@@ -861,7 +861,7 @@ export default function EmailTemplatesContent() {
                     }}
                     className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
                   >
-                    {selectedCategory === 'clients' && selectedUserIds.length > 0 && (
+                    {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 && (
                       <option value="user">
                         🌐 User&apos;s language ({selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'})
                       </option>
@@ -872,7 +872,7 @@ export default function EmailTemplatesContent() {
                       </option>
                     ))}
                   </select>
-                  {selectedCategory === 'clients' && selectedUserIds.length > 0 && useUserLanguage && (
+                  {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 && useUserLanguage && (
                     <p className="mt-2 text-sm text-gray-600">
                       Using language from user profile: <strong>{selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'}</strong>
                     </p>
@@ -967,7 +967,7 @@ export default function EmailTemplatesContent() {
                   <button
                     type="button"
                     onClick={generatePreviewHtml}
-                    disabled={loading || !formData.email}
+                    disabled={loading || ((selectedCategory === 'partners' || selectedCategory === 'coaches' || selectedCategory === 'staff') && !formData.email && selectedUserIds.length === 0)}
                     className="flex-1 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     👁️ Preview
@@ -1070,7 +1070,7 @@ export default function EmailTemplatesContent() {
                                 },
                               }));
                               // Если выбран только один пользователь, заполняем имя автоматически
-                              if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
+                              if (newSelectedIds.length === 1 && (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff')) {
                                 // Автоматически включаем использование языка пользователя
                                 setUseUserLanguage(true);
                                 setFormData(prev => ({
@@ -1089,7 +1089,7 @@ export default function EmailTemplatesContent() {
                                 return newUsersData;
                               });
                               // Если остался один пользователь, обновляем имя
-                              if (newSelectedIds.length === 1 && selectedCategory === 'clients') {
+                              if (newSelectedIds.length === 1 && (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff')) {
                                 const remainingUser = availableUsers.find(u => u.id === newSelectedIds[0]);
                                 if (remainingUser) {
                                   setUseUserLanguage(true);

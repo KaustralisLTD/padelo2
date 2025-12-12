@@ -260,7 +260,7 @@ export default function AdminDashboardContent() {
     return (
       <>
         {showOnboarding && <AdminDashboardOnboarding />}
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-poppins font-bold mb-2 gradient-text">
             {t('staff.title')}
