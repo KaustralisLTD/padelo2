@@ -172,6 +172,14 @@ export async function translateEmailHTML(
       );
     });
 
+    // Normalize spaces around HTML tags (especially <strong>)
+    // Add space after closing </strong> if next character is not space or punctuation
+    translatedHtml = translatedHtml.replace(/<\/strong>([^\s<.,!?;:])/gi, '</strong> $1');
+    // Add space before opening <strong> if previous character is not space
+    translatedHtml = translatedHtml.replace(/([^\s>])<strong>/gi, '$1 <strong>');
+    // Fix double spaces
+    translatedHtml = translatedHtml.replace(/\s{2,}/g, ' ');
+
     return translatedHtml;
   } catch (error) {
     console.error('[translateEmailHTML] Error translating HTML:', error);
