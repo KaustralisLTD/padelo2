@@ -241,7 +241,7 @@ export default function EmailTemplatesContent() {
   const [userSearchQuery, setUserSearchQuery] = useState('');
   const [availableUsers, setAvailableUsers] = useState<any[]>([]);
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-  const [selectedUsersData, setSelectedUsersData] = useState<Record<string, { fullName: string; preferredLanguage: string }>>({});
+  const [selectedUsersData, setSelectedUsersData] = useState<Record<string, { id: string; firstName: string; lastName: string; email: string; preferredLanguage: string }>>({});
   const [searchingUsers, setSearchingUsers] = useState(false);
   const [useUserLanguage, setUseUserLanguage] = useState(false);
   
@@ -404,10 +404,6 @@ export default function EmailTemplatesContent() {
       setError('Please select a tournament');
       return;
     }
-    if (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted' && !selectedTournamentId) {
-      setError('Please select a tournament for staff access');
-      return;
-    }
 
     try {
       // First, try to load saved template from database
@@ -461,7 +457,7 @@ export default function EmailTemplatesContent() {
           partnerCompany: formData.company,
           templateId: selectedTemplate,
           category: selectedCategory,
-          tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients' || (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted')) && tournamentScope === 'specific' ? selectedTournamentId : null,
+          tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients') && tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
           userIds: (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') ? selectedUserIds : undefined,
           newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
@@ -574,7 +570,7 @@ export default function EmailTemplatesContent() {
           customHtml: useCustomHtml ? editableHtml : undefined,
           templateId: selectedTemplate,
           category: selectedCategory,
-          tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients' || (selectedCategory === 'staff' && selectedTemplate === 'staff-access-granted')) && tournamentScope === 'specific' ? selectedTournamentId : null,
+          tournamentId: (selectedCategory === 'partners' || selectedCategory === 'clients') && tournamentScope === 'specific' ? selectedTournamentId : null,
           tournamentScope: tournamentScope,
           userIds: (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') ? selectedUserIds : undefined,
           newRole: selectedCategory === 'staff' && selectedTemplate === 'role-change' ? formData.newRole : undefined,
@@ -787,8 +783,61 @@ export default function EmailTemplatesContent() {
                           : 'Click to select users...'}
                       </button>
                       {selectedUserIds.length > 0 && (
-                        <div className="text-sm text-gray-600">
-                          Selected: {selectedUserIds.length} user(s)
+                        <div className="mt-3 space-y-2">
+                          <div className="text-sm font-semibold text-gray-700 mb-2">
+                            Selected users ({selectedUserIds.length}):
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedUserIds.map((userId) => {
+                              const user = selectedUsersData[userId];
+                              const userName = user ? `${user.firstName} ${user.lastName}`.trim() || user.email : userId;
+                              return (
+                                <div
+                                  key={userId}
+                                  className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-sm"
+                                >
+                                  <span className="text-gray-700">{userName}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const newSelectedIds = selectedUserIds.filter(id => id !== userId);
+                                      setSelectedUserIds(newSelectedIds);
+                                      setSelectedUsersData(prev => {
+                                        const newUsersData = { ...prev };
+                                        delete newUsersData[userId];
+                                        return newUsersData;
+                                      });
+                                      // Если остался один пользователь, обновляем имя
+                                      if (newSelectedIds.length === 1 && (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff')) {
+                                        const remainingUser = Object.values(selectedUsersData).find(u => u.id === newSelectedIds[0]);
+                                        if (remainingUser) {
+                                          setUseUserLanguage(true);
+                                          setFormData(prev => ({
+                                            ...prev,
+                                            recipientName: `${remainingUser.firstName} ${remainingUser.lastName}`.trim() || remainingUser.email,
+                                            locale: remainingUser.preferredLanguage || 'en',
+                                          }));
+                                        }
+                                      } else if (newSelectedIds.length === 0) {
+                                        // Если пользователи не выбраны, очищаем имя и сбрасываем язык
+                                        setUseUserLanguage(false);
+                                        setFormData(prev => ({
+                                          ...prev,
+                                          recipientName: '',
+                                        }));
+                                      }
+                                    }}
+                                    className="text-red-500 hover:text-red-700 hover:bg-red-100 rounded p-0.5 transition-colors"
+                                    title="Remove user"
+                                  >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1070,7 +1119,10 @@ export default function EmailTemplatesContent() {
                               setSelectedUsersData(prev => ({
                                 ...prev,
                                 [user.id]: {
-                                  fullName: user.fullName,
+                                  id: user.id,
+                                  firstName: user.firstName || '',
+                                  lastName: user.lastName || '',
+                                  email: user.email || '',
                                   preferredLanguage: user.preferredLanguage || 'en',
                                 },
                               }));

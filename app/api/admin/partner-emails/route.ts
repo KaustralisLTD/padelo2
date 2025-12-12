@@ -190,7 +190,8 @@ export async function POST(request: NextRequest) {
             
             // Staff templates specific data
             if (templateId === 'staff-access-granted') {
-              templateData.tournamentName = tournamentData?.name || 'Tournament';
+              // Tournament is optional for staff-access-granted template
+              templateData.tournamentName = tournamentData?.name || body.tournamentName || 'Tournament';
               templateData.permissions = {
                 canManageGroups: false,
                 canManageMatches: false,
