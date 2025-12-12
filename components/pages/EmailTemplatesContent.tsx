@@ -610,10 +610,10 @@ export default function EmailTemplatesContent() {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Checking access...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-text-secondary">Checking access...</p>
         </div>
       </div>
     );
@@ -627,14 +627,14 @@ export default function EmailTemplatesContent() {
   const selectedTemplateData = EMAIL_TEMPLATES.find(t => t.id === selectedTemplate);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
+    <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-4xl font-bold text-text mb-2">
             📧 Email Templates
           </h1>
-          <p className="text-gray-600">
+          <p className="text-text-secondary">
             Send emails to partners, clients, coaches, and staff
           </p>
         </div>
@@ -642,8 +642,8 @@ export default function EmailTemplatesContent() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Categories Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Categories</h2>
+            <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
+              <h2 className="text-xl font-bold text-text mb-4">Categories</h2>
               <div className="space-y-2">
                 {CATEGORIES.map((category) => (
                   <button
@@ -658,13 +658,13 @@ export default function EmailTemplatesContent() {
                     className={`w-full text-left px-4 py-3 rounded-xl transition-all border-2 font-semibold ${
                       selectedCategory === category.id
                         ? category.color === 'blue' 
-                          ? 'bg-blue-100 border-blue-500 text-blue-900'
+                          ? 'bg-primary/20 border-primary text-primary'
                           : category.color === 'green'
-                          ? 'bg-green-100 border-green-500 text-green-900'
+                          ? 'bg-green-500/20 border-green-500 text-green-400'
                           : category.color === 'purple'
-                          ? 'bg-purple-100 border-purple-500 text-purple-900'
-                          : 'bg-orange-100 border-orange-500 text-orange-900'
-                        : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 font-normal'
+                          ? 'bg-purple-500/20 border-purple-500 text-purple-400'
+                          : 'bg-orange-500/20 border-orange-500 text-orange-400'
+                        : 'bg-background-secondary border-border text-text-secondary hover:bg-background-hover font-normal'
                     }`}
                   >
                     <span className="text-2xl mr-2">{category.icon}</span>
@@ -676,7 +676,7 @@ export default function EmailTemplatesContent() {
               {/* Templates List */}
               {filteredTemplates.length > 0 && (
                 <div className="mt-6">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3">Templates</h3>
+                  <h3 className="text-sm font-semibold text-text-secondary mb-3">Templates</h3>
                   <div className="space-y-2">
                     {filteredTemplates.map((template) => (
                       <button
@@ -684,8 +684,8 @@ export default function EmailTemplatesContent() {
                         onClick={() => setSelectedTemplate(template.id)}
                         className={`w-full text-left px-4 py-2 rounded-lg text-sm transition-all ${
                           selectedTemplate === template.id
-                            ? 'bg-blue-100 border-2 border-blue-500 text-blue-900 font-semibold'
-                            : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100'
+                            ? 'bg-primary/20 border-2 border-primary text-primary font-semibold'
+                            : 'bg-background-secondary border border-border text-text-secondary hover:bg-background-hover'
                         }`}
                       >
                         {template.name}
@@ -699,13 +699,13 @@ export default function EmailTemplatesContent() {
 
           {/* Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-200">
+            <div className="bg-background-secondary rounded-2xl shadow-xl p-6 md:p-8 border border-border">
               {selectedTemplateData && (
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                <div className="mb-6 pb-6 border-b border-border">
+                  <h2 className="text-2xl font-bold text-text mb-2">
                     {selectedTemplateData.name}
                   </h2>
-                  <p className="text-gray-600">{selectedTemplateData.description}</p>
+                  <p className="text-text-secondary">{selectedTemplateData.description}</p>
                 </div>
               )}
 
@@ -715,7 +715,7 @@ export default function EmailTemplatesContent() {
                   <>
                     {selectedCategory === 'clients' && (
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-text-secondary mb-2">
                           Tournament Scope
                         </label>
                         <div className="flex gap-4">
@@ -745,14 +745,14 @@ export default function EmailTemplatesContent() {
                     
                     {tournamentScope === 'specific' && (
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label className="block text-sm font-semibold text-text-secondary mb-2">
                           Tournament <span className="text-red-500">*</span>
                         </label>
                         <select
                           required={tournamentScope === 'specific'}
                           value={selectedTournamentId}
                           onChange={(e) => setSelectedTournamentId(e.target.value)}
-                          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                          className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                         >
                           <option value="">Select tournament...</option>
                           {tournaments.map((tournament) => (
@@ -776,7 +776,7 @@ export default function EmailTemplatesContent() {
                       <button
                         type="button"
                         onClick={() => setShowUserSelector(true)}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-blue-500 transition-all text-left bg-white"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-border hover:border-primary transition-all text-left bg-background text-text"
                       >
                         {selectedUserIds.length > 0 
                           ? `${selectedUserIds.length} user(s) selected`
@@ -784,7 +784,7 @@ export default function EmailTemplatesContent() {
                       </button>
                       {selectedUserIds.length > 0 && (
                         <div className="mt-3 space-y-2">
-                          <div className="text-sm font-semibold text-gray-700 mb-2">
+                          <div className="text-sm font-semibold text-text-secondary mb-2">
                             Selected users ({selectedUserIds.length}):
                           </div>
                           <div className="flex flex-wrap gap-2">
@@ -794,9 +794,9 @@ export default function EmailTemplatesContent() {
                               return (
                                 <div
                                   key={userId}
-                                  className="flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-sm"
+                                  className="flex items-center gap-2 bg-primary/20 border border-primary/30 rounded-lg px-3 py-1.5 text-sm"
                                 >
-                                  <span className="text-gray-700">{userName}</span>
+                                  <span className="text-text">{userName}</span>
                                   <button
                                     type="button"
                                     onClick={() => {
@@ -855,7 +855,7 @@ export default function EmailTemplatesContent() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       placeholder="recipient@example.com"
                     />
                   </div>
@@ -870,7 +870,7 @@ export default function EmailTemplatesContent() {
                     type="text"
                     value={formData.recipientName}
                     onChange={(e) => setFormData({ ...formData, recipientName: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                     placeholder="John Doe"
                   />
                 </div>
@@ -885,7 +885,7 @@ export default function EmailTemplatesContent() {
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       placeholder="Company Name"
                     />
                   </div>
@@ -894,7 +894,7 @@ export default function EmailTemplatesContent() {
                 {/* Language */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Language <span className="text-gray-500 text-xs">(14 languages available)</span>
+                    Language <span className="text-text-tertiary text-xs">(14 languages available)</span>
                   </label>
                   <select
                     value={useUserLanguage && (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 
@@ -913,7 +913,7 @@ export default function EmailTemplatesContent() {
                         setFormData({ ...formData, locale: e.target.value });
                       }
                     }}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                   >
                     {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 && (
                       <option value="user">
@@ -927,7 +927,7 @@ export default function EmailTemplatesContent() {
                     ))}
                   </select>
                   {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 && useUserLanguage && (
-                    <p className="mt-2 text-sm text-gray-600">
+                    <p className="mt-2 text-sm text-text-secondary">
                       Using language from user profile: <strong>{selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'}</strong>
                     </p>
                   )}
@@ -943,7 +943,7 @@ export default function EmailTemplatesContent() {
                       <select
                         value={formData.newRole}
                         onChange={(e) => setFormData({ ...formData, newRole: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                       >
                         <option value="superadmin">Super Administrator</option>
                         <option value="tournament_admin">Tournament Administrator</option>
@@ -961,7 +961,7 @@ export default function EmailTemplatesContent() {
                         type="text"
                         value={formData.oldRole}
                         onChange={(e) => setFormData({ ...formData, oldRole: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                         placeholder="participant"
                       />
                     </div>
@@ -979,7 +979,7 @@ export default function EmailTemplatesContent() {
                         type="text"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                         placeholder="+34 662 423 738"
                       />
                     </div>
@@ -991,7 +991,7 @@ export default function EmailTemplatesContent() {
                         type="email"
                         value={formData.contactEmail}
                         onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
+                        className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                         placeholder="partner@padelO2.com"
                       />
                     </div>
@@ -1000,8 +1000,8 @@ export default function EmailTemplatesContent() {
 
                 {/* Success Message */}
                 {success && (
-                  <div className="p-4 bg-green-50 border-2 border-green-200 rounded-xl">
-                    <p className="text-green-800 font-semibold">
+                  <div className="p-4 bg-green-500/20 border-2 border-green-500/50 rounded-xl">
+                    <p className="text-green-400 font-semibold">
                       ✅ Email sent successfully!
                     </p>
                   </div>
@@ -1009,8 +1009,8 @@ export default function EmailTemplatesContent() {
 
                 {/* Error Message */}
                 {error && (
-                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-xl">
-                    <p className="text-red-800 font-semibold">
+                  <div className="p-4 bg-red-500/20 border-2 border-red-500/50 rounded-xl">
+                    <p className="text-red-400 font-semibold">
                       ❌ {error}
                     </p>
                   </div>
@@ -1048,12 +1048,12 @@ export default function EmailTemplatesContent() {
             </div>
 
             {/* Info Card */}
-            <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-2">ℹ️ About Email Templates</h3>
-              <p className="text-gray-700 text-sm mb-2">
+            <div className="mt-6 bg-primary/20 border-2 border-primary/30 rounded-xl p-6">
+              <h3 className="text-lg font-bold text-text mb-2">ℹ️ About Email Templates</h3>
+              <p className="text-text-secondary text-sm mb-2">
                 Templates are automatically translated using Google Translate API when you select a different language.
               </p>
-              <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+              <ul className="text-sm text-text-secondary space-y-1 list-disc list-inside">
                 <li>All 14 languages are supported</li>
                 <li>Translation happens automatically</li>
                 <li>Branded footer with social media links included</li>
@@ -1066,15 +1066,15 @@ export default function EmailTemplatesContent() {
       {/* User Selector Modal */}
       {showUserSelector && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">Select Users</h2>
+          <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="text-2xl font-bold text-text">Select Users</h2>
               <button
                 onClick={() => {
                   setShowUserSelector(false);
                   setUserSearchQuery('');
                 }}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-text-tertiary hover:text-text-secondary transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1088,17 +1088,17 @@ export default function EmailTemplatesContent() {
                 value={userSearchQuery}
                 onChange={(e) => setUserSearchQuery(e.target.value)}
                 placeholder="Search by name or email..."
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none mb-4"
+                className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none mb-4"
               />
 
               <div className="flex-1 overflow-y-auto">
                 {searchingUsers ? (
                   <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="mt-2 text-gray-600">Searching...</p>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                    <p className="mt-2 text-text-secondary">Searching...</p>
                   </div>
                 ) : availableUsers.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-text-tertiary">
                     {userSearchQuery.trim() ? 'No users found' : 'Start typing to search users...'}
                   </div>
                 ) : (
@@ -1106,7 +1106,7 @@ export default function EmailTemplatesContent() {
                     {availableUsers.map((user) => (
                       <label
                         key={user.id}
-                        className="flex items-center p-3 rounded-lg border-2 border-gray-200 hover:border-blue-500 cursor-pointer transition-all"
+                        className="flex items-center p-3 rounded-lg border-2 border-border hover:border-primary cursor-pointer transition-all bg-background"
                       >
                         <input
                           type="checkbox"
@@ -1166,11 +1166,11 @@ export default function EmailTemplatesContent() {
                               }
                             }
                           }}
-                          className="mr-3 w-5 h-5 text-blue-600"
+                          className="mr-3 w-5 h-5 text-primary"
                         />
                         <div className="flex-1">
-                          <div className="font-semibold text-gray-900">{user.fullName}</div>
-                          <div className="text-sm text-gray-600">{user.email}</div>
+                          <div className="font-semibold text-text">{user.fullName}</div>
+                          <div className="text-sm text-text-secondary">{user.email}</div>
                         </div>
                       </label>
                     ))}
@@ -1179,21 +1179,21 @@ export default function EmailTemplatesContent() {
               </div>
 
               {selectedUserIds.length > 0 && (
-                <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-gray-700">
+                <div className="mt-4 p-3 bg-primary/20 rounded-lg">
+                  <p className="text-sm text-text-secondary">
                     <strong>{selectedUserIds.length}</strong> user(s) selected
                   </p>
                 </div>
               )}
             </div>
 
-            <div className="p-6 border-t border-gray-200 flex gap-4">
+            <div className="p-6 border-t border-border flex gap-4">
               <button
                 onClick={() => {
                   setShowUserSelector(false);
                   setUserSearchQuery('');
                 }}
-                className="flex-1 py-3 px-6 bg-gray-200 text-gray-800 font-semibold rounded-xl hover:bg-gray-300 transition-colors"
+                className="flex-1 py-3 px-6 bg-background-hover text-text font-semibold rounded-xl hover:bg-background transition-colors"
               >
                 Cancel
               </button>
@@ -1214,13 +1214,13 @@ export default function EmailTemplatesContent() {
       {/* Preview Modal */}
       {showPreview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+          <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">📧 Email Preview</h2>
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="text-2xl font-bold text-text">📧 Email Preview</h2>
               <button
                 onClick={() => setShowPreview(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-text-tertiary hover:text-text-secondary transition-colors"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
