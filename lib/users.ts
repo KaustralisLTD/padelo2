@@ -491,25 +491,46 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
         if (dbRole !== data.role) {
           console.error(`[updateUser] ERROR: Role mismatch! Expected: "${data.role}" (type: ${typeof data.role}, length: ${data.role.length}), Got: "${dbRole}" (type: ${typeof dbRole}, length: ${dbRoleLen})`);
           
-          // Попытка исправить - выполнить UPDATE еще раз с явным указанием типа
-          console.log(`[updateUser] Attempting to fix role by updating again...`);
+          // Попытка исправить - выполнить UPDATE еще раз с явным указанием типа и проверкой ENUM
+          console.log(`[updateUser] Attempting to fix role by updating again with explicit ENUM check...`);
           try {
+            // Сначала проверяем, что роль действительно в списке допустимых значений ENUM
+            const [enumCheck] = await pool.execute(
+              `SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS 
+               WHERE TABLE_SCHEMA = DATABASE() 
+               AND TABLE_NAME = 'users' 
+               AND COLUMN_NAME = 'role'`
+            ) as any[];
+            
+            if (enumCheck.length > 0) {
+              console.log(`[updateUser] Role column ENUM definition: ${enumCheck[0].COLUMN_TYPE}`);
+            }
+            
+            // Выполняем UPDATE с явным указанием значения ENUM
             const [fixResult] = await pool.execute(
-              'UPDATE users SET role = CAST(? AS CHAR(20)), updated_at = NOW() WHERE id = ?',
+              `UPDATE users SET role = ?, updated_at = NOW() WHERE id = ?`,
               [data.role, id]
             ) as any[];
             console.log(`[updateUser] Fix update result:`, fixResult);
+            console.log(`[updateUser] Rows affected by fix:`, fixResult.affectedRows);
             
-            // Проверяем снова
+            // Ждем немного перед проверкой
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            // Проверяем снова с явным CAST
             const [recheckRows] = await pool.execute(
-              'SELECT role FROM users WHERE id = ?',
+              'SELECT role, CAST(role AS CHAR(20)) as role_str FROM users WHERE id = ?',
               [id]
             ) as any[];
             if (recheckRows.length > 0) {
-              console.log(`[updateUser] Role after fix: "${recheckRows[0].role}"`);
+              console.log(`[updateUser] Role after fix: "${recheckRows[0].role}" (raw: "${recheckRows[0].role_str}")`);
+              if (recheckRows[0].role !== data.role) {
+                console.error(`[updateUser] CRITICAL: Role still doesn't match after fix! Expected: "${data.role}", Got: "${recheckRows[0].role}"`);
+              }
             }
           } catch (fixError) {
             console.error(`[updateUser] Error fixing role:`, fixError);
+            console.error(`[updateUser] Fix error stack:`, fixError instanceof Error ? fixError.stack : 'No stack trace');
           }
         } else {
           console.log(`[updateUser] ✅ Role matches!`);
