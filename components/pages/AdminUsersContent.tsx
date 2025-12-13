@@ -377,12 +377,18 @@ export default function AdminUsersContent() {
       if (formData.password) updateData.password = formData.password;
       if (formData.firstName) updateData.firstName = formData.firstName;
       if (formData.lastName) updateData.lastName = formData.lastName;
-      // Всегда обновляем роль, даже если она не изменилась
-      if (formData.role) {
+      // Всегда обновляем роль, если она указана в форме
+      if (formData.role && formData.role !== editingUser.role) {
         updateData.role = formData.role;
+        console.log(`[AdminUsers] Role changed from ${editingUser.role} to ${formData.role}`);
+      } else if (formData.role) {
+        // Роль указана, но не изменилась - все равно обновляем для надежности
+        updateData.role = formData.role;
+        console.log(`[AdminUsers] Role explicitly set to ${formData.role}`);
       } else {
         // Если роль не указана, используем текущую роль пользователя
         updateData.role = editingUser.role;
+        console.log(`[AdminUsers] No role change, keeping ${editingUser.role}`);
       }
 
       console.log('[AdminUsers] Updating user:', { userId: editingUser.id, updateData });
@@ -400,11 +406,20 @@ export default function AdminUsersContent() {
 
       if (response.ok) {
         console.log('[AdminUsers] User updated successfully:', data);
+        
+        // Обновляем локальное состояние пользователя немедленно
+        if (data.user && data.user.role) {
+          setUsers(prevUsers => prevUsers.map(u => 
+            u.id === editingUser.id ? { ...u, role: data.user.role } : u
+          ));
+          console.log(`[AdminUsers] Updated local user state with role: ${data.user.role}`);
+        }
+        
         setSuccess('User updated successfully');
         setEditingUser(null);
         setFormData({ email: '', password: '', firstName: '', lastName: '', role: 'participant' });
         
-        // Обновляем список пользователей, чтобы отобразить новую роль
+        // Обновляем список пользователей из БД для подтверждения
         await fetchUsers();
         
         // Отправляем событие для обновления на других страницах

@@ -830,6 +830,7 @@ export default function AdminStaffContent() {
                               onClick={async () => {
                                 if (!token) return;
                                 try {
+                                  console.log(`[Staff Access] Updating role to ${tempRole} for user ${access.userId}`);
                                   const response = await fetch(`/api/admin/users/${access.userId}`, {
                                     method: 'PUT',
                                     headers: {
@@ -838,18 +839,35 @@ export default function AdminStaffContent() {
                                     },
                                     body: JSON.stringify({ role: tempRole }),
                                   });
+                                  
                                   if (response.ok) {
+                                    const responseData = await response.json();
+                                    console.log(`[Staff Access] Role updated successfully:`, responseData);
+                                    
+                                    // Обновляем локальное состояние пользователя немедленно
+                                    setUsers(prevUsers => prevUsers.map(u => 
+                                      u.id === access.userId ? { ...u, role: tempRole as any } : u
+                                    ));
+                                    
                                     setEditingRoleForUser(null);
                                     setTempRole('');
-                                    fetchData();
+                                    
+                                    // Обновляем данные из БД для подтверждения
+                                    await fetchData();
+                                    
                                     if (typeof window !== 'undefined') {
                                       window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
                                         detail: { userId: access.userId, newRole: tempRole } 
                                       }));
                                     }
+                                  } else {
+                                    const errorData = await response.json().catch(() => ({}));
+                                    console.error(`[Staff Access] Failed to update role:`, errorData);
+                                    alert(`Failed to update role: ${errorData.error || 'Unknown error'}`);
                                   }
                                 } catch (err) {
                                   console.error('Error updating role:', err);
+                                  alert(`Error updating role: ${err}`);
                                 }
                               }}
                               className="px-2 py-1 bg-primary text-background rounded text-xs font-poppins hover:opacity-90"

@@ -206,10 +206,14 @@ export async function PUT(request: NextRequest) {
     // Всегда обновляем роль, если она указана
     if (userRole !== undefined) {
       updateData.role = userRole;
-      console.log(`[Admin Users] Updating role to: ${userRole} for user: ${id}`);
+      console.log(`[Admin Users API] Updating role to: ${userRole} for user: ${id}`);
+    } else {
+      console.warn(`[Admin Users API] No role provided in request for user: ${id}`);
     }
 
-    const updatedUser = await updateUser(id, updateData);
+    console.log(`[Admin Users API] Update data:`, updateData);
+
+    const updatedUser = await updateUser(id, updateData, true); // true = sendRoleChangeEmail
 
     if (!updatedUser) {
       return NextResponse.json(
