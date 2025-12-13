@@ -425,9 +425,10 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
       updates.push('last_name = ?');
       values.push(data.lastName);
     }
-    if (data.role) {
+    if (data.role !== undefined && data.role !== null) {
       updates.push('role = ?');
       values.push(data.role);
+      console.log(`[updateUser] Adding role update: ${data.role} for user ${id} (old role: ${oldRole})`);
     }
     if (data.password) {
       const passwordHash = await bcrypt.hash(data.password, SALT_ROUNDS);
@@ -452,13 +453,33 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
     const updateQuery = `UPDATE users SET ${updates.join(', ')}, updated_at = NOW() WHERE id = ?`;
     console.log(`[updateUser] Executing update query:`, updateQuery);
     console.log(`[updateUser] Values:`, values);
+    console.log(`[updateUser] Old role: ${oldRole}, New role: ${data.role}`);
     
     const [updateResult] = await pool.execute(updateQuery, values) as any[];
     console.log(`[updateUser] Update result:`, updateResult);
     console.log(`[updateUser] Rows affected:`, updateResult.affectedRows);
     
+    // Проверяем, что UPDATE действительно выполнился
+    if (updateResult.affectedRows === 0) {
+      console.error(`[updateUser] WARNING: No rows affected for user ${id}! Update may have failed.`);
+    }
+    
     // Небольшая задержка перед чтением, чтобы дать время транзакции завершиться
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // Проверяем роль напрямую из БД
+    const [verifyRows] = await pool.execute(
+      'SELECT role FROM users WHERE id = ?',
+      [id]
+    ) as any[];
+    
+    if (verifyRows.length > 0) {
+      const dbRole = verifyRows[0].role;
+      console.log(`[updateUser] Role in DB after update: ${dbRole}`);
+      if (data.role && dbRole !== data.role) {
+        console.error(`[updateUser] ERROR: Role mismatch! Expected: ${data.role}, Got: ${dbRole}`);
+      }
+    }
     
     const updatedUser = await findUserById(id);
     console.log(`[updateUser] User after update:`, updatedUser ? { id: updatedUser.id, role: updatedUser.role } : 'null');
