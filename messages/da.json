@@ -769,7 +769,8 @@
     "participantDeleted": "Deltager slettet med succes.",
     "participantDeleteError": "Fejl ved sletning af deltager.",
     "statusUpdated": "Status opdateret med succes",
-    "clickToEditStatus": "Klik for at redigere status"
+    "clickToEditStatus": "Klik for at redigere status",
+    "refresh": "Opdater"
   },
   "Contact": {
     "title": "Kontakt Os",

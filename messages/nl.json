@@ -765,7 +765,8 @@
     "participantDeleted": "Deelnemer succesvol verwijderd.",
     "participantDeleteError": "Fout bij het verwijderen van deelnemer.",
     "statusUpdated": "Status succesvol bijgewerkt",
-    "clickToEditStatus": "Klik om de status te bewerken"
+    "clickToEditStatus": "Klik om de status te bewerken",
+    "refresh": "Vernieuwen"
   },
   "Contact": {
     "title": "Neem Contact Op",

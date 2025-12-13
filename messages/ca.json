@@ -1064,7 +1064,8 @@
     "participantDeleted": "Participant eliminat amb èxit.",
     "participantDeleteError": "Error en eliminar el participant.",
     "statusUpdated": "Estat actualitzat correctament",
-    "clickToEditStatus": "Feu clic per editar l'estat"
+    "clickToEditStatus": "Feu clic per editar l'estat",
+    "refresh": "Actualitzar"
   },
   "Dashboard": {
     "title": "Dashboard",

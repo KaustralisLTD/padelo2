@@ -769,7 +769,8 @@
     "participantDeleted": "Deltagare raderad framgångsrikt.",
     "participantDeleteError": "Fel vid radering av deltagare.",
     "statusUpdated": "Status uppdaterad",
-    "clickToEditStatus": "Klicka för att redigera status"
+    "clickToEditStatus": "Klicka för att redigera status",
+    "refresh": "Uppdatera"
   },
   "Contact": {
     "title": "Kontakta Oss",

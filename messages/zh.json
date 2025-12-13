@@ -769,7 +769,8 @@
     "participantDeleted": "参与者已成功删除。",
     "participantDeleteError": "删除参与者时出错。",
     "statusUpdated": "状态更新成功",
-    "clickToEditStatus": "点击编辑状态"
+    "clickToEditStatus": "点击编辑状态",
+    "refresh": "刷新"
   },
   "Contact": {
     "title": "联系我们",

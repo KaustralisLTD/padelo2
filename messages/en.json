@@ -360,6 +360,8 @@
     "participantsLoadError": "Failed to load participants.",
     "participantUpdated": "Participant updated successfully.",
     "selectedParticipants": "Selected Participants",
+    "refresh": "Refresh",
+    "confirmDeleteParticipant": "Are you sure you want to delete participant {name}? This action cannot be undone.",
     "selectActionForSelected": "Select action for selected participants",
     "markAsPaid": "Mark as Paid",
     "cancelSelection": "Cancel Selection",

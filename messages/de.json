@@ -769,7 +769,8 @@
     "participantDeleted": "Teilnehmer erfolgreich gelöscht.",
     "participantDeleteError": "Fehler beim Löschen des Teilnehmers.",
     "statusUpdated": "Status erfolgreich aktualisiert",
-    "clickToEditStatus": "Klicken Sie, um den Status zu bearbeiten"
+    "clickToEditStatus": "Klicken Sie, um den Status zu bearbeiten",
+    "refresh": "Aktualisieren"
   },
   "Contact": {
     "title": "Kontaktieren Sie Uns",

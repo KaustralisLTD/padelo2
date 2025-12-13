@@ -787,7 +787,9 @@
     "selectPartner": "Seleccionar pareja",
     "enterManually": "Ingresar manualmente",
     "statusUpdated": "Estado actualizado correctamente",
-    "clickToEditStatus": "Haga clic para editar el estado"
+    "clickToEditStatus": "Haga clic para editar el estado",
+    "refresh": "Actualizar",
+    "confirmDeleteParticipant": "¿Está seguro de que desea eliminar al participante {name}? Esta acción no se puede deshacer."
   },
   "Contact": {
     "title": "Contáctanos",

@@ -769,7 +769,8 @@
     "participantDeleted": "Participant supprimé avec succès.",
     "participantDeleteError": "Erreur lors de la suppression du participant.",
     "statusUpdated": "Statut mis à jour avec succès",
-    "clickToEditStatus": "Cliquez pour modifier le statut"
+    "clickToEditStatus": "Cliquez pour modifier le statut",
+    "refresh": "Actualiser"
   },
   "Contact": {
     "title": "Contactez-Nous",

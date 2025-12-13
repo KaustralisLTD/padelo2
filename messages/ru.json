@@ -1433,7 +1433,9 @@
       "failedToSendTo": "Не удалось отправить {count} участнику(ам)",
       "templateRequiresAdditionalData": "Шаблон требует дополнительных данных",
       "missingFields": "Отсутствующие поля",
-      "requiredDataStructure": "Требуемая структура данных"
+      "requiredDataStructure": "Требуемая структура данных",
+      "refresh": "Обновить",
+      "confirmDeleteParticipant": "Вы уверены, что хотите удалить участника {name}? Это действие нельзя отменить."
     }
   },
   "Profile": {
