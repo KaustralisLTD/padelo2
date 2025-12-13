@@ -5,7 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-type UserRole = 'superadmin' | 'staff' | 'participant';
+type UserRole = 'superadmin' | 'tournament_admin' | 'manager' | 'coach' | 'staff' | 'participant';
 
 export default function DashboardPageContent() {
   const t = useTranslations('Dashboard');
