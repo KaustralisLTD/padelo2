@@ -203,12 +203,15 @@ export async function findUserById(id: string): Promise<User | null> {
     if (rows.length === 0) return null;
 
     const user = rows[0];
+    const userRole = user.role || 'participant'; // Устанавливаем дефолтную роль, если она null
+    console.log(`[findUserById] User ${id} role: ${userRole} (raw: ${user.role})`);
+    
     return {
       id: user.id,
       email: user.email,
       firstName: user.first_name,
       lastName: user.last_name,
-      role: user.role,
+      role: userRole,
       createdAt: user.created_at.toISOString(),
     };
   } catch (error) {
@@ -446,12 +449,19 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
     }
 
     values.push(id);
-    await pool.execute(
-      `UPDATE users SET ${updates.join(', ')}, updated_at = NOW() WHERE id = ?`,
-      values
-    );
-
+    const updateQuery = `UPDATE users SET ${updates.join(', ')}, updated_at = NOW() WHERE id = ?`;
+    console.log(`[updateUser] Executing update query:`, updateQuery);
+    console.log(`[updateUser] Values:`, values);
+    
+    const [updateResult] = await pool.execute(updateQuery, values) as any[];
+    console.log(`[updateUser] Update result:`, updateResult);
+    console.log(`[updateUser] Rows affected:`, updateResult.affectedRows);
+    
+    // Небольшая задержка перед чтением, чтобы дать время транзакции завершиться
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     const updatedUser = await findUserById(id);
+    console.log(`[updateUser] User after update:`, updatedUser ? { id: updatedUser.id, role: updatedUser.role } : 'null');
     
     // Send role change notification if role changed and user exists
     if (sendRoleChangeEmail && data.role && oldRole && data.role !== oldRole && updatedUser && oldUser) {

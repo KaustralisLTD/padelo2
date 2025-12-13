@@ -117,7 +117,10 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   
   // Translate sender name based on locale
   const displayName = getTranslatedSenderName(baseDisplayName, locale);
-  const fromName = `${displayName} <${fromEmail}>`;
+  // Replace non-ASCII characters (like ₂) with ASCII equivalents for email from field
+  // Resend API doesn't accept non-ASCII characters in the from field
+  const asciiDisplayName = displayName.replace(/₂/g, '2').replace(/[^\x00-\x7F]/g, '');
+  const fromName = `${asciiDisplayName} <${fromEmail}>`;
   const recipients = Array.isArray(to) ? to : [to];
   
   // Generate plain text version if not provided

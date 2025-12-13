@@ -1002,7 +1002,9 @@
     },
     "staff": {
       "title": "Personnel",
-      "description": "Assigner des rôles et gérer les membres du personnel"
+      "description": "Assigner des rôles et gérer les membres du personnel",
+      "editPlayers": "Modifier les Joueurs",
+      "manageRegistrations": "Gérer les Inscriptions"
     },
     "users": {
       "title": "Gérer les utilisateurs",
