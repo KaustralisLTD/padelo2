@@ -469,15 +469,43 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
     
     // Проверяем роль напрямую из БД
     const [verifyRows] = await pool.execute(
-      'SELECT role FROM users WHERE id = ?',
+      'SELECT role, CAST(role AS CHAR) as role_str, LENGTH(role) as role_len FROM users WHERE id = ?',
       [id]
     ) as any[];
     
     if (verifyRows.length > 0) {
       const dbRole = verifyRows[0].role;
-      console.log(`[updateUser] Role in DB after update: ${dbRole}`);
-      if (data.role && dbRole !== data.role) {
-        console.error(`[updateUser] ERROR: Role mismatch! Expected: ${data.role}, Got: ${dbRole}`);
+      const dbRoleStr = verifyRows[0].role_str;
+      const dbRoleLen = verifyRows[0].role_len;
+      console.log(`[updateUser] Role in DB after update: "${dbRole}" (raw: "${dbRoleStr}", length: ${dbRoleLen}, type: ${typeof dbRole})`);
+      
+      if (data.role) {
+        if (dbRole !== data.role) {
+          console.error(`[updateUser] ERROR: Role mismatch! Expected: "${data.role}" (type: ${typeof data.role}, length: ${data.role.length}), Got: "${dbRole}" (type: ${typeof dbRole}, length: ${dbRoleLen})`);
+          
+          // Попытка исправить - выполнить UPDATE еще раз с явным указанием типа
+          console.log(`[updateUser] Attempting to fix role by updating again...`);
+          try {
+            const [fixResult] = await pool.execute(
+              'UPDATE users SET role = CAST(? AS CHAR(20)), updated_at = NOW() WHERE id = ?',
+              [data.role, id]
+            ) as any[];
+            console.log(`[updateUser] Fix update result:`, fixResult);
+            
+            // Проверяем снова
+            const [recheckRows] = await pool.execute(
+              'SELECT role FROM users WHERE id = ?',
+              [id]
+            ) as any[];
+            if (recheckRows.length > 0) {
+              console.log(`[updateUser] Role after fix: "${recheckRows[0].role}"`);
+            }
+          } catch (fixError) {
+            console.error(`[updateUser] Error fixing role:`, fixError);
+          }
+        } else {
+          console.log(`[updateUser] ✅ Role matches!`);
+        }
       }
     }
     
@@ -510,7 +538,7 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
           to: updatedUser.email,
           subject: `Your Role Has Been Updated - PadelO₂`,
           html: emailHTML,
-          from: 'PadelO₂ <admin@padelo2.com>',
+          from: 'admin@padelo2.com', // Только email, без угловых скобок и non-ASCII символов
           locale: userLocale,
         });
       } catch (emailError) {

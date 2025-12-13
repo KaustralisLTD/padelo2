@@ -100,6 +100,14 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const verifiedDomain = process.env.RESEND_FROM_DOMAIN || 'padelo2.com';
   let fromEmail = from || process.env.SMTP_FROM || `hello@${verifiedDomain}`;
   
+  // Извлекаем только email адрес, если передан формат "Display Name <email@domain.com>"
+  if (fromEmail.includes('<') && fromEmail.includes('>')) {
+    const match = fromEmail.match(/<([^>]+)>/);
+    if (match && match[1]) {
+      fromEmail = match[1].trim();
+    }
+  }
+  
   // Нормализуем email адрес (приводим к нижнему регистру домен)
   if (fromEmail.includes('@')) {
     const [localPart, domain] = fromEmail.split('@');
