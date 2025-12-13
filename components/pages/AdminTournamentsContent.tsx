@@ -234,36 +234,30 @@ export default function AdminTournamentsContent() {
     if (!token) return;
     
     try {
+      setLoading(true);
+      setError(null);
       const response = await fetch('/api/admin/tournaments', {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       
       if (response.ok) {
         const data = await response.json();
-        console.log('[AdminTournamentsContent] Fetched tournaments:', data);
+        const tournaments = data.tournaments || [];
+        console.log('[AdminTournamentsContent] Fetched tournaments:', tournaments.length, 'tournaments');
         
-        // Детальное логирование статусов турниров
-        if (data.tournaments && Array.isArray(data.tournaments)) {
-          data.tournaments.forEach((tournament: any) => {
-            console.log('[AdminTournamentsContent] Tournament status check:', {
-              id: tournament.id,
-              name: tournament.name,
-              status: tournament.status,
-              statusType: typeof tournament.status,
-              statusValue: JSON.stringify(tournament.status),
-            });
-          });
+        setTournaments(tournaments);
+        
+        if (tournaments.length === 0) {
+          setError('No tournaments available. You may not have access to any tournaments.');
         }
-        
-        setTournaments(data.tournaments || []);
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error('[AdminTournamentsContent] Failed to load tournaments:', response.status, errorData);
         setError(errorData.error || 'Failed to load tournaments');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('[AdminTournamentsContent] Error fetching tournaments:', err);
-      setError('Failed to load tournaments');
+      setError(err.message || 'Failed to load tournaments');
     } finally {
       setLoading(false);
     }
