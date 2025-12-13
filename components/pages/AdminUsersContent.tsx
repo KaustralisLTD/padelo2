@@ -377,7 +377,15 @@ export default function AdminUsersContent() {
       if (formData.password) updateData.password = formData.password;
       if (formData.firstName) updateData.firstName = formData.firstName;
       if (formData.lastName) updateData.lastName = formData.lastName;
-      if (formData.role) updateData.role = formData.role;
+      // Всегда обновляем роль, даже если она не изменилась
+      if (formData.role) {
+        updateData.role = formData.role;
+      } else {
+        // Если роль не указана, используем текущую роль пользователя
+        updateData.role = editingUser.role;
+      }
+
+      console.log('[AdminUsers] Updating user:', { userId: editingUser.id, updateData });
 
       const response = await fetch('/api/admin/users', {
         method: 'PUT',
@@ -391,14 +399,26 @@ export default function AdminUsersContent() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('[AdminUsers] User updated successfully:', data);
         setSuccess('User updated successfully');
         setEditingUser(null);
         setFormData({ email: '', password: '', firstName: '', lastName: '', role: 'participant' });
-        fetchUsers();
+        
+        // Обновляем список пользователей, чтобы отобразить новую роль
+        await fetchUsers();
+        
+        // Отправляем событие для обновления на других страницах
+        if (typeof window !== 'undefined' && updateData.role) {
+          window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
+            detail: { userId: editingUser.id, newRole: updateData.role } 
+          }));
+        }
       } else {
+        console.error('[AdminUsers] Failed to update user:', data);
         setError(data.error || 'Failed to update user');
       }
     } catch (err) {
+      console.error('[AdminUsers] Error updating user:', err);
       setError('Failed to update user');
     }
   };
@@ -1013,10 +1033,13 @@ export default function AdminUsersContent() {
                     <td className="px-6 py-4">
                       <span className={`px-3 py-1 rounded-full text-xs font-poppins font-semibold ${
                         user.role === 'superadmin' ? 'bg-purple-500/20 text-purple-400' :
-                        user.role === 'staff' ? 'bg-blue-500/20 text-blue-400' :
+                        user.role === 'manager' ? 'bg-blue-500/20 text-blue-400' :
+                        user.role === 'staff' ? 'bg-green-500/20 text-green-400' :
+                        user.role === 'coach' ? 'bg-orange-500/20 text-orange-400' :
+                        user.role === 'tournament_admin' ? 'bg-cyan-500/20 text-cyan-400' :
                         'bg-gray-500/20 text-gray-400'
                       }`}>
-                        {user.role}
+                        {user.role || 'participant'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-text-secondary font-poppins text-sm">

@@ -193,6 +193,8 @@ export async function PUT(request: NextRequest) {
       const validRoles: UserRole[] = ['superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant'];
       if (validRoles.includes(role)) {
         userRole = role;
+      } else {
+        console.warn(`[Admin Users] Invalid role provided: ${role}, valid roles: ${validRoles.join(', ')}`);
       }
     }
 
@@ -201,7 +203,11 @@ export async function PUT(request: NextRequest) {
     if (password) updateData.password = password;
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;
-    if (userRole) updateData.role = userRole;
+    // Всегда обновляем роль, если она указана
+    if (userRole !== undefined) {
+      updateData.role = userRole;
+      console.log(`[Admin Users] Updating role to: ${userRole} for user: ${id}`);
+    }
 
     const updatedUser = await updateUser(id, updateData);
 

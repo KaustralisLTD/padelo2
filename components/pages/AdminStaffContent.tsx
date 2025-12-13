@@ -319,10 +319,13 @@ export default function AdminStaffContent() {
       const data = await response.json();
 
       if (response.ok) {
+        console.log('[Staff Access] Staff access updated successfully');
         setSuccess('Staff access updated successfully');
         setEditingAccess(null);
         resetForm();
-        fetchData();
+        
+        // Обновляем данные, чтобы получить актуальную роль пользователя
+        await fetchData();
         
         // Обновляем список пользователей, чтобы отобразить новую роль
         if (typeof window !== 'undefined' && formData.userRole) {
@@ -862,7 +865,7 @@ export default function AdminStaffContent() {
                       <td className="px-6 py-4">
                         <div className="flex items-center space-x-3">
                           <button
-                            onClick={() => openEditModal(access)}
+                            onClick={async () => await openEditModal(access)}
                             className="text-primary hover:text-accent font-poppins text-sm transition-colors"
                           >
                             {t('staff.edit')}

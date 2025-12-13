@@ -26,6 +26,51 @@ async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boo
   return { authorized: true, userId: session.userId, role: session.role };
 }
 
+// GET - Get user by ID
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const access = await checkAdminAccess(request);
+    if (!access.authorized) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const { id } = await params;
+    const user = await findUserById(id);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        createdAt: user.createdAt,
+        emailVerified: user.emailVerified,
+      },
+    });
+  } catch (error: any) {
+    console.error('Error getting user:', error);
+    return NextResponse.json(
+      { error: 'Failed to get user' },
+      { status: 500 }
+    );
+  }
+}
+
 // PUT - Update user by ID
 export async function PUT(
   request: NextRequest,
@@ -78,6 +123,8 @@ export async function PUT(
       const validRoles: UserRole[] = ['superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant'];
       if (validRoles.includes(role)) {
         userRole = role;
+      } else {
+        console.warn(`[Admin Users] Invalid role provided: ${role}, valid roles: ${validRoles.join(', ')}`);
       }
     }
 
@@ -86,7 +133,11 @@ export async function PUT(
     if (password) updateData.password = password;
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;
-    if (userRole) updateData.role = userRole;
+    // Всегда обновляем роль, если она указана
+    if (userRole !== undefined) {
+      updateData.role = userRole;
+      console.log(`[Admin Users] Updating role to: ${userRole} for user: ${id}`);
+    }
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json(
