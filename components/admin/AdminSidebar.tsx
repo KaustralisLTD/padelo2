@@ -252,42 +252,7 @@ export default function AdminSidebar() {
         {!isCollapsed && (
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center overflow-hidden">
-              {userRole === 'superadmin' ? (
-                logoError ? (
-                  <span className="text-background font-bold text-xl">P</span>
-                ) : (
-                  <Image
-                    src="/favicon.ico"
-                    alt="PadelO₂"
-                    width={40}
-                    height={40}
-                    className="object-contain"
-                    onError={() => setLogoError(true)}
-                  />
-                )
-              ) : companyLogo && !logoError ? (
-                <Image
-                  src={companyLogo}
-                  alt="Company Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                  onError={() => setLogoError(true)}
-                />
-              ) : (
-                <span className="text-background font-bold text-xl">P</span>
-              )}
-            </div>
-            <div>
-              <h2 className="font-poppins font-bold text-text text-lg">PadelO₂</h2>
-              <p className="text-xs text-text-tertiary font-poppins">Admin Panel</p>
-            </div>
-          </div>
-        )}
-        {isCollapsed && (
-          <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto overflow-hidden">
-            {userRole === 'superadmin' ? (
-              logoError ? (
+              {logoError ? (
                 <span className="text-background font-bold text-xl">P</span>
               ) : (
                 <Image
@@ -298,18 +263,27 @@ export default function AdminSidebar() {
                   className="object-contain"
                   onError={() => setLogoError(true)}
                 />
-              )
-            ) : companyLogo && !logoError ? (
+              )}
+            </div>
+            <div>
+              <h2 className="font-poppins font-bold text-text text-lg">PadelO₂</h2>
+              <p className="text-xs text-text-tertiary font-poppins">Admin Panel</p>
+            </div>
+          </div>
+        )}
+        {isCollapsed && (
+          <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center mx-auto overflow-hidden">
+            {logoError ? (
+              <span className="text-background font-bold text-xl">P</span>
+            ) : (
               <Image
-                src={companyLogo}
-                alt="Company Logo"
+                src="/favicon.ico"
+                alt="PadelO₂"
                 width={40}
                 height={40}
                 className="object-contain"
                 onError={() => setLogoError(true)}
               />
-            ) : (
-              <span className="text-background font-bold text-xl">P</span>
             )}
           </div>
         )}
