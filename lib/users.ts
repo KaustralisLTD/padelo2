@@ -426,9 +426,16 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
       values.push(data.lastName);
     }
     if (data.role !== undefined && data.role !== null) {
+      // Валидация роли - проверяем, что она соответствует ENUM
+      const validRoles = ['superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant'];
+      if (!validRoles.includes(data.role)) {
+        console.error(`[updateUser] ERROR: Invalid role "${data.role}". Valid roles: ${validRoles.join(', ')}`);
+        throw new Error(`Invalid role: ${data.role}`);
+      }
+      
       updates.push('role = ?');
       values.push(data.role);
-      console.log(`[updateUser] Adding role update: ${data.role} for user ${id} (old role: ${oldRole})`);
+      console.log(`[updateUser] Adding role update: "${data.role}" (type: ${typeof data.role}, length: ${data.role.length}) for user ${id} (old role: ${oldRole})`);
     }
     if (data.password) {
       const passwordHash = await bcrypt.hash(data.password, SALT_ROUNDS);
