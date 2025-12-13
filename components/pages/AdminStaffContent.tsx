@@ -78,7 +78,9 @@ export default function AdminStaffContent() {
 
   useEffect(() => {
     if (!token) {
-      router.push(`/${locale}/login`);
+      setTimeout(() => {
+        router.push(`/${locale}/login`);
+      }, 0);
       return;
     }
 
@@ -89,13 +91,17 @@ export default function AdminStaffContent() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.session || data.session.role !== 'superadmin') {
-          router.push(`/${locale}/dashboard`);
+          setTimeout(() => {
+            router.push(`/${locale}/dashboard`);
+          }, 0);
         } else {
           fetchData();
         }
       })
       .catch(() => {
-        router.push(`/${locale}/login`);
+        setTimeout(() => {
+          router.push(`/${locale}/login`);
+        }, 0);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
