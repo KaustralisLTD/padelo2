@@ -290,7 +290,9 @@ export default function TournamentParticipantsPage() {
 
   useEffect(() => {
     if (!token) {
-      router.push(`/${locale}/login`);
+      setTimeout(() => {
+        router.push(`/${locale}/login`);
+      }, 0);
       return;
     }
 
@@ -314,7 +316,9 @@ export default function TournamentParticipantsPage() {
 
         const authData = await authResponse.json();
         if (!authData.session) {
-          router.push(`/${locale}/login`);
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
           return;
         }
 
@@ -2149,20 +2153,7 @@ export default function TournamentParticipantsPage() {
         <ConfirmDialog
           isOpen={deleteConfirm.isOpen}
           title={tTournaments('delete') || 'Delete Participant'}
-          message={(() => {
-            // Получаем перевод
-            let translation = tTournaments('confirmDeleteParticipant');
-            
-            // Если перевод не найден (возвращается ключ), используем fallback
-            if (translation && translation.startsWith('Tournaments.confirmDeleteParticipant')) {
-              translation = `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`;
-            } else if (translation && translation.includes('{name}')) {
-              // Заменяем {name} на реальное имя
-              translation = translation.replace('{name}', deleteConfirm.name);
-            }
-            
-            return translation || `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`;
-          })()}
+          message={tTournaments('confirmDeleteParticipant', { name: deleteConfirm.name }) || `Are you sure you want to delete participant ${deleteConfirm.name}? This action cannot be undone.`}
           confirmText={tTournaments('delete') || 'Delete'}
           cancelText={tTournaments('cancel') || 'Cancel'}
           onConfirm={handleDeleteConfirm}
