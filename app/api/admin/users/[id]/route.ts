@@ -146,14 +146,18 @@ export async function PUT(
       );
     }
 
-    const updatedUser = await updateUser(id, updateData);
+    console.log(`[Admin Users API] Calling updateUser with:`, { id, updateData });
+    const updatedUser = await updateUser(id, updateData, true); // true = sendRoleChangeEmail
 
     if (!updatedUser) {
+      console.error(`[Admin Users API] updateUser returned null for user: ${id}`);
       return NextResponse.json(
         { error: 'Failed to update user' },
         { status: 500 }
       );
     }
+
+    console.log(`[Admin Users API] User updated successfully:`, { id, role: updatedUser.role });
 
     // Логируем обновление пользователя
     const adminUser = await findUserById(access.userId!);
@@ -176,6 +180,7 @@ export async function PUT(
         lastName: updatedUser.lastName,
         role: updatedUser.role,
         createdAt: updatedUser.createdAt,
+        emailVerified: updatedUser.emailVerified,
       },
     });
   } catch (error: any) {

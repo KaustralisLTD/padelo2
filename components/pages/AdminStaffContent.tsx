@@ -843,12 +843,21 @@ export default function AdminStaffContent() {
                                   if (response.ok) {
                                     const responseData = await response.json();
                                     console.log(`[Staff Access] Role updated successfully:`, responseData);
+                                    console.log(`[Staff Access] Response user role:`, responseData.user?.role);
+                                    console.log(`[Staff Access] Temp role:`, tempRole);
                                     
                                     // Обновляем локальное состояние пользователя немедленно
                                     const newRole = responseData.user?.role || tempRole;
-                                    setUsers(prevUsers => prevUsers.map(u => 
-                                      u.id === access.userId ? { ...u, role: newRole as any } : u
-                                    ));
+                                    console.log(`[Staff Access] Using new role:`, newRole);
+                                    
+                                    if (newRole) {
+                                      setUsers(prevUsers => prevUsers.map(u => 
+                                        u.id === access.userId ? { ...u, role: newRole as any } : u
+                                      ));
+                                      console.log(`[Staff Access] Updated local state with role:`, newRole);
+                                    } else {
+                                      console.error(`[Staff Access] No role found in response!`, responseData);
+                                    }
                                     
                                     setEditingRoleForUser(null);
                                     setTempRole('');
