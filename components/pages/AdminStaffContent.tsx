@@ -862,10 +862,23 @@ export default function AdminStaffContent() {
                                     setEditingRoleForUser(null);
                                     setTempRole('');
                                     
-                                    // Ждем немного перед обновлением данных из БД, чтобы дать время транзакции завершиться
+                                    // Ждем больше времени перед обновлением данных из БД, чтобы дать время транзакции завершиться
+                                    // Особенно важно для роли Manager, которая может требовать больше времени для обновления
                                     setTimeout(async () => {
+                                      console.log(`[Staff Access] Fetching data after role update, expecting role: ${newRole}`);
                                       await fetchData();
-                                    }, 500);
+                                      // Проверяем, что роль действительно обновилась
+                                      const updatedUser = users.find(u => u.id === access.userId);
+                                      if (updatedUser && updatedUser.role !== newRole) {
+                                        console.warn(`[Staff Access] Role mismatch after fetchData! Expected: ${newRole}, Got: ${updatedUser.role}`);
+                                        // Повторяем обновление локального состояния
+                                        setUsers(prevUsers => prevUsers.map(u => 
+                                          u.id === access.userId ? { ...u, role: newRole as any } : u
+                                        ));
+                                      } else {
+                                        console.log(`[Staff Access] Role confirmed after fetchData: ${updatedUser?.role}`);
+                                      }
+                                    }, 1000); // Увеличена задержка до 1 секунды
                                     
                                     if (typeof window !== 'undefined') {
                                       window.dispatchEvent(new CustomEvent('userRoleUpdated', { 

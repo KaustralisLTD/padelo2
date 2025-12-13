@@ -1231,28 +1231,28 @@ export default function EmailTemplatesContent() {
             {/* Modal Content */}
             <div className="flex-1 overflow-hidden flex">
               {/* HTML Editor */}
-              <div className="w-1/2 border-r border-gray-200 flex flex-col">
-                <div className="p-4 bg-gray-50 border-b border-gray-200">
-                  <h3 className="font-semibold text-gray-900">HTML Editor</h3>
-                  <p className="text-xs text-gray-600">Edit the email HTML directly</p>
+              <div className="w-1/2 border-r border-border flex flex-col">
+                <div className="p-4 bg-background-secondary border-b border-border">
+                  <h3 className="font-semibold text-text">HTML Editor</h3>
+                  <p className="text-xs text-text-secondary">Edit the email HTML directly</p>
                 </div>
                 <textarea
                   value={editableHtml}
                   onChange={(e) => setEditableHtml(e.target.value)}
-                  className="flex-1 p-4 font-mono text-sm border-0 resize-none focus:outline-none"
+                  className="flex-1 p-4 font-mono text-sm border-0 resize-none focus:outline-none bg-background text-text"
                   spellCheck={false}
                 />
               </div>
 
               {/* Preview */}
               <div className="w-1/2 flex flex-col overflow-hidden">
-                <div className="p-4 bg-gray-50 border-b border-gray-200">
-                  <h3 className="font-semibold text-gray-900">Preview</h3>
-                  <p className="text-xs text-gray-600">How the email will look</p>
+                <div className="p-4 bg-background-secondary border-b border-border">
+                  <h3 className="font-semibold text-text">Preview</h3>
+                  <p className="text-xs text-text-secondary">How the email will look</p>
                 </div>
-                <div className="flex-1 overflow-auto p-4 bg-gray-100">
+                <div className="flex-1 overflow-auto p-4 bg-background">
                   <div 
-                    className="bg-white rounded-lg shadow-lg p-4 mx-auto max-w-2xl"
+                    className="bg-background-secondary rounded-lg shadow-lg p-4 mx-auto max-w-2xl text-text"
                     dangerouslySetInnerHTML={{ __html: editableHtml }}
                   />
                 </div>
@@ -1280,14 +1280,14 @@ export default function EmailTemplatesContent() {
             )}
 
             {/* Modal Footer */}
-            <div className="p-6 border-t border-gray-200 flex gap-4">
+            <div className="p-6 border-t border-border flex gap-4">
               <button
                 onClick={() => {
                   setShowPreview(false);
                   setError(null);
                   setSuccess(false);
                 }}
-                className="flex-1 py-3 px-6 bg-gray-200 text-gray-800 font-semibold rounded-xl hover:bg-gray-300 transition-colors"
+                className="flex-1 py-3 px-6 bg-background-secondary text-text font-semibold rounded-xl hover:bg-background-hover transition-colors"
               >
                 Cancel
               </button>

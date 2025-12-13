@@ -420,10 +420,23 @@ export default function AdminUsersContent() {
         setEditingUser(null);
         setFormData({ email: '', password: '', firstName: '', lastName: '', role: 'participant' });
         
-        // Ждем немного перед обновлением данных из БД, чтобы дать время транзакции завершиться
+        // Ждем больше времени перед обновлением данных из БД, чтобы дать время транзакции завершиться
+        // Особенно важно для роли Manager, которая может требовать больше времени для обновления
         setTimeout(async () => {
+          console.log(`[AdminUsers] Fetching users after role update, expecting role: ${newRole}`);
           await fetchUsers();
-        }, 500);
+          // Проверяем, что роль действительно обновилась
+          const updatedUser = users.find(u => u.id === editingUser.id);
+          if (updatedUser && updatedUser.role !== newRole) {
+            console.warn(`[AdminUsers] Role mismatch after fetchUsers! Expected: ${newRole}, Got: ${updatedUser.role}`);
+            // Повторяем обновление локального состояния
+            setUsers(prevUsers => prevUsers.map(u => 
+              u.id === editingUser.id ? { ...u, role: newRole } : u
+            ));
+          } else {
+            console.log(`[AdminUsers] Role confirmed after fetchUsers: ${updatedUser?.role}`);
+          }
+        }, 1000); // Увеличена задержка до 1 секунды
         
         // Отправляем событие для обновления на других страницах
         if (typeof window !== 'undefined' && newRole) {

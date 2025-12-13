@@ -60,9 +60,9 @@ export function canAccessRoute(role: UserRole, route: string): boolean {
   // Superadmin can access everything
   if (role === 'superadmin') return true;
 
-  // Staff routes
+  // Admin routes - доступны для staff, manager, tournament_admin
   if (route.startsWith('/admin/') || route.startsWith('/staff/')) {
-    return role === 'staff';
+    return role === 'staff' || role === 'manager' || role === 'tournament_admin';
   }
 
   // Participant routes

@@ -31,6 +31,12 @@ export default function AdminSidebar() {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [logoError, setLogoError] = useState(false);
+  const [staffPermissions, setStaffPermissions] = useState<{
+    canManageUsers: boolean;
+    canManageLogs: boolean;
+    canManageTournaments: boolean;
+    canSendEmails: boolean;
+  } | null>(null);
 
   // Load collapsed state from localStorage
   useEffect(() => {
@@ -327,7 +333,36 @@ export default function AdminSidebar() {
       {/* Menu Items */}
       <nav className="flex-1 overflow-y-auto py-4 px-3">
         <ul className="space-y-1">
-          {menuItems.map((item) => {
+          {menuItems.filter((item) => {
+            // Superadmin sees everything
+            if (userRole === 'superadmin') return true;
+            
+            // Staff, Manager, Tournament Admin see dashboard
+            if (item.href.includes('/dashboard')) return true;
+            
+            // Filter based on permissions
+            if (item.href.includes('/users')) {
+              return staffPermissions?.canManageUsers || false;
+            }
+            if (item.href.includes('/logs')) {
+              return staffPermissions?.canManageLogs || false;
+            }
+            if (item.href.includes('/tournaments')) {
+              return staffPermissions?.canManageTournaments || false;
+            }
+            if (item.href.includes('/partner-emails')) {
+              return staffPermissions?.canSendEmails || false;
+            }
+            if (item.href.includes('/staff')) {
+              return false; // Only superadmin can manage staff
+            }
+            if (item.href.includes('/wallet') || item.href.includes('/db-monitor')) {
+              return false; // Only superadmin
+            }
+            
+            // Messages and Settings - доступны всем с доступом к админке
+            return true;
+          }).map((item) => {
             const active = isActive(item.href);
             const hasChildren = item.children && item.children.length > 0;
             const isExpanded = expandedItems.includes(item.href);
