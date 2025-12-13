@@ -21,7 +21,9 @@ export default function AdminDashboardContent() {
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (!token) {
-      router.push(`/${locale}/login`);
+      setTimeout(() => {
+        router.push(`/${locale}/login`);
+      }, 0);
       return;
     }
 
@@ -33,7 +35,9 @@ export default function AdminDashboardContent() {
       .then((res) => {
         if (!res.ok) {
           localStorage.removeItem('auth_token');
-          router.push(`/${locale}/login`);
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
           return null;
         }
         return res.json();
@@ -46,13 +50,17 @@ export default function AdminDashboardContent() {
           setUser(data.session);
         } else {
           localStorage.removeItem('auth_token');
-          router.push(`/${locale}/login`);
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
         }
       })
       .catch((error) => {
         console.error('Error verifying session:', error);
         localStorage.removeItem('auth_token');
-        router.push(`/${locale}/login`);
+        setTimeout(() => {
+          router.push(`/${locale}/login`);
+        }, 0);
       })
       .finally(() => setLoading(false));
   }, [locale, router]);

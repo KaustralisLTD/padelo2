@@ -95,7 +95,9 @@ export default function DashboardPageContent() {
     // Staff и superadmin остаются на обычном dashboard
     if (!loading && role === 'participant') {
       console.log('[Dashboard] Redirecting participant to participant-dashboard');
-      router.push(`/${locale}/participant-dashboard`);
+      setTimeout(() => {
+        router.push(`/${locale}/participant-dashboard`);
+      }, 0);
     } else if (!loading && (role === 'staff' || role === 'superadmin')) {
       console.log(`[Dashboard] User with role ${role} has access to dashboard`);
       // Staff и superadmin остаются на dashboard - ничего не делаем
