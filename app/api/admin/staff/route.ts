@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
     const {
       userId,
       tournamentId,
+      userRole, // Добавляем поддержку роли из запроса
       canManageGroups = true,
       canManageMatches = true,
       canViewRegistrations = true,
@@ -93,6 +94,18 @@ export async function POST(request: NextRequest) {
         { error: 'userId and tournamentId are required' },
         { status: 400 }
       );
+    }
+
+    // Обновляем роль пользователя в таблице users, если она указана
+    if (userRole) {
+      try {
+        const { updateUser } = await import('@/lib/users');
+        await updateUser(userId, { role: userRole as any }, false); // false = не отправлять email уведомление
+        console.log(`[Staff Access] Updated user role to ${userRole} for user ${userId}`);
+      } catch (roleError: any) {
+        console.error('[Staff Access] Error updating user role:', roleError);
+        // Не прерываем создание доступа, если обновление роли не удалось
+      }
     }
 
     const access = await createStaffTournamentAccess({

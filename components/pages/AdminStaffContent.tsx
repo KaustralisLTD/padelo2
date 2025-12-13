@@ -162,6 +162,8 @@ export default function AdminStaffContent() {
     try {
       // Обновляем роль пользователя, если она указана
       if (formData.userRole) {
+        const user = users.find(u => u.id === formData.userId);
+        // Обновляем роль, даже если она уже установлена, чтобы убедиться, что она сохранена в БД
         const updateRoleResponse = await fetch(`/api/admin/users/${formData.userId}`, {
           method: 'PUT',
           headers: {
@@ -175,6 +177,13 @@ export default function AdminStaffContent() {
           const errorData = await updateRoleResponse.json();
           setError(errorData.error || 'Failed to update user role');
           return;
+        }
+        
+        console.log(`[Staff Access] Updated user role to ${formData.userRole} for user ${formData.userId}`);
+        
+        // Обновляем локальное состояние пользователя
+        if (user) {
+          user.role = formData.userRole as any;
         }
       }
 
@@ -193,6 +202,7 @@ export default function AdminStaffContent() {
             body: JSON.stringify({
               userId: formData.userId,
               tournamentId,
+              userRole: formData.userRole, // Передаем роль в запрос
               canManageGroups: formData.canManageGroups,
               canManageMatches: formData.canManageMatches,
               canViewRegistrations: formData.canViewRegistrations,
@@ -247,24 +257,30 @@ export default function AdminStaffContent() {
     if (!token || !editingAccess) return;
 
     try {
-      // Обновляем роль пользователя, если она изменилась
+      // Обновляем роль пользователя, если она указана
       if (formData.userRole) {
         const user = users.find(u => u.id === editingAccess.userId);
-        if (user && user.role !== formData.userRole) {
-          const updateRoleResponse = await fetch(`/api/admin/users/${editingAccess.userId}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ role: formData.userRole }),
-          });
+        // Обновляем роль, даже если она уже установлена, чтобы убедиться, что она сохранена в БД
+        const updateRoleResponse = await fetch(`/api/admin/users/${editingAccess.userId}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ role: formData.userRole }),
+        });
 
-          if (!updateRoleResponse.ok) {
-            const errorData = await updateRoleResponse.json();
-            setError(errorData.error || 'Failed to update user role');
-            return;
-          }
+        if (!updateRoleResponse.ok) {
+          const errorData = await updateRoleResponse.json();
+          setError(errorData.error || 'Failed to update user role');
+          return;
+        }
+        
+        console.log(`[Staff Access] Updated user role to ${formData.userRole} for user ${editingAccess.userId}`);
+        
+        // Обновляем локальное состояние пользователя
+        if (user) {
+          user.role = formData.userRole as any;
         }
       }
 
