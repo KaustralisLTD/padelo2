@@ -89,7 +89,30 @@ export default function AdminSidebar() {
 
     fetchTournaments();
     fetchUserInfo();
+    fetchStaffPermissions();
   }, []);
+
+  const fetchStaffPermissions = async () => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+    if (!token) return;
+
+    try {
+      const response = await fetch('/api/admin/staff/my-permissions', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setStaffPermissions({
+          canManageUsers: data.canManageUsers || false,
+          canManageLogs: data.canManageLogs || false,
+          canManageTournaments: data.canManageTournaments || false,
+          canSendEmails: data.canSendEmails || false,
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching staff permissions:', error);
+    }
+  };
 
   const fetchUserInfo = async () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;

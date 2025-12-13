@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AdminDashboardOnboarding from './AdminDashboardOnboarding';
 
-type UserRole = 'superadmin' | 'staff' | 'participant';
+type UserRole = 'superadmin' | 'staff' | 'manager' | 'tournament_admin' | 'coach' | 'participant';
 
 export default function AdminDashboardContent() {
   const t = useTranslations('Dashboard');
@@ -17,6 +17,15 @@ export default function AdminDashboardContent() {
   const [role, setRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [permissions, setPermissions] = useState<{
+    canManageUsers: boolean;
+    canManageLogs: boolean;
+    canManageTournaments: boolean;
+    canSendEmails: boolean;
+    canManageGroups: boolean;
+    canManageMatches: boolean;
+    canViewRegistrations: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
@@ -48,6 +57,22 @@ export default function AdminDashboardContent() {
         if (data.session) {
           setRole(data.session.role);
           setUser(data.session);
+          
+          // Загружаем права доступа для не-superadmin ролей
+          if (data.session.role !== 'superadmin') {
+            fetchPermissions(token);
+          } else {
+            // Superadmin имеет все права
+            setPermissions({
+              canManageUsers: true,
+              canManageLogs: true,
+              canManageTournaments: true,
+              canSendEmails: true,
+              canManageGroups: true,
+              canManageMatches: true,
+              canViewRegistrations: true,
+            });
+          }
         } else {
           localStorage.removeItem('auth_token');
           setTimeout(() => {
@@ -64,6 +89,20 @@ export default function AdminDashboardContent() {
       })
       .finally(() => setLoading(false));
   }, [locale, router]);
+
+  const fetchPermissions = async (token: string) => {
+    try {
+      const response = await fetch('/api/admin/staff/my-permissions', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setPermissions(data);
+      }
+    } catch (error) {
+      console.error('Error fetching permissions:', error);
+    }
+  };
 
   useEffect(() => {
     // Check if this is first visit to admin dashboard
@@ -265,8 +304,16 @@ export default function AdminDashboardContent() {
     );
   }
 
-  // Staff dashboard
-  if (role === 'staff') {
+  // Staff, Manager, Tournament Admin dashboard
+  if (role === 'staff' || role === 'manager' || role === 'tournament_admin' || role === 'coach') {
+    if (!permissions) {
+      return (
+        <div className="w-full min-h-screen flex items-center justify-center">
+          <p className="text-text-secondary font-poppins">{t('loading')}</p>
+        </div>
+      );
+    }
+
     return (
       <>
         {showOnboarding && <AdminDashboardOnboarding />}
@@ -282,37 +329,133 @@ export default function AdminDashboardContent() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {permissions.canManageTournaments && (
+            <Link
+              href={`/${locale}/admin/tournaments`}
+              className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
+            >
+              <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
+                {tAdmin('tournaments.title')}
+              </h3>
+              <p className="text-text-secondary font-poppins text-sm">
+                {t('staff.manageRegistrationsDesc')}
+              </p>
+            </Link>
+          )}
+
+          {permissions.canViewRegistrations && (
+            <Link
+              href={`/${locale}/admin/tournaments`}
+              className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
+            >
+              <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
+                {t('staff.manageRegistrations')}
+              </h3>
+              <p className="text-text-secondary font-poppins text-sm">
+                {t('staff.manageRegistrationsDesc')}
+              </p>
+            </Link>
+          )}
+
+          {permissions.canManageUsers && (
+            <Link
+              href={`/${locale}/admin/users`}
+              className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
+            >
+              <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
+                {tAdmin('users.title')}
+              </h3>
+              <p className="text-text-secondary font-poppins text-sm">
+                {t('superadmin.manageUsersDesc')}
+              </p>
+            </Link>
+          )}
+
+          {permissions.canManageLogs && (
+            <Link
+              href={`/${locale}/admin/logs`}
+              className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
+            >
+              <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
+                {tAdmin('logs.title')}
+              </h3>
+              <p className="text-text-secondary font-poppins text-sm">
+                {t('superadmin.viewLogsDesc')}
+              </p>
+            </Link>
+          )}
+
+          {permissions.canSendEmails && (
+            <Link
+              href={`/${locale}/admin/partner-emails`}
+              className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
+            >
+              <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
+                Email Templates
+              </h3>
+              <p className="text-text-secondary font-poppins text-sm">
+                Send emails to partners, clients, coaches, and staff
+              </p>
+            </Link>
+          )}
+
           <Link
-            href={`/${locale}/admin/tournaments`}
+            href={`/${locale}/admin/settings`}
             className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
           >
             <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
               <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
             <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
-              {t('staff.manageRegistrations')}
+              {tAdmin('settings.title')}
             </h3>
             <p className="text-text-secondary font-poppins text-sm">
-              {t('staff.manageRegistrationsDesc')}
+              {tAdmin('settings.description')}
             </p>
           </Link>
 
           <Link
-            href={`/${locale}/admin/tournaments`}
+            href={`/${locale}/admin/messages`}
             className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-all group hover:shadow-lg"
           >
             <div className="mb-4 flex items-center justify-center w-14 h-14 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
               <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
             <h3 className="text-lg font-poppins font-semibold mb-2 text-text">
-              {t('staff.editPlayers')}
+              {tAdmin('messages.title')}
             </h3>
             <p className="text-text-secondary font-poppins text-sm">
-              {t('staff.editPlayersDesc')}
+              {tAdmin('messages.description')}
             </p>
           </Link>
         </div>
