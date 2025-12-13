@@ -1209,12 +1209,7 @@
     "staff": {
       "title": "Manage Staff",
       "description": "Assign roles and manage staff members",
-      "comingSoon": "Staff management interface coming soon...",
-      "editPlayers": "Spieler Bearbeiten",
-      "manageRegistrations": "Anmeldungen Verwalten",
-      "participantDashboard": "Teilnehmer-Dashboard",
-      "profile": "Profil",
-      "logout": "Abmelden"
+      "comingSoon": "Staff management interface coming soon..."
     },
     "stats": {
       "totalAccess": "Gesamtzugriffe",

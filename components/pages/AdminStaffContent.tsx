@@ -845,19 +845,22 @@ export default function AdminStaffContent() {
                                     console.log(`[Staff Access] Role updated successfully:`, responseData);
                                     
                                     // Обновляем локальное состояние пользователя немедленно
+                                    const newRole = responseData.user?.role || tempRole;
                                     setUsers(prevUsers => prevUsers.map(u => 
-                                      u.id === access.userId ? { ...u, role: tempRole as any } : u
+                                      u.id === access.userId ? { ...u, role: newRole as any } : u
                                     ));
                                     
                                     setEditingRoleForUser(null);
                                     setTempRole('');
                                     
-                                    // Обновляем данные из БД для подтверждения
-                                    await fetchData();
+                                    // Ждем немного перед обновлением данных из БД, чтобы дать время транзакции завершиться
+                                    setTimeout(async () => {
+                                      await fetchData();
+                                    }, 500);
                                     
                                     if (typeof window !== 'undefined') {
                                       window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
-                                        detail: { userId: access.userId, newRole: tempRole } 
+                                        detail: { userId: access.userId, newRole: newRole } 
                                       }));
                                     }
                                   } else {

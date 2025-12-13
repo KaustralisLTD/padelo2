@@ -408,24 +408,27 @@ export default function AdminUsersContent() {
         console.log('[AdminUsers] User updated successfully:', data);
         
         // Обновляем локальное состояние пользователя немедленно
-        if (data.user && data.user.role) {
+        const newRole = data.user?.role || updateData.role;
+        if (newRole) {
           setUsers(prevUsers => prevUsers.map(u => 
-            u.id === editingUser.id ? { ...u, role: data.user.role } : u
+            u.id === editingUser.id ? { ...u, role: newRole } : u
           ));
-          console.log(`[AdminUsers] Updated local user state with role: ${data.user.role}`);
+          console.log(`[AdminUsers] Updated local user state with role: ${newRole}`);
         }
         
         setSuccess('User updated successfully');
         setEditingUser(null);
         setFormData({ email: '', password: '', firstName: '', lastName: '', role: 'participant' });
         
-        // Обновляем список пользователей из БД для подтверждения
-        await fetchUsers();
+        // Ждем немного перед обновлением данных из БД, чтобы дать время транзакции завершиться
+        setTimeout(async () => {
+          await fetchUsers();
+        }, 500);
         
         // Отправляем событие для обновления на других страницах
-        if (typeof window !== 'undefined' && updateData.role) {
+        if (typeof window !== 'undefined' && newRole) {
           window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
-            detail: { userId: editingUser.id, newRole: updateData.role } 
+            detail: { userId: editingUser.id, newRole: newRole } 
           }));
         }
       } else {

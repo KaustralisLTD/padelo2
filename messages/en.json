@@ -1050,7 +1050,12 @@
       "title": "Database Monitor"
     },
     "staff": {
-      "title": "Staff"
+      "title": "Staff",
+      "editPlayers": "Edit Players",
+      "manageRegistrations": "Manage Registrations",
+      "participantDashboard": "Participant Dashboard",
+      "profile": "Profile",
+      "logout": "Logout"
     },
     "users": {
       "title": "Manage Users",
@@ -1428,6 +1433,11 @@
       "copyTo": "Copy To",
       "copy": "Copy",
       "accesses": "accesses",
+      "editPlayers": "Edit Players",
+      "manageRegistrations": "Manage Registrations",
+      "participantDashboard": "Participant Dashboard",
+      "profile": "Profile",
+      "logout": "Logout",
       "stats": {
         "totalAccess": "Total Access",
         "uniqueUsers": "Unique Users",

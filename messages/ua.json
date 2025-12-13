@@ -1189,6 +1189,11 @@
       "copyTo": "Копіювати для",
       "copy": "Копіювати",
       "accesses": "доступів",
+      "editPlayers": "Редагувати гравців",
+      "manageRegistrations": "Управління реєстраціями",
+      "participantDashboard": "Панель учасника",
+      "profile": "Профіль",
+      "logout": "Вийти",
       "stats": {
         "totalAccess": "Всього доступів",
         "uniqueUsers": "Унікальних користувачів",

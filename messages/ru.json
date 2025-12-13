@@ -1318,6 +1318,11 @@
       "copyTo": "Копировать для",
       "copy": "Копировать",
       "accesses": "доступов",
+      "editPlayers": "Редактировать игроков",
+      "manageRegistrations": "Управление регистрациями",
+      "participantDashboard": "Панель участника",
+      "profile": "Профиль",
+      "logout": "Выйти",
       "stats": {
         "totalAccess": "Всего доступов",
         "uniqueUsers": "Уникальных пользователей",

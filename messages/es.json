@@ -1112,6 +1112,11 @@
       "copyTo": "Copiar Para",
       "copy": "Copiar",
       "accesses": "accesos",
+      "editPlayers": "Editar Jugadores",
+      "manageRegistrations": "Gestionar Registros",
+      "participantDashboard": "Panel de Participante",
+      "profile": "Perfil",
+      "logout": "Cerrar Sesión",
       "stats": {
         "totalAccess": "Total de Accesos",
         "uniqueUsers": "Usuarios Únicos",
