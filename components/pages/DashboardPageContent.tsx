@@ -92,15 +92,17 @@ export default function DashboardPageContent() {
 
   useEffect(() => {
     // Перенаправляем только участников (participant) на participant-dashboard
-    // Staff и superadmin остаются на обычном dashboard
+    // Staff, superadmin, manager, tournament_admin, coach перенаправляем на админ-панель
     if (!loading && role === 'participant') {
       console.log('[Dashboard] Redirecting participant to participant-dashboard');
       setTimeout(() => {
         router.push(`/${locale}/participant-dashboard`);
       }, 0);
-    } else if (!loading && (role === 'staff' || role === 'superadmin')) {
-      console.log(`[Dashboard] User with role ${role} has access to dashboard`);
-      // Staff и superadmin остаются на dashboard - ничего не делаем
+    } else if (!loading && (role === 'staff' || role === 'superadmin' || role === 'manager' || role === 'tournament_admin' || role === 'coach')) {
+      console.log(`[Dashboard] User with role ${role} has access to admin panel, redirecting to /admin/dashboard`);
+      setTimeout(() => {
+        router.push(`/${locale}/admin/dashboard`);
+      }, 0);
     }
   }, [loading, role, locale, router]);
 

@@ -331,7 +331,7 @@
       "childInfo": "Kinderinformationen",
       "childFirstName": "Vorname des Kindes",
       "childLastName": "Nachname des Kindes",
-      "childPhoto": "Foto des Kindes (Optional)",
+      "childPhoto": "Foto des Kindes",
       "atLeastOneChildRequired": "Mindestens ein Kind ist erforderlich",
       "hideForm": "Formular Ausblenden",
       "viewFilledData": "Ausgefüllte Daten Anzeigen",
@@ -339,7 +339,7 @@
       "cancel": "Abbrechen",
       "close": "Schließen",
       "remove": "Entfernen",
-      "addChild": "Kind Hinzufügen",
+      "addChild": "Kind hinzufügen",
       "photoSizeError": "Die Foto-Größe muss weniger als 15 MB betragen",
       "partnerRequiredForCategory": "Partner erforderlich für {category}",
       "chooseFile": "Datei auswählen",
@@ -353,19 +353,7 @@
       "fileNotSelected": "Keine Datei ausgewählt",
       "registrationReceivedMessageUnverified": "Vielen Dank für Ihre Anmeldung zum Turnier {tournamentName}! Wir haben Ihre Anmeldung erhalten. Bitte überprüfen Sie Ihre E-Mail und klicken Sie auf den Bestätigungslink, um Ihre Anmeldung abzuschließen.",
       "payloadTooLarge": "Die Größe der hochgeladenen Fotos überschreitet das erlaubte Limit",
-      "photoUploadSolution": "Wenn Sie jetzt keine Fotos hochladen können, können Sie dies später von Ihrem persönlichen Konto auf der Turnierseite aus tun.",
-      "childInfo": "Kinderinformationen",
-      "childFirstName": "Vorname des Kindes",
-      "childLastName": "Nachname des Kindes",
-      "childPhoto": "Foto des Kindes",
-      "addChild": "Kind hinzufügen",
-      "cancel": "Abbrechen",
-      "selectAge": "Alter auswählen",
-      "priceCalculation": "Preisberechnung",
-      "adults": "Erwachsene",
-      "children": "Kinder",
-      "free": "KOSTENLOS",
-      "total": "Gesamt"
+      "photoUploadSolution": "Wenn Sie jetzt keine Fotos hochladen können, können Sie dies später von Ihrem persönlichen Konto auf der Turnierseite aus tun."
     },
     "confirmation": {
       "title": "Registrierung Bestätigt",
@@ -1386,6 +1374,9 @@
     "savePassword": "Neues Passwort Speichern",
     "roles": {
       "superadmin": "Super Admin",
+      "tournament_admin": "Turnier-Administrator",
+      "manager": "Manager",
+      "coach": "Trainer",
       "staff": "Personal",
       "participant": "Teilnehmer"
     },

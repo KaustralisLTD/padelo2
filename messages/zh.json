@@ -331,7 +331,7 @@
       "childInfo": "儿童信息",
       "childFirstName": "儿童名字",
       "childLastName": "儿童姓氏",
-      "childPhoto": "儿童照片（可选）",
+      "childPhoto": "儿童照片",
       "atLeastOneChildRequired": "至少需要一个儿童",
       "hideForm": "隐藏表单",
       "viewFilledData": "查看已填数据",
@@ -353,19 +353,7 @@
       "fileNotSelected": "未选择文件",
       "registrationReceivedMessageUnverified": "感谢您注册参加 {tournamentName} 锦标赛！我们已收到您的注册请求。请检查您的电子邮件并点击确认链接以完成注册。",
       "payloadTooLarge": "上传的照片大小超过允许的限制",
-      "photoUploadSolution": "如果您现在无法上传照片，您可以稍后从锦标赛页面上的个人帐户中执行此操作。",
-      "childInfo": "儿童信息",
-      "childFirstName": "儿童名字",
-      "childLastName": "儿童姓氏",
-      "childPhoto": "儿童照片",
-      "addChild": "添加儿童",
-      "cancel": "取消",
-      "selectAge": "选择年龄",
-      "priceCalculation": "价格计算",
-      "adults": "成人",
-      "children": "儿童",
-      "free": "免费",
-      "total": "总计"
+      "photoUploadSolution": "如果您现在无法上传照片，您可以稍后从锦标赛页面上的个人帐户中执行此操作。"
     },
     "confirmation": {
       "title": "注册已确认",
@@ -1498,6 +1486,9 @@
     "savePassword": "保存新密码",
     "roles": {
       "superadmin": "超级管理员",
+      "tournament_admin": "锦标赛管理员",
+      "manager": "经理",
+      "coach": "教练",
       "staff": "员工",
       "participant": "参与者"
     },

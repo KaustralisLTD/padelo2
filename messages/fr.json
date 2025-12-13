@@ -331,7 +331,7 @@
       "childInfo": "Informations sur l'Enfant",
       "childFirstName": "Prénom de l'Enfant",
       "childLastName": "Nom de l'Enfant",
-      "childPhoto": "Photo de l'Enfant (Optionnel)",
+      "childPhoto": "Photo de l'Enfant",
       "atLeastOneChildRequired": "Au moins un enfant est requis",
       "hideForm": "Masquer Formulaire",
       "viewFilledData": "Voir Données Remplies",
@@ -339,7 +339,7 @@
       "cancel": "Annuler",
       "close": "Fermer",
       "remove": "Supprimer",
-      "addChild": "Ajouter Enfant",
+      "addChild": "Ajouter un Enfant",
       "photoSizeError": "La taille de la photo doit être inférieure à 15 Mo",
       "partnerRequiredForCategory": "Partenaire requis pour {category}",
       "chooseFile": "Choisir un fichier",
@@ -353,13 +353,7 @@
       "fileNotSelected": "Aucun fichier sélectionné",
       "registrationReceivedMessageUnverified": "Merci de vous être inscrit au tournoi {tournamentName} ! Nous avons reçu votre demande d'inscription. Veuillez vérifier votre e-mail et cliquer sur le lien de confirmation pour compléter votre inscription.",
       "payloadTooLarge": "La taille des photos téléchargées dépasse la limite autorisée",
-      "photoUploadSolution": "Si vous ne pouvez pas télécharger de photos maintenant, vous pourrez le faire plus tard depuis votre compte personnel sur la page du tournoi.",
-      "childInfo": "Informations sur l'Enfant",
-      "childFirstName": "Prénom de l'Enfant",
-      "childLastName": "Nom de l'Enfant",
-      "childPhoto": "Photo de l'Enfant",
-      "addChild": "Ajouter un Enfant",
-      "cancel": "Annuler"
+      "photoUploadSolution": "Si vous ne pouvez pas télécharger de photos maintenant, vous pourrez le faire plus tard depuis votre compte personnel sur la page du tournoi."
     },
     "confirmation": {
       "title": "Inscription Confirmée",
@@ -1498,6 +1492,9 @@
     "savePassword": "Enregistrer le Nouveau Mot de Passe",
     "roles": {
       "superadmin": "Super Admin",
+      "tournament_admin": "Administrateur de Tournoi",
+      "manager": "Gestionnaire",
+      "coach": "Entraîneur",
       "staff": "Personnel",
       "participant": "Participant"
     },

@@ -331,7 +331,7 @@
       "childInfo": "معلومات الطفل",
       "childFirstName": "اسم الطفل الأول",
       "childLastName": "اسم عائلة الطفل",
-      "childPhoto": "صورة الطفل (اختياري)",
+      "childPhoto": "صورة الطفل",
       "atLeastOneChildRequired": "يُطلب طفل واحد على الأقل",
       "hideForm": "إخفاء النموذج",
       "viewFilledData": "عرض البيانات المملوءة",
@@ -353,19 +353,7 @@
       "fileNotSelected": "لم يتم اختيار ملف",
       "registrationReceivedMessageUnverified": "شكراً لك على التسجيل في البطولة {tournamentName}! لقد استلمنا طلب التسجيل الخاص بك. يرجى التحقق من بريدك الإلكتروني والنقر على رابط التأكيد لإكمال التسجيل.",
       "payloadTooLarge": "حجم الصور المرفوعة يتجاوز الحد المسموح به",
-      "photoUploadSolution": "إذا لم تتمكن من تحميل الصور الآن، يمكنك القيام بذلك لاحقًا من حسابك الشخصي على صفحة البطولة.",
-      "childInfo": "معلومات الطفل",
-      "childFirstName": "اسم الطفل الأول",
-      "childLastName": "اسم عائلة الطفل",
-      "childPhoto": "صورة الطفل",
-      "addChild": "إضافة طفل",
-      "cancel": "إلغاء",
-      "selectAge": "اختر العمر",
-      "priceCalculation": "حساب السعر",
-      "adults": "بالغين",
-      "children": "أطفال",
-      "free": "مجاناً",
-      "total": "الإجمالي"
+      "photoUploadSolution": "إذا لم تتمكن من تحميل الصور الآن، يمكنك القيام بذلك لاحقًا من حسابك الشخصي على صفحة البطولة."
     },
     "confirmation": {
       "title": "تم تأكيد التسجيل",
@@ -861,6 +849,9 @@
     "savePassword": "حفظ كلمة المرور الجديدة",
     "roles": {
       "superadmin": "المدير العام",
+      "tournament_admin": "مدير البطولة",
+      "manager": "مدير",
+      "coach": "مدرب",
       "staff": "الموظفون",
       "participant": "المشارك"
     },

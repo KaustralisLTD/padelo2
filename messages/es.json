@@ -354,7 +354,7 @@
       "childInfo": "Información del Niño",
       "childFirstName": "Nombre del Niño",
       "childLastName": "Apellido del Niño",
-      "childPhoto": "Foto del Niño (Opcional)",
+      "childPhoto": "Foto del Niño",
       "atLeastOneChildRequired": "Se requiere al menos un niño",
       "hideForm": "Ocultar Formulario",
       "viewFilledData": "Ver Datos Completados",
@@ -376,13 +376,7 @@
       "resendVerificationEmail": "Reenviar Correo de Verificación",
       "fileNotSelected": "No se ha seleccionado ningún archivo",
       "payloadTooLarge": "El tamaño de las fotos subidas excede el límite permitido",
-      "photoUploadSolution": "Si no puede subir fotos ahora, puede hacerlo más tarde desde su cuenta personal en la página del torneo.",
-      "childInfo": "Información del Niño",
-      "childFirstName": "Nombre del Niño",
-      "childLastName": "Apellido del Niño",
-      "childPhoto": "Foto del Niño",
-      "addChild": "Añadir Niño",
-      "cancel": "Cancelar"
+      "photoUploadSolution": "Si no puede subir fotos ahora, puede hacerlo más tarde desde su cuenta personal en la página del torneo."
     },
     "confirmation": {
       "title": "Registro Confirmado",
@@ -1436,6 +1430,9 @@
     "savePassword": "Guardar Nueva Contraseña",
     "roles": {
       "superadmin": "Super Admin",
+      "tournament_admin": "Administrador de Torneo",
+      "manager": "Gerente",
+      "coach": "Entrenador",
       "staff": "Personal",
       "participant": "Participante"
     },
