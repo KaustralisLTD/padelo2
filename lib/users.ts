@@ -456,13 +456,32 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
     // Send role change notification if role changed and user exists
     if (sendRoleChangeEmail && data.role && oldRole && data.role !== oldRole && updatedUser && oldUser) {
       try {
-        const { sendRoleChangeNotification } = await import('./email');
-        await sendRoleChangeNotification(
-          oldUser.email,
-          oldUser.first_name,
-          data.role,
-          'en' // TODO: get locale from user preferences
-        );
+        const { generateEmailTemplateHTML } = await import('./email-template-generator');
+        const { sendEmail } = await import('./email');
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://padelo2.com';
+        const userLocale = (updatedUser as any).preferredLanguage || 'en';
+        const adminPanelUrl = `${siteUrl}/${userLocale}/admin/dashboard`;
+        
+        const emailHTML = await generateEmailTemplateHTML({
+          templateId: 'role-change',
+          data: {
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            newRole: data.role,
+            oldRole: oldRole,
+            adminPanelUrl,
+            locale: userLocale,
+          },
+          locale: userLocale,
+        });
+        
+        await sendEmail({
+          to: updatedUser.email,
+          subject: `Your Role Has Been Updated - PadelO₂`,
+          html: emailHTML,
+          from: 'PadelO₂ <admin@padelo2.com>',
+          locale: userLocale,
+        });
       } catch (emailError) {
         console.error('Error sending role change notification:', emailError);
         // Don't fail the update if email fails

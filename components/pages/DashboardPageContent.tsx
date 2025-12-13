@@ -258,17 +258,48 @@ export default function DashboardPageContent() {
   }
 
   if (role === 'staff') {
+    const handleLogout = () => {
+      localStorage.removeItem('auth_token');
+      document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      router.push(`/${locale}/login`);
+    };
+
     return (
       <div className="container mx-auto px-4 py-20 mt-20">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-4 gradient-text text-center">
-            {t('staff.title')}
-          </h1>
-          <p className="text-xl text-text-secondary font-poppins text-center mb-12">
-            {t('staff.description')}
-          </p>
+          {/* Header with user info and actions */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-poppins font-bold mb-2 gradient-text">
+                {t('staff.title')}
+              </h1>
+              <p className="text-xl text-text-secondary font-poppins">
+                {t('staff.description')}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href={`/${locale}/participant-dashboard`}
+                className="px-4 py-2 bg-background-secondary border border-border rounded-lg text-text hover:bg-background font-poppins text-sm transition-colors"
+              >
+                {t('staff.participantDashboard') || 'Participant Dashboard'}
+              </Link>
+              <Link
+                href={`/${locale}/profile`}
+                className="px-4 py-2 bg-background-secondary border border-border rounded-lg text-text hover:bg-background font-poppins text-sm transition-colors"
+              >
+                {t('staff.profile') || 'Profile'}
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/30 font-poppins text-sm transition-colors"
+              >
+                {t('staff.logout') || 'Logout'}
+              </button>
+            </div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link
               href={`/${locale}/staff/registrations`}
               className="bg-background-secondary p-6 rounded-lg border border-border hover:border-primary transition-colors group"

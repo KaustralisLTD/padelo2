@@ -380,22 +380,87 @@ export default function AdminStaffContent() {
     });
   };
 
-  const openEditModal = (access: StaffAccess) => {
+  const openEditModal = async (access: StaffAccess) => {
     setEditingAccess(access);
-    const user = users.find(u => u.id === access.userId);
-    setFormData({
-      userId: access.userId,
-      userRole: (user?.role as any) || '',
-      tournamentIds: [access.tournamentId],
-      clubIds: [],
-      canManageGroups: access.canManageGroups,
-      canManageMatches: access.canManageMatches,
-      canViewRegistrations: access.canViewRegistrations,
-      canManageUsers: access.canManageUsers,
-      canManageLogs: access.canManageLogs,
-      canManageTournaments: access.canManageTournaments,
-      canSendEmails: access.canSendEmails,
-    });
+    
+    // Получаем актуальные данные пользователя из БД, чтобы убедиться, что роль актуальна
+    if (token) {
+      try {
+        const userResponse = await fetch(`/api/admin/users/${access.userId}`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          const currentUser = userData.user;
+          console.log('[Staff Access] Loaded user data for edit:', currentUser);
+          
+          setFormData({
+            userId: access.userId,
+            userRole: (currentUser?.role as any) || (users.find(u => u.id === access.userId)?.role as any) || '',
+            tournamentIds: [access.tournamentId],
+            clubIds: [],
+            canManageGroups: access.canManageGroups,
+            canManageMatches: access.canManageMatches,
+            canViewRegistrations: access.canViewRegistrations,
+            canManageUsers: access.canManageUsers,
+            canManageLogs: access.canManageLogs,
+            canManageTournaments: access.canManageTournaments,
+            canSendEmails: access.canSendEmails,
+          });
+        } else {
+          // Fallback к локальным данным, если запрос не удался
+          const user = users.find(u => u.id === access.userId);
+          console.warn('[Staff Access] Failed to load user data, using local data');
+          setFormData({
+            userId: access.userId,
+            userRole: (user?.role as any) || '',
+            tournamentIds: [access.tournamentId],
+            clubIds: [],
+            canManageGroups: access.canManageGroups,
+            canManageMatches: access.canManageMatches,
+            canViewRegistrations: access.canViewRegistrations,
+            canManageUsers: access.canManageUsers,
+            canManageLogs: access.canManageLogs,
+            canManageTournaments: access.canManageTournaments,
+            canSendEmails: access.canSendEmails,
+          });
+        }
+      } catch (err) {
+        console.error('[Staff Access] Error loading user data:', err);
+        // Fallback к локальным данным
+        const user = users.find(u => u.id === access.userId);
+        setFormData({
+          userId: access.userId,
+          userRole: (user?.role as any) || '',
+          tournamentIds: [access.tournamentId],
+          clubIds: [],
+          canManageGroups: access.canManageGroups,
+          canManageMatches: access.canManageMatches,
+          canViewRegistrations: access.canViewRegistrations,
+          canManageUsers: access.canManageUsers,
+          canManageLogs: access.canManageLogs,
+          canManageTournaments: access.canManageTournaments,
+          canSendEmails: access.canSendEmails,
+        });
+      }
+    } else {
+      // Fallback к локальным данным, если нет токена
+      const user = users.find(u => u.id === access.userId);
+      setFormData({
+        userId: access.userId,
+        userRole: (user?.role as any) || '',
+        tournamentIds: [access.tournamentId],
+        clubIds: [],
+        canManageGroups: access.canManageGroups,
+        canManageMatches: access.canManageMatches,
+        canViewRegistrations: access.canViewRegistrations,
+        canManageUsers: access.canManageUsers,
+        canManageLogs: access.canManageLogs,
+        canManageTournaments: access.canManageTournaments,
+        canSendEmails: access.canSendEmails,
+      });
+    }
+    
     setShowCreateModal(true);
   };
 
