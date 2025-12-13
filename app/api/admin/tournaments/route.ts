@@ -50,11 +50,18 @@ export async function GET(request: NextRequest) {
     const { getStaffTournamentAccess } = await import('@/lib/tournaments');
     const staffAccess = await getStaffTournamentAccess(undefined, session.userId);
     
-    // Если у пользователя есть право canManageTournaments хотя бы для одного турнира
-    const hasTournamentAccess = staffAccess.some(access => access.canManageTournaments === true);
+    // Проверяем, есть ли у пользователя хотя бы одно из прав: canManageTournaments или canViewRegistrations
+    const hasTournamentAccess = staffAccess.some(access => 
+      access.canManageTournaments === true || access.canViewRegistrations === true
+    );
     
-    if (!hasTournamentAccess && session.role !== 'manager' && session.role !== 'tournament_admin' && session.role !== 'staff' && session.role !== 'coach') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    // Если у пользователя нет доступа к турнирам, возвращаем 403 только для ролей, которые не должны иметь доступ
+    if (!hasTournamentAccess) {
+      // Для manager, tournament_admin, staff, coach разрешаем доступ, даже если нет явных прав (они могут иметь доступ через роль)
+      if (session.role !== 'manager' && session.role !== 'tournament_admin' && session.role !== 'staff' && session.role !== 'coach') {
+        console.log(`[GET /api/admin/tournaments] User ${session.userId} (${session.role}) has no tournament access`);
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     // Получаем список ID турниров, к которым у пользователя есть доступ
@@ -62,9 +69,9 @@ export async function GET(request: NextRequest) {
       .filter(access => access.canManageTournaments === true || access.canViewRegistrations === true)
       .map(access => access.tournamentId);
 
-    // Если у пользователя нет доступа ни к одному турниру, возвращаем пустой список
+    // Если у пользователя нет доступа ни к одному турниру, возвращаем пустой список (не 403)
     if (accessibleTournamentIds.length === 0) {
-      console.log(`[GET /api/admin/tournaments] User ${session.userId} has no tournament access`);
+      console.log(`[GET /api/admin/tournaments] User ${session.userId} (${session.role}) has no tournament access, returning empty list`);
       return NextResponse.json({ tournaments: [] });
     }
 

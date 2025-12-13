@@ -16,7 +16,13 @@ export async function GET(request: NextRequest) {
     }
 
     const session = await getSession(token);
-    if (!session || (session.role !== 'superadmin' && session.role !== 'tournament_admin')) {
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
+    // Разрешаем доступ для superadmin, tournament_admin, manager, staff
+    const allowedRoles = ['superadmin', 'tournament_admin', 'manager', 'staff'];
+    if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 

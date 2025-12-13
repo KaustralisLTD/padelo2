@@ -358,8 +358,6 @@ export default function TournamentParticipantsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tournamentId, locale, router]);
 
-  const fetchParticipants = async () => {
-
   // Close category filter dropdown when clicking outside
   useEffect(() => {
     if (!categoryFilterOpen) return;
