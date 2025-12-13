@@ -10,6 +10,14 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Получаем tournamentId сразу, чтобы использовать его в проверке доступа
+    const { id } = await params;
+    const tournamentId = parseInt(id, 10);
+
+    if (isNaN(tournamentId)) {
+      return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
+    }
+
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
 
@@ -34,9 +42,6 @@ export async function GET(
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
     }
-
-    const { id } = await params;
-    const tournamentId = parseInt(id, 10);
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
 
