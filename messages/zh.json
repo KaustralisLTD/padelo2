@@ -1517,13 +1517,16 @@
     "noTournaments": "您尚未注册任何锦标赛。",
     "registerForTournament": "注册锦标赛",
     "dates": "日期",
-    "categories": {
+    "categories": "类别",
+    "categoriesList": {
       "male1": "男子 1",
       "male2": "男子 2",
       "female1": "女子 1",
       "female2": "女子 2",
       "mixed1": "混合 1",
-      "mixed2": "混合 2"
+      "mixed2": "混合 2",
+      "kids": "儿童",
+      "Guest": "客人"
     },
     "confirmedAt": "已确认",
     "status": {

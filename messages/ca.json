@@ -1777,13 +1777,16 @@
     "noTournaments": "Encara no t'has registrat en cap torneig.",
     "registerForTournament": "Registrar-se en Torneig",
     "dates": "Dates",
-    "categories": {
+    "categories": "Categories",
+    "categoriesList": {
       "male1": "Homes 1",
       "male2": "Homes 2",
       "female1": "Dones 1",
       "female2": "Dones 2",
       "mixed1": "Mixt 1",
-      "mixed2": "Mixt 2"
+      "mixed2": "Mixt 2",
+      "kids": "NENS",
+      "Guest": "Convidat"
     },
     "confirmedAt": "Confirmat",
     "status": {

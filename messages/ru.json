@@ -1523,13 +1523,15 @@
     "noTournaments": "Вы еще не зарегистрировались ни на один турнир.",
     "registerForTournament": "Зарегистрироваться на турнир",
     "dates": "Даты",
-    "categories": {
+    "categories": "Категории",
+    "categoriesList": {
       "male1": "Мужчины 1",
       "male2": "Мужчины 2",
       "female1": "Женщины 1",
       "female2": "Женщины 2",
       "mixed1": "Микст 1",
       "mixed2": "Микст 2",
+      "kids": "ДЕТИ",
       "Guest": "Гость"
     },
     "confirmedAt": "Подтверждено",

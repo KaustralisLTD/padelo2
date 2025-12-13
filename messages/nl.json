@@ -1441,14 +1441,16 @@
     "noTournaments": "Je bent je nog niet ingeschreven voor een toernooi.",
     "registerForTournament": "Inschrijven voor Toernooi",
     "dates": "Data",
-    "categories": {
+    "categories": "Categorieën",
+    "categoriesList": {
       "male1": "Heren 1",
       "male2": "Heren 2",
       "female1": "Dames 1",
       "female2": "Dames 2",
       "mixed1": "Gemengd 1",
       "mixed2": "Gemengd 2",
-      "kids": "KINDEREN"
+      "kids": "KINDEREN",
+      "Guest": "Gast"
     },
     "confirmedAt": "Bevestigd",
     "status": {

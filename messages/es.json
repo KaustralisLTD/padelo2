@@ -1455,14 +1455,16 @@
     "noTournaments": "Aún no te has registrado en ningún torneo.",
     "registerForTournament": "Registrarse en Torneo",
     "dates": "Fechas",
-    "categories": {
+    "categories": "Categorías",
+    "categoriesList": {
       "male1": "Hombres 1",
       "male2": "Hombres 2",
       "female1": "Mujeres 1",
       "female2": "Mujeres 2",
       "mixed1": "Mixto 1",
       "mixed2": "Mixto 2",
-      "kids": "NIÑOS"
+      "kids": "NIÑOS",
+      "Guest": "Invitado"
     },
     "confirmedAt": "Confirmado",
     "status": {

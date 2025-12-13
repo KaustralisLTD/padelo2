@@ -1498,14 +1498,16 @@
     "noTournaments": "Du har ännu inte registrerat dig för någon turnering.",
     "registerForTournament": "Registrera Dig för Turnering",
     "dates": "Datum",
-    "categories": {
+    "categories": "Kategorier",
+    "categoriesList": {
       "male1": "Herrar 1",
       "male2": "Herrar 2",
       "female1": "Damer 1",
       "female2": "Damer 2",
       "mixed1": "Mixed 1",
       "mixed2": "Mixed 2",
-      "kids": "BARN"
+      "kids": "BARN",
+      "Guest": "Gäst"
     },
     "confirmedAt": "Bekräftad",
     "status": {

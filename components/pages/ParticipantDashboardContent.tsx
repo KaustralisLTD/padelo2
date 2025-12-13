@@ -168,14 +168,15 @@ export function ParticipantDashboardContent() {
 
   const getCategoryLabel = (category: string) => {
     const categoryMap: Record<string, string> = {
-      male1: t('categories.male1'),
-      male2: t('categories.male2'),
-      female1: t('categories.female1'),
-      female2: t('categories.female2'),
-      mixed1: t('categories.mixed1'),
-      mixed2: t('categories.mixed2'),
-      Guest: t('categories.Guest') || 'Guest',
-      guest: t('categories.Guest') || 'Guest',
+      male1: t('categoriesList.male1'),
+      male2: t('categoriesList.male2'),
+      female1: t('categoriesList.female1'),
+      female2: t('categoriesList.female2'),
+      mixed1: t('categoriesList.mixed1'),
+      mixed2: t('categoriesList.mixed2'),
+      Guest: t('categoriesList.Guest') || 'Guest',
+      guest: t('categoriesList.Guest') || 'Guest',
+      kids: t('categoriesList.kids') || 'KIDS',
     };
     return categoryMap[category] || category;
   };

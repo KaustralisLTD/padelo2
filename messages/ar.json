@@ -1402,14 +1402,16 @@
     "noTournaments": "لم تسجل بعد في أي بطولة.",
     "registerForTournament": "التسجيل في البطولة",
     "dates": "التواريخ",
-    "categories": {
+    "categories": "الفئات",
+    "categoriesList": {
       "male1": "رجال 1",
       "male2": "رجال 2",
       "female1": "نساء 1",
       "female2": "نساء 2",
       "mixed1": "مختلط 1",
       "mixed2": "مختلط 2",
-      "kids": "أطفال"
+      "kids": "أطفال",
+      "Guest": "ضيف"
     },
     "confirmedAt": "مؤكد",
     "status": {

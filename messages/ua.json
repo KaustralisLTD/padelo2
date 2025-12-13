@@ -1522,7 +1522,8 @@
     "noTournaments": "Ви ще не зареєструвалися на жоден турнір.",
     "registerForTournament": "Зареєструватися на турнір",
     "dates": "Дати",
-    "categories": {
+    "categories": "Категорії",
+    "categoriesList": {
       "male1": "Чоловіки 1",
       "male2": "Чоловіки 2",
       "female1": "Жінки 1",

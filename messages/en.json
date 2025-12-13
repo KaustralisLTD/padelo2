@@ -1617,7 +1617,8 @@
     "noTournaments": "You haven't registered for any tournaments yet.",
     "registerForTournament": "Register for Tournament",
     "dates": "Dates",
-    "categories": {
+    "categories": "Categories",
+    "categoriesList": {
       "male1": "Men 1",
       "male2": "Men 2",
       "female1": "Women 1",
