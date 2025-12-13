@@ -64,6 +64,11 @@ export default function AdminUsersContent() {
   const [trainings, setTrainings] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [loadingTab, setLoadingTab] = useState(false);
+  
+  // Фильтры и поиск
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterTournament, setFilterTournament] = useState<number | ''>('');
+  const [filterUser, setFilterUser] = useState<string | ''>('');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
@@ -745,6 +750,77 @@ export default function AdminUsersContent() {
       {/* Контент вкладок */}
       {activeTab === 'list' && (
         <div className="bg-background-secondary rounded-lg border border-border overflow-hidden">
+          {/* Фильтры и поиск */}
+          <div className="p-4 border-b border-border bg-background-secondary">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  Search
+                </label>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by user name, email, or tournament..."
+                  className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  Filter by Tournament
+                </label>
+                <select
+                  value={filterTournament}
+                  onChange={(e) => setFilterTournament(e.target.value ? parseInt(e.target.value) : '')}
+                  className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                >
+                  <option value="">All Tournaments</option>
+                  {tournaments.map((tournament) => (
+                    <option key={tournament.id} value={tournament.id}>
+                      {tournament.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-poppins text-text-secondary mb-2">
+                  Filter by User
+                </label>
+                <select
+                  value={filterUser}
+                  onChange={(e) => setFilterUser(e.target.value || '')}
+                  className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text font-poppins focus:outline-none focus:border-primary transition-colors"
+                >
+                  <option value="">All Users</option>
+                  {users
+                    .filter((user) => {
+                      const matchesSearch = !searchQuery || 
+                        user.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        user.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        user.email?.toLowerCase().includes(searchQuery.toLowerCase());
+                      return matchesSearch;
+                    })
+                    .map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.firstName} {user.lastName} ({user.email})
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilterTournament('');
+                  setFilterUser('');
+                }}
+                className="px-4 py-2 bg-background border border-border rounded-lg text-text-secondary hover:text-text font-poppins text-sm transition-colors"
+              >
+                Clear Filters
+              </button>
+            </div>
+          </div>
           <div className="p-4 border-b border-border flex justify-between items-center">
             <h3 className="text-lg font-poppins font-semibold text-text">{t('users.title')}</h3>
             <ExportButton
@@ -865,7 +941,19 @@ export default function AdminUsersContent() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => {
+                {users
+                  .filter((user) => {
+                    const matchesSearch = !searchQuery || 
+                      user.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      user.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
+                    
+                    const matchesUser = !filterUser || user.id === filterUser;
+                    
+                    return matchesSearch && matchesUser;
+                  })
+                  .map((user, index) => {
                   const isSelected = selectedUsers.has(user.id);
                   return (
                     <tr key={user.id} className={`border-b border-border hover:bg-background/50 transition-colors ${isSelected ? 'bg-primary/10 border-primary/30' : ''}`}>

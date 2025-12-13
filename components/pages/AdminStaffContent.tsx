@@ -71,6 +71,8 @@ export default function AdminStaffContent() {
   const [filterUser, setFilterUser] = useState<string | ''>('');
   const [showCopyModal, setShowCopyModal] = useState(false);
   const [copyFromUserId, setCopyFromUserId] = useState<string | ''>('');
+  const [editingRoleForUser, setEditingRoleForUser] = useState<string | null>(null);
+  const [tempRole, setTempRole] = useState<string>('');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
@@ -700,6 +702,9 @@ export default function AdminStaffContent() {
                       {t('staff.tournament')}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
+                      User Role
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
                       {t('staff.permissions')}
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-poppins font-semibold text-text">
@@ -710,12 +715,16 @@ export default function AdminStaffContent() {
                 <tbody className="divide-y divide-border">
                   {filteredAccessList.length === 0 ? (
                     <tr>
-                      <td colSpan={4} className="px-6 py-8 text-center text-text-secondary font-poppins">
+                      <td colSpan={5} className="px-6 py-8 text-center text-text-secondary font-poppins">
                         {t('staff.noResults')}
                       </td>
                     </tr>
                   ) : (
-                    filteredAccessList.map((access) => (
+                    filteredAccessList.map((access) => {
+                      const user = users.find(u => u.id === access.userId);
+                      const isEditingRole = editingRoleForUser === access.userId;
+                      
+                      return (
                     <tr key={`${access.userId}-${access.tournamentId}`} className="hover:bg-background transition-colors">
                       <td className="px-6 py-4">
                         <div className="font-poppins font-semibold text-text">
@@ -724,11 +733,92 @@ export default function AdminStaffContent() {
                         <div className="text-sm text-text-secondary font-poppins">
                           {access.userEmail || 'Unknown'}
                         </div>
+                        <div className="text-xs text-text-tertiary font-poppins mt-1">
+                          ID: {access.userId.substring(0, 8)}...
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="font-poppins text-text">
                           {access.tournamentName || 'Unknown'}
                         </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {isEditingRole ? (
+                          <div className="flex items-center gap-2">
+                            <select
+                              value={tempRole}
+                              onChange={(e) => setTempRole(e.target.value)}
+                              className="px-3 py-1 bg-background border border-border rounded text-text text-sm font-poppins focus:outline-none focus:border-primary"
+                              autoFocus
+                            >
+                              <option value="participant">Participant</option>
+                              <option value="manager">Manager</option>
+                              <option value="staff">Staff</option>
+                              <option value="coach">Coach</option>
+                              <option value="tournament_admin">Tournament Admin</option>
+                              <option value="superadmin">Super Admin</option>
+                            </select>
+                            <button
+                              onClick={async () => {
+                                if (!token) return;
+                                try {
+                                  const response = await fetch(`/api/admin/users/${access.userId}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                      'Authorization': `Bearer ${token}`,
+                                      'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({ role: tempRole }),
+                                  });
+                                  if (response.ok) {
+                                    setEditingRoleForUser(null);
+                                    setTempRole('');
+                                    fetchData();
+                                    if (typeof window !== 'undefined') {
+                                      window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
+                                        detail: { userId: access.userId, newRole: tempRole } 
+                                      }));
+                                    }
+                                  }
+                                } catch (err) {
+                                  console.error('Error updating role:', err);
+                                }
+                              }}
+                              className="px-2 py-1 bg-primary text-background rounded text-xs font-poppins hover:opacity-90"
+                            >
+                              ✓
+                            </button>
+                            <button
+                              onClick={() => {
+                                setEditingRoleForUser(null);
+                                setTempRole('');
+                              }}
+                              className="px-2 py-1 bg-background-secondary border border-border rounded text-xs font-poppins hover:bg-background"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ) : (
+                          <div 
+                            onClick={() => {
+                              setEditingRoleForUser(access.userId);
+                              setTempRole(user?.role || 'participant');
+                            }}
+                            className="cursor-pointer group"
+                          >
+                            <span className={`px-3 py-1 rounded-full text-xs font-poppins font-semibold inline-block ${
+                              user?.role === 'superadmin' ? 'bg-purple-500/20 text-purple-400' :
+                              user?.role === 'manager' ? 'bg-blue-500/20 text-blue-400' :
+                              user?.role === 'staff' ? 'bg-green-500/20 text-green-400' :
+                              user?.role === 'coach' ? 'bg-orange-500/20 text-orange-400' :
+                              user?.role === 'tournament_admin' ? 'bg-cyan-500/20 text-cyan-400' :
+                              'bg-gray-500/20 text-gray-400'
+                            } group-hover:opacity-80 transition-opacity`}>
+                              {user?.role || 'participant'}
+                            </span>
+                            <span className="ml-2 text-xs text-text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">(click to edit)</span>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col gap-1">
@@ -786,7 +876,8 @@ export default function AdminStaffContent() {
                         </div>
                       </td>
                     </tr>
-                    ))
+                    );
+                    })
                   )}
                 </tbody>
               </table>
