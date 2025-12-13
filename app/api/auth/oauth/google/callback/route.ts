@@ -93,7 +93,17 @@ export async function GET(request: NextRequest) {
     if (existingUsers.length > 0) {
       const user = existingUsers[0];
       userId = user.id;
-      userRole = user.role;
+      userRole = user.role || 'participant'; // Устанавливаем роль по умолчанию, если отсутствует
+
+      // Если роль отсутствует, устанавливаем её
+      if (!user.role) {
+        console.warn(`[OAuth] User ${userId} exists but has no role, setting default 'participant'`);
+        await pool.execute(
+          'UPDATE users SET role = ?, updated_at = NOW() WHERE id = ?',
+          ['participant', userId]
+        );
+        userRole = 'participant';
+      }
 
       // Обновляем google_id, если его еще нет
       if (!user.google_id) {
@@ -110,6 +120,8 @@ export async function GET(request: NextRequest) {
           [firstName, lastName || '', userId]
         );
       }
+      
+      console.log(`[OAuth] Existing user found: id=${userId}, email=${email}, role=${userRole}`);
     } else {
       // Создаем нового пользователя
       userId = crypto.randomUUID();
@@ -118,8 +130,30 @@ export async function GET(request: NextRequest) {
       await pool.execute(
         `INSERT INTO users (id, email, google_id, first_name, last_name, role, created_at, updated_at)
          VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`,
-        [userId, email, googleId, firstName || 'User', lastName || '', userRole]
+        [userId, email, googleId, firstName || 'User', lastName || '', userRole || 'participant']
       );
+      
+      // Проверяем, что пользователь создан с ролью
+      const [verifyUser] = await pool.execute(
+        'SELECT id, role FROM users WHERE id = ?',
+        [userId]
+      ) as any[];
+      
+      if (verifyUser.length === 0) {
+        console.error(`[OAuth] User creation failed - user not found after INSERT`);
+        throw new Error('User creation failed');
+      }
+      
+      if (!verifyUser[0].role) {
+        console.warn(`[OAuth] User created without role, setting default 'participant'`);
+        await pool.execute(
+          'UPDATE users SET role = ? WHERE id = ?',
+          ['participant', userId]
+        );
+        userRole = 'participant';
+      }
+      
+      console.log(`[OAuth] User created: id=${userId}, email=${email}, role=${userRole}`);
     }
 
     // Создаем сессию

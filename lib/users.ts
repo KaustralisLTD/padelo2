@@ -689,18 +689,54 @@ export async function getSession(token: string): Promise<{ userId: string; role:
     }
 
     // Проверяем, что пользователь существует
-    if (!rows[0].user_id || !rows[0].role) {
-      console.error(`[getSession] Session found but user missing: user_id=${rows[0].user_id}, role=${rows[0].role}`);
+    if (!rows[0].user_id) {
+      console.error(`[getSession] Session found but user_id is null or missing`);
       // Удаляем сессию с несуществующим пользователем асинхронно
       pool.execute('DELETE FROM sessions WHERE token = ?', [token]).catch(() => {});
       return null;
     }
 
-    console.log(`[getSession] Session valid: userId=${rows[0].user_id}, role=${rows[0].role}`);
+    // Если роль отсутствует, пытаемся получить её напрямую из таблицы users
+    let userRole = rows[0].role;
+    if (!userRole) {
+      console.warn(`[getSession] Role is null for user_id=${rows[0].user_id}, fetching from users table directly`);
+      try {
+        const [userRows] = await pool.execute(
+          'SELECT role FROM users WHERE id = ?',
+          [rows[0].user_id]
+        ) as any[];
+        
+        if (userRows.length > 0) {
+          userRole = userRows[0].role;
+          console.log(`[getSession] Found role in users table: ${userRole}`);
+          
+          // Если роль все еще отсутствует, устанавливаем роль по умолчанию
+          if (!userRole) {
+            console.warn(`[getSession] Role still null, setting default role 'participant'`);
+            await pool.execute(
+              'UPDATE users SET role = ? WHERE id = ?',
+              ['participant', rows[0].user_id]
+            );
+            userRole = 'participant';
+          }
+        } else {
+          console.error(`[getSession] User not found in users table for user_id=${rows[0].user_id}`);
+          // Удаляем сессию с несуществующим пользователем
+          pool.execute('DELETE FROM sessions WHERE token = ?', [token]).catch(() => {});
+          return null;
+        }
+      } catch (error: any) {
+        console.error(`[getSession] Error fetching user role:`, error);
+        // Устанавливаем роль по умолчанию
+        userRole = 'participant';
+      }
+    }
+
+    console.log(`[getSession] Session valid: userId=${rows[0].user_id}, role=${userRole}`);
 
     return {
       userId: rows[0].user_id,
-      role: rows[0].role,
+      role: userRole as UserRole,
     };
   } catch (error: any) {
     console.error('Error getting session:', error);
