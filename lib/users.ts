@@ -433,7 +433,8 @@ export async function updateUser(id: string, data: UserUpdateData, sendRoleChang
         throw new Error(`Invalid role: ${data.role}`);
       }
       
-      updates.push('role = ?');
+      // Используем CAST для явного преобразования типа, чтобы избежать проблем с ENUM
+      updates.push('role = CAST(? AS CHAR(20))');
       values.push(data.role);
       console.log(`[updateUser] Adding role update: "${data.role}" (type: ${typeof data.role}, length: ${data.role.length}) for user ${id} (old role: ${oldRole})`);
     }
