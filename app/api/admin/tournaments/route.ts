@@ -24,7 +24,7 @@ const parseDemoParticipantsCount = (value: unknown): number | null => {
   return null;
 };
 
-// GET - получить все турниры
+// GET - получить все турниры (или только те, к которым у пользователя есть доступ)
 export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
@@ -35,12 +35,44 @@ export async function GET(request: NextRequest) {
     }
 
     const session = await getSession(token);
-    if (!session || (session.role !== 'superadmin' && session.role !== 'staff')) {
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Superadmin видит все турниры
+    if (session.role === 'superadmin') {
+      const tournaments = await getAllTournaments();
+      console.log(`[GET /api/admin/tournaments] Superadmin: Found ${tournaments.length} tournaments`);
+      return NextResponse.json({ tournaments });
+    }
+
+    // Для других ролей проверяем права доступа к турнирам
+    const { getStaffTournamentAccess } = await import('@/lib/tournaments');
+    const staffAccess = await getStaffTournamentAccess(undefined, session.userId);
+    
+    // Если у пользователя есть право canManageTournaments хотя бы для одного турнира
+    const hasTournamentAccess = staffAccess.some(access => access.canManageTournaments === true);
+    
+    if (!hasTournamentAccess && session.role !== 'manager' && session.role !== 'tournament_admin' && session.role !== 'staff' && session.role !== 'coach') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const tournaments = await getAllTournaments();
-    console.log(`[GET /api/admin/tournaments] Found ${tournaments.length} tournaments`);
+    // Получаем список ID турниров, к которым у пользователя есть доступ
+    const accessibleTournamentIds = staffAccess
+      .filter(access => access.canManageTournaments === true || access.canViewRegistrations === true)
+      .map(access => access.tournamentId);
+
+    // Если у пользователя нет доступа ни к одному турниру, возвращаем пустой список
+    if (accessibleTournamentIds.length === 0) {
+      console.log(`[GET /api/admin/tournaments] User ${session.userId} has no tournament access`);
+      return NextResponse.json({ tournaments: [] });
+    }
+
+    // Получаем все турниры и фильтруем по доступным ID
+    const allTournaments = await getAllTournaments();
+    const tournaments = allTournaments.filter(t => accessibleTournamentIds.includes(t.id));
+    
+    console.log(`[GET /api/admin/tournaments] User ${session.userId} (${session.role}): Found ${tournaments.length} accessible tournaments out of ${allTournaments.length} total`);
     return NextResponse.json({ tournaments });
   } catch (error: any) {
     console.error('Error getting tournaments:', error);

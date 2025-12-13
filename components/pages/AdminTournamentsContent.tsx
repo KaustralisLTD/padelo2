@@ -148,11 +148,47 @@ export default function AdminTournamentsContent() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (!data.session || data.session.role !== 'superadmin') {
+        if (!data.session) {
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
+          return;
+        }
+
+        const role = data.session.role;
+        // Разрешаем доступ для superadmin, manager, tournament_admin, staff, coach
+        const allowedRoles = ['superadmin', 'manager', 'tournament_admin', 'staff', 'coach'];
+        
+        if (!allowedRoles.includes(role)) {
           setTimeout(() => {
             router.push(`/${locale}/dashboard`);
           }, 0);
+          return;
+        }
+
+        // Проверяем права доступа для не-superadmin ролей
+        if (role !== 'superadmin') {
+          fetch('/api/admin/staff/my-permissions', {
+            headers: { 'Authorization': `Bearer ${token}` },
+          })
+            .then((permRes) => permRes.json())
+            .then((permData) => {
+              // Если у пользователя есть право canManageTournaments или canViewRegistrations, разрешаем доступ
+              if (permData.canManageTournaments === true || permData.canViewRegistrations === true) {
+                fetchTournaments();
+              } else {
+                setTimeout(() => {
+                  router.push(`/${locale}/dashboard`);
+                }, 0);
+              }
+            })
+            .catch(() => {
+              setTimeout(() => {
+                router.push(`/${locale}/dashboard`);
+              }, 0);
+            });
         } else {
+          // Superadmin может сразу загружать турниры
           fetchTournaments();
         }
       })

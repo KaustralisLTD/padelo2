@@ -52,8 +52,8 @@ export async function GET(
     }
 
     const session = await getSession(token);
-    if (session?.role !== 'superadmin' && session?.role !== 'staff') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = await params;
@@ -61,6 +61,19 @@ export async function GET(
 
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
+    }
+
+    // Superadmin имеет доступ ко всем турнирам
+    if (session.role === 'superadmin') {
+      // Продолжаем выполнение
+    } else {
+      // Для других ролей проверяем доступ к конкретному турниру
+      const { checkTournamentAccess } = await import('@/lib/tournament-access');
+      const access = await checkTournamentAccess(token, tournamentId, 'canViewRegistrations');
+      
+      if (!access.authorized) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     const pool = getDbPool();
@@ -231,8 +244,8 @@ export async function PATCH(
     }
 
     const session = await getSession(token);
-    if (session?.role !== 'superadmin' && session?.role !== 'staff') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { id } = await params;
@@ -240,6 +253,19 @@ export async function PATCH(
 
     if (isNaN(tournamentId)) {
       return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
+    }
+
+    // Superadmin имеет доступ ко всем турнирам
+    if (session.role === 'superadmin') {
+      // Продолжаем выполнение
+    } else {
+      // Для других ролей проверяем доступ к конкретному турниру (для редактирования нужен canManageTournaments)
+      const { checkTournamentAccess } = await import('@/lib/tournament-access');
+      const access = await checkTournamentAccess(token, tournamentId, 'canManageTournaments');
+      
+      if (!access.authorized) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     const body = await request.json();

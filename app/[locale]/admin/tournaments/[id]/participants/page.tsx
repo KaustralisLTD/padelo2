@@ -301,12 +301,64 @@ export default function TournamentParticipantsPage() {
     }
 
     const loadData = async () => {
-      await fetchTournament();
-      await fetchParticipants();
+      // Проверяем доступ к турниру
+      try {
+        const authResponse = await fetch('/api/auth/login', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        
+        if (!authResponse.ok) {
+          router.push(`/${locale}/login`);
+          return;
+        }
+
+        const authData = await authResponse.json();
+        if (!authData.session) {
+          router.push(`/${locale}/login`);
+          return;
+        }
+
+        const role = authData.session.role;
+        // Superadmin имеет доступ ко всем турнирам
+        if (role === 'superadmin') {
+          await fetchTournament();
+          await fetchParticipants();
+          return;
+        }
+
+        // Для других ролей проверяем доступ к конкретному турниру
+        const accessResponse = await fetch(`/api/admin/tournaments/${tournamentId}/check-access`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+
+        if (accessResponse.ok) {
+          const accessData = await accessResponse.json();
+          if (accessData.hasAccess) {
+            await fetchTournament();
+            await fetchParticipants();
+          } else {
+            setError('You do not have access to this tournament');
+            setLoading(false);
+            setTimeout(() => {
+              router.push(`/${locale}/admin/tournaments`);
+            }, 2000);
+          }
+        } else {
+          setError('Failed to verify tournament access');
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error loading tournament data:', error);
+        setError('Failed to load tournament data');
+        setLoading(false);
+      }
     };
+
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tournamentId, token]);
+  }, [tournamentId, locale, router]);
+
+  const fetchParticipants = async () => {
 
   // Close category filter dropdown when clicking outside
   useEffect(() => {

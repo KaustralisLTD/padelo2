@@ -18,8 +18,21 @@ export async function GET(
     }
 
     const session = await getSession(token);
-    if (session?.role !== 'superadmin' && session?.role !== 'staff') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Superadmin имеет доступ ко всем турнирам
+    if (session.role === 'superadmin') {
+      // Продолжаем выполнение
+    } else {
+      // Для других ролей проверяем доступ к конкретному турниру
+      const { checkTournamentAccess } = await import('@/lib/tournament-access');
+      const access = await checkTournamentAccess(token, tournamentId, 'canViewRegistrations');
+      
+      if (!access.authorized) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     const { id } = await params;
