@@ -171,24 +171,37 @@ export default function AdminTournamentsContent() {
           fetch('/api/admin/staff/my-permissions', {
             headers: { 'Authorization': `Bearer ${token}` },
           })
-            .then((permRes) => permRes.json())
+            .then((permRes) => {
+              if (!permRes.ok) {
+                console.error('[AdminTournaments] Failed to fetch permissions:', permRes.status);
+                throw new Error('Failed to fetch permissions');
+              }
+              return permRes.json();
+            })
             .then((permData) => {
+              console.log('[AdminTournaments] Permissions:', permData);
               // Если у пользователя есть право canManageTournaments или canViewRegistrations, разрешаем доступ
               if (permData.canManageTournaments === true || permData.canViewRegistrations === true) {
+                console.log('[AdminTournaments] User has tournament access, loading tournaments...');
                 fetchTournaments();
               } else {
+                console.log('[AdminTournaments] User does not have tournament access, redirecting...');
+                setError('You do not have access to tournaments');
                 setTimeout(() => {
-                  router.push(`/${locale}/dashboard`);
-                }, 0);
+                  router.push(`/${locale}/admin/dashboard`);
+                }, 2000);
               }
             })
-            .catch(() => {
+            .catch((error) => {
+              console.error('[AdminTournaments] Error checking permissions:', error);
+              setError('Failed to verify permissions');
               setTimeout(() => {
-                router.push(`/${locale}/dashboard`);
-              }, 0);
+                router.push(`/${locale}/admin/dashboard`);
+              }, 2000);
             });
         } else {
           // Superadmin может сразу загружать турниры
+          console.log('[AdminTournaments] Superadmin access, loading tournaments...');
           fetchTournaments();
         }
       })
