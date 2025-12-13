@@ -382,6 +382,36 @@ export async function initDatabase() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
+  // Update role ENUM if it doesn't include all required values
+  // This is needed because ALTER TABLE doesn't work with CREATE TABLE IF NOT EXISTS
+  try {
+    const [enumCheck] = await pool.execute(
+      `SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS 
+       WHERE TABLE_SCHEMA = DATABASE() 
+       AND TABLE_NAME = 'users' 
+       AND COLUMN_NAME = 'role'`
+    ) as any[];
+    
+    if (enumCheck.length > 0) {
+      const currentEnum = enumCheck[0].COLUMN_TYPE;
+      const requiredEnum = "enum('superadmin','tournament_admin','manager','coach','staff','participant')";
+      
+      // Check if ENUM needs to be updated
+      if (currentEnum !== requiredEnum && !currentEnum.includes('tournament_admin') && !currentEnum.includes('manager') && !currentEnum.includes('coach')) {
+        console.log(`[initDatabase] Updating role ENUM from ${currentEnum} to ${requiredEnum}`);
+        await pool.execute(
+          `ALTER TABLE users MODIFY COLUMN role ENUM('superadmin', 'tournament_admin', 'manager', 'coach', 'staff', 'participant') NOT NULL DEFAULT 'participant'`
+        );
+        console.log(`[initDatabase] ✅ Role ENUM updated successfully`);
+      } else {
+        console.log(`[initDatabase] Role ENUM is up to date: ${currentEnum}`);
+      }
+    }
+  } catch (enumError: any) {
+    // Log but don't fail - table might not exist yet or ENUM update might have failed
+    console.warn(`[initDatabase] Could not update role ENUM:`, enumError.message);
+  }
+
   // Add new columns if they don't exist (for existing tables)
   try {
     await pool.execute('ALTER TABLE users ADD COLUMN preferred_language VARCHAR(10) DEFAULT NULL');
