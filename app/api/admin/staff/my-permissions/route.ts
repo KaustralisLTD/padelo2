@@ -33,16 +33,29 @@ export async function GET(request: NextRequest) {
     // Для других ролей получаем объединенные права из всех доступов
     const accessList = await getStaffTournamentAccess(undefined, session.userId);
 
+    console.log(`[my-permissions] User ${session.userId} (${session.role}) has ${accessList.length} access records`);
+    accessList.forEach((access, index) => {
+      console.log(`[my-permissions] Access ${index + 1}:`, {
+        tournamentId: access.tournamentId,
+        canSendEmails: access.canSendEmails,
+        canManageUsers: access.canManageUsers,
+        canManageTournaments: access.canManageTournaments,
+        canManageLogs: access.canManageLogs,
+      });
+    });
+
     // Объединяем права: если хотя бы в одном доступе есть право, то оно есть
     const permissions = {
-      canManageUsers: accessList.some(a => a.canManageUsers),
-      canManageLogs: accessList.some(a => a.canManageLogs),
-      canManageTournaments: accessList.some(a => a.canManageTournaments),
-      canSendEmails: accessList.some(a => a.canSendEmails),
-      canManageGroups: accessList.some(a => a.canManageGroups),
-      canManageMatches: accessList.some(a => a.canManageMatches),
-      canViewRegistrations: accessList.some(a => a.canViewRegistrations),
+      canManageUsers: accessList.some(a => a.canManageUsers === true),
+      canManageLogs: accessList.some(a => a.canManageLogs === true),
+      canManageTournaments: accessList.some(a => a.canManageTournaments === true),
+      canSendEmails: accessList.some(a => a.canSendEmails === true),
+      canManageGroups: accessList.some(a => a.canManageGroups === true),
+      canManageMatches: accessList.some(a => a.canManageMatches === true),
+      canViewRegistrations: accessList.some(a => a.canViewRegistrations === true),
     };
+
+    console.log(`[my-permissions] Final permissions for user ${session.userId}:`, permissions);
 
     return NextResponse.json(permissions);
   } catch (error: any) {

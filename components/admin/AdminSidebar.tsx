@@ -89,7 +89,7 @@ export default function AdminSidebar() {
 
     fetchTournaments();
     fetchUserInfo();
-    fetchStaffPermissions();
+    // fetchStaffPermissions вызывается внутри fetchUserInfo после определения роли
   }, []);
 
   const fetchStaffPermissions = async () => {
@@ -102,15 +102,33 @@ export default function AdminSidebar() {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log('[AdminSidebar] Loaded permissions:', data);
         setStaffPermissions({
-          canManageUsers: data.canManageUsers || false,
-          canManageLogs: data.canManageLogs || false,
-          canManageTournaments: data.canManageTournaments || false,
-          canSendEmails: data.canSendEmails || false,
+          canManageUsers: data.canManageUsers === true,
+          canManageLogs: data.canManageLogs === true,
+          canManageTournaments: data.canManageTournaments === true,
+          canSendEmails: data.canSendEmails === true,
+        });
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('[AdminSidebar] Failed to load permissions:', response.status, errorData);
+        // Устанавливаем пустые права, чтобы меню не показывало лишние разделы
+        setStaffPermissions({
+          canManageUsers: false,
+          canManageLogs: false,
+          canManageTournaments: false,
+          canSendEmails: false,
         });
       }
     } catch (error) {
-      console.error('Error fetching staff permissions:', error);
+      console.error('[AdminSidebar] Error fetching staff permissions:', error);
+      // Устанавливаем пустые права при ошибке
+      setStaffPermissions({
+        canManageUsers: false,
+        canManageLogs: false,
+        canManageTournaments: false,
+        canSendEmails: false,
+      });
     }
   };
 
@@ -125,10 +143,16 @@ export default function AdminSidebar() {
       });
       if (userResponse.ok) {
         const userData = await userResponse.json();
-        setUserRole(userData.session?.role || null);
+        const role = userData.session?.role || null;
+        setUserRole(role);
+        
+        // Загружаем права доступа после определения роли (если не superadmin)
+        if (role && role !== 'superadmin') {
+          fetchStaffPermissions();
+        }
         
         // If not superadmin, get company logo
-        if (userData.session?.role !== 'superadmin') {
+        if (role !== 'superadmin') {
           const companyResponse = await fetch('/api/admin/company', {
             headers: { 'Authorization': `Bearer ${token}` },
           });
@@ -334,21 +358,26 @@ export default function AdminSidebar() {
             // Superadmin sees everything
             if (userRole === 'superadmin') return true;
             
+            // Если права еще не загружены, показываем только dashboard
+            if (staffPermissions === null) {
+              return item.href.includes('/dashboard');
+            }
+            
             // Staff, Manager, Tournament Admin see dashboard
             if (item.href.includes('/dashboard')) return true;
             
             // Filter based on permissions
             if (item.href.includes('/users')) {
-              return staffPermissions?.canManageUsers || false;
+              return staffPermissions.canManageUsers === true;
             }
             if (item.href.includes('/logs')) {
-              return staffPermissions?.canManageLogs || false;
+              return staffPermissions.canManageLogs === true;
             }
             if (item.href.includes('/tournaments')) {
-              return staffPermissions?.canManageTournaments || false;
+              return staffPermissions.canManageTournaments === true;
             }
             if (item.href.includes('/partner-emails')) {
-              return staffPermissions?.canSendEmails || false;
+              return staffPermissions.canSendEmails === true;
             }
             if (item.href.includes('/staff')) {
               return false; // Only superadmin can manage staff
