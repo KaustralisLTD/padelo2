@@ -286,7 +286,14 @@ export default function TournamentParticipantsPage() {
     );
   };
 
-  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Устанавливаем token только на клиенте, чтобы избежать проблем с гидратацией
+    if (typeof window !== 'undefined') {
+      setToken(localStorage.getItem('auth_token'));
+    }
+  }, []);
 
   useEffect(() => {
     if (!token) {
@@ -1170,7 +1177,7 @@ export default function TournamentParticipantsPage() {
                   fileId: `EXP-${tournamentId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
                   tournamentName: tournamentName || `Tournament #${tournamentId}`,
                   documentType: tTournaments('participants') || 'Tournament Participants Table',
-                  exportedAt: new Date().toLocaleString(locale),
+                  exportedAt: new Date().toISOString(), // Используем ISO формат для избежания проблем с гидратацией
                   exportedBy: 'Admin',
                   userMessage: participants
                     .filter(p => p.message)
