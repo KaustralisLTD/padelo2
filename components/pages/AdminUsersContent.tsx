@@ -198,6 +198,19 @@ export default function AdminUsersContent() {
       .catch(() => {
         router.push(`/${locale}/login`);
       });
+    
+    // Слушаем событие обновления роли пользователя с других страниц
+    const handleUserRoleUpdate = (event: CustomEvent) => {
+      console.log('[AdminUsers] User role updated event received:', event.detail);
+      // Обновляем список пользователей, чтобы отобразить новую роль
+      fetchUsers();
+    };
+    
+    window.addEventListener('userRoleUpdated', handleUserRoleUpdate as EventListener);
+    
+    return () => {
+      window.removeEventListener('userRoleUpdated', handleUserRoleUpdate as EventListener);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale, router]);
 

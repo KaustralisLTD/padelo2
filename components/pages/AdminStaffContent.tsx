@@ -243,6 +243,16 @@ export default function AdminStaffContent() {
       setShowCreateModal(false);
       resetForm();
       fetchData();
+      
+      // Обновляем список пользователей, чтобы отобразить новую роль
+      // Это нужно, чтобы страница /admin/users показывала актуальную роль
+      if (typeof window !== 'undefined') {
+        // Отправляем событие для обновления данных на других страницах
+        window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
+          detail: { userId: formData.userId, newRole: formData.userRole } 
+        }));
+      }
+      
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError('Failed to create staff access');
@@ -311,6 +321,14 @@ export default function AdminStaffContent() {
         setEditingAccess(null);
         resetForm();
         fetchData();
+        
+        // Обновляем список пользователей, чтобы отобразить новую роль
+        if (typeof window !== 'undefined' && formData.userRole) {
+          window.dispatchEvent(new CustomEvent('userRoleUpdated', { 
+            detail: { userId: editingAccess.userId, newRole: formData.userRole } 
+          }));
+        }
+        
         setTimeout(() => setSuccess(null), 3000);
       } else {
         setError(data.error || 'Failed to update staff access');

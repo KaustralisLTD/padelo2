@@ -99,13 +99,31 @@ export async function POST(request: NextRequest) {
     // Обновляем роль пользователя в таблице users, если она указана
     if (userRole) {
       try {
-        const { updateUser } = await import('@/lib/users');
-        await updateUser(userId, { role: userRole as any }, false); // false = не отправлять email уведомление
-        console.log(`[Staff Access] Updated user role to ${userRole} for user ${userId}`);
+        const { updateUser, findUserById } = await import('@/lib/users');
+        
+        // Проверяем текущую роль пользователя
+        const currentUser = await findUserById(userId);
+        console.log(`[Staff Access] Current user role: ${currentUser?.role}, new role: ${userRole}`);
+        
+        // Обновляем роль
+        const updatedUser = await updateUser(userId, { role: userRole as any }, false); // false = не отправлять email уведомление
+        
+        // Проверяем, что роль действительно обновилась
+        const verifyUser = await findUserById(userId);
+        console.log(`[Staff Access] User role after update: ${verifyUser?.role} (expected: ${userRole})`);
+        
+        if (verifyUser?.role !== userRole) {
+          console.error(`[Staff Access] WARNING: Role update failed! Expected ${userRole}, got ${verifyUser?.role}`);
+        } else {
+          console.log(`[Staff Access] ✅ Successfully updated user role to ${userRole} for user ${userId}`);
+        }
       } catch (roleError: any) {
         console.error('[Staff Access] Error updating user role:', roleError);
+        console.error('[Staff Access] Error stack:', roleError.stack);
         // Не прерываем создание доступа, если обновление роли не удалось
       }
+    } else {
+      console.warn(`[Staff Access] No userRole provided in request body. Available fields: ${Object.keys(body).join(', ')}`);
     }
 
     const access = await createStaffTournamentAccess({
