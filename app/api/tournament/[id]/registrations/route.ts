@@ -44,6 +44,14 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Получаем tournamentId сразу, чтобы использовать его в проверке доступа
+    const { id } = await params;
+    const tournamentId = parseInt(id, 10);
+
+    if (isNaN(tournamentId)) {
+      return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
+    }
+
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
 
@@ -54,13 +62,6 @@ export async function GET(
     const session = await getSession(token);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { id } = await params;
-    const tournamentId = parseInt(id, 10);
-
-    if (isNaN(tournamentId)) {
-      return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
 
     // Superadmin имеет доступ ко всем турнирам
@@ -236,6 +237,14 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Получаем tournamentId сразу, чтобы использовать его в проверке доступа
+    const { id } = await params;
+    const tournamentId = parseInt(id, 10);
+
+    if (isNaN(tournamentId)) {
+      return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
+    }
+
     const authHeader = request.headers.get('authorization');
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('auth_token')?.value;
 
@@ -246,13 +255,6 @@ export async function PATCH(
     const session = await getSession(token);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { id } = await params;
-    const tournamentId = parseInt(id, 10);
-
-    if (isNaN(tournamentId)) {
-      return NextResponse.json({ error: 'Invalid tournament ID' }, { status: 400 });
     }
 
     // Superadmin имеет доступ ко всем турнирам
