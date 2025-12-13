@@ -27,6 +27,9 @@ export default function LoginContent() {
 
   // Обработка OAuth callback
   useEffect(() => {
+    // Проверяем, что мы на клиенте
+    if (typeof window === 'undefined') return;
+    
     const token = searchParams.get('token');
     const success = searchParams.get('success');
     const errorParam = searchParams.get('error');
@@ -49,7 +52,8 @@ export default function LoginContent() {
       
       if (cookieToken && cookieToken !== token) {
         // Если cookie отличается, обновляем его
-        document.cookie = `auth_token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`;
+        const isProduction = process.env.NODE_ENV === 'production';
+        document.cookie = `auth_token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax${isProduction ? '; Secure' : ''}`;
       }
       
       // Dispatch custom event to notify Header about auth change
