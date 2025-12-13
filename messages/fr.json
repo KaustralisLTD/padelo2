@@ -1569,12 +1569,12 @@
       "walletDesc": "Gérer les portefeuilles utilisateurs et les transactions"
     },
     "staff": {
-      "title": "Staff Dashboard",
-      "description": "Manage tournaments and registrations",
-      "manageRegistrations": "Manage Registrations",
-      "manageRegistrationsDesc": "View and edit tournament registrations",
-      "editPlayers": "Edit Players",
-      "editPlayersDesc": "Manage player lists and information"
+      "title": "Tableau de Bord du Personnel",
+      "description": "Gérer les tournois et les inscriptions",
+      "manageRegistrations": "Gérer les Inscriptions",
+      "manageRegistrationsDesc": "Voir et modifier les inscriptions aux tournois",
+      "editPlayers": "Modifier les Joueurs",
+      "editPlayersDesc": "Gérer les listes de joueurs et les informations"
     },
     "participant": {
       "title": "Participant Dashboard",
