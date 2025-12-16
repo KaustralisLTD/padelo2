@@ -379,8 +379,15 @@ export default function TournamentParticipantsPage() {
         // Superadmin имеет доступ ко всем турнирам
         if (role === 'superadmin') {
           console.log('[Participants] Superadmin access granted, loading data...');
-          await fetchTournament();
-          await fetchParticipants();
+          try {
+            await fetchTournament();
+            await fetchParticipants();
+            console.log('[Participants] Data loaded successfully');
+          } catch (err) {
+            console.error('[Participants] Error loading data:', err);
+            setError('Failed to load tournament data');
+            setLoading(false);
+          }
           return;
         }
 
@@ -398,8 +405,15 @@ export default function TournamentParticipantsPage() {
           const accessData = await accessResponse.json();
           if (accessData.hasAccess) {
             console.log('[Participants] Tournament access granted, loading data...');
-            await fetchTournament();
-            await fetchParticipants();
+            try {
+              await fetchTournament();
+              await fetchParticipants();
+              console.log('[Participants] Data loaded successfully');
+            } catch (err) {
+              console.error('[Participants] Error loading data:', err);
+              setError('Failed to load tournament data');
+              setLoading(false);
+            }
           } else {
             console.log('[Participants] Tournament access denied');
             setError('You do not have access to this tournament');
