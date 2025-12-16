@@ -317,12 +317,18 @@ export default function TournamentParticipantsPage() {
         });
         
         if (!authResponse.ok) {
-          router.push(`/${locale}/login`);
+          console.error('[Participants] Auth check failed:', authResponse.status);
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
           return;
         }
 
         const authData = await authResponse.json();
+        console.log('[Participants] Auth data:', { hasSession: !!authData.session, role: authData.session?.role });
+        
         if (!authData.session) {
+          console.error('[Participants] No session found');
           setTimeout(() => {
             router.push(`/${locale}/login`);
           }, 0);
@@ -332,6 +338,7 @@ export default function TournamentParticipantsPage() {
         const role = authData.session.role;
         // Superadmin имеет доступ ко всем турнирам
         if (role === 'superadmin') {
+          console.log('[Participants] Superadmin access granted');
           await fetchTournament();
           await fetchParticipants();
           return;
