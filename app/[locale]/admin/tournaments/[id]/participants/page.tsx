@@ -287,44 +287,48 @@ export default function TournamentParticipantsPage() {
   };
 
   const [token, setToken] = useState<string | null>(null);
+  const [tokenChecked, setTokenChecked] = useState(false);
 
   useEffect(() => {
     // Устанавливаем token только на клиенте, чтобы избежать проблем с гидратацией
     if (typeof window !== 'undefined') {
       // Проверяем localStorage
-      const localToken = localStorage.getItem('auth_token');
-      if (localToken) {
-        setToken(localToken);
-        return;
-      }
+      let foundToken = localStorage.getItem('auth_token');
       
       // Если нет в localStorage, проверяем cookies
-      const cookies = document.cookie.split('; ');
-      const authCookie = cookies.find(row => row.startsWith('auth_token='));
-      if (authCookie) {
-        const cookieToken = authCookie.split('=')[1];
-        if (cookieToken) {
-          setToken(cookieToken);
-          // Сохраняем в localStorage для удобства
-          localStorage.setItem('auth_token', cookieToken);
+      if (!foundToken) {
+        const cookies = document.cookie.split('; ');
+        const authCookie = cookies.find(row => row.startsWith('auth_token='));
+        if (authCookie) {
+          const cookieToken = authCookie.split('=')[1];
+          if (cookieToken) {
+            foundToken = cookieToken;
+            // Сохраняем в localStorage для удобства
+            localStorage.setItem('auth_token', cookieToken);
+          }
         }
       }
+      
+      if (foundToken) {
+        setToken(foundToken);
+      }
+      setTokenChecked(true);
     }
   }, []);
 
   useEffect(() => {
-    // Не проверяем доступ, пока токен не установлен
+    // Не проверяем доступ, пока токен не проверен
+    if (!tokenChecked) {
+      return;
+    }
+
+    // Если токен не найден после проверки, редиректим на логин
     if (!token) {
-      // Даем время для установки токена из cookies
-      const timer = setTimeout(() => {
-        if (!token) {
-          console.log('[Participants] No token found, redirecting to login');
-          setTimeout(() => {
-            router.push(`/${locale}/login`);
-          }, 0);
-        }
-      }, 100);
-      return () => clearTimeout(timer);
+      console.log('[Participants] No token found after check, redirecting to login');
+      setTimeout(() => {
+        router.push(`/${locale}/login`);
+      }, 0);
+      return;
     }
 
     if (isNaN(tournamentId)) {
@@ -337,7 +341,11 @@ export default function TournamentParticipantsPage() {
       // Проверяем доступ к турниру
       try {
         const authResponse = await fetch('/api/auth/login', {
-          headers: { 'Authorization': `Bearer ${token}` },
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Отправляем cookies автоматически
         });
         
         if (!authResponse.ok) {
@@ -370,7 +378,11 @@ export default function TournamentParticipantsPage() {
 
         // Для других ролей проверяем доступ к конкретному турниру
         const accessResponse = await fetch(`/api/admin/tournaments/${tournamentId}/check-access`, {
-          headers: { 'Authorization': `Bearer ${token}` },
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Отправляем cookies автоматически
         });
 
         if (accessResponse.ok) {

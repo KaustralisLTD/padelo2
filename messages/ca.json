@@ -1223,6 +1223,8 @@
       "priceDoubleCategory": "Preu (Dues Categories)",
       "priceDoubleCategoryDesc": "Preu per categoria si participes en dues categories (per exemple, 25 EUR per categoria)",
       "status": "Estat",
+      "statusUpdated": "Estat actualitzat correctament",
+      "clickToEditStatus": "Feu clic per editar l'estat",
       "registrationTotal": "Registrats",
       "registrationPaid": "Pagats",
       "registrationSettings": "Configuració del registre",

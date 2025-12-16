@@ -1222,6 +1222,8 @@
       "priceDoubleCategory": "Precio (Dos Categorías)",
       "priceDoubleCategoryDesc": "Precio por categoría si participas en dos categorías (por ejemplo, 25 EUR por categoría)",
       "status": "Estado",
+      "statusUpdated": "Estado actualizado correctamente",
+      "clickToEditStatus": "Haga clic para editar el estado",
       "registrationTotal": "Registrados",
       "registrationPaid": "Pagados",
       "registrationSettings": "Configuración de registro",

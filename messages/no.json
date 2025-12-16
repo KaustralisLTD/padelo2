@@ -1008,6 +1008,8 @@
       "priceDoubleCategory": "Pris (To Kategorier)",
       "priceDoubleCategoryDesc": "Pris per kategori ved deltakelse i to kategorier (f.eks. 25 EUR per kategori)",
       "status": "Status",
+      "statusUpdated": "Status oppdatert med hell",
+      "clickToEditStatus": "Klikk for å redigere status",
       "registrationTotal": "Registrerte",
       "registrationPaid": "Betalt",
       "registrationSettings": "Registreringsinnstillinger",

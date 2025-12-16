@@ -1008,6 +1008,8 @@
       "priceDoubleCategory": "价格（两个类别）",
       "priceDoubleCategoryDesc": "参加两个类别时每个类别的价格（例如，每个类别 25 EUR）",
       "status": "状态",
+      "statusUpdated": "状态已成功更新",
+      "clickToEditStatus": "点击编辑状态",
       "registrationTotal": "报名人数",
       "registrationPaid": "已付款",
       "registrationSettings": "报名设置",

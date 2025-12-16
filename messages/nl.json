@@ -955,6 +955,8 @@
       "priceDoubleCategory": "Prijs (Twee Categorieën)",
       "priceDoubleCategoryDesc": "Prijs per categorie bij deelname aan twee categorieën (bijv. 25 EUR per categorie)",
       "status": "Status",
+      "statusUpdated": "Status succesvol bijgewerkt",
+      "clickToEditStatus": "Klik om de status te bewerken",
       "registrationTotal": "Geregistreerd",
       "registrationPaid": "Betaald",
       "registrationSettings": "Registratie-instellingen",

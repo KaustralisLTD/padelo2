@@ -971,6 +971,8 @@
       "priceDoubleCategory": "السعر (فئتان)",
       "priceDoubleCategoryDesc": "السعر لكل فئة عند المشاركة في فئتين (على سبيل المثال، 25 EUR لكل فئة)",
       "status": "الحالة",
+      "statusUpdated": "تم تحديث الحالة بنجاح",
+      "clickToEditStatus": "انقر لتعديل الحالة",
       "registrationTotal": "المسجلون",
       "registrationPaid": "المدفوع",
       "registrationSettings": "إعدادات التسجيل",

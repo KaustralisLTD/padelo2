@@ -1008,6 +1008,8 @@
       "priceDoubleCategory": "Pris (Två Kategorier)",
       "priceDoubleCategoryDesc": "Pris per kategori vid deltagande i två kategorier (t.ex. 25 EUR per kategori)",
       "status": "Status",
+      "statusUpdated": "Status uppdaterad framgångsrikt",
+      "clickToEditStatus": "Klicka för att redigera status",
       "registrationTotal": "Registrerade",
       "registrationPaid": "Betalda",
       "registrationSettings": "Registreringsinställningar",
