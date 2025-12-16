@@ -319,12 +319,15 @@ export default function TournamentParticipantsPage() {
   useEffect(() => {
     // Не проверяем доступ, пока токен не проверен
     if (!tokenChecked) {
+      console.log('[Participants] Token check not completed yet, waiting...');
       return;
     }
 
     // Если токен не найден после проверки, редиректим на логин
     if (!token) {
       console.log('[Participants] No token found after check, redirecting to login');
+      setLoading(false);
+      setError('Authentication required');
       setTimeout(() => {
         router.push(`/${locale}/login`);
       }, 0);
@@ -340,6 +343,7 @@ export default function TournamentParticipantsPage() {
     const loadData = async () => {
       // Проверяем доступ к турниру
       try {
+        console.log('[Participants] Starting auth check with token:', token.substring(0, 10) + '...');
         const authResponse = await fetch('/api/auth/login', {
           headers: { 
             'Authorization': `Bearer ${token}`,
@@ -350,6 +354,8 @@ export default function TournamentParticipantsPage() {
         
         if (!authResponse.ok) {
           console.error('[Participants] Auth check failed:', authResponse.status);
+          setLoading(false);
+          setError('Authentication failed');
           setTimeout(() => {
             router.push(`/${locale}/login`);
           }, 0);
@@ -361,6 +367,8 @@ export default function TournamentParticipantsPage() {
         
         if (!authData.session) {
           console.error('[Participants] No session found');
+          setLoading(false);
+          setError('No active session');
           setTimeout(() => {
             router.push(`/${locale}/login`);
           }, 0);
@@ -370,13 +378,14 @@ export default function TournamentParticipantsPage() {
         const role = authData.session.role;
         // Superadmin имеет доступ ко всем турнирам
         if (role === 'superadmin') {
-          console.log('[Participants] Superadmin access granted');
+          console.log('[Participants] Superadmin access granted, loading data...');
           await fetchTournament();
           await fetchParticipants();
           return;
         }
 
         // Для других ролей проверяем доступ к конкретному турниру
+        console.log('[Participants] Checking tournament access for role:', role);
         const accessResponse = await fetch(`/api/admin/tournaments/${tournamentId}/check-access`, {
           headers: { 
             'Authorization': `Bearer ${token}`,
@@ -388,9 +397,11 @@ export default function TournamentParticipantsPage() {
         if (accessResponse.ok) {
           const accessData = await accessResponse.json();
           if (accessData.hasAccess) {
+            console.log('[Participants] Tournament access granted, loading data...');
             await fetchTournament();
             await fetchParticipants();
           } else {
+            console.log('[Participants] Tournament access denied');
             setError('You do not have access to this tournament');
             setLoading(false);
             setTimeout(() => {
@@ -398,19 +409,19 @@ export default function TournamentParticipantsPage() {
             }, 2000);
           }
         } else {
+          console.error('[Participants] Failed to verify tournament access:', accessResponse.status);
           setError('Failed to verify tournament access');
           setLoading(false);
         }
       } catch (error) {
-        console.error('Error loading tournament data:', error);
+        console.error('[Participants] Error loading tournament data:', error);
         setError('Failed to load tournament data');
         setLoading(false);
       }
     };
 
     loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tournamentId, locale, router]);
+  }, [token, tokenChecked, tournamentId, locale, router]);
 
   // Close category filter dropdown when clicking outside
   useEffect(() => {
@@ -438,7 +449,9 @@ export default function TournamentParticipantsPage() {
       const response = await fetch('/api/admin/tournaments', {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
 
       if (response.ok) {
@@ -462,7 +475,9 @@ export default function TournamentParticipantsPage() {
       const response = await fetch(`/api/tournament/${tournamentId}/registrations`, {
         headers: {
           'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
 
       if (response.ok) {
