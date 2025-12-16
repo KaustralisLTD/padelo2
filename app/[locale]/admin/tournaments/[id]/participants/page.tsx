@@ -291,16 +291,40 @@ export default function TournamentParticipantsPage() {
   useEffect(() => {
     // Устанавливаем token только на клиенте, чтобы избежать проблем с гидратацией
     if (typeof window !== 'undefined') {
-      setToken(localStorage.getItem('auth_token'));
+      // Проверяем localStorage
+      const localToken = localStorage.getItem('auth_token');
+      if (localToken) {
+        setToken(localToken);
+        return;
+      }
+      
+      // Если нет в localStorage, проверяем cookies
+      const cookies = document.cookie.split('; ');
+      const authCookie = cookies.find(row => row.startsWith('auth_token='));
+      if (authCookie) {
+        const cookieToken = authCookie.split('=')[1];
+        if (cookieToken) {
+          setToken(cookieToken);
+          // Сохраняем в localStorage для удобства
+          localStorage.setItem('auth_token', cookieToken);
+        }
+      }
     }
   }, []);
 
   useEffect(() => {
+    // Не проверяем доступ, пока токен не установлен
     if (!token) {
-      setTimeout(() => {
-        router.push(`/${locale}/login`);
-      }, 0);
-      return;
+      // Даем время для установки токена из cookies
+      const timer = setTimeout(() => {
+        if (!token) {
+          console.log('[Participants] No token found, redirecting to login');
+          setTimeout(() => {
+            router.push(`/${locale}/login`);
+          }, 0);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
     }
 
     if (isNaN(tournamentId)) {
