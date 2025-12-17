@@ -267,7 +267,8 @@
       "female2": "Dames 2",
       "mixed1": "Gemengd 1",
       "mixed2": "Gemengd 2",
-      "kids": "KINDEREN"
+      "kids": "KINDEREN",
+      "Guest": "Gast"
     },
     "form": {
       "firstName": "Voornaam",

@@ -263,7 +263,8 @@
           "female2": "Femení 2",
           "mixed1": "Mixt 1",
           "mixed2": "Mixt 2",
-          "kids": "NENS"
+          "kids": "NENS",
+          "Guest": "Convidat"
         },
         "form": {
           "firstName": "Nom",

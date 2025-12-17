@@ -267,7 +267,8 @@
       "female2": "Dam 2",
       "mixed1": "Mixed 1",
       "mixed2": "Mixed 2",
-      "kids": "BARN"
+      "kids": "BARN",
+      "Guest": "Gäst"
     },
     "form": {
       "firstName": "Förnamn",
