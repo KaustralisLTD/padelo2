@@ -54,14 +54,14 @@ export default function TournamentParticipantsPage() {
   const params = useParams();
   const tournamentId = parseInt(params.id as string, 10);
 
-  const getLocalizedDefaultCategories = () => ({
+  const getLocalizedDefaultCategories = useCallback(() => ({
     male1: tTournaments('categories.male1'),
     male2: tTournaments('categories.male2'),
     female1: tTournaments('categories.female1'),
     female2: tTournaments('categories.female2'),
     mixed1: tTournaments('categories.mixed1'),
     mixed2: tTournaments('categories.mixed2'),
-  });
+  }), [tTournaments]);
 
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [tournamentName, setTournamentName] = useState<string>('');
@@ -522,72 +522,6 @@ export default function TournamentParticipantsPage() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [categoryFilterOpen]);
-
-  const fetchTournament = useCallback(async () => {
-    if (!token) return;
-
-    try {
-      const response = await fetch('/api/admin/tournaments', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const tournament = data.tournaments?.find((t: any) => t.id === tournamentId);
-        if (tournament) {
-          setTournamentName(tournament.name);
-          setCustomCategories(tournament.customCategories || getLocalizedDefaultCategories());
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching tournament:', err);
-    }
-  }, [token, tournamentId]);
-
-  const fetchParticipants = useCallback(async () => {
-    if (!token) return;
-
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/tournament/${tournamentId}/registrations`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const formattedParticipants: Participant[] = (data.registrations || []).map((participant: any, index: number) => ({
-          ...participant,
-          userId: participant.userId ?? participant.user_id ?? null,
-          orderNumber: participant.orderNumber ?? participant.order_number ?? index + 1,
-          categories: participant.categories || [],
-          categoryPartners: participant.categoryPartners || participant.category_partners || {},
-          registrationType: participant.registrationType || 'participant',
-          adultsCount: participant.adultsCount ?? null,
-          childrenCount: participant.childrenCount ?? null,
-          guestChildren: participant.guestChildren ?? null,
-        }));
-        setParticipants(formattedParticipants);
-        setError(null);
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Error fetching participants:', errorData);
-        setError(errorData.error || tTournaments('participantsLoadError'));
-      }
-    } catch (err: any) {
-      console.error('Error fetching participants:', err);
-      setError(err.message || tTournaments('participantsLoadError'));
-    } finally {
-      setLoading(false);
-    }
-  }, [token, tournamentId, tTournaments]);
 
   const handleEdit = (participant: Participant) => {
     setEditingParticipant(participant);
