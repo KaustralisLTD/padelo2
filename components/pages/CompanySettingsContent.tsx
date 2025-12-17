@@ -4,6 +4,7 @@ import { useEffect, useState, FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Company {
   id: number;
@@ -251,9 +252,11 @@ export default function CompanySettingsContent() {
               </h2>
               {company.logo_url && (
                 <div className="mb-4">
-                  <img 
+                  <Image 
                     src={company.logo_url} 
                     alt="Company Logo" 
+                    width={300}
+                    height={300}
                     className="max-w-xs h-auto"
                   />
                 </div>

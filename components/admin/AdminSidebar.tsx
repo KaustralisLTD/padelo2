@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 
 interface MenuItem {
@@ -92,7 +92,7 @@ export default function AdminSidebar() {
     // fetchStaffPermissions вызывается внутри fetchUserInfo после определения роли
   }, []);
 
-  const fetchStaffPermissions = async () => {
+  const fetchStaffPermissions = useCallback(async () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
     if (!token) return;
 
@@ -130,9 +130,9 @@ export default function AdminSidebar() {
         canSendEmails: false,
       });
     }
-  };
+  }, []);
 
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = useCallback(async () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
     if (!token) return;
 
@@ -167,7 +167,7 @@ export default function AdminSidebar() {
     } catch (error) {
       console.error('Error fetching user info:', error);
     }
-  };
+  }, [fetchStaffPermissions]);
 
   const toggleExpanded = (href: string) => {
     setExpandedItems(prev =>

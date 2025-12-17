@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import { useRouter, useParams } from 'next/navigation';
@@ -435,7 +435,7 @@ export default function TournamentParticipantsPage() {
     };
 
     loadData();
-  }, [token, tokenChecked, tournamentId, locale, router]);
+  }, [token, tokenChecked, tournamentId, locale, router, fetchTournament, fetchParticipants]);
 
   // Close category filter dropdown when clicking outside
   useEffect(() => {
@@ -456,7 +456,7 @@ export default function TournamentParticipantsPage() {
     };
   }, [categoryFilterOpen]);
 
-  const fetchTournament = async () => {
+  const fetchTournament = useCallback(async () => {
     if (!token) return;
 
     try {
@@ -479,9 +479,9 @@ export default function TournamentParticipantsPage() {
     } catch (err) {
       console.error('Error fetching tournament:', err);
     }
-  };
+  }, [token, tournamentId]);
 
-  const fetchParticipants = async () => {
+  const fetchParticipants = useCallback(async () => {
     if (!token) return;
 
     try {
@@ -520,7 +520,7 @@ export default function TournamentParticipantsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, tournamentId, tTournaments]);
 
   const handleEdit = (participant: Participant) => {
     setEditingParticipant(participant);

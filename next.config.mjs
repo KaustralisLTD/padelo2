@@ -17,11 +17,6 @@ const nextConfig = {
       bodySizeLimit: '50mb',
     },
   },
-  server: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-  },
 };
 
 export default withNextIntl(nextConfig);
