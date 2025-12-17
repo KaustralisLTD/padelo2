@@ -66,32 +66,7 @@ export default function AdminSidebar() {
   }, [pathname, locale]);
 
   // Fetch tournaments for participants submenu
-  useEffect(() => {
-    const fetchTournaments = async () => {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
-      if (!token) return;
-
-      setLoadingTournaments(true);
-      try {
-        const response = await fetch('/api/admin/tournaments', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setTournaments(data.tournaments || []);
-        }
-      } catch (error) {
-        console.error('Error fetching tournaments for sidebar:', error);
-      } finally {
-        setLoadingTournaments(false);
-      }
-    };
-
-    fetchTournaments();
-    fetchUserInfo();
-    // fetchStaffPermissions вызывается внутри fetchUserInfo после определения роли
-  }, [fetchUserInfo]);
-
+  // Объявляем функции загрузки данных до useEffect, который их использует
   const fetchStaffPermissions = useCallback(async () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
     if (!token) return;
@@ -168,6 +143,32 @@ export default function AdminSidebar() {
       console.error('Error fetching user info:', error);
     }
   }, [fetchStaffPermissions]);
+
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      if (!token) return;
+
+      setLoadingTournaments(true);
+      try {
+        const response = await fetch('/api/admin/tournaments', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTournaments(data.tournaments || []);
+        }
+      } catch (error) {
+        console.error('Error fetching tournaments for sidebar:', error);
+      } finally {
+        setLoadingTournaments(false);
+      }
+    };
+
+    fetchTournaments();
+    fetchUserInfo();
+    // fetchStaffPermissions вызывается внутри fetchUserInfo после определения роли
+  }, [fetchUserInfo]);
 
   const toggleExpanded = (href: string) => {
     setExpandedItems(prev =>
