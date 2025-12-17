@@ -323,6 +323,13 @@
             "title": "Instruccions per Pujar Foto",
             "text": "Si us plau, puja la teva foto per al torneig. La foto s'usarà per al teu perfil de jugador i materials del torneig."
           },
+          "partnerForCategory": "Parella per",
+          "userPhoto": "La teva foto",
+          "photoSizeError": "La mida de la foto ha de ser inferior a 15MB",
+          "partnerRequiredForCategory": "Es requereix parella per a {category}",
+          "chooseFile": "Tria Fitxer",
+          "photoHint": "Màxim 15MB. Formats JPG, PNG.",
+          "removeFile": "Eliminar",
           "payloadTooLarge": "La mida de les fotos pujades supera el límit permès",
           "photoUploadSolution": "Si no pots pujar fotos ara, pots fer-ho més tard des del teu compte personal a la pàgina del torneig.",
           "childInfo": "Informació del Nen",
