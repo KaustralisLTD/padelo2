@@ -90,7 +90,7 @@ export default function AdminSidebar() {
     fetchTournaments();
     fetchUserInfo();
     // fetchStaffPermissions вызывается внутри fetchUserInfo после определения роли
-  }, []);
+  }, [fetchUserInfo]);
 
   const fetchStaffPermissions = useCallback(async () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
