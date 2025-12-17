@@ -313,7 +313,7 @@ export default function TournamentParticipantsPage() {
     } catch (err) {
       console.error('Error fetching tournament:', err);
     }
-  }, [token, tournamentId, tTournaments]);
+  }, [token, tournamentId, getLocalizedDefaultCategories]);
 
   const fetchParticipants = useCallback(async () => {
     if (!token) return;
