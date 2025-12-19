@@ -103,7 +103,16 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
       }
     } else if (email) {
-      recipientEmails = [email];
+      // Поддержка множественных email адресов через запятую, точку с запятой или пробел
+      recipientEmails = email
+        .split(/[,;\s]+/)
+        .map(e => e.trim())
+        .filter(e => e.length > 0 && e.includes('@'));
+      
+      if (recipientEmails.length === 0) {
+        // Если после парсинга не осталось валидных email, используем исходную строку
+        recipientEmails = [email.trim()];
+      }
     }
 
     if (recipientEmails.length === 0) {

@@ -851,13 +851,16 @@ export default function EmailTemplatesContent() {
                       Recipient Email <span className="text-red-500">*</span>
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                      placeholder="recipient@example.com"
+                      placeholder="recipient@example.com или несколько через запятую: email1@example.com, email2@example.com"
                     />
+                    <p className="text-xs text-text-secondary mt-1">
+                      Можно указать несколько адресов через запятую, точку с запятой или пробел
+                    </p>
                   </div>
                 )}
 
