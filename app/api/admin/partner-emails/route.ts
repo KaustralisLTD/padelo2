@@ -106,8 +106,8 @@ export async function POST(request: NextRequest) {
       // Поддержка множественных email адресов через запятую, точку с запятой или пробел
       recipientEmails = email
         .split(/[,;\s]+/)
-        .map(e => e.trim())
-        .filter(e => e.length > 0 && e.includes('@'));
+        .map((e: string) => e.trim())
+        .filter((e: string) => e.length > 0 && e.includes('@'));
       
       if (recipientEmails.length === 0) {
         // Если после парсинга не осталось валидных email, используем исходную строку
