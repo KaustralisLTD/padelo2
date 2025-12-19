@@ -397,11 +397,11 @@ export default function EmailTemplatesContent() {
 
     // Validation
     if ((selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length === 0 && !formData.email) {
-      setError('Please select at least one user or enter an email');
+      setError(t('emailTemplates.errorSelectUserOrEmail'));
       return;
     }
     if ((selectedCategory === 'partners' || (selectedCategory === 'clients' && tournamentScope === 'specific')) && !selectedTournamentId) {
-      setError('Please select a tournament');
+      setError(t('emailTemplates.errorSelectTournament'));
       return;
     }
 
@@ -514,7 +514,7 @@ export default function EmailTemplatesContent() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to save template');
+        throw new Error(data.error || t('emailTemplates.templateSaveError'));
       }
 
       setSuccess(true);
@@ -524,7 +524,7 @@ export default function EmailTemplatesContent() {
       }, 5000);
     } catch (err: any) {
       console.error('[Save Template] Error:', err);
-      setError(err.message || 'Failed to save template');
+      setError(err.message || t('emailTemplates.templateSaveError'));
       setSuccess(false);
     } finally {
       setSavingTemplate(false);
@@ -581,7 +581,7 @@ export default function EmailTemplatesContent() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to send email');
+        throw new Error(data.error || t('emailTemplates.errorSendEmail'));
       }
 
       setSuccess(true);
@@ -602,7 +602,7 @@ export default function EmailTemplatesContent() {
       setSelectedUserIds([]);
       setSelectedTournamentId('');
     } catch (err: any) {
-      setError(err.message || 'Failed to send email');
+      setError(err.message || t('emailTemplates.errorSendEmail'));
     } finally {
       setLoading(false);
     }
@@ -779,13 +779,13 @@ export default function EmailTemplatesContent() {
                         className="w-full px-4 py-3 rounded-xl border-2 border-border hover:border-primary transition-all text-left bg-background text-text"
                       >
                         {selectedUserIds.length > 0 
-                          ? `${selectedUserIds.length} user(s) selected`
-                          : 'Click to select users...'}
+                          ? t('emailTemplates.usersSelected', { count: selectedUserIds.length })
+                          : t('emailTemplates.clickToSelectUsers')}
                       </button>
                       {selectedUserIds.length > 0 && (
                         <div className="mt-3 space-y-2">
                           <div className="text-sm font-semibold text-text-secondary mb-2">
-                            Selected users ({selectedUserIds.length}):
+                            {t('emailTemplates.selectedUsers')} ({selectedUserIds.length}):
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {selectedUserIds.map((userId) => {
@@ -848,7 +848,7 @@ export default function EmailTemplatesContent() {
                 {selectedCategory === 'partners' && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Recipient Email <span className="text-red-500">*</span>
+                      {t('emailTemplates.recipientEmail')} <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -856,10 +856,10 @@ export default function EmailTemplatesContent() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                      placeholder="recipient@example.com или несколько через запятую: email1@example.com, email2@example.com"
+                      placeholder={t('emailTemplates.recipientEmailPlaceholder')}
                     />
                     <p className="text-xs text-text-secondary mt-1">
-                      Можно указать несколько адресов через запятую, точку с запятой или пробел
+                      {t('emailTemplates.multipleEmailsHint')}
                     </p>
                   </div>
                 )}
@@ -867,14 +867,14 @@ export default function EmailTemplatesContent() {
                 {/* Recipient Name */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Recipient Name
+                    {t('emailTemplates.recipientName')}
                   </label>
                   <input
                     type="text"
                     value={formData.recipientName}
                     onChange={(e) => setFormData({ ...formData, recipientName: e.target.value })}
                     className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                    placeholder="John Doe"
+                    placeholder={t('emailTemplates.recipientNamePlaceholder')}
                   />
                 </div>
 
@@ -882,14 +882,14 @@ export default function EmailTemplatesContent() {
                 {selectedCategory === 'partners' && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Company Name
+                      {t('emailTemplates.companyName')}
                     </label>
                     <input
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                      placeholder="Company Name"
+                      placeholder={t('emailTemplates.companyNamePlaceholder')}
                     />
                   </div>
                 )}
@@ -897,7 +897,7 @@ export default function EmailTemplatesContent() {
                 {/* Language */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Language <span className="text-text-tertiary text-xs">(14 languages available)</span>
+                    {t('emailTemplates.language')} <span className="text-text-tertiary text-xs">{t('emailTemplates.languagesAvailable')}</span>
                   </label>
                   <select
                     value={useUserLanguage && (selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 
@@ -920,7 +920,7 @@ export default function EmailTemplatesContent() {
                   >
                     {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 && (
                       <option value="user">
-                        🌐 User&apos;s language ({selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'})
+                        🌐 {t('emailTemplates.userLanguage')} ({selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'})
                       </option>
                     )}
                     {LANGUAGES.map((lang) => (
@@ -931,7 +931,7 @@ export default function EmailTemplatesContent() {
                   </select>
                   {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && selectedUserIds.length > 0 && useUserLanguage && (
                     <p className="mt-2 text-sm text-text-secondary">
-                      Using language from user profile: <strong>{selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'}</strong>
+                      {t('emailTemplates.usingUserLanguage')} <strong>{selectedUsersData[selectedUserIds[0]]?.preferredLanguage || 'en'}</strong>
                     </p>
                   )}
                 </div>
@@ -941,7 +941,7 @@ export default function EmailTemplatesContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        New Role
+                        {t('emailTemplates.newRole')}
                       </label>
                       <select
                         value={formData.newRole}
@@ -958,14 +958,14 @@ export default function EmailTemplatesContent() {
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Previous Role (optional)
+                        {t('emailTemplates.previousRole')}
                       </label>
                       <input
                         type="text"
                         value={formData.oldRole}
                         onChange={(e) => setFormData({ ...formData, oldRole: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                        placeholder="participant"
+                        placeholder={t('emailTemplates.previousRolePlaceholder')}
                       />
                     </div>
                   </div>
@@ -976,26 +976,26 @@ export default function EmailTemplatesContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Contact Phone
+                        {t('emailTemplates.contactPhone')}
                       </label>
                       <input
                         type="text"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                        placeholder="+34 662 423 738"
+                        placeholder={t('emailTemplates.contactPhonePlaceholder')}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Contact Email
+                        {t('emailTemplates.contactEmail')}
                       </label>
                       <input
                         type="email"
                         value={formData.contactEmail}
                         onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                        placeholder="partner@padelO2.com"
+                        placeholder={t('emailTemplates.contactEmailPlaceholder')}
                       />
                     </div>
                   </div>
@@ -1005,7 +1005,7 @@ export default function EmailTemplatesContent() {
                 {success && (
                   <div className="p-4 bg-green-500/20 border-2 border-green-500/50 rounded-xl">
                     <p className="text-green-400 font-semibold">
-                      ✅ Email sent successfully!
+                      ✅ {t('emailTemplates.successEmailSent')}
                     </p>
                   </div>
                 )}
@@ -1027,7 +1027,7 @@ export default function EmailTemplatesContent() {
                     disabled={loading || ((selectedCategory === 'partners' || selectedCategory === 'coaches' || selectedCategory === 'staff') && !formData.email && selectedUserIds.length === 0)}
                     className="flex-1 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    👁️ Preview
+                    👁️ {t('emailTemplates.preview')}
                   </button>
                   <button
                     type="submit"
@@ -1040,10 +1040,10 @@ export default function EmailTemplatesContent() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Sending...
+                        {t('emailTemplates.submitting')}
                       </span>
                     ) : (
-                      '🚀 Send Email'
+                      `🚀 ${t('emailTemplates.sendEmail')}`
                     )}
                   </button>
                 </div>
@@ -1052,14 +1052,14 @@ export default function EmailTemplatesContent() {
 
             {/* Info Card */}
             <div className="mt-6 bg-primary/20 border-2 border-primary/30 rounded-xl p-6">
-              <h3 className="text-lg font-bold text-text mb-2">ℹ️ About Email Templates</h3>
+              <h3 className="text-lg font-bold text-text mb-2">ℹ️ {t('emailTemplates.aboutTemplates')}</h3>
               <p className="text-text-secondary text-sm mb-2">
-                Templates are automatically translated using Google Translate API when you select a different language.
+                {t('emailTemplates.templatesAutoTranslated')}
               </p>
               <ul className="text-sm text-text-secondary space-y-1 list-disc list-inside">
-                <li>All 14 languages are supported</li>
-                <li>Translation happens automatically</li>
-                <li>Branded footer with social media links included</li>
+                <li>{t('emailTemplates.allLanguagesSupported')}</li>
+                <li>{t('emailTemplates.translationAutomatic')}</li>
+                <li>{t('emailTemplates.brandedFooter')}</li>
               </ul>
             </div>
           </div>
@@ -1071,7 +1071,7 @@ export default function EmailTemplatesContent() {
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
             <div className="flex items-center justify-between p-6 border-b border-border">
-              <h2 className="text-2xl font-bold text-text">Select Users</h2>
+              <h2 className="text-2xl font-bold text-text">{t('emailTemplates.selectUsers')}</h2>
               <button
                 onClick={() => {
                   setShowUserSelector(false);
@@ -1090,7 +1090,7 @@ export default function EmailTemplatesContent() {
                 type="text"
                 value={userSearchQuery}
                 onChange={(e) => setUserSearchQuery(e.target.value)}
-                placeholder="Search by name or email..."
+                placeholder={t('emailTemplates.searchUsersPlaceholder')}
                 className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none mb-4"
               />
 
@@ -1098,11 +1098,11 @@ export default function EmailTemplatesContent() {
                 {searchingUsers ? (
                   <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                    <p className="mt-2 text-text-secondary">Searching...</p>
+                    <p className="mt-2 text-text-secondary">{t('emailTemplates.searching')}</p>
                   </div>
                 ) : availableUsers.length === 0 ? (
                   <div className="text-center py-8 text-text-tertiary">
-                    {userSearchQuery.trim() ? 'No users found' : 'Start typing to search users...'}
+                    {userSearchQuery.trim() ? t('emailTemplates.noUsersFound') : t('emailTemplates.startTyping')}
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -1184,7 +1184,7 @@ export default function EmailTemplatesContent() {
               {selectedUserIds.length > 0 && (
                 <div className="mt-4 p-3 bg-primary/20 rounded-lg">
                   <p className="text-sm text-text-secondary">
-                    <strong>{selectedUserIds.length}</strong> user(s) selected
+                    {t('emailTemplates.usersSelected', { count: selectedUserIds.length })}
                   </p>
                 </div>
               )}
@@ -1207,7 +1207,7 @@ export default function EmailTemplatesContent() {
                 }}
                 className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
-                Done ({selectedUserIds.length})
+                {t('emailTemplates.done')} ({selectedUserIds.length})
               </button>
             </div>
           </div>
@@ -1305,10 +1305,10 @@ export default function EmailTemplatesContent() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Saving...
+                    {t('emailTemplates.saving')}
                   </span>
                 ) : (
-                  '💾 Save Template'
+                  `💾 ${t('emailTemplates.saveTemplate')}`
                 )}
               </button>
               <button
