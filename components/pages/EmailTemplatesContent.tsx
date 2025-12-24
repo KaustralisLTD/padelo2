@@ -843,7 +843,7 @@ export default function EmailTemplatesContent() {
                   : 'border-transparent text-text-secondary hover:text-text'
               }`}
             >
-              ✉️ Отправка
+              {t('emailTemplates.tabCompose')}
             </button>
             <button
               onClick={() => setActiveTab('sent')}
@@ -853,7 +853,7 @@ export default function EmailTemplatesContent() {
                   : 'border-transparent text-text-secondary hover:text-text'
               }`}
             >
-              📤 Отправленные ({sentEmails.length})
+              {t('emailTemplates.tabSent')} ({sentEmails.length})
             </button>
             <button
               onClick={() => setActiveTab('incoming')}
@@ -863,7 +863,7 @@ export default function EmailTemplatesContent() {
                   : 'border-transparent text-text-secondary hover:text-text'
               }`}
             >
-              📥 Входящие ({incomingEmails.length})
+              {t('emailTemplates.tabIncoming')} ({incomingEmails.length})
             </button>
           </div>
         </div>
@@ -872,23 +872,23 @@ export default function EmailTemplatesContent() {
         {activeTab === 'sent' && (
           <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-text">Отправленные письма</h2>
+              <h2 className="text-2xl font-bold text-text">{t('emailTemplates.sentEmailsTitle')}</h2>
               <button
                 onClick={fetchSentEmails}
                 className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
               >
-                🔄 Обновить
+                {t('emailTemplates.refresh')}
               </button>
             </div>
 
             {loadingSentEmails ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="mt-2 text-text-secondary">Загрузка...</p>
+                <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
               </div>
             ) : sentEmails.length === 0 ? (
               <div className="text-center py-8 text-text-secondary">
-                <p>Нет отправленных писем</p>
+                <p>{t('emailTemplates.noSentEmails')}</p>
               </div>
             ) : (
               <div className="space-y-2 max-h-[600px] overflow-y-auto">
@@ -907,12 +907,12 @@ export default function EmailTemplatesContent() {
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="font-semibold text-text mb-1">{email.subject || '(Без темы)'}</div>
+                        <div className="font-semibold text-text mb-1">{email.subject || t('emailTemplates.noSubject')}</div>
                         <div className="text-sm text-text-secondary">
-                          <div>Кому: {Array.isArray(email.to) ? email.to.join(', ') : email.to}</div>
-                          <div>От: {email.from}</div>
+                          <div>{t('emailTemplates.toLabel')} {Array.isArray(email.to) ? email.to.join(', ') : email.to}</div>
+                          <div>{t('emailTemplates.fromLabel')} {email.from}</div>
                           {email.created_at && (
-                            <div>Дата: {new Date(email.created_at).toLocaleString('ru-RU')}</div>
+                            <div>{t('emailTemplates.dateLabel')} {new Date(email.created_at).toLocaleString(locale)}</div>
                           )}
                         </div>
                       </div>
@@ -932,7 +932,7 @@ export default function EmailTemplatesContent() {
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
                 <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
                   <div className="flex items-center justify-between p-6 border-b border-border">
-                    <h2 className="text-2xl font-bold text-text">Детали письма</h2>
+                    <h2 className="text-2xl font-bold text-text">{t('emailTemplates.emailDetails')}</h2>
                     <button
                       onClick={() => {
                         setSelectedSentEmail(null);
@@ -954,11 +954,11 @@ export default function EmailTemplatesContent() {
                     ) : (
                       <>
                         <div className="mb-4 space-y-2">
-                          <div><strong>Тема:</strong> {sentEmailDetails.subject || '(Без темы)'}</div>
-                          <div><strong>От:</strong> {sentEmailDetails.from}</div>
-                          <div><strong>Кому:</strong> {Array.isArray(sentEmailDetails.to) ? sentEmailDetails.to.join(', ') : sentEmailDetails.to}</div>
+                          <div><strong>{t('emailTemplates.subjectLabel')}</strong> {sentEmailDetails.subject || t('emailTemplates.noSubject')}</div>
+                          <div><strong>{t('emailTemplates.fromLabel')}</strong> {sentEmailDetails.from}</div>
+                          <div><strong>{t('emailTemplates.toLabel')}</strong> {Array.isArray(sentEmailDetails.to) ? sentEmailDetails.to.join(', ') : sentEmailDetails.to}</div>
                           {sentEmailDetails.created_at && (
-                            <div><strong>Дата:</strong> {new Date(sentEmailDetails.created_at).toLocaleString('ru-RU')}</div>
+                            <div><strong>{t('emailTemplates.dateLabel')}</strong> {new Date(sentEmailDetails.created_at).toLocaleString(locale)}</div>
                           )}
                         </div>
 
@@ -968,7 +968,7 @@ export default function EmailTemplatesContent() {
                               onClick={() => copyEmailToClipboard(sentEmailDetails.html || '')}
                               className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
                             >
-                              📋 Копировать HTML
+                              {t('emailTemplates.copyHtml')}
                             </button>
                             <button
                               onClick={() => {
@@ -977,7 +977,7 @@ export default function EmailTemplatesContent() {
                               }}
                               className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors"
                             >
-                              📤 Отправить новому получателю
+                              {t('emailTemplates.resendToNewRecipient')}
                             </button>
                           </div>
                         </div>
@@ -999,11 +999,11 @@ export default function EmailTemplatesContent() {
             {resendEmailModal && sentEmailDetails && (
               <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
                 <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-md p-6">
-                  <h3 className="text-xl font-bold text-text mb-4">Отправить письмо новому получателю</h3>
+                  <h3 className="text-xl font-bold text-text mb-4">{t('emailTemplates.resendEmailModalTitle')}</h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-semibold text-text-secondary mb-2">
-                        Email получателя <span className="text-red-500">*</span>
+                        {t('emailTemplates.recipientEmailLabel')} <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="email"
@@ -1021,14 +1021,14 @@ export default function EmailTemplatesContent() {
                         }}
                         className="flex-1 py-3 px-6 bg-background-hover text-text font-semibold rounded-xl hover:bg-background transition-colors"
                       >
-                        Отмена
+                        {t('emailTemplates.cancel')}
                       </button>
                       <button
                         onClick={handleResendEmail}
                         disabled={!resendToEmail || resendingEmail}
                         className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                       >
-                        {resendingEmail ? 'Отправка...' : 'Отправить'}
+                        {resendingEmail ? t('emailTemplates.sending') : t('emailTemplates.sendEmail')}
                       </button>
                     </div>
                   </div>
@@ -1042,24 +1042,24 @@ export default function EmailTemplatesContent() {
         {activeTab === 'incoming' && (
           <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-text">Входящие письма</h2>
+              <h2 className="text-2xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
               <button
                 onClick={fetchIncomingEmails}
                 className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
               >
-                🔄 Обновить
+                {t('emailTemplates.refresh')}
               </button>
             </div>
 
             {loadingIncomingEmails ? (
               <div className="text-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="mt-2 text-text-secondary">Загрузка...</p>
+                <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
               </div>
             ) : incomingEmails.length === 0 ? (
               <div className="text-center py-8 text-text-secondary">
-                <p>Нет входящих писем</p>
-                <p className="text-sm mt-2">Входящие письма будут отображаться здесь после настройки webhook в Resend</p>
+                <p>{t('emailTemplates.noIncomingEmails')}</p>
+                <p className="text-sm mt-2">{t('emailTemplates.incomingEmailsHint')}</p>
               </div>
             ) : (
               <div className="space-y-2 max-h-[600px] overflow-y-auto">
@@ -1076,14 +1076,14 @@ export default function EmailTemplatesContent() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="font-semibold text-text mb-1 flex items-center gap-2">
-                          {email.subject || '(Без темы)'}
-                          {!email.readAt && <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">Новое</span>}
+                          {email.subject || t('emailTemplates.noSubject')}
+                          {!email.readAt && <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">{t('emailTemplates.newBadge')}</span>}
                         </div>
                         <div className="text-sm text-text-secondary">
-                          <div>От: {email.from}</div>
-                          <div>Кому: {email.to}</div>
+                          <div>{t('emailTemplates.fromLabel')} {email.from}</div>
+                          <div>{t('emailTemplates.toLabel')} {email.to}</div>
                           {email.receivedAt && (
-                            <div>Дата: {new Date(email.receivedAt).toLocaleString('ru-RU')}</div>
+                            <div>{t('emailTemplates.dateLabel')} {new Date(email.receivedAt).toLocaleString(locale)}</div>
                           )}
                         </div>
                       </div>
@@ -1103,7 +1103,7 @@ export default function EmailTemplatesContent() {
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
                 <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
                   <div className="flex items-center justify-between p-6 border-b border-border">
-                    <h2 className="text-2xl font-bold text-text">Входящее письмо</h2>
+                    <h2 className="text-2xl font-bold text-text">{t('emailTemplates.incomingEmailTitle')}</h2>
                     <button
                       onClick={() => setSelectedIncomingEmail(null)}
                       className="text-text-tertiary hover:text-text-secondary transition-colors"
@@ -1116,11 +1116,11 @@ export default function EmailTemplatesContent() {
 
                   <div className="flex-1 overflow-auto p-6">
                     <div className="mb-4 space-y-2">
-                      <div><strong>Тема:</strong> {selectedIncomingEmail.subject || '(Без темы)'}</div>
-                      <div><strong>От:</strong> {selectedIncomingEmail.from}</div>
-                      <div><strong>Кому:</strong> {selectedIncomingEmail.to}</div>
+                      <div><strong>{t('emailTemplates.subjectLabel')}</strong> {selectedIncomingEmail.subject || t('emailTemplates.noSubject')}</div>
+                      <div><strong>{t('emailTemplates.fromLabel')}</strong> {selectedIncomingEmail.from}</div>
+                      <div><strong>{t('emailTemplates.toLabel')}</strong> {selectedIncomingEmail.to}</div>
                       {selectedIncomingEmail.receivedAt && (
-                        <div><strong>Дата:</strong> {new Date(selectedIncomingEmail.receivedAt).toLocaleString('ru-RU')}</div>
+                        <div><strong>{t('emailTemplates.dateLabel')}</strong> {new Date(selectedIncomingEmail.receivedAt).toLocaleString(locale)}</div>
                       )}
                     </div>
 
@@ -1131,7 +1131,7 @@ export default function EmailTemplatesContent() {
                           dangerouslySetInnerHTML={{ __html: selectedIncomingEmail.html }}
                         />
                       ) : (
-                        <div className="whitespace-pre-wrap text-text">{selectedIncomingEmail.text || 'Нет содержимого'}</div>
+                        <div className="whitespace-pre-wrap text-text">{selectedIncomingEmail.text || t('emailTemplates.noContent')}</div>
                       )}
                     </div>
                   </div>
