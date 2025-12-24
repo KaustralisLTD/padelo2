@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
 import { sendEmail } from '@/lib/email';
+import { getDbPool } from '@/lib/db';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -61,25 +62,25 @@ export async function POST(request: NextRequest) {
     let emailHtml = html;
     let emailSubject = subject;
 
-    // Если передан emailId, получаем оригинальное письмо из Resend
+    // Если передан emailId, получаем оригинальное письмо из базы данных
     if (emailId && !html) {
-      if (!process.env.RESEND_API_KEY) {
-        return NextResponse.json({ error: 'RESEND_API_KEY not configured' }, { status: 500 });
-      }
-
-      const { Resend } = await import('resend');
-      const resend = new Resend(process.env.RESEND_API_KEY);
-
-      const result = await resend.emails.get(emailId);
+      const pool = getDbPool();
       
-      if (result.error) {
+      const [rows] = await pool.execute(
+        `SELECT html_content, subject FROM sent_emails 
+         WHERE id = ? OR resend_id = ? 
+         LIMIT 1`,
+        [emailId, emailId]
+      ) as any[];
+      
+      if (rows.length === 0) {
         return NextResponse.json({ 
-          error: result.error.message || 'Failed to fetch original email' 
-        }, { status: 500 });
+          error: 'Email not found' 
+        }, { status: 404 });
       }
 
-      emailHtml = result.data?.html || '';
-      emailSubject = subject || result.data?.subject || '';
+      emailHtml = rows[0].html_content || '';
+      emailSubject = subject || rows[0].subject || '';
     }
 
     if (!emailHtml) {

@@ -347,6 +347,54 @@ export async function POST(request: NextRequest) {
             from: fromAddress,
           });
           console.log(`[Email Send] Result for ${toEmail}:`, result);
+          
+          // Save sent email to database
+          if (result) {
+            try {
+              const pool = getDbPool();
+              await pool.execute(`
+                CREATE TABLE IF NOT EXISTS sent_emails (
+                  id INT AUTO_INCREMENT PRIMARY KEY,
+                  resend_id VARCHAR(255) UNIQUE,
+                  from_email VARCHAR(255) NOT NULL,
+                  to_email TEXT NOT NULL,
+                  subject VARCHAR(500),
+                  html_content TEXT,
+                  text_content TEXT,
+                  sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                  INDEX idx_from_email (from_email),
+                  INDEX idx_sent_at (sent_at),
+                  INDEX idx_resend_id (resend_id)
+                )
+              `);
+              
+              // Generate plain text version
+              const plainText = emailHtml
+                .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+                .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+                .replace(/<[^>]+>/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+              
+              await pool.execute(
+                `INSERT INTO sent_emails (from_email, to_email, subject, html_content, text_content, sent_at)
+                 VALUES (?, ?, ?, ?, ?, NOW())`,
+                [
+                  fromAddress,
+                  toEmail,
+                  userSubject,
+                  emailHtml,
+                  plainText,
+                ]
+              );
+              console.log(`[Email Send] Saved sent email to database for ${toEmail}`);
+            } catch (dbError) {
+              console.error(`[Email Send] Failed to save email to database:`, dbError);
+              // Don't fail the request if DB save fails
+            }
+          }
+          
           return { email: toEmail, success: result };
         } catch (error: any) {
           console.error(`[Email Send] Exception sending email to ${toEmail}:`, error);

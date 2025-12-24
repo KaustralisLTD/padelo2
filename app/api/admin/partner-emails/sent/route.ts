@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
+import { getDbPool } from '@/lib/db';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -49,50 +50,84 @@ export async function GET(request: NextRequest) {
     const fromEmail = searchParams.get('from');
     const toEmail = searchParams.get('to');
 
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json({ error: 'RESEND_API_KEY not configured' }, { status: 500 });
-    }
+    // Resend API doesn't have a list method for sent emails
+    // We'll get sent emails from our database where we store them
+    const pool = getDbPool();
+    
+    // Create table if it doesn't exist
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS sent_emails (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        resend_id VARCHAR(255) UNIQUE,
+        from_email VARCHAR(255) NOT NULL,
+        to_email TEXT NOT NULL,
+        subject VARCHAR(500),
+        html_content TEXT,
+        text_content TEXT,
+        sent_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_from_email (from_email),
+        INDEX idx_sent_at (sent_at),
+        INDEX idx_resend_id (resend_id)
+      )
+    `);
 
-    const { Resend } = await import('resend');
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    // Get list of sent emails from Resend
-    const result = await resend.emails.list({
-      page,
-      limit,
-    });
-
-    if (result.error) {
-      console.error('[Sent Emails] Resend API error:', result.error);
-      return NextResponse.json({ 
-        error: result.error.message || 'Failed to fetch sent emails' 
-      }, { status: 500 });
-    }
-
-    // Filter by from/to if provided
-    let emails = result.data?.data || [];
+    // Build query with filters
+    let query = `SELECT id, resend_id, from_email, to_email, subject, html_content, text_content, sent_at, created_at
+                 FROM sent_emails 
+                 WHERE 1=1`;
+    const params: any[] = [];
     
     if (fromEmail) {
-      emails = emails.filter((email: any) => 
-        email.from?.toLowerCase().includes(fromEmail.toLowerCase())
-      );
+      query += ' AND from_email LIKE ?';
+      params.push(`%${fromEmail}%`);
     }
     
     if (toEmail) {
-      emails = emails.filter((email: any) => {
-        const recipients = Array.isArray(email.to) ? email.to : [email.to];
-        return recipients.some((to: string) => 
-          to.toLowerCase().includes(toEmail.toLowerCase())
-        );
-      });
+      query += ' AND to_email LIKE ?';
+      params.push(`%${toEmail}%`);
     }
+    
+    query += ' ORDER BY sent_at DESC LIMIT ? OFFSET ?';
+    params.push(limit, (page - 1) * limit);
+
+    const [rows] = await pool.execute(query, params) as any[];
+
+    // Get total count for pagination
+    let countQuery = `SELECT COUNT(*) as total FROM sent_emails WHERE 1=1`;
+    const countParams: any[] = [];
+    
+    if (fromEmail) {
+      countQuery += ' AND from_email LIKE ?';
+      countParams.push(`%${fromEmail}%`);
+    }
+    
+    if (toEmail) {
+      countQuery += ' AND to_email LIKE ?';
+      countParams.push(`%${toEmail}%`);
+    }
+    
+    const [countRows] = await pool.execute(countQuery, countParams) as any[];
+    const total = countRows[0]?.total || 0;
+
+    const emails = rows.map((row: any) => ({
+      id: row.id,
+      resend_id: row.resend_id,
+      from: row.from_email,
+      to: row.to_email.split(',').map((e: string) => e.trim()),
+      subject: row.subject,
+      html: row.html_content,
+      text: row.text_content,
+      created_at: row.sent_at,
+      sent_at: row.sent_at,
+    }));
 
     return NextResponse.json({
       emails,
       pagination: {
-        page: result.data?.page || page,
-        limit: result.data?.limit || limit,
-        total: result.data?.total_count || emails.length,
+        page,
+        limit,
+        total,
       },
     });
   } catch (error: any) {

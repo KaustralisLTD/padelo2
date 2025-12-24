@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/users';
 import { UserRole } from '@/lib/auth';
+import { getDbPool } from '@/lib/db';
 
 async function checkAdminAccess(request: NextRequest): Promise<{ authorized: boolean; userId?: string; role?: UserRole }> {
   const authHeader = request.headers.get('authorization');
@@ -49,25 +50,37 @@ export async function GET(
   try {
     const { id } = await params;
 
-    if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json({ error: 'RESEND_API_KEY not configured' }, { status: 500 });
-    }
+    // Get email details from database
+    const pool = getDbPool();
+    
+    const [rows] = await pool.execute(
+      `SELECT id, resend_id, from_email, to_email, subject, html_content, text_content, sent_at, created_at
+       FROM sent_emails 
+       WHERE id = ? OR resend_id = ?`,
+      [id, id]
+    ) as any[];
 
-    const { Resend } = await import('resend');
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    // Get email details from Resend
-    const result = await resend.emails.get(id);
-
-    if (result.error) {
-      console.error('[Email Details] Resend API error:', result.error);
+    if (rows.length === 0) {
       return NextResponse.json({ 
-        error: result.error.message || 'Failed to fetch email details' 
-      }, { status: 500 });
+        error: 'Email not found' 
+      }, { status: 404 });
     }
+
+    const row = rows[0];
+    const email = {
+      id: row.id,
+      resend_id: row.resend_id,
+      from: row.from_email,
+      to: row.to_email.split(',').map((e: string) => e.trim()),
+      subject: row.subject,
+      html: row.html_content,
+      text: row.text_content,
+      created_at: row.sent_at,
+      sent_at: row.sent_at,
+    };
 
     return NextResponse.json({
-      email: result.data,
+      email,
     });
   } catch (error: any) {
     console.error('[Email Details] Exception:', error);
