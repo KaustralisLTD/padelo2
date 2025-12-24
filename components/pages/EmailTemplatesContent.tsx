@@ -220,6 +220,31 @@ const CATEGORIES = [
 export default function EmailTemplatesContent() {
   const t = useTranslations('Admin');
   const locale = useLocale();
+  
+  // Helper function to get localized template name
+  const getTemplateName = (templateId: string): string => {
+    const key = `emailTemplates.templateNames.${templateId.replace(/-/g, '')}`;
+    const localized = t(key as any);
+    return localized !== key ? localized : EMAIL_TEMPLATES.find(t => t.id === templateId)?.name || templateId;
+  };
+  
+  // Helper function to get localized template description
+  const getTemplateDescription = (templateId: string): string => {
+    const key = `emailTemplates.templateDescriptions.${templateId.replace(/-/g, '')}`;
+    const localized = t(key as any);
+    return localized !== key ? localized : EMAIL_TEMPLATES.find(t => t.id === templateId)?.description || '';
+  };
+  
+  // Helper function to get localized category name
+  const getCategoryName = (categoryId: string): string => {
+    const keyMap: Record<string, string> = {
+      'partners': 'emailTemplates.categoryPartners',
+      'clients': 'emailTemplates.categoryClients',
+      'coaches': 'emailTemplates.categoryCoaches',
+      'staff': 'emailTemplates.categoryStaff',
+    };
+    return t(keyMap[categoryId] as any);
+  };
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -244,6 +269,24 @@ export default function EmailTemplatesContent() {
   const [selectedUsersData, setSelectedUsersData] = useState<Record<string, { id: string; firstName: string; lastName: string; email: string; preferredLanguage: string }>>({});
   const [searchingUsers, setSearchingUsers] = useState(false);
   const [useUserLanguage, setUseUserLanguage] = useState(false);
+  
+  // Tabs state
+  const [activeTab, setActiveTab] = useState<'compose' | 'sent' | 'incoming'>('compose');
+  
+  // Sent emails state
+  const [sentEmails, setSentEmails] = useState<any[]>([]);
+  const [loadingSentEmails, setLoadingSentEmails] = useState(false);
+  const [selectedSentEmail, setSelectedSentEmail] = useState<any | null>(null);
+  const [sentEmailDetails, setSentEmailDetails] = useState<any | null>(null);
+  const [loadingEmailDetails, setLoadingEmailDetails] = useState(false);
+  const [resendEmailModal, setResendEmailModal] = useState(false);
+  const [resendToEmail, setResendToEmail] = useState('');
+  const [resendingEmail, setResendingEmail] = useState(false);
+  
+  // Incoming emails state
+  const [incomingEmails, setIncomingEmails] = useState<any[]>([]);
+  const [loadingIncomingEmails, setLoadingIncomingEmails] = useState(false);
+  const [selectedIncomingEmail, setSelectedIncomingEmail] = useState<any | null>(null);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -329,6 +372,156 @@ export default function EmailTemplatesContent() {
 
     fetchTournaments();
   }, [authorized]);
+
+  // Fetch sent emails
+  const fetchSentEmails = async () => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
+    setLoadingSentEmails(true);
+    try {
+      const response = await fetch('/api/admin/partner-emails/sent?limit=100', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setSentEmails(data.emails || []);
+      } else {
+        setError('Failed to fetch sent emails');
+      }
+    } catch (error) {
+      console.error('Error fetching sent emails:', error);
+      setError('Failed to fetch sent emails');
+    } finally {
+      setLoadingSentEmails(false);
+    }
+  };
+
+  // Fetch email details
+  const fetchEmailDetails = async (emailId: string) => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
+    setLoadingEmailDetails(true);
+    try {
+      const response = await fetch(`/api/admin/partner-emails/sent/${emailId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setSentEmailDetails(data.email);
+      } else {
+        setError('Failed to fetch email details');
+      }
+    } catch (error) {
+      console.error('Error fetching email details:', error);
+      setError('Failed to fetch email details');
+    } finally {
+      setLoadingEmailDetails(false);
+    }
+  };
+
+  // Fetch incoming emails
+  const fetchIncomingEmails = async () => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) return;
+
+    setLoadingIncomingEmails(true);
+    try {
+      const response = await fetch('/api/admin/partner-emails/incoming?limit=100', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setIncomingEmails(data.emails || []);
+      } else {
+        setError('Failed to fetch incoming emails');
+      }
+    } catch (error) {
+      console.error('Error fetching incoming emails:', error);
+      setError('Failed to fetch incoming emails');
+    } finally {
+      setLoadingIncomingEmails(false);
+    }
+  };
+
+  // Load emails when tab changes
+  useEffect(() => {
+    if (!authorized) return;
+    
+    if (activeTab === 'sent') {
+      fetchSentEmails();
+    } else if (activeTab === 'incoming') {
+      fetchIncomingEmails();
+    }
+  }, [activeTab, authorized]);
+
+  // Copy email HTML to clipboard
+  const copyEmailToClipboard = async (html: string) => {
+    try {
+      await navigator.clipboard.writeText(html);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      setError('Failed to copy email');
+    }
+  };
+
+  // Resend email to new recipient
+  const handleResendEmail = async () => {
+    if (!resendToEmail || !sentEmailDetails) return;
+
+    setResendingEmail(true);
+    setError(null);
+    
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      setError('Not authenticated');
+      setResendingEmail(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/admin/partner-emails/resend', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          emailId: sentEmailDetails.id,
+          to: resendToEmail,
+          html: sentEmailDetails.html,
+          subject: sentEmailDetails.subject,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to resend email');
+      }
+
+      setSuccess(true);
+      setResendEmailModal(false);
+      setResendToEmail('');
+      setTimeout(() => setSuccess(false), 5000);
+    } catch (err: any) {
+      setError(err.message || 'Failed to resend email');
+    } finally {
+      setResendingEmail(false);
+    }
+  };
 
   // Search users
   useEffect(() => {
@@ -613,7 +806,7 @@ export default function EmailTemplatesContent() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-text-secondary">Checking access...</p>
+          <p className="mt-4 text-text-secondary">{t('emailTemplates.checkingAccess')}</p>
         </div>
       </div>
     );
@@ -632,18 +825,329 @@ export default function EmailTemplatesContent() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-text mb-2">
-            📧 Email Templates
+            {t('emailTemplates.pageTitle')}
           </h1>
           <p className="text-text-secondary">
-            Send emails to partners, clients, coaches, and staff
+            {t('emailTemplates.pageDescription')}
           </p>
         </div>
 
+        {/* Tabs */}
+        <div className="mb-6 border-b border-border">
+          <div className="flex gap-4">
+            <button
+              onClick={() => setActiveTab('compose')}
+              className={`px-6 py-3 font-semibold transition-all border-b-2 ${
+                activeTab === 'compose'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-text-secondary hover:text-text'
+              }`}
+            >
+              ✉️ Отправка
+            </button>
+            <button
+              onClick={() => setActiveTab('sent')}
+              className={`px-6 py-3 font-semibold transition-all border-b-2 ${
+                activeTab === 'sent'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-text-secondary hover:text-text'
+              }`}
+            >
+              📤 Отправленные ({sentEmails.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('incoming')}
+              className={`px-6 py-3 font-semibold transition-all border-b-2 ${
+                activeTab === 'incoming'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-text-secondary hover:text-text'
+              }`}
+            >
+              📥 Входящие ({incomingEmails.length})
+            </button>
+          </div>
+        </div>
+
+        {/* Sent Emails Tab */}
+        {activeTab === 'sent' && (
+          <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-text">Отправленные письма</h2>
+              <button
+                onClick={fetchSentEmails}
+                className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+              >
+                🔄 Обновить
+              </button>
+            </div>
+
+            {loadingSentEmails ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-2 text-text-secondary">Загрузка...</p>
+              </div>
+            ) : sentEmails.length === 0 ? (
+              <div className="text-center py-8 text-text-secondary">
+                <p>Нет отправленных писем</p>
+              </div>
+            ) : (
+              <div className="space-y-2 max-h-[600px] overflow-y-auto">
+                {sentEmails.map((email: any) => (
+                  <div
+                    key={email.id}
+                    onClick={() => {
+                      setSelectedSentEmail(email);
+                      fetchEmailDetails(email.id);
+                    }}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      selectedSentEmail?.id === email.id
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50 hover:bg-background-hover'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="font-semibold text-text mb-1">{email.subject || '(Без темы)'}</div>
+                        <div className="text-sm text-text-secondary">
+                          <div>Кому: {Array.isArray(email.to) ? email.to.join(', ') : email.to}</div>
+                          <div>От: {email.from}</div>
+                          {email.created_at && (
+                            <div>Дата: {new Date(email.created_at).toLocaleString('ru-RU')}</div>
+                          )}
+                        </div>
+                      </div>
+                      {email.created_at && (
+                        <div className="text-xs text-text-tertiary ml-4">
+                          {new Date(email.created_at).toLocaleDateString('ru-RU')}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Email Details Modal */}
+            {selectedSentEmail && sentEmailDetails && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+                  <div className="flex items-center justify-between p-6 border-b border-border">
+                    <h2 className="text-2xl font-bold text-text">Детали письма</h2>
+                    <button
+                      onClick={() => {
+                        setSelectedSentEmail(null);
+                        setSentEmailDetails(null);
+                      }}
+                      className="text-text-tertiary hover:text-text-secondary transition-colors"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className="flex-1 overflow-auto p-6">
+                    {loadingEmailDetails ? (
+                      <div className="text-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="mb-4 space-y-2">
+                          <div><strong>Тема:</strong> {sentEmailDetails.subject || '(Без темы)'}</div>
+                          <div><strong>От:</strong> {sentEmailDetails.from}</div>
+                          <div><strong>Кому:</strong> {Array.isArray(sentEmailDetails.to) ? sentEmailDetails.to.join(', ') : sentEmailDetails.to}</div>
+                          {sentEmailDetails.created_at && (
+                            <div><strong>Дата:</strong> {new Date(sentEmailDetails.created_at).toLocaleString('ru-RU')}</div>
+                          )}
+                        </div>
+
+                        <div className="mb-4 border-t border-border pt-4">
+                          <div className="flex gap-2 mb-4">
+                            <button
+                              onClick={() => copyEmailToClipboard(sentEmailDetails.html || '')}
+                              className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+                            >
+                              📋 Копировать HTML
+                            </button>
+                            <button
+                              onClick={() => {
+                                setResendEmailModal(true);
+                                setResendToEmail('');
+                              }}
+                              className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors"
+                            >
+                              📤 Отправить новому получателю
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="border border-border rounded-lg p-4 bg-background">
+                          <div 
+                            className="prose max-w-none"
+                            dangerouslySetInnerHTML={{ __html: sentEmailDetails.html || '' }}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Resend Email Modal */}
+            {resendEmailModal && sentEmailDetails && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
+                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-md p-6">
+                  <h3 className="text-xl font-bold text-text mb-4">Отправить письмо новому получателю</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-text-secondary mb-2">
+                        Email получателя <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        value={resendToEmail}
+                        onChange={(e) => setResendToEmail(e.target.value)}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                        placeholder="partner@example.com"
+                      />
+                    </div>
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => {
+                          setResendEmailModal(false);
+                          setResendToEmail('');
+                        }}
+                        className="flex-1 py-3 px-6 bg-background-hover text-text font-semibold rounded-xl hover:bg-background transition-colors"
+                      >
+                        Отмена
+                      </button>
+                      <button
+                        onClick={handleResendEmail}
+                        disabled={!resendToEmail || resendingEmail}
+                        className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      >
+                        {resendingEmail ? 'Отправка...' : 'Отправить'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Incoming Emails Tab */}
+        {activeTab === 'incoming' && (
+          <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-text">Входящие письма</h2>
+              <button
+                onClick={fetchIncomingEmails}
+                className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+              >
+                🔄 Обновить
+              </button>
+            </div>
+
+            {loadingIncomingEmails ? (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                <p className="mt-2 text-text-secondary">Загрузка...</p>
+              </div>
+            ) : incomingEmails.length === 0 ? (
+              <div className="text-center py-8 text-text-secondary">
+                <p>Нет входящих писем</p>
+                <p className="text-sm mt-2">Входящие письма будут отображаться здесь после настройки webhook в Resend</p>
+              </div>
+            ) : (
+              <div className="space-y-2 max-h-[600px] overflow-y-auto">
+                {incomingEmails.map((email: any) => (
+                  <div
+                    key={email.id}
+                    onClick={() => setSelectedIncomingEmail(email)}
+                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      selectedIncomingEmail?.id === email.id
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50 hover:bg-background-hover'
+                    } ${!email.readAt ? 'bg-blue-500/10 border-blue-500/30' : ''}`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="font-semibold text-text mb-1 flex items-center gap-2">
+                          {email.subject || '(Без темы)'}
+                          {!email.readAt && <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">Новое</span>}
+                        </div>
+                        <div className="text-sm text-text-secondary">
+                          <div>От: {email.from}</div>
+                          <div>Кому: {email.to}</div>
+                          {email.receivedAt && (
+                            <div>Дата: {new Date(email.receivedAt).toLocaleString('ru-RU')}</div>
+                          )}
+                        </div>
+                      </div>
+                      {email.receivedAt && (
+                        <div className="text-xs text-text-tertiary ml-4">
+                          {new Date(email.receivedAt).toLocaleDateString('ru-RU')}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Incoming Email Details Modal */}
+            {selectedIncomingEmail && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+                  <div className="flex items-center justify-between p-6 border-b border-border">
+                    <h2 className="text-2xl font-bold text-text">Входящее письмо</h2>
+                    <button
+                      onClick={() => setSelectedIncomingEmail(null)}
+                      className="text-text-tertiary hover:text-text-secondary transition-colors"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className="flex-1 overflow-auto p-6">
+                    <div className="mb-4 space-y-2">
+                      <div><strong>Тема:</strong> {selectedIncomingEmail.subject || '(Без темы)'}</div>
+                      <div><strong>От:</strong> {selectedIncomingEmail.from}</div>
+                      <div><strong>Кому:</strong> {selectedIncomingEmail.to}</div>
+                      {selectedIncomingEmail.receivedAt && (
+                        <div><strong>Дата:</strong> {new Date(selectedIncomingEmail.receivedAt).toLocaleString('ru-RU')}</div>
+                      )}
+                    </div>
+
+                    <div className="border border-border rounded-lg p-4 bg-background">
+                      {selectedIncomingEmail.html ? (
+                        <div 
+                          className="prose max-w-none"
+                          dangerouslySetInnerHTML={{ __html: selectedIncomingEmail.html }}
+                        />
+                      ) : (
+                        <div className="whitespace-pre-wrap text-text">{selectedIncomingEmail.text || 'Нет содержимого'}</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Compose Tab (existing form) */}
+        {activeTab === 'compose' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Categories Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
-              <h2 className="text-xl font-bold text-text mb-4">Categories</h2>
+              <h2 className="text-xl font-bold text-text mb-4">{t('emailTemplates.categories')}</h2>
               <div className="space-y-2">
                 {CATEGORIES.map((category) => (
                   <button
@@ -668,7 +1172,7 @@ export default function EmailTemplatesContent() {
                     }`}
                   >
                     <span className="text-2xl mr-2">{category.icon}</span>
-                    {category.name}
+                    {getCategoryName(category.id)}
                   </button>
                 ))}
               </div>
@@ -676,7 +1180,7 @@ export default function EmailTemplatesContent() {
               {/* Templates List */}
               {filteredTemplates.length > 0 && (
                 <div className="mt-6">
-                  <h3 className="text-sm font-semibold text-text-secondary mb-3">Templates</h3>
+                  <h3 className="text-sm font-semibold text-text-secondary mb-3">{t('emailTemplates.templates')}</h3>
                   <div className="space-y-2">
                     {filteredTemplates.map((template) => (
                       <button
@@ -688,7 +1192,7 @@ export default function EmailTemplatesContent() {
                             : 'bg-background-secondary border border-border text-text-secondary hover:bg-background-hover'
                         }`}
                       >
-                        {template.name}
+                        {getTemplateName(template.id)}
                       </button>
                     ))}
                   </div>
@@ -703,9 +1207,9 @@ export default function EmailTemplatesContent() {
               {selectedTemplateData && (
                 <div className="mb-6 pb-6 border-b border-border">
                   <h2 className="text-2xl font-bold text-text mb-2">
-                    {selectedTemplateData.name}
+                    {getTemplateName(selectedTemplateData.id)}
                   </h2>
-                  <p className="text-text-secondary">{selectedTemplateData.description}</p>
+                  <p className="text-text-secondary">{getTemplateDescription(selectedTemplateData.id)}</p>
                 </div>
               )}
 
@@ -716,7 +1220,7 @@ export default function EmailTemplatesContent() {
                     {selectedCategory === 'clients' && (
                       <div>
                         <label className="block text-sm font-semibold text-text-secondary mb-2">
-                          Tournament Scope
+                          {t('emailTemplates.tournamentScope')}
                         </label>
                         <div className="flex gap-4">
                           <label className="flex items-center">
@@ -727,7 +1231,7 @@ export default function EmailTemplatesContent() {
                               onChange={(e) => setTournamentScope(e.target.value as 'all' | 'specific')}
                               className="mr-2"
                             />
-                            Specific Tournament
+                            {t('emailTemplates.specificTournament')}
                           </label>
                           <label className="flex items-center">
                             <input
@@ -737,7 +1241,7 @@ export default function EmailTemplatesContent() {
                               onChange={(e) => setTournamentScope(e.target.value as 'all' | 'specific')}
                               className="mr-2"
                             />
-                            All Tournaments
+                            {t('emailTemplates.allTournaments')}
                           </label>
                         </div>
                       </div>
@@ -746,7 +1250,7 @@ export default function EmailTemplatesContent() {
                     {tournamentScope === 'specific' && (
                       <div>
                         <label className="block text-sm font-semibold text-text-secondary mb-2">
-                          Tournament <span className="text-red-500">*</span>
+                          {t('emailTemplates.tournament')} <span className="text-red-500">*</span>
                         </label>
                         <select
                           required={tournamentScope === 'specific'}
@@ -754,10 +1258,10 @@ export default function EmailTemplatesContent() {
                           onChange={(e) => setSelectedTournamentId(e.target.value)}
                           className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
                         >
-                          <option value="">Select tournament...</option>
+                          <option value="">{t('emailTemplates.selectTournament')}</option>
                           {tournaments.map((tournament) => (
                             <option key={tournament.id} value={tournament.id}>
-                              {tournament.name} ({tournament.startDate ? new Date(tournament.startDate).toLocaleDateString() : 'TBD'})
+                              {tournament.name} ({tournament.startDate ? new Date(tournament.startDate).toLocaleDateString() : t('emailTemplates.tbd')})
                             </option>
                           ))}
                         </select>
@@ -770,7 +1274,7 @@ export default function EmailTemplatesContent() {
                 {(selectedCategory === 'clients' || selectedCategory === 'coaches' || selectedCategory === 'staff') && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Recipients <span className="text-red-500">*</span>
+                      {t('emailTemplates.recipients')} <span className="text-red-500">*</span>
                     </label>
                     <div className="space-y-2">
                       <button
@@ -1064,6 +1568,7 @@ export default function EmailTemplatesContent() {
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* User Selector Modal */}
