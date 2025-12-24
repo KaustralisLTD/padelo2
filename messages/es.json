@@ -1248,7 +1248,7 @@
         "accountDeletionConfirm": "Solicitud de confirmación de eliminación de cuenta",
         "accountDeleted": "Confirmación de eliminación de cuenta",
         "staffAccessGranted": "Notificar al miembro del personal sobre el acceso de administrador otorgado",
-        "roleChangeNotification": "Notificar al usuario sobre el cambio de rol"
+        "roleChangeNotification": "Notificar al usuario sobre cambio de rol"
       },
       "tabCompose": "✉️ Redactar",
       "tabSent": "📤 Enviados",

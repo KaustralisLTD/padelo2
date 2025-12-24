@@ -221,18 +221,56 @@ export default function EmailTemplatesContent() {
   const t = useTranslations('Admin');
   const locale = useLocale();
   
+  // Helper function to convert template ID to translation key (camelCase)
+  const templateIdToKey = (templateId: string): string => {
+    const keyMap: Record<string, string> = {
+      'sponsorship-proposal': 'sponsorshipProposal',
+      'tournament-registration': 'tournamentRegistration',
+      'tournament-registration-confirmed': 'tournamentRegistrationConfirmed',
+      'tournament-waiting-list': 'waitingList',
+      'tournament-spot-confirmed': 'spotConfirmed',
+      'payment-received': 'paymentReceived',
+      'payment-failed': 'paymentFailed',
+      'tournament-schedule-published': 'schedulePublished',
+      'match-reminder-1day': 'matchReminder1Day',
+      'match-reminder-sameday': 'matchReminderSameDay',
+      'schedule-change': 'scheduleChange',
+      'group-stage-results': 'groupStageResults',
+      'finals-winners': 'finalsWinners',
+      'post-tournament-recap': 'postTournamentRecap',
+      'tournament-feedback': 'tournamentFeedback',
+      'tournament-cancelled': 'tournamentCancelled',
+      'guest-tournament-registration': 'guestRegistration',
+      'guest-tournament-verification': 'guestVerification',
+      'guest-tournament-registration-confirmed': 'guestRegistrationConfirmed',
+      'welcome': 'welcomeEmail',
+      'password-reset': 'passwordReset',
+      'password-changed': 'passwordChanged',
+      'new-device-login': 'newDeviceLogin',
+      'change-email-old': 'changeEmailOld',
+      'change-email-new': 'changeEmailNew',
+      'account-deletion-confirm': 'accountDeletionConfirm',
+      'account-deleted': 'accountDeleted',
+      'staff-access-granted': 'staffAccessGranted',
+      'role-change': 'roleChangeNotification',
+    };
+    return keyMap[templateId] || templateId.replace(/-/g, '');
+  };
+
   // Helper function to get localized template name
   const getTemplateName = (templateId: string): string => {
-    const key = `emailTemplates.templateNames.${templateId.replace(/-/g, '')}`;
-    const localized = t(key as any);
-    return localized !== key ? localized : EMAIL_TEMPLATES.find(t => t.id === templateId)?.name || templateId;
+    const key = templateIdToKey(templateId);
+    const translationKey = `emailTemplates.templateNames.${key}`;
+    const localized = t(translationKey as any);
+    return localized !== translationKey ? localized : EMAIL_TEMPLATES.find(t => t.id === templateId)?.name || templateId;
   };
   
   // Helper function to get localized template description
   const getTemplateDescription = (templateId: string): string => {
-    const key = `emailTemplates.templateDescriptions.${templateId.replace(/-/g, '')}`;
-    const localized = t(key as any);
-    return localized !== key ? localized : EMAIL_TEMPLATES.find(t => t.id === templateId)?.description || '';
+    const key = templateIdToKey(templateId);
+    const translationKey = `emailTemplates.templateDescriptions.${key}`;
+    const localized = t(translationKey as any);
+    return localized !== translationKey ? localized : EMAIL_TEMPLATES.find(t => t.id === templateId)?.description || '';
   };
   
   // Helper function to get localized category name

@@ -1295,7 +1295,7 @@
         "tournamentFeedback": "Запрос отзыва о турнире",
         "tournamentCancelled": "Уведомление об отмене турнира",
         "guestRegistration": "Регистрация гостевого билета",
-        "guestVerification": "Письмо верификации гостя",
+        "guestVerification": "Email верификации гостя",
         "guestRegistrationConfirmed": "Регистрация гостя подтверждена",
         "welcomeEmail": "Приветствие нового пользователя",
         "passwordReset": "Запрос на сброс пароля",

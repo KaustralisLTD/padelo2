@@ -1424,7 +1424,7 @@
         "spotConfirmed": "Posto Confermato",
         "paymentReceived": "Pagamento Ricevuto",
         "paymentFailed": "Pagamento Fallito",
-        "schedulePublished": "Calendario Pubblicato",
+        "schedulePublished": "Programma Pubblicato",
         "matchReminder1Day": "Promemoria Partita (1 Giorno)",
         "matchReminderSameDay": "Promemoria Partita (Stesso Giorno)",
         "scheduleChange": "Cambio Calendario",
@@ -1455,7 +1455,7 @@
         "spotConfirmed": "Conferma posto disponibile",
         "paymentReceived": "Conferma pagamento",
         "paymentFailed": "Notifica fallimento pagamento",
-        "schedulePublished": "Notifica calendario torneo",
+        "schedulePublished": "Notifica programma torneo",
         "matchReminder1Day": "Promemoria partita 1 giorno prima",
         "matchReminderSameDay": "Promemoria partita il giorno della partita",
         "scheduleChange": "Notifica cambio calendario partita",
@@ -1476,7 +1476,7 @@
         "accountDeletionConfirm": "Richiesta conferma eliminazione account",
         "accountDeleted": "Conferma eliminazione account",
         "staffAccessGranted": "Notifica al membro del personale dell'accesso amministratore concesso",
-        "roleChangeNotification": "Notifica all'utente del cambio ruolo"
+        "roleChangeNotification": "Notificare utente del cambio ruolo"
       },
       "tabCompose": "✉️ Componi",
       "tabSent": "📤 Inviati",
