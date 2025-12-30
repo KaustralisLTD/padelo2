@@ -59,6 +59,19 @@ export default function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
   
+  // Сразу пропускаем API routes, статические файлы и служебные пути
+  // Это критично для webhook endpoints от Resend и других внешних сервисов
+  if (
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/_vercel') ||
+    pathname.startsWith('/favicon.ico') ||
+    pathname.startsWith('/manifest.json') ||
+    pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|woff|woff2|ttf|eot)$/)
+  ) {
+    return NextResponse.next();
+  }
+  
   // Проверяем, содержит ли путь локаль
   const hasLocale = /^\/(en|es|ua|ru|ca|zh|nl|da|sv|de|no|it|fr|ar)(\/|$)/.test(pathname);
   

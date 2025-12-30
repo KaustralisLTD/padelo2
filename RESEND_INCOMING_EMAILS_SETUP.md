@@ -34,10 +34,15 @@ Resend предоставляет функцию Inbox для получения
 
 1. В разделе **"Inbox"** найдите настройки **"Webhooks"**
 2. Нажмите **"Add Webhook"**
-3. Введите URL вашего webhook endpoint:
+3. Введите URL вашего webhook endpoint (ВАЖНО: используйте HTTPS, без www):
    ```
    https://padelo2.com/api/admin/partner-emails/incoming
    ```
+   ⚠️ **КРИТИЧЕСКИ ВАЖНО:**
+   - ❌ НЕ используйте `http://padelo2.com/...` (будет редирект 301)
+   - ❌ НЕ используйте `https://www.padelo2.com/...` (может быть редирект)
+   - ✅ Используйте ТОЛЬКО `https://padelo2.com/...` (без www)
+   
    Или для локальной разработки:
    ```
    https://your-ngrok-url.ngrok.io/api/admin/partner-emails/incoming
@@ -141,6 +146,33 @@ Resend отправляет webhook в следующем формате:
 - Формат с оберткой: `{ type, data: { ... } }`
 
 ## Устранение проблем
+
+### Проблема: Webhook получает 301 редирект (HTTP status code 301 - Moved Permanently)
+
+**Причина:** Resend отправляет запрос на неправильный URL (HTTP вместо HTTPS или с www).
+
+**Решение:**
+1. **Проверьте URL в настройках webhook в Resend:**
+   - Откройте Resend Dashboard → Inbox → Webhooks
+   - Найдите ваш webhook и откройте его для редактирования
+   - Убедитесь, что URL точно: `https://padelo2.com/api/admin/partner-emails/incoming`
+   - ❌ НЕ должно быть: `http://padelo2.com/...` (HTTP)
+   - ❌ НЕ должно быть: `https://www.padelo2.com/...` (с www)
+   - ✅ Должно быть: `https://padelo2.com/...` (HTTPS, без www)
+
+2. **Обновите URL:**
+   - Измените URL на правильный (если нужно)
+   - Сохраните изменения
+   - Resend автоматически повторит неудачные запросы
+
+3. **Проверьте логи в Resend:**
+   - После обновления URL проверьте логи webhook
+   - Статус должен измениться с 301 на 200 (OK)
+
+4. **Проверьте логи Vercel:**
+   - Войдите в Vercel Dashboard → ваш проект → Functions → Logs
+   - Ищите записи с `[Incoming Emails Webhook]`
+   - Если запросы приходят, вы увидите логи
 
 ### Проблема: Webhook не получает данные
 
