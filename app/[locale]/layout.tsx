@@ -135,14 +135,47 @@ export default async function RootLayout({
         />
         {/* Additional meta tags */}
         <meta name="format-detection" content="telephone=no" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="theme-color" content="#00C4FF" />
         <meta name="msapplication-TileColor" content="#00C4FF" />
-        <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        {/* PWA манифест - условно подключается ТОЛЬКО для админ страниц */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                // Проверяем, админ ли это страница
+                if (typeof window !== 'undefined') {
+                  const isAdminPage = window.location.pathname.includes('/admin/');
+                  if (isAdminPage) {
+                    // Добавляем PWA мета-теги только для админ страниц
+                    const head = document.head || document.getElementsByTagName('head')[0];
+                    
+                    // Добавляем мета-теги для PWA
+                    const metaTags = [
+                      { name: 'mobile-web-app-capable', content: 'yes' },
+                      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+                      { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }
+                    ];
+                    
+                    metaTags.forEach(tag => {
+                      const meta = document.createElement('meta');
+                      meta.setAttribute('name', tag.name);
+                      meta.setAttribute('content', tag.content);
+                      head.appendChild(meta);
+                    });
+                    
+                    // Добавляем манифест
+                    const manifestLink = document.createElement('link');
+                    manifestLink.setAttribute('rel', 'manifest');
+                    manifestLink.setAttribute('href', '/manifest.json');
+                    head.appendChild(manifestLink);
+                  }
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body>
         <ClientProviders>
