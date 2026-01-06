@@ -468,30 +468,63 @@ export default function EmailTemplatesContent() {
   // Fetch incoming emails
   const fetchIncomingEmails = async (sync: boolean = false) => {
     const token = localStorage.getItem('auth_token');
-    if (!token) return;
+    if (!token) {
+      console.error('[fetchIncomingEmails] No auth token found');
+      return;
+    }
 
+    console.log('[fetchIncomingEmails] Starting fetch', { sync });
     setLoadingIncomingEmails(true);
+    setError(null);
+    
     try {
       const url = sync 
         ? '/api/admin/partner-emails/incoming?limit=100&sync=true'
         : '/api/admin/partner-emails/incoming?limit=100';
+      
+      console.log('[fetchIncomingEmails] Fetching from:', url);
+      
       const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
       
+      console.log('[fetchIncomingEmails] Response status:', response.status, response.statusText);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('[fetchIncomingEmails] Response data:', {
+          emailsCount: data.emails?.length || 0,
+          pagination: data.pagination,
+          error: data.error,
+        });
         setIncomingEmails(data.emails || []);
+        
+        if (data.error) {
+          console.warn('[fetchIncomingEmails] API returned error:', data.error);
+          setError(`Ошибка: ${data.error}`);
+        }
       } else {
-        setError('Failed to fetch incoming emails');
+        const errorText = await response.text();
+        console.error('[fetchIncomingEmails] Response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+        });
+        setError(`Ошибка ${response.status}: ${response.statusText}`);
       }
-    } catch (error) {
-      console.error('Error fetching incoming emails:', error);
-      setError('Failed to fetch incoming emails');
+    } catch (error: any) {
+      console.error('[fetchIncomingEmails] Exception:', error);
+      console.error('[fetchIncomingEmails] Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      });
+      setError(`Ошибка: ${error.message || 'Failed to fetch incoming emails'}`);
     } finally {
       setLoadingIncomingEmails(false);
+      console.log('[fetchIncomingEmails] Finished');
     }
   };
 
@@ -1154,6 +1187,16 @@ export default function EmailTemplatesContent() {
                 <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
                   <div className="flex items-center justify-between p-6 border-b border-border">
                     <h2 className="text-2xl font-bold text-text">{t('emailTemplates.incomingEmailTitle')}</h2>
+                    {(() => {
+                      console.log('[Incoming Email Modal] Selected email:', {
+                        id: selectedIncomingEmail.id,
+                        hasHtml: !!selectedIncomingEmail.html,
+                        hasText: !!selectedIncomingEmail.text,
+                        htmlLength: selectedIncomingEmail.html?.length || 0,
+                        textLength: selectedIncomingEmail.text?.length || 0,
+                      });
+                      return null;
+                    })()}
                     <button
                       onClick={() => setSelectedIncomingEmail(null)}
                       className="text-text-tertiary hover:text-text-secondary transition-colors"
@@ -1178,7 +1221,9 @@ export default function EmailTemplatesContent() {
                       {selectedIncomingEmail.html ? (
                         <div 
                           className="prose max-w-none"
-                          dangerouslySetInnerHTML={{ __html: selectedIncomingEmail.html }}
+                          dangerouslySetInnerHTML={{ 
+                            __html: selectedIncomingEmail.html || '' 
+                          }}
                         />
                       ) : (
                         <div className="whitespace-pre-wrap text-text">{selectedIncomingEmail.text || t('emailTemplates.noContent')}</div>

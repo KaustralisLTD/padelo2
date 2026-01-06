@@ -128,6 +128,11 @@ export async function GET(request: NextRequest) {
         }
       } catch (apiError: any) {
         console.error('[Incoming Emails Sync] Error syncing from API:', apiError);
+        console.error('[Incoming Emails Sync] Error details:', {
+          message: apiError.message,
+          stack: apiError.stack,
+          name: apiError.name,
+        });
         // Продолжаем с получением из БД
       }
     }
@@ -189,6 +194,13 @@ export async function GET(request: NextRequest) {
       queryParams.push(limit, (page - 1) * limit);
       
       const [rows] = await pool.execute(query, queryParams) as any[];
+      
+      console.log('[Incoming Emails GET] Database query result:', {
+        rowsCount: rows.length,
+        totalCount,
+        query,
+        queryParams,
+      });
 
       incomingEmails = rows.map((row: any) => ({
         id: row.id,
@@ -202,6 +214,13 @@ export async function GET(request: NextRequest) {
         createdAt: row.created_at,
       }));
 
+      console.log('[Incoming Emails GET] Successfully fetched emails:', {
+        emailsCount: incomingEmails.length,
+        totalCount,
+        page,
+        limit,
+      });
+
       return NextResponse.json({
         emails: incomingEmails,
         pagination: {
@@ -211,7 +230,13 @@ export async function GET(request: NextRequest) {
         },
       });
     } catch (error: any) {
-      console.error('[Incoming Emails] Error fetching emails:', error);
+      console.error('[Incoming Emails GET] Error fetching emails:', error);
+      console.error('[Incoming Emails GET] Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+        code: error.code,
+      });
       return NextResponse.json({
         emails: [],
         pagination: {
@@ -219,6 +244,7 @@ export async function GET(request: NextRequest) {
           limit,
           total: 0,
         },
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
       });
     }
 
