@@ -32,9 +32,13 @@ Resend предоставляет функцию Inbox для получения
 
 ### Шаг 3: Настройка Webhook
 
-1. В разделе **"Inbox"** найдите настройки **"Webhooks"**
-2. Нажмите **"Add Webhook"**
-3. Введите URL вашего webhook endpoint (ВАЖНО: используйте HTTPS, без www):
+⚠️ **КРИТИЧЕСКИ ВАЖНО:** Webhook для входящих писем настраивается в разделе **"Inbox"**, а НЕ в общем разделе **"Webhooks"**!
+
+1. В Resend Dashboard перейдите в раздел **"Inbox"** (или **"Receiving"**)
+2. Выберите ваш домен `padelo2.com`
+3. Найдите настройки **"Webhooks"** внутри раздела Inbox (не путать с общим разделом Webhooks!)
+4. Нажмите **"Add Webhook"** или **"Configure Webhook"**
+5. Введите URL вашего webhook endpoint (ВАЖНО: используйте HTTPS, без www):
    ```
    https://padelo2.com/api/admin/partner-emails/incoming
    ```
@@ -42,17 +46,23 @@ Resend предоставляет функцию Inbox для получения
    - ❌ НЕ используйте `http://padelo2.com/...` (будет редирект 301)
    - ❌ НЕ используйте `https://www.padelo2.com/...` (может быть редирект)
    - ✅ Используйте ТОЛЬКО `https://padelo2.com/...` (без www)
+   - ❌ НЕ настраивайте webhook в общем разделе "Webhooks" (это для отправленных писем)
+   - ✅ Настраивайте webhook ТОЛЬКО в разделе "Inbox" → "Webhooks"
    
    Или для локальной разработки:
    ```
    https://your-ngrok-url.ngrok.io/api/admin/partner-emails/incoming
    ```
-4. Выберите события, на которые будет отправляться webhook:
+6. Выберите события, на которые будет отправляться webhook:
    - ✅ `email.received` - когда приходит новое письмо (обязательно)
    - ✅ `email.bounced` - когда письмо отскакивает (опционально)
    - ✅ Можно выбрать все события для полного мониторинга
-5. Сохраните webhook
-6. Скопируйте **"Signing Secret"** или **"Webhook Secret"** (начинается с `whsec_`)
+7. Сохраните webhook
+8. Скопируйте **"Signing Secret"** или **"Webhook Secret"** (начинается с `whsec_`)
+
+**Проверка:** После настройки webhook в разделе Inbox, отправьте тестовое письмо на `hello@padelo2.com` и проверьте:
+- В Resend Dashboard → Inbox → Webhooks → Logs должны появиться события
+- В Vercel Dashboard → Functions → Logs должны появиться логи `[Incoming Emails Webhook]`
 
 ### Шаг 4: Настройка переменных окружения
 

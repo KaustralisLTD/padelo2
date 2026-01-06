@@ -52,25 +52,65 @@ export async function GET(request: NextRequest) {
 
     // Resend doesn't have a direct API for incoming emails
     // We'll need to store incoming emails in database via webhook
-    // For now, we'll check if we have a table for incoming emails
     const pool = getDbPool();
     
-    // Check if incoming_emails table exists, if not return empty array
+    // Создаем таблицу, если её нет
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS incoming_emails (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        resend_id VARCHAR(255) UNIQUE,
+        from_email VARCHAR(255) NOT NULL,
+        to_email VARCHAR(255) NOT NULL,
+        subject VARCHAR(500),
+        html_content TEXT,
+        text_content TEXT,
+        received_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        read_at DATETIME NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_from_email (from_email),
+        INDEX idx_received_at (received_at),
+        INDEX idx_read_at (read_at),
+        INDEX idx_resend_id (resend_id)
+      )
+    `);
+    
+    // Получаем входящие письма
     let incomingEmails: any[] = [];
     try {
-      const [rows] = await pool.execute(
-        `SELECT id, from_email, to_email, subject, html_content, text_content, 
+      // Сначала получаем общее количество для пагинации
+      let countQuery = 'SELECT COUNT(*) as count FROM incoming_emails WHERE 1=1';
+      const countParams: any[] = [];
+      
+      if (fromEmail) {
+        countQuery += ' AND from_email LIKE ?';
+        countParams.push(`%${fromEmail}%`);
+      }
+      if (unreadOnly) {
+        countQuery += ' AND read_at IS NULL';
+      }
+      
+      const [countRows] = await pool.execute(countQuery, countParams) as any[];
+      const totalCount = countRows[0].count;
+      
+      // Получаем письма с пагинацией
+      let query = `SELECT id, from_email, to_email, subject, html_content, text_content, 
          received_at, read_at, created_at
          FROM incoming_emails 
-         WHERE 1=1
-         ${fromEmail ? 'AND from_email LIKE ?' : ''}
-         ${unreadOnly ? 'AND read_at IS NULL' : ''}
-         ORDER BY received_at DESC 
-         LIMIT ? OFFSET ?`,
-        fromEmail 
-          ? [`%${fromEmail}%`, limit, (page - 1) * limit]
-          : [limit, (page - 1) * limit]
-      ) as any[];
+         WHERE 1=1`;
+      const queryParams: any[] = [];
+      
+      if (fromEmail) {
+        query += ' AND from_email LIKE ?';
+        queryParams.push(`%${fromEmail}%`);
+      }
+      if (unreadOnly) {
+        query += ' AND read_at IS NULL';
+      }
+      
+      query += ' ORDER BY received_at DESC LIMIT ? OFFSET ?';
+      queryParams.push(limit, (page - 1) * limit);
+      
+      const [rows] = await pool.execute(query, queryParams) as any[];
 
       incomingEmails = rows.map((row: any) => ({
         id: row.id,
@@ -83,9 +123,25 @@ export async function GET(request: NextRequest) {
         readAt: row.read_at,
         createdAt: row.created_at,
       }));
+
+      return NextResponse.json({
+        emails: incomingEmails,
+        pagination: {
+          page,
+          limit,
+          total: totalCount,
+        },
+      });
     } catch (error: any) {
-      // Table doesn't exist yet, return empty array
-      console.log('[Incoming Emails] Table not found, returning empty array');
+      console.error('[Incoming Emails] Error fetching emails:', error);
+      return NextResponse.json({
+        emails: [],
+        pagination: {
+          page,
+          limit,
+          total: 0,
+        },
+      });
     }
 
     return NextResponse.json({
