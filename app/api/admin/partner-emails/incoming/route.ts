@@ -49,11 +49,88 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const fromEmail = searchParams.get('from');
     const unreadOnly = searchParams.get('unread') === 'true';
-    // Примечание: Resend API для получения входящих писем может быть недоступен в зависимости от плана
-    // Используем данные из БД (сохраненные через webhook или вручную)
+    const sync = searchParams.get('sync') === 'true'; // Флаг для синхронизации с Resend API
 
-    // Получаем письма из базы данных (сохраненные через webhook)
     const pool = getDbPool();
+    
+    // Если запрошена синхронизация, пытаемся получить письма из Resend API
+    if (sync) {
+      try {
+        const resendApiKey = process.env.RESEND_API_KEY;
+        if (resendApiKey) {
+          console.log('[Incoming Emails Sync] Attempting to sync from Resend API...');
+          
+          // Пытаемся получить входящие письма через Resend API
+          // Проверяем несколько возможных endpoints
+          const endpoints = [
+            'https://api.resend.com/emails/received',
+            'https://api.resend.com/inbound/emails',
+            'https://api.resend.com/inbox/emails',
+          ];
+
+          let synced = false;
+          for (const endpoint of endpoints) {
+            try {
+              const response = await fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                  'Authorization': `Bearer ${resendApiKey}`,
+                  'Content-Type': 'application/json',
+                },
+              });
+
+              if (response.ok) {
+                const apiData = await response.json();
+                console.log(`[Incoming Emails Sync] Success from ${endpoint}:`, apiData);
+                
+                // Сохраняем полученные письма в БД
+                const emails = apiData.data || apiData.emails || (Array.isArray(apiData) ? apiData : []);
+                if (Array.isArray(emails) && emails.length > 0) {
+                  for (const email of emails) {
+                    try {
+                      await pool.execute(
+                        `INSERT INTO incoming_emails 
+                         (resend_id, from_email, to_email, subject, html_content, text_content, received_at)
+                         VALUES (?, ?, ?, ?, ?, ?, ?)
+                         ON DUPLICATE KEY UPDATE
+                         html_content = VALUES(html_content),
+                         text_content = VALUES(text_content),
+                         received_at = VALUES(received_at)`,
+                        [
+                          email.id || email.message_id || `api-${Date.now()}-${Math.random()}`,
+                          email.from || email.from_email || email.sender || '',
+                          Array.isArray(email.to) ? email.to[0] : (email.to || email.to_email || email.recipient || ''),
+                          email.subject || email.subject_line || '(Без темы)',
+                          email.html || email.html_content || email.body_html || '',
+                          email.text || email.text_content || email.body_text || email.body || '',
+                          email.created_at || email.received_at || email.date || new Date().toISOString(),
+                        ]
+                      );
+                    } catch (err: any) {
+                      console.error('[Incoming Emails Sync] Error saving email:', err);
+                    }
+                  }
+                  console.log(`[Incoming Emails Sync] Synced ${emails.length} emails from ${endpoint}`);
+                  synced = true;
+                  break; // Успешно синхронизировали, выходим из цикла
+                }
+              } else {
+                console.log(`[Incoming Emails Sync] ${endpoint} returned ${response.status}: ${response.statusText}`);
+              }
+            } catch (err: any) {
+              console.log(`[Incoming Emails Sync] Error with ${endpoint}:`, err.message);
+            }
+          }
+
+          if (!synced) {
+            console.log('[Incoming Emails Sync] No working API endpoint found. Webhook may be required.');
+          }
+        }
+      } catch (apiError: any) {
+        console.error('[Incoming Emails Sync] Error syncing from API:', apiError);
+        // Продолжаем с получением из БД
+      }
+    }
     
     // Создаем таблицу, если её нет
     await pool.execute(`

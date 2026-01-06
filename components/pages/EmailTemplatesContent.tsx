@@ -466,13 +466,16 @@ export default function EmailTemplatesContent() {
   };
 
   // Fetch incoming emails
-  const fetchIncomingEmails = async () => {
+  const fetchIncomingEmails = async (sync: boolean = false) => {
     const token = localStorage.getItem('auth_token');
     if (!token) return;
 
     setLoadingIncomingEmails(true);
     try {
-      const response = await fetch('/api/admin/partner-emails/incoming?limit=100', {
+      const url = sync 
+        ? '/api/admin/partner-emails/incoming?limit=100&sync=true'
+        : '/api/admin/partner-emails/incoming?limit=100';
+      const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -1081,12 +1084,21 @@ export default function EmailTemplatesContent() {
           <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
-              <button
-                onClick={fetchIncomingEmails}
-                className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
-              >
-                {t('emailTemplates.refresh')}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => fetchIncomingEmails(false)}
+                  className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+                >
+                  {t('emailTemplates.refresh')}
+                </button>
+                <button
+                  onClick={() => fetchIncomingEmails(true)}
+                  className="px-4 py-2 bg-secondary/20 text-secondary rounded-lg hover:bg-secondary/30 transition-colors"
+                  title="Синхронизировать с Resend API"
+                >
+                  🔄 Синхронизировать
+                </button>
+              </div>
             </div>
 
             {loadingIncomingEmails ? (
