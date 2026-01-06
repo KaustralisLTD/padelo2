@@ -49,9 +49,10 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const fromEmail = searchParams.get('from');
     const unreadOnly = searchParams.get('unread') === 'true';
+    // Примечание: Resend API для получения входящих писем может быть недоступен в зависимости от плана
+    // Используем данные из БД (сохраненные через webhook или вручную)
 
-    // Resend doesn't have a direct API for incoming emails
-    // We'll need to store incoming emails in database via webhook
+    // Получаем письма из базы данных (сохраненные через webhook)
     const pool = getDbPool();
     
     // Создаем таблицу, если её нет

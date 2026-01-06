@@ -4,9 +4,11 @@
 
 Для получения входящих писем на служебную почту (например, `partner@padelo2.com`, `hello@padelo2.com`) и их отображения в административной панели, нужно настроить Resend Inbox и webhook.
 
-## Вариант 1: Использование Resend Inbox (Рекомендуется)
+## Вариант 1: Использование Resend Inbound/Inbox (Рекомендуется)
 
-Resend предоставляет функцию Inbox для получения входящих писем на ваш домен.
+Resend предоставляет функцию Inbound/Inbox для получения входящих писем на ваш домен.
+
+⚠️ **ВАЖНО:** Если вы сделали интеграцию Resend с Vercel, проверьте настройки в разделе интеграций Vercel.
 
 ### Шаг 1: Настройка домена в Resend
 
@@ -19,10 +21,10 @@ Resend предоставляет функцию Inbox для получения
    - Добавьте DNS записи, которые Resend предоставит (MX, TXT, SPF, DKIM)
    - Дождитесь верификации (обычно несколько минут)
 
-### Шаг 2: Настройка Inbox для домена
+### Шаг 2: Настройка Inbound для домена
 
-1. В Resend Dashboard перейдите в раздел **"Inbox"** (или **"Receiving"**)
-2. Нажмите **"Add Inbox"** или **"Configure Inbox"**
+1. В Resend Dashboard перейдите в раздел **"Inbound"** (или **"Receiving"**)
+2. Нажмите **"Add Inbound"** или **"Configure Inbound"**
 3. Выберите ваш домен `padelo2.com`
 4. Настройте email адреса, на которые будут приходить письма:
    - `partner@padelo2.com`
@@ -30,39 +32,26 @@ Resend предоставляет функцию Inbox для получения
    - `support@padelo2.com`
    - Или используйте catch-all: `*@padelo2.com` (все письма на домен)
 
-### Шаг 3: Настройка Webhook
+### Шаг 3: Настройка Webhook (если доступно)
 
-⚠️ **КРИТИЧЕСКИ ВАЖНО:** Webhook для входящих писем настраивается в разделе **"Inbox"**, а НЕ в общем разделе **"Webhooks"**!
+⚠️ **ВАЖНО:** В зависимости от вашего плана Resend, webhook для входящих писем может настраиваться в разделе **"Inbound"** или через общий раздел **"Webhooks"**.
 
-1. В Resend Dashboard перейдите в раздел **"Inbox"** (или **"Receiving"**)
+**Вариант A: Если есть раздел Inbound → Webhooks:**
+1. В Resend Dashboard перейдите в раздел **"Inbound"**
 2. Выберите ваш домен `padelo2.com`
-3. Найдите настройки **"Webhooks"** внутри раздела Inbox (не путать с общим разделом Webhooks!)
+3. Найдите настройки **"Webhooks"** внутри раздела Inbound
 4. Нажмите **"Add Webhook"** или **"Configure Webhook"**
-5. Введите URL вашего webhook endpoint (ВАЖНО: используйте HTTPS, без www):
-   ```
-   https://padelo2.com/api/admin/partner-emails/incoming
-   ```
-   ⚠️ **КРИТИЧЕСКИ ВАЖНО:**
+5. Введите URL: `https://padelo2.com/api/admin/partner-emails/incoming`
+6. Выберите события: `email.received` (обязательно)
+7. Сохраните webhook
+
+**Вариант B: Если нет раздела Inbound → Webhooks:**
+Используйте **Вариант 2** ниже (получение через API) или настройте webhook в общем разделе **"Webhooks"** с событием `email.received`.
+
+⚠️ **КРИТИЧЕСКИ ВАЖНО для URL:**
    - ❌ НЕ используйте `http://padelo2.com/...` (будет редирект 301)
    - ❌ НЕ используйте `https://www.padelo2.com/...` (может быть редирект)
    - ✅ Используйте ТОЛЬКО `https://padelo2.com/...` (без www)
-   - ❌ НЕ настраивайте webhook в общем разделе "Webhooks" (это для отправленных писем)
-   - ✅ Настраивайте webhook ТОЛЬКО в разделе "Inbox" → "Webhooks"
-   
-   Или для локальной разработки:
-   ```
-   https://your-ngrok-url.ngrok.io/api/admin/partner-emails/incoming
-   ```
-6. Выберите события, на которые будет отправляться webhook:
-   - ✅ `email.received` - когда приходит новое письмо (обязательно)
-   - ✅ `email.bounced` - когда письмо отскакивает (опционально)
-   - ✅ Можно выбрать все события для полного мониторинга
-7. Сохраните webhook
-8. Скопируйте **"Signing Secret"** или **"Webhook Secret"** (начинается с `whsec_`)
-
-**Проверка:** После настройки webhook в разделе Inbox, отправьте тестовое письмо на `hello@padelo2.com` и проверьте:
-- В Resend Dashboard → Inbox → Webhooks → Logs должны появиться события
-- В Vercel Dashboard → Functions → Logs должны появиться логи `[Incoming Emails Webhook]`
 
 ### Шаг 4: Настройка переменных окружения
 
@@ -78,15 +67,21 @@ NEXT_PUBLIC_SITE_URL=https://padelo2.com
 - В Resend Dashboard → Inbox → Webhooks
 - Скопируйте "Signing Secret" или "Webhook Secret"
 
-## Вариант 2: Использование Resend API для получения писем
+## Вариант 2: Использование Resend API для получения входящих писем
 
-Если Resend Inbox недоступен, можно использовать API для получения писем (если такая функция доступна).
+⚠️ **ВАЖНО:** API для получения входящих писем может быть недоступен в зависимости от вашего плана Resend.
 
 ### Проверка доступности API
 
-Resend может предоставлять API для получения входящих писем. Проверьте документацию:
-- [Resend API Documentation](https://resend.com/docs/api-reference)
-- Ищите endpoints типа `GET /incoming-emails` или `GET /emails/incoming`
+Resend может предоставлять API endpoints для получения входящих писем:
+- `GET /emails/received` - список полученных писем
+- `GET /emails/received/{id}` - детали конкретного письма
+
+Документация: [Resend API - Receiving](https://resend.com/docs/api-reference/emails/retrieve-received-email)
+
+### Если API недоступен
+
+Если API для получения входящих писем недоступен, используйте **Вариант 1** (webhook) или **Вариант 3** (IMAP/forwarding).
 
 ## Вариант 3: Альтернативное решение через IMAP
 
