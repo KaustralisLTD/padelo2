@@ -158,6 +158,14 @@ export async function GET(request: NextRequest) {
     `);
     
     // Получаем входящие письма
+    console.log('[Incoming Emails GET] Starting fetch from database', {
+      page,
+      limit,
+      fromEmail,
+      unreadOnly,
+      sync,
+    });
+    
     let incomingEmails: any[] = [];
     try {
       // Сначала получаем общее количество для пагинации
