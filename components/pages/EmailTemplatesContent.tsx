@@ -970,8 +970,9 @@ export default function EmailTemplatesContent() {
   const selectedTemplateData = EMAIL_TEMPLATES.find(t => t.id === selectedTemplate);
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="w-full min-h-screen bg-background">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 pt-8">
+        <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-text mb-2">
@@ -1190,7 +1191,7 @@ export default function EmailTemplatesContent() {
 
         {/* Incoming Emails Tab - Gmail-style layout */}
         {activeTab === 'incoming' && (
-          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-250px)] flex flex-col">
+          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border">
               <h2 className="text-xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
@@ -2063,6 +2064,8 @@ export default function EmailTemplatesContent() {
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }
