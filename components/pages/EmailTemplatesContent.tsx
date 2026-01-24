@@ -325,6 +325,82 @@ export default function EmailTemplatesContent() {
   const [incomingEmails, setIncomingEmails] = useState<any[]>([]);
   const [loadingIncomingEmails, setLoadingIncomingEmails] = useState(false);
   const [selectedIncomingEmail, setSelectedIncomingEmail] = useState<any | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Mark email as read
+  const markEmailAsRead = async (emailId: number, read: boolean = true) => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+      
+      const response = await fetch(`/api/admin/partner-emails/incoming/${emailId}/read`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ read }),
+      });
+      
+      if (response.ok) {
+        // Update local state
+        setIncomingEmails(emails => 
+          emails.map(email => 
+            email.id === emailId 
+              ? { ...email, readAt: read ? new Date().toISOString() : null }
+              : email
+          )
+        );
+        
+        // Update selected email if it's the same
+        if (selectedIncomingEmail?.id === emailId) {
+          setSelectedIncomingEmail({
+            ...selectedIncomingEmail,
+            readAt: read ? new Date().toISOString() : null,
+          });
+        }
+      }
+    } catch (error) {
+      console.error('[markEmailAsRead] Error:', error);
+    }
+  };
+  
+  // Format date for display
+  const formatEmailDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 1) return 'Только что';
+    if (diffMins < 60) return `${diffMins} мин назад`;
+    if (diffHours < 24) return `${diffHours} ч назад`;
+    if (diffDays === 1) return 'Вчера';
+    if (diffDays < 7) return `${diffDays} дн назад`;
+    return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+  };
+  
+  // Get email preview text
+  const getEmailPreview = (email: any, maxLength: number = 100) => {
+    const text = email.text || email.html?.replace(/<[^>]*>/g, '') || '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+  
+  // Filter emails by search query
+  const filteredIncomingEmails = incomingEmails.filter(email => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      email.subject?.toLowerCase().includes(query) ||
+      email.from?.toLowerCase().includes(query) ||
+      email.to?.toLowerCase().includes(query) ||
+      email.text?.toLowerCase().includes(query) ||
+      email.html?.toLowerCase().includes(query)
+    );
+  });
   
   const [formData, setFormData] = useState({
     email: '',
@@ -1112,21 +1188,22 @@ export default function EmailTemplatesContent() {
           </div>
         )}
 
-        {/* Incoming Emails Tab */}
+        {/* Incoming Emails Tab - Gmail-style layout */}
         {activeTab === 'incoming' && (
-          <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
+          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-250px)] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="text-xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
               <div className="flex gap-2">
                 <button
                   onClick={() => fetchIncomingEmails(false)}
-                  className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+                  className="px-3 py-1.5 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
                 >
                   {t('emailTemplates.refresh')}
                 </button>
                 <button
                   onClick={() => fetchIncomingEmails(true)}
-                  className="px-4 py-2 bg-secondary/20 text-secondary rounded-lg hover:bg-secondary/30 transition-colors"
+                  className="px-3 py-1.5 text-sm bg-secondary/20 text-secondary rounded-lg hover:bg-secondary/30 transition-colors"
                   title="Синхронизировать с Resend API"
                 >
                   🔄 Синхронизировать
@@ -1134,103 +1211,165 @@ export default function EmailTemplatesContent() {
               </div>
             </div>
 
+            {/* Search bar */}
+            <div className="p-3 border-b border-border">
+              <input
+                type="text"
+                placeholder="Поиск писем..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
+            </div>
+
             {loadingIncomingEmails ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
+              <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
+                </div>
               </div>
-            ) : incomingEmails.length === 0 ? (
-              <div className="text-center py-8 text-text-secondary">
-                <p>{t('emailTemplates.noIncomingEmails')}</p>
-                <p className="text-sm mt-2">{t('emailTemplates.incomingEmailsHint')}</p>
+            ) : filteredIncomingEmails.length === 0 ? (
+              <div className="flex-1 flex items-center justify-center text-center text-text-secondary p-8">
+                <div>
+                  <p className="text-lg mb-2">{incomingEmails.length === 0 ? t('emailTemplates.noIncomingEmails') : 'Письма не найдены'}</p>
+                  {incomingEmails.length === 0 && (
+                    <p className="text-sm">{t('emailTemplates.incomingEmailsHint')}</p>
+                  )}
+                </div>
               </div>
             ) : (
-              <div className="space-y-2 max-h-[600px] overflow-y-auto">
-                {incomingEmails.map((email: any) => (
-                  <div
-                    key={email.id}
-                    onClick={() => setSelectedIncomingEmail(email)}
-                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                      selectedIncomingEmail?.id === email.id
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border hover:border-primary/50 hover:bg-background-hover'
-                    } ${!email.readAt ? 'bg-blue-500/10 border-blue-500/30' : ''}`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="font-semibold text-text mb-1 flex items-center gap-2">
-                          {email.subject || t('emailTemplates.noSubject')}
-                          {!email.readAt && <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">{t('emailTemplates.newBadge')}</span>}
+              <div className="flex-1 flex overflow-hidden">
+                {/* Email List - Left Side */}
+                <div className={`w-full md:w-2/5 lg:w-1/3 border-r border-border overflow-y-auto ${selectedIncomingEmail ? 'hidden md:block' : 'block'}`}>
+                  <div className="divide-y divide-border">
+                    {filteredIncomingEmails.map((email: any) => (
+                      <div
+                        key={email.id}
+                        onClick={() => {
+                          setSelectedIncomingEmail(email);
+                          if (!email.readAt) {
+                            markEmailAsRead(email.id, true);
+                          }
+                        }}
+                        className={`p-3 cursor-pointer transition-colors hover:bg-background-hover ${
+                          selectedIncomingEmail?.id === email.id
+                            ? 'bg-primary/10 border-l-4 border-l-primary'
+                            : ''
+                        } ${!email.readAt ? 'bg-blue-500/5 font-semibold' : 'bg-background-secondary'}`}
+                      >
+                        <div className="flex items-start gap-3">
+                          {/* Unread indicator */}
+                          {!email.readAt && (
+                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                          )}
+                          {email.readAt && (
+                            <div className="w-2 h-2 mt-2 flex-shrink-0"></div>
+                          )}
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="text-sm font-semibold text-text truncate">
+                                {email.from || 'Неизвестный отправитель'}
+                              </div>
+                              <div className="text-xs text-text-tertiary ml-2 flex-shrink-0">
+                                {email.receivedAt ? formatEmailDate(email.receivedAt) : ''}
+                              </div>
+                            </div>
+                            <div className="text-sm font-medium text-text mb-1 truncate">
+                              {email.subject || t('emailTemplates.noSubject')}
+                            </div>
+                            <div className="text-xs text-text-secondary line-clamp-2">
+                              {getEmailPreview(email, 80)}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-sm text-text-secondary">
-                          <div>{t('emailTemplates.fromLabel')} {email.from}</div>
-                          <div>{t('emailTemplates.toLabel')} {email.to}</div>
-                          {email.receivedAt && (
-                            <div>{t('emailTemplates.dateLabel')} {new Date(email.receivedAt).toLocaleString(locale)}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Email Content - Right Side */}
+                {selectedIncomingEmail ? (
+                  <div className="flex-1 flex flex-col overflow-hidden md:block">
+                    <div className="flex-1 flex flex-col overflow-y-auto">
+                      {/* Email Header */}
+                      <div className="p-4 border-b border-border bg-background">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex-1">
+                            <h3 className="text-xl font-bold text-text mb-2">
+                              {selectedIncomingEmail.subject || t('emailTemplates.noSubject')}
+                            </h3>
+                            <div className="space-y-1 text-sm text-text-secondary">
+                              <div>
+                                <span className="font-semibold">От:</span> {selectedIncomingEmail.from}
+                              </div>
+                              <div>
+                                <span className="font-semibold">Кому:</span> {selectedIncomingEmail.to}
+                              </div>
+                              {selectedIncomingEmail.receivedAt && (
+                                <div>
+                                  <span className="font-semibold">Дата:</span> {new Date(selectedIncomingEmail.receivedAt).toLocaleString('ru-RU', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex gap-2 ml-4">
+                            <button
+                              onClick={() => markEmailAsRead(selectedIncomingEmail.id, !selectedIncomingEmail.readAt)}
+                              className="p-2 rounded-lg hover:bg-background-hover transition-colors"
+                              title={selectedIncomingEmail.readAt ? 'Пометить непрочитанным' : 'Пометить прочитанным'}
+                            >
+                              {selectedIncomingEmail.readAt ? '📬' : '📭'}
+                            </button>
+                            <button
+                              onClick={() => setSelectedIncomingEmail(null)}
+                              className="p-2 rounded-lg hover:bg-background-hover transition-colors md:hidden"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Email Body */}
+                      <div className="flex-1 p-6 overflow-y-auto">
+                        <div className="prose max-w-none text-text">
+                          {selectedIncomingEmail.html ? (
+                            <div 
+                              className="email-content"
+                              dangerouslySetInnerHTML={{ 
+                                __html: selectedIncomingEmail.html || '' 
+                              }}
+                              style={{
+                                wordWrap: 'break-word',
+                                overflowWrap: 'break-word',
+                              }}
+                            />
+                          ) : (
+                            <div className="whitespace-pre-wrap font-sans">
+                              {selectedIncomingEmail.text || t('emailTemplates.noContent')}
+                            </div>
                           )}
                         </div>
                       </div>
-                      {email.receivedAt && (
-                        <div className="text-xs text-text-tertiary ml-4">
-                          {new Date(email.receivedAt).toLocaleDateString('ru-RU')}
-                        </div>
-                      )}
                     </div>
                   </div>
-                ))}
-              </div>
-            )}
-
-            {/* Incoming Email Details Modal */}
-            {selectedIncomingEmail && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-                  <div className="flex items-center justify-between p-6 border-b border-border">
-                    <h2 className="text-2xl font-bold text-text">{t('emailTemplates.incomingEmailTitle')}</h2>
-                    {(() => {
-                      console.log('[Incoming Email Modal] Selected email:', {
-                        id: selectedIncomingEmail.id,
-                        hasHtml: !!selectedIncomingEmail.html,
-                        hasText: !!selectedIncomingEmail.text,
-                        htmlLength: selectedIncomingEmail.html?.length || 0,
-                        textLength: selectedIncomingEmail.text?.length || 0,
-                      });
-                      return null;
-                    })()}
-                    <button
-                      onClick={() => setSelectedIncomingEmail(null)}
-                      className="text-text-tertiary hover:text-text-secondary transition-colors"
-                    >
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div className="flex-1 overflow-auto p-6">
-                    <div className="mb-4 space-y-2">
-                      <div><strong>{t('emailTemplates.subjectLabel')}</strong> {selectedIncomingEmail.subject || t('emailTemplates.noSubject')}</div>
-                      <div><strong>{t('emailTemplates.fromLabel')}</strong> {selectedIncomingEmail.from}</div>
-                      <div><strong>{t('emailTemplates.toLabel')}</strong> {selectedIncomingEmail.to}</div>
-                      {selectedIncomingEmail.receivedAt && (
-                        <div><strong>{t('emailTemplates.dateLabel')}</strong> {new Date(selectedIncomingEmail.receivedAt).toLocaleString(locale)}</div>
-                      )}
-                    </div>
-
-                    <div className="border border-border rounded-lg p-4 bg-background">
-                      {selectedIncomingEmail.html ? (
-                        <div 
-                          className="prose max-w-none"
-                          dangerouslySetInnerHTML={{ 
-                            __html: selectedIncomingEmail.html || '' 
-                          }}
-                        />
-                      ) : (
-                        <div className="whitespace-pre-wrap text-text">{selectedIncomingEmail.text || t('emailTemplates.noContent')}</div>
-                      )}
+                ) : (
+                  <div className="flex-1 hidden md:flex items-center justify-center text-text-secondary">
+                    <div className="text-center">
+                      <p className="text-lg">Выберите письмо для просмотра</p>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>

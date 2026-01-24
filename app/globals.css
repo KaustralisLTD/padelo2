@@ -49,6 +49,66 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Email content styles */
+.email-content {
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.email-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.email-content a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.email-content a:hover {
+  opacity: 0.8;
+}
+
+.email-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.email-content table td,
+.email-content table th {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.email-content p {
+  margin: 0.5rem 0;
+}
+
+.email-content h1,
+.email-content h2,
+.email-content h3,
+.email-content h4,
+.email-content h5,
+.email-content h6 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.email-content ul,
+.email-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.email-content blockquote {
+  border-left: 3px solid var(--primary);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--text-secondary);
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
