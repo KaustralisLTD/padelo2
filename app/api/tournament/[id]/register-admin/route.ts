@@ -63,11 +63,45 @@ export async function POST(
     }
 
     const body = await request.json();
-    let { firstName, lastName, email, categories, partnerName, partnerEmail, confirmed = true, userId } = body;
+    let { firstName, lastName, email, phone, telegram, categories, partnerName, partnerEmail, confirmed = true, userId } = body;
 
-    if (!firstName || !lastName || !email || !categories || !Array.isArray(categories)) {
+    // Валидация: хотя бы одно поле должно быть заполнено (имя, телефон или телеграм)
+    const hasName = firstName || lastName;
+    const hasPhone = phone && phone.trim();
+    const hasTelegram = telegram && telegram.trim();
+    
+    if (!hasName && !hasPhone && !hasTelegram) {
       return NextResponse.json(
-        { error: 'firstName, lastName, email, and categories are required' },
+        { error: 'At least one field must be filled: name, phone, or telegram' },
+        { status: 400 }
+      );
+    }
+
+    // Если нет имени, используем телефон или телеграм как имя
+    if (!firstName && !lastName) {
+      firstName = phone || telegram || 'Участник';
+      lastName = '';
+    } else if (!firstName) {
+      firstName = lastName;
+      lastName = '';
+    } else if (!lastName) {
+      lastName = '';
+    }
+
+    // Если нет email, создаем временный email на основе телефона или телеграма
+    if (!email) {
+      if (phone) {
+        email = `temp_${phone.replace(/\D/g, '')}@manual.padelo2.com`;
+      } else if (telegram) {
+        email = `temp_${telegram.replace(/[^a-zA-Z0-9]/g, '')}@manual.padelo2.com`;
+      } else {
+        email = `temp_${Date.now()}@manual.padelo2.com`;
+      }
+    }
+
+    if (!categories || !Array.isArray(categories) || categories.length === 0) {
+      return NextResponse.json(
+        { error: 'categories array is required and must not be empty' },
         { status: 400 }
       );
     }
@@ -82,14 +116,16 @@ export async function POST(
     // Создаем регистрацию напрямую в БД
     const [result] = await pool.execute(
       `INSERT INTO tournament_registrations 
-       (tournament_id, user_id, first_name, last_name, email, categories, partner_name, partner_email, confirmed, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+       (tournament_id, user_id, first_name, last_name, email, phone, telegram, categories, partner_name, partner_email, confirmed, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         tournamentId,
         userId || null,
         firstName,
         lastName,
         email,
+        phone || null,
+        telegram || null,
         JSON.stringify(categories),
         partnerName || null,
         partnerEmail || null,

@@ -77,6 +77,84 @@ export default function TournamentParticipantsPage() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
   
+  // Состояния для ручного добавления участника
+  const [showAddParticipantModal, setShowAddParticipantModal] = useState(false);
+  const [addParticipantForm, setAddParticipantForm] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    telegram: '',
+    categories: [] as string[],
+  });
+  const [addingParticipant, setAddingParticipant] = useState(false);
+
+  // Функция для добавления участника вручную
+  const handleAddParticipant = async () => {
+    const { firstName, lastName, phone, telegram, categories } = addParticipantForm;
+    
+    // Валидация: хотя бы одно поле должно быть заполнено
+    const hasName = firstName.trim() || lastName.trim();
+    const hasPhone = phone.trim();
+    const hasTelegram = telegram.trim();
+    
+    if (!hasName && !hasPhone && !hasTelegram) {
+      setError('Необходимо заполнить хотя бы одно поле: имя, телефон или телеграм');
+      return;
+    }
+
+    if (!categories || categories.length === 0) {
+      setError('Необходимо выбрать хотя бы одну категорию');
+      return;
+    }
+
+    if (!token) {
+      setError('Не авторизован');
+      return;
+    }
+
+    try {
+      setAddingParticipant(true);
+      setError(null);
+
+      const response = await fetch(`/api/tournament/${tournamentId}/register-admin`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: firstName.trim() || undefined,
+          lastName: lastName.trim() || undefined,
+          phone: phone.trim() || undefined,
+          telegram: telegram.trim() || undefined,
+          categories,
+          confirmed: true,
+        }),
+      });
+
+      if (response.ok) {
+        setSuccess('Участник успешно добавлен');
+        setShowAddParticipantModal(false);
+        setAddParticipantForm({
+          firstName: '',
+          lastName: '',
+          phone: '',
+          telegram: '',
+          categories: [],
+        });
+        await fetchParticipants();
+        setTimeout(() => setSuccess(null), 3000);
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.error || 'Не удалось добавить участника');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Ошибка при добавлении участника');
+    } finally {
+      setAddingParticipant(false);
+    }
+  };
+  
   // Фильтры и поиск
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterHasPartner, setFilterHasPartner] = useState<'all' | 'yes' | 'no'>('all');
@@ -937,26 +1015,38 @@ export default function TournamentParticipantsPage() {
                 </p>
               )}
             </div>
-            <button
-              onClick={async () => {
-                setLoading(true);
-                await fetchParticipants();
-                setLoading(false);
-              }}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed font-poppins font-medium"
-              title={tTournaments('refresh') || 'Refresh'}
-            >
-              <svg 
-                className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setShowAddParticipantModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:opacity-90 transition-opacity font-poppins font-medium shadow-lg"
+                title="Добавить участника вручную"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              <span>{tTournaments('refresh') || 'Refresh'}</span>
-            </button>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Добавить участника</span>
+              </button>
+              <button
+                onClick={async () => {
+                  setLoading(true);
+                  await fetchParticipants();
+                  setLoading(false);
+                }}
+                disabled={loading}
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-background rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed font-poppins font-medium"
+                title={tTournaments('refresh') || 'Refresh'}
+              >
+                <svg 
+                  className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>{tTournaments('refresh') || 'Refresh'}</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2224,6 +2314,158 @@ export default function TournamentParticipantsPage() {
                     {sendingEmail ? (t('participants.sending') || 'Sending...') : (t('participants.send') || 'Send')}
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Participant Modal */}
+        {showAddParticipantModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+              <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-border">
+                <h2 className="text-2xl font-bold text-text">Добавить участника вручную</h2>
+                <button
+                  onClick={() => {
+                    setShowAddParticipantModal(false);
+                    setAddParticipantForm({
+                      firstName: '',
+                      lastName: '',
+                      phone: '',
+                      telegram: '',
+                      categories: [],
+                    });
+                    setError(null);
+                  }}
+                  className="text-text-tertiary hover:text-text-secondary transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto min-h-0 p-6">
+                <div className="space-y-4">
+                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                    <p className="text-sm text-text-secondary">
+                      <strong>Внимание:</strong> Необходимо заполнить хотя бы одно поле: имя, телефон или телеграм аккаунт.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-text-secondary mb-2">
+                        Имя
+                      </label>
+                      <input
+                        type="text"
+                        value={addParticipantForm.firstName}
+                        onChange={(e) => setAddParticipantForm({ ...addParticipantForm, firstName: e.target.value })}
+                        className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        placeholder="Имя участника"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-text-secondary mb-2">
+                        Фамилия
+                      </label>
+                      <input
+                        type="text"
+                        value={addParticipantForm.lastName}
+                        onChange={(e) => setAddParticipantForm({ ...addParticipantForm, lastName: e.target.value })}
+                        className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        placeholder="Фамилия участника"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-text-secondary mb-2">
+                      Телефон
+                    </label>
+                    <input
+                      type="tel"
+                      value={addParticipantForm.phone}
+                      onChange={(e) => setAddParticipantForm({ ...addParticipantForm, phone: e.target.value })}
+                      className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      placeholder="+34 662 423 738"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-text-secondary mb-2">
+                      Телеграм аккаунт
+                    </label>
+                    <input
+                      type="text"
+                      value={addParticipantForm.telegram}
+                      onChange={(e) => setAddParticipantForm({ ...addParticipantForm, telegram: e.target.value })}
+                      className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      placeholder="@username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-text-secondary mb-2">
+                      Категории <span className="text-red-500">*</span>
+                    </label>
+                    <div className="space-y-2">
+                      {categoryEntries.map(([code, name]) => (
+                        <label key={code} className="flex items-center gap-3 p-3 bg-background rounded-lg border border-border hover:border-primary/50 transition-colors cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={addParticipantForm.categories.includes(code)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setAddParticipantForm({
+                                  ...addParticipantForm,
+                                  categories: [...addParticipantForm.categories, code],
+                                });
+                              } else {
+                                setAddParticipantForm({
+                                  ...addParticipantForm,
+                                  categories: addParticipantForm.categories.filter(c => c !== code),
+                                });
+                              }
+                            }}
+                            className="w-4 h-4 rounded border-2 border-primary/50 bg-background text-primary focus:ring-2 focus:ring-primary/50"
+                          />
+                          <span className="text-sm font-medium text-text">{name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-shrink-0 flex justify-end space-x-4 p-6 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddParticipantModal(false);
+                    setAddParticipantForm({
+                      firstName: '',
+                      lastName: '',
+                      phone: '',
+                      telegram: '',
+                      categories: [],
+                    });
+                    setError(null);
+                  }}
+                  className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
+                >
+                  Отмена
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddParticipant}
+                  disabled={addingParticipant || addParticipantForm.categories.length === 0}
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {addingParticipant ? 'Добавление...' : 'Добавить участника'}
+                </button>
               </div>
             </div>
           </div>
