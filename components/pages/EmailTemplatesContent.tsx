@@ -1340,127 +1340,194 @@ export default function EmailTemplatesContent() {
                 </div>
               </div>
             ) : (
-              <div className="flex-1 overflow-y-auto">
-                <div className="divide-y divide-border">
-                  {filteredSentEmails.map((email: any) => (
-                    <div
-                      key={email.id}
-                      className={`p-3 transition-colors hover:bg-background-hover ${
-                        selectedSentEmail?.id === email.id
-                          ? 'bg-primary/10 border-l-4 border-l-primary'
-                          : ''
-                      } ${
-                        selectedSentEmailIds.has(email.id) ? 'bg-primary/5' : 'bg-background-secondary'
-                      }`}
-                    >
-                      <div className="flex items-start gap-3">
-                        {/* Checkbox for selection */}
-                        <input
-                          type="checkbox"
-                          checked={selectedSentEmailIds.has(email.id)}
-                          onChange={(e) => {
-                            e.stopPropagation();
-                            toggleSentEmailSelection(email.id);
-                          }}
-                          onClick={(e) => e.stopPropagation()}
-                          className="w-4 h-4 rounded border-border text-primary focus:ring-primary mt-2 flex-shrink-0"
-                        />
-                        
-                        {/* Email content - clickable */}
-                        <div
-                          className="flex-1 min-w-0 cursor-pointer"
-                          onClick={() => {
-                            setSelectedSentEmail(email);
-                            fetchEmailDetails(email.id);
-                          }}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="text-sm font-semibold text-text truncate">
-                              {Array.isArray(email.to) ? email.to.join(', ') : email.to}
+              <div className="flex-1 flex overflow-hidden">
+                {/* Email List - Left Side */}
+                <div className={`w-full md:w-2/5 lg:w-1/3 border-r border-border overflow-y-auto ${selectedSentEmail ? 'hidden md:block' : 'block'}`}>
+                  <div className="divide-y divide-border">
+                    {filteredSentEmails.map((email: any) => (
+                      <div
+                        key={email.id}
+                        className={`p-3 transition-colors hover:bg-background-hover ${
+                          selectedSentEmail?.id === email.id
+                            ? 'bg-primary/10 border-l-4 border-l-primary'
+                            : ''
+                        } ${
+                          selectedSentEmailIds.has(email.id) ? 'bg-primary/5' : 'bg-background-secondary'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          {/* Checkbox for selection */}
+                          <input
+                            type="checkbox"
+                            checked={selectedSentEmailIds.has(email.id)}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              toggleSentEmailSelection(email.id);
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-4 h-4 rounded border-border text-primary focus:ring-primary mt-2 flex-shrink-0"
+                          />
+                          
+                          {/* Email content - clickable */}
+                          <div
+                            className="flex-1 min-w-0 cursor-pointer"
+                            onClick={() => {
+                              setSelectedSentEmail(email);
+                              fetchEmailDetails(email.id);
+                            }}
+                          >
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="text-sm font-semibold text-text truncate">
+                                {Array.isArray(email.to) ? email.to.join(', ') : email.to}
+                              </div>
+                              <div className="text-xs text-text-tertiary ml-2 flex-shrink-0">
+                                {email.created_at ? formatEmailDate(email.created_at) : ''}
+                              </div>
                             </div>
-                            <div className="text-xs text-text-tertiary ml-2 flex-shrink-0">
-                              {email.created_at ? formatEmailDate(email.created_at) : ''}
+                            <div className="text-sm font-medium text-text mb-1 truncate">
+                              {email.subject || t('emailTemplates.noSubject')}
                             </div>
-                          </div>
-                          <div className="text-sm font-medium text-text mb-1 truncate">
-                            {email.subject || t('emailTemplates.noSubject')}
-                          </div>
-                          <div className="text-xs text-text-secondary">
-                            {t('emailTemplates.fromLabel')} {email.from}
+                            <div className="text-xs text-text-secondary line-clamp-2">
+                              {email.subject || t('emailTemplates.noSubject')}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Email Details Modal */}
-            {selectedSentEmail && sentEmailDetails && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
-                  <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-border">
-                    <h2 className="text-2xl font-bold text-text">{t('emailTemplates.emailDetails')}</h2>
-                    <button
-                      onClick={() => {
-                        setSelectedSentEmail(null);
-                        setSentEmailDetails(null);
-                      }}
-                      className="text-text-tertiary hover:text-text-secondary transition-colors"
-                    >
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+                    ))}
                   </div>
+                </div>
 
-                  <div className="flex-1 overflow-y-auto min-h-0 p-6">
-                    {loadingEmailDetails ? (
-                      <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                {/* Email Content - Right Side */}
+                {selectedSentEmail ? (
+                  <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+                    {/* Email Header */}
+                    <div className="flex-shrink-0 p-4 border-b border-border bg-background">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-text mb-2">
+                            {selectedSentEmail.subject || t('emailTemplates.noSubject')}
+                          </h3>
+                          {loadingEmailDetails ? (
+                            <div className="flex items-center gap-2 text-sm text-text-secondary">
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                              <span>{t('emailTemplates.loading')}</span>
+                            </div>
+                          ) : sentEmailDetails ? (
+                            <div className="space-y-1 text-sm text-text-secondary">
+                              <div>
+                                <span className="font-semibold">{t('emailTemplates.fromLabel')}</span> {sentEmailDetails.from}
+                              </div>
+                              <div>
+                                <span className="font-semibold">{t('emailTemplates.toLabel')}</span> {Array.isArray(sentEmailDetails.to) ? sentEmailDetails.to.join(', ') : sentEmailDetails.to}
+                              </div>
+                              {sentEmailDetails.created_at && (
+                                <div>
+                                  <span className="font-semibold">{t('emailTemplates.dateLabel')}</span> {new Date(sentEmailDetails.created_at).toLocaleString(locale)}
+                                </div>
+                              )}
+                            </div>
+                          ) : null}
+                        </div>
+                        <div className="flex gap-2 ml-4">
+                          {sentEmailDetails && (
+                            <>
+                              <button
+                                onClick={() => copyEmailToClipboard(sentEmailDetails.html || '')}
+                                className="p-2 rounded-lg hover:bg-background-hover transition-colors"
+                                title={t('emailTemplates.copyHtml')}
+                              >
+                                📋
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setResendEmailModal(true);
+                                  setResendToEmail('');
+                                }}
+                                className="p-2 rounded-lg hover:bg-background-hover transition-colors"
+                                title={t('emailTemplates.resendToNewRecipient')}
+                              >
+                                📤
+                              </button>
+                            </>
+                          )}
+                          <button
+                            onClick={() => {
+                              setSelectedSentEmail(null);
+                              setSentEmailDetails(null);
+                            }}
+                            className="p-2 rounded-lg hover:bg-background-hover transition-colors md:hidden"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
-                    ) : (
-                      <>
-                        <div className="mb-4 space-y-2">
-                          <div><strong>{t('emailTemplates.subjectLabel')}</strong> {sentEmailDetails.subject || t('emailTemplates.noSubject')}</div>
-                          <div><strong>{t('emailTemplates.fromLabel')}</strong> {sentEmailDetails.from}</div>
-                          <div><strong>{t('emailTemplates.toLabel')}</strong> {Array.isArray(sentEmailDetails.to) ? sentEmailDetails.to.join(', ') : sentEmailDetails.to}</div>
-                          {sentEmailDetails.created_at && (
-                            <div><strong>{t('emailTemplates.dateLabel')}</strong> {new Date(sentEmailDetails.created_at).toLocaleString(locale)}</div>
+                      
+                      {/* Action buttons */}
+                      {sentEmailDetails && (
+                        <div className="flex gap-2 pt-2 border-t border-border">
+                          <button
+                            onClick={() => copyEmailToClipboard(sentEmailDetails.html || '')}
+                            className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors text-sm"
+                          >
+                            {t('emailTemplates.copyHtml')}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setResendEmailModal(true);
+                              setResendToEmail('');
+                            }}
+                            className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors text-sm"
+                          >
+                            {t('emailTemplates.resendToNewRecipient')}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Email Body */}
+                    <div className="flex-1 overflow-y-auto min-h-0 p-6">
+                      {loadingEmailDetails ? (
+                        <div className="flex items-center justify-center h-full">
+                          <div className="text-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                            <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
+                          </div>
+                        </div>
+                      ) : sentEmailDetails ? (
+                        <div className="prose max-w-none text-text">
+                          {sentEmailDetails.html ? (
+                            <div 
+                              className="email-content"
+                              dangerouslySetInnerHTML={{ 
+                                __html: sentEmailDetails.html || '' 
+                              }}
+                              style={{
+                                wordWrap: 'break-word',
+                                overflowWrap: 'break-word',
+                              }}
+                            />
+                          ) : (
+                            <div className="whitespace-pre-wrap font-sans">
+                              {sentEmailDetails.text || t('emailTemplates.noContent')}
+                            </div>
                           )}
                         </div>
-
-                        <div className="mb-4 border-t border-border pt-4">
-                          <div className="flex gap-2 mb-4">
-                            <button
-                              onClick={() => copyEmailToClipboard(sentEmailDetails.html || '')}
-                              className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
-                            >
-                              {t('emailTemplates.copyHtml')}
-                            </button>
-                            <button
-                              onClick={() => {
-                                setResendEmailModal(true);
-                                setResendToEmail('');
-                              }}
-                              className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors"
-                            >
-                              {t('emailTemplates.resendToNewRecipient')}
-                            </button>
-                          </div>
+                      ) : (
+                        <div className="flex items-center justify-center h-full text-text-secondary">
+                          <p>{t('emailTemplates.noContent')}</p>
                         </div>
-
-                        <div className="border border-border rounded-lg p-4 bg-background">
-                          <div 
-                            className="prose max-w-none"
-                            dangerouslySetInnerHTML={{ __html: sentEmailDetails.html || '' }}
-                          />
-                        </div>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="flex-1 hidden md:flex items-center justify-center text-text-secondary">
+                    <div className="text-center">
+                      <p className="text-lg">{t('emailTemplates.selectEmailToView')}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -1778,7 +1845,7 @@ export default function EmailTemplatesContent() {
                 ) : (
                   <div className="flex-1 hidden md:flex items-center justify-center text-text-secondary">
                     <div className="text-center">
-                      <p className="text-lg">Выберите письмо для просмотра</p>
+                      <p className="text-lg">{t('emailTemplates.selectEmailToView')}</p>
                     </div>
                   </div>
                 )}
