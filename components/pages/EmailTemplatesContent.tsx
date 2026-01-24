@@ -326,6 +326,11 @@ export default function EmailTemplatesContent() {
   const [loadingIncomingEmails, setLoadingIncomingEmails] = useState(false);
   const [selectedIncomingEmail, setSelectedIncomingEmail] = useState<any | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedEmailIds, setSelectedEmailIds] = useState<Set<number>>(new Set());
+  const [searchFilter, setSearchFilter] = useState<'all' | 'from' | 'to' | 'subject' | 'content'>('all');
+  const [folders, setFolders] = useState<any[]>([]);
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
   
   // Mark email as read
   const markEmailAsRead = async (emailId: number, read: boolean = true) => {
@@ -389,18 +394,55 @@ export default function EmailTemplatesContent() {
     return text.substring(0, maxLength) + '...';
   };
   
-  // Filter emails by search query
+  // Filter emails by search query with filter type
   const filteredIncomingEmails = incomingEmails.filter(email => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
-    return (
-      email.subject?.toLowerCase().includes(query) ||
-      email.from?.toLowerCase().includes(query) ||
-      email.to?.toLowerCase().includes(query) ||
-      email.text?.toLowerCase().includes(query) ||
-      email.html?.toLowerCase().includes(query)
-    );
+    
+    switch (searchFilter) {
+      case 'from':
+        return email.from?.toLowerCase().includes(query);
+      case 'to':
+        return email.to?.toLowerCase().includes(query);
+      case 'subject':
+        return email.subject?.toLowerCase().includes(query);
+      case 'content':
+        return (
+          email.text?.toLowerCase().includes(query) ||
+          email.html?.toLowerCase().includes(query)
+        );
+      default:
+        return (
+          email.subject?.toLowerCase().includes(query) ||
+          email.from?.toLowerCase().includes(query) ||
+          email.to?.toLowerCase().includes(query) ||
+          email.text?.toLowerCase().includes(query) ||
+          email.html?.toLowerCase().includes(query)
+        );
+    }
   });
+  
+  // Toggle email selection
+  const toggleEmailSelection = (emailId: number) => {
+    setSelectedEmailIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(emailId)) {
+        newSet.delete(emailId);
+      } else {
+        newSet.add(emailId);
+      }
+      return newSet;
+    });
+  };
+  
+  // Toggle all emails selection
+  const toggleAllEmailsSelection = () => {
+    if (selectedEmailIds.size === filteredIncomingEmails.length) {
+      setSelectedEmailIds(new Set());
+    } else {
+      setSelectedEmailIds(new Set(filteredIncomingEmails.map(e => e.id)));
+    }
+  };
   
   const [formData, setFormData] = useState({
     email: '',
@@ -614,6 +656,103 @@ export default function EmailTemplatesContent() {
       fetchIncomingEmails();
     }
   }, [activeTab, authorized]);
+  
+  // Fetch folders
+  const fetchFolders = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+      
+      const response = await fetch('/api/admin/partner-emails/folders', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setFolders(data.folders || []);
+      }
+    } catch (error) {
+      console.error('[fetchFolders] Error:', error);
+    }
+  };
+  
+  useEffect(() => {
+    if (authorized && (activeTab === 'incoming' || activeTab === 'sent')) {
+      fetchFolders();
+    }
+  }, [authorized, activeTab]);
+  
+  // Create folder
+  const createFolder = async () => {
+    if (!newFolderName.trim()) return;
+    
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+      
+      const response = await fetch('/api/admin/partner-emails/folders', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: newFolderName.trim() }),
+      });
+      
+      if (response.ok) {
+        await fetchFolders();
+        setNewFolderName('');
+        setShowFolderModal(false);
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Ошибка при создании папки');
+      }
+    } catch (error) {
+      console.error('[createFolder] Error:', error);
+      alert('Ошибка при создании папки');
+    }
+  };
+  
+  // Move emails to folder
+  const moveEmailsToFolder = async (folderId: number | null) => {
+    if (selectedEmailIds.size === 0) return;
+    
+    try {
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+      
+      const response = await fetch('/api/admin/partner-emails/move-to-folder', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          emailIds: Array.from(selectedEmailIds),
+          folderId,
+          emailType: activeTab === 'incoming' ? 'incoming' : 'sent',
+        }),
+      });
+      
+      if (response.ok) {
+        setSelectedEmailIds(new Set());
+        // Refresh emails to show updated folder assignments
+        if (activeTab === 'incoming') {
+          fetchIncomingEmails();
+        } else if (activeTab === 'sent') {
+          fetchSentEmails();
+        }
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Ошибка при перемещении писем');
+      }
+    } catch (error) {
+      console.error('[moveEmailsToFolder] Error:', error);
+      alert('Ошибка при перемещении писем');
+    }
+  };
 
   // Copy email HTML to clipboard
   const copyEmailToClipboard = async (html: string) => {
@@ -972,7 +1111,7 @@ export default function EmailTemplatesContent() {
   return (
     <div className="w-full min-h-screen bg-background">
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 pt-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-text mb-2">
@@ -1194,33 +1333,94 @@ export default function EmailTemplatesContent() {
           <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="text-xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
-              <div className="flex gap-2">
+              <div className="flex items-center gap-4">
+                <h2 className="text-xl font-bold text-text">{t('emailTemplates.incomingEmailsTitle')}</h2>
+                {filteredIncomingEmails.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedEmailIds.size === filteredIncomingEmails.length && filteredIncomingEmails.length > 0}
+                      onChange={toggleAllEmailsSelection}
+                      className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                    />
+                    <span className="text-sm text-text-secondary">
+                      {selectedEmailIds.size > 0 ? `Выбрано: ${selectedEmailIds.size}` : 'Выбрать все'}
+                    </span>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={() => fetchIncomingEmails(true)}
+                className="px-4 py-2 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors flex items-center gap-2"
+                title="Обновить и синхронизировать с Resend API"
+              >
+                <span>🔄</span>
+                <span>Обновить</span>
+              </button>
+            </div>
+            
+            {/* Actions bar for selected emails */}
+            {selectedEmailIds.size > 0 && (
+              <div className="p-3 border-b border-border bg-primary/5 flex items-center gap-2 flex-wrap">
+                <span className="text-sm text-text-secondary mr-2">
+                  Выбрано: {selectedEmailIds.size}
+                </span>
                 <button
-                  onClick={() => fetchIncomingEmails(false)}
-                  className="px-3 py-1.5 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+                  onClick={() => setSelectedEmailIds(new Set())}
+                  className="px-3 py-1 text-sm bg-background-hover rounded hover:bg-background transition-colors"
                 >
-                  {t('emailTemplates.refresh')}
+                  Снять выбор
                 </button>
+                <div className="flex items-center gap-2 ml-2">
+                  <span className="text-sm text-text-secondary">Переместить в:</span>
+                  <select
+                    onChange={(e) => {
+                      const folderId = e.target.value === 'null' ? null : parseInt(e.target.value);
+                      moveEmailsToFolder(folderId);
+                    }}
+                    className="px-3 py-1 text-sm bg-background border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>Выберите папку</option>
+                    <option value="null">Убрать из папок</option>
+                    {folders.map(folder => (
+                      <option key={folder.id} value={folder.id}>{folder.name}</option>
+                    ))}
+                  </select>
+                </div>
                 <button
-                  onClick={() => fetchIncomingEmails(true)}
-                  className="px-3 py-1.5 text-sm bg-secondary/20 text-secondary rounded-lg hover:bg-secondary/30 transition-colors"
-                  title="Синхронизировать с Resend API"
+                  onClick={() => setShowFolderModal(true)}
+                  className="px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors"
                 >
-                  🔄 Синхронизировать
+                  + Создать папку
                 </button>
               </div>
-            </div>
+            )}
 
-            {/* Search bar */}
+            {/* Search bar with filters */}
             <div className="p-3 border-b border-border">
-              <input
-                type="text"
-                placeholder="Поиск писем..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    placeholder="Поиск писем..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                </div>
+                <select
+                  value={searchFilter}
+                  onChange={(e) => setSearchFilter(e.target.value as any)}
+                  className="px-3 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                >
+                  <option value="all">Везде</option>
+                  <option value="from">От</option>
+                  <option value="to">Кому</option>
+                  <option value="subject">Тема</option>
+                  <option value="content">Содержимое</option>
+                </select>
+              </div>
             </div>
 
             {loadingIncomingEmails ? (
@@ -1247,19 +1447,27 @@ export default function EmailTemplatesContent() {
                     {filteredIncomingEmails.map((email: any) => (
                       <div
                         key={email.id}
-                        onClick={() => {
-                          setSelectedIncomingEmail(email);
-                          if (!email.readAt) {
-                            markEmailAsRead(email.id, true);
-                          }
-                        }}
-                        className={`p-3 cursor-pointer transition-colors hover:bg-background-hover ${
+                        className={`p-3 transition-colors hover:bg-background-hover ${
                           selectedIncomingEmail?.id === email.id
                             ? 'bg-primary/10 border-l-4 border-l-primary'
                             : ''
-                        } ${!email.readAt ? 'bg-blue-500/5 font-semibold' : 'bg-background-secondary'}`}
+                        } ${!email.readAt ? 'bg-blue-500/5 font-semibold' : 'bg-background-secondary'} ${
+                          selectedEmailIds.has(email.id) ? 'bg-primary/5' : ''
+                        }`}
                       >
                         <div className="flex items-start gap-3">
+                          {/* Checkbox for selection */}
+                          <input
+                            type="checkbox"
+                            checked={selectedEmailIds.has(email.id)}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              toggleEmailSelection(email.id);
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-4 h-4 rounded border-border text-primary focus:ring-primary mt-2 flex-shrink-0"
+                          />
+                          
                           {/* Unread indicator */}
                           {!email.readAt && (
                             <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -1267,6 +1475,17 @@ export default function EmailTemplatesContent() {
                           {email.readAt && (
                             <div className="w-2 h-2 mt-2 flex-shrink-0"></div>
                           )}
+                          
+                          {/* Email content - clickable */}
+                          <div
+                            className="flex-1 min-w-0 cursor-pointer"
+                            onClick={() => {
+                              setSelectedIncomingEmail(email);
+                              if (!email.readAt) {
+                                markEmailAsRead(email.id, true);
+                              }
+                            }}
+                          >
                           
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
@@ -1373,6 +1592,53 @@ export default function EmailTemplatesContent() {
                 )}
               </div>
             )}
+          </div>
+        )}
+        
+        {/* Folder Creation Modal */}
+        {showFolderModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-md p-6">
+              <h3 className="text-xl font-bold text-text mb-4">Создать папку</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-text-secondary mb-2">
+                    Название папки
+                  </label>
+                  <input
+                    type="text"
+                    value={newFolderName}
+                    onChange={(e) => setNewFolderName(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        createFolder();
+                      }
+                    }}
+                    className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                    placeholder="Например: Важные, Архив"
+                    autoFocus
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => {
+                      setShowFolderModal(false);
+                      setNewFolderName('');
+                    }}
+                    className="flex-1 py-3 px-6 bg-background-hover text-text font-semibold rounded-xl hover:bg-background transition-colors"
+                  >
+                    Отмена
+                  </button>
+                  <button
+                    onClick={createFolder}
+                    disabled={!newFolderName.trim()}
+                    className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  >
+                    Создать
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
