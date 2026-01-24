@@ -296,6 +296,8 @@ export default function EmailTemplatesContent() {
   const [previewHtml, setPreviewHtml] = useState<string>('');
   const [editableHtml, setEditableHtml] = useState<string>('');
   const [savingTemplate, setSavingTemplate] = useState(false);
+  const [previewFullscreen, setPreviewFullscreen] = useState(false);
+  const [showUnreadOnly, setShowUnreadOnly] = useState(false);
   
   const [tournaments, setTournaments] = useState<any[]>([]);
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>('');
@@ -397,8 +399,14 @@ export default function EmailTemplatesContent() {
     return text.substring(0, maxLength) + '...';
   };
   
-  // Filter emails by search query with filter type
+  // Filter emails by search query with filter type and unread filter
   const filteredIncomingEmails = incomingEmails.filter(email => {
+    // Filter by unread status
+    if (showUnreadOnly && email.readAt) {
+      return false;
+    }
+    
+    // Filter by search query
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     
@@ -1510,6 +1518,23 @@ export default function EmailTemplatesContent() {
                     </span>
                   </div>
                 )}
+                <button
+                  onClick={() => setShowUnreadOnly(!showUnreadOnly)}
+                  className={`px-3 py-1.5 text-sm rounded-lg transition-colors flex items-center gap-2 ${
+                    showUnreadOnly
+                      ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                      : 'bg-background-hover text-text-secondary hover:bg-background'
+                  }`}
+                  title="Показать только непрочитанные письма"
+                >
+                  <span>📬</span>
+                  <span>Непрочитанные</span>
+                  {showUnreadOnly && (
+                    <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded">
+                      {incomingEmails.filter(e => !e.readAt).length}
+                    </span>
+                  )}
+                </button>
               </div>
               <button
                 onClick={() => fetchIncomingEmails(true)}
@@ -2383,18 +2408,42 @@ export default function EmailTemplatesContent() {
       {/* Preview Modal */}
       {showPreview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+          <div className={`bg-background-secondary rounded-2xl shadow-2xl flex flex-col transition-all ${
+            previewFullscreen 
+              ? 'w-full h-full max-w-none max-h-none rounded-none' 
+              : 'w-full max-w-6xl max-h-[90vh]'
+          }`}>
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-border">
               <h2 className="text-2xl font-bold text-text">📧 Email Preview</h2>
-              <button
-                onClick={() => setShowPreview(false)}
-                className="text-text-tertiary hover:text-text-secondary transition-colors"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setPreviewFullscreen(!previewFullscreen)}
+                  className="p-2 text-text-tertiary hover:text-text-secondary transition-colors rounded-lg hover:bg-background-hover"
+                  title={previewFullscreen ? "Свернуть" : "Развернуть на весь экран"}
+                >
+                  {previewFullscreen ? (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+                    </svg>
+                  ) : (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                    </svg>
+                  )}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowPreview(false);
+                    setPreviewFullscreen(false);
+                  }}
+                  className="p-2 text-text-tertiary hover:text-text-secondary transition-colors rounded-lg hover:bg-background-hover"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             {/* Modal Content */}
