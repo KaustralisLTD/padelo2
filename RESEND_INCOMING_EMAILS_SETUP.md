@@ -32,7 +32,7 @@ Resend предоставляет функцию Inbound/Inbox для получ
    - `support@padelo2.com`
    - Или используйте catch-all: `*@padelo2.com` (все письма на домен)
 
-### Шаг 3: Настройка Webhook (если доступно)
+### Шаг 3: Настройка Webhook
 
 ⚠️ **ВАЖНО:** В зависимости от вашего плана Resend, webhook для входящих писем может настраиваться в разделе **"Inbound"** или через общий раздел **"Webhooks"**.
 
@@ -46,7 +46,7 @@ Resend предоставляет функцию Inbound/Inbox для получ
 7. Сохраните webhook
 
 **Вариант B: Если нет раздела Inbound → Webhooks:**
-Используйте **Вариант 2** ниже (получение через API) или настройте webhook в общем разделе **"Webhooks"** с событием `email.received`.
+Настройте webhook в общем разделе **"Webhooks"** с событием `email.received`.
 
 ⚠️ **КРИТИЧЕСКИ ВАЖНО для URL:**
    - ❌ НЕ используйте `http://padelo2.com/...` (будет редирект 301)
@@ -66,66 +66,6 @@ NEXT_PUBLIC_SITE_URL=https://padelo2.com
 **Где найти `RESEND_WEBHOOK_SECRET`:**
 - В Resend Dashboard → Inbox → Webhooks
 - Скопируйте "Signing Secret" или "Webhook Secret"
-
-## Вариант 2: Использование Resend API для получения входящих писем
-
-⚠️ **ВАЖНО:** API для получения входящих писем может быть недоступен в зависимости от вашего плана Resend.
-
-### Проверка доступности API
-
-Resend может предоставлять API endpoints для получения входящих писем:
-- `GET /emails/received` - список полученных писем
-- `GET /emails/received/{id}` - детали конкретного письма
-
-Документация: [Resend API - Receiving](https://resend.com/docs/api-reference/emails/retrieve-received-email)
-
-### Если API недоступен
-
-Если API для получения входящих писем недоступен, используйте **Вариант 1** (webhook) или **Вариант 3** (IMAP/forwarding).
-
-## Вариант 3: Альтернативное решение через IMAP
-
-Если Resend не поддерживает получение входящих писем напрямую, можно настроить:
-
-1. **Email forwarding** в Resend → пересылка на другой email
-2. **IMAP сервер** для получения писем
-3. **Периодический скрипт** для проверки почты через IMAP и сохранения в БД
-
-## Тестирование Webhook
-
-### 1. Проверка endpoint
-
-Убедитесь, что endpoint доступен:
-
-```bash
-curl -X POST https://padelo2.com/api/admin/partner-emails/incoming \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": "test-123",
-    "from": "test@example.com",
-    "to": "partner@padelo2.com",
-    "subject": "Test Email",
-    "html": "<p>Test content</p>",
-    "text": "Test content"
-  }'
-```
-
-Должен вернуться ответ: `{"success": true}`
-
-### 2. Проверка в Resend Dashboard
-
-1. Отправьте тестовое письмо на `partner@padelo2.com`
-2. В Resend Dashboard → Inbox → проверьте, что письмо получено
-3. Проверьте логи webhook в Resend Dashboard → Webhooks → Logs
-4. Проверьте, что письмо появилось в административной панели в разделе "Входящие"
-
-### 3. Проверка в базе данных
-
-Подключитесь к БД и проверьте таблицу:
-
-```sql
-SELECT * FROM incoming_emails ORDER BY received_at DESC LIMIT 10;
-```
 
 ## Структура данных Webhook
 
@@ -149,6 +89,87 @@ Resend отправляет webhook в следующем формате:
 Наш endpoint обрабатывает оба формата:
 - Прямой формат: `{ from, to, subject, html, text }`
 - Формат с оберткой: `{ type, data: { ... } }`
+
+## Тестирование и диагностика
+
+### 1. Проверка доступности webhook endpoint
+
+Проверьте, что endpoint доступен:
+```bash
+curl -X GET https://padelo2.com/api/admin/partner-emails/incoming/test
+```
+
+Должен вернуться JSON с инструкциями.
+
+### 2. Тестирование webhook вручную
+
+Отправьте тестовый запрос на webhook endpoint:
+
+```bash
+curl -X POST https://padelo2.com/api/admin/partner-emails/incoming \
+  -H "Content-Type: application/json" \
+  -H "User-Agent: Resend-Webhook/1.0" \
+  -d '{
+    "type": "email.received",
+    "data": {
+      "id": "test-email-123",
+      "from": "test@example.com",
+      "to": ["partner@padelo2.com"],
+      "subject": "Test Email",
+      "html": "<p>Test HTML content</p>",
+      "text": "Test text content",
+      "created_at": "2025-01-24T12:00:00Z"
+    }
+  }'
+```
+
+Должен вернуться ответ: `{"success": true, "emailId": "test-email-123", ...}`
+
+### 3. Проверка в Resend Dashboard
+
+1. Отправьте тестовое письмо на `partner@padelo2.com`
+2. В Resend Dashboard → Inbox → проверьте, что письмо получено
+3. Проверьте логи webhook в Resend Dashboard → Webhooks → Logs
+4. Проверьте, что письмо появилось в административной панели в разделе "Входящие"
+
+### 4. Проверка логов в Resend
+
+1. В Resend Dashboard → Inbox → Webhooks → Logs
+2. Проверьте последние запросы к webhook
+3. Обратите внимание на:
+   - Статус ответа (должен быть 200)
+   - Время запроса
+   - Тело запроса (request body)
+   - Ответ сервера (response)
+
+### 5. Проверка логов в Vercel
+
+1. Войдите в [Vercel Dashboard](https://vercel.com)
+2. Выберите проект PadelO2
+3. Перейдите в раздел **Functions** → **Logs**
+4. Ищите записи с `[Incoming Emails Webhook]`
+5. Проверьте:
+   - Приходят ли запросы от Resend
+   - Есть ли ошибки при обработке
+   - Сохраняются ли письма в БД
+
+### 6. Проверка базы данных
+
+Подключитесь к БД и выполните:
+
+```sql
+-- Проверка существования таблицы
+SHOW TABLES LIKE 'incoming_emails';
+
+-- Проверка структуры таблицы
+DESCRIBE incoming_emails;
+
+-- Проверка данных
+SELECT * FROM incoming_emails ORDER BY received_at DESC LIMIT 10;
+
+-- Проверка количества записей
+SELECT COUNT(*) as total FROM incoming_emails;
+```
 
 ## Устранение проблем
 
@@ -179,28 +200,56 @@ Resend отправляет webhook в следующем формате:
    - Ищите записи с `[Incoming Emails Webhook]`
    - Если запросы приходят, вы увидите логи
 
-### Проблема: Webhook не получает данные
+### Проблема: Webhook не получает запросы
+
+**Причины:**
+- Webhook не настроен в Resend
+- Неправильный URL в настройках webhook
+- Inbound не настроен для домена
 
 **Решение:**
-1. Проверьте, что URL webhook доступен из интернета (не localhost)
-2. Используйте ngrok для локальной разработки: `ngrok http 3000`
-3. Проверьте логи в Resend Dashboard → Webhooks → Logs
-4. Проверьте логи сервера на наличие ошибок
+1. Проверьте настройки webhook в Resend Dashboard
+2. Убедитесь, что URL правильный: `https://padelo2.com/api/admin/partner-emails/incoming`
+3. Настройте Inbound для домена в Resend
+4. Проверьте, что URL webhook доступен из интернета (не localhost)
+5. Используйте ngrok для локальной разработки: `ngrok http 3000`
 
-### Проблема: Письма не сохраняются в БД
+### Проблема: Webhook получает запросы, но письма не сохраняются
+
+**Причины:**
+- Ошибка при парсинге JSON
+- Ошибка при сохранении в БД
+- Неправильный формат данных от Resend
 
 **Решение:**
-1. Проверьте подключение к БД
-2. Проверьте, что таблица `incoming_emails` создана (создается автоматически)
-3. Проверьте логи сервера на наличие ошибок SQL
+1. Проверьте логи в Vercel с `[Incoming Emails Webhook]`
+2. Проверьте формат данных в логах Resend
+3. Проверьте структуру таблицы в БД
+4. Проверьте подключение к БД
+5. Проверьте, что таблица `incoming_emails` создана (создается автоматически)
 
 ### Проблема: Письма не отображаются в UI
+
+**Причины:**
+- Проблема с запросом GET к API
+- Проблема с авторизацией
+- Проблема с фронтендом
 
 **Решение:**
 1. Обновите страницу в браузере
 2. Нажмите кнопку "🔄 Обновить" в разделе "Входящие"
 3. Проверьте консоль браузера на наличие ошибок
 4. Проверьте, что запрос к `/api/admin/partner-emails/incoming` возвращает данные
+5. Проверьте ответ API в Network tab
+6. Проверьте авторизацию пользователя
+
+### Проблема: Ошибка 422 от Resend API (validation_error: The `id` must be a valid UUID)
+
+**Причина:** Код пытается использовать Resend API для получения входящих писем, но API требует UUID для получения конкретного письма и не поддерживает список без параметров.
+
+**Решение:**
+- Эта проблема исправлена в коде - синхронизация через API отключена, так как Resend Inbox работает только через webhook
+- Используйте только webhook для получения входящих писем
 
 ## Дополнительные настройки
 
@@ -242,9 +291,20 @@ useEffect(() => {
 }, [incomingEmails]);
 ```
 
+## Улучшения в коде
+
+Внесены следующие улучшения:
+
+1. ✅ Добавлено поле `emailsCount` в ответ API
+2. ✅ Улучшено логирование в POST endpoint
+3. ✅ Добавлена обработка ошибок парсинга JSON
+4. ✅ Добавлена обработка ошибок БД
+5. ✅ Добавлен тестовый endpoint `/api/admin/partner-emails/incoming/test`
+6. ✅ Улучшена диагностика проблем
+7. ✅ Исправлена проблема с синхронизацией через API (отключена, так как требует UUID)
+
 ## Полезные ссылки
 
 - [Resend Documentation](https://resend.com/docs)
 - [Resend Inbox Setup](https://resend.com/docs/inbox)
 - [Resend Webhooks](https://resend.com/docs/webhooks)
-

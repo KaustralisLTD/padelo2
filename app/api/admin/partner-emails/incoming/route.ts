@@ -53,88 +53,13 @@ export async function GET(request: NextRequest) {
 
     const pool = getDbPool();
     
-    // Если запрошена синхронизация, пытаемся получить письма из Resend API
+    // Примечание: Синхронизация через Resend API отключена, так как:
+    // 1. Resend Inbox работает только через webhook
+    // 2. API для получения входящих писем требует UUID конкретного письма
+    // 3. Нет endpoint для получения списка входящих писем через API
+    // Используйте только webhook для получения входящих писем
     if (sync) {
-      try {
-        const resendApiKey = process.env.RESEND_API_KEY;
-        if (resendApiKey) {
-          console.log('[Incoming Emails Sync] Attempting to sync from Resend API...');
-          
-          // Пытаемся получить входящие письма через Resend API
-          // Проверяем несколько возможных endpoints
-          const endpoints = [
-            'https://api.resend.com/emails/received',
-            'https://api.resend.com/inbound/emails',
-            'https://api.resend.com/inbox/emails',
-          ];
-
-          let synced = false;
-          for (const endpoint of endpoints) {
-            try {
-              const response = await fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                  'Authorization': `Bearer ${resendApiKey}`,
-                  'Content-Type': 'application/json',
-                },
-              });
-
-              if (response.ok) {
-                const apiData = await response.json();
-                console.log(`[Incoming Emails Sync] Success from ${endpoint}:`, apiData);
-                
-                // Сохраняем полученные письма в БД
-                const emails = apiData.data || apiData.emails || (Array.isArray(apiData) ? apiData : []);
-                if (Array.isArray(emails) && emails.length > 0) {
-                  for (const email of emails) {
-                    try {
-                      await pool.execute(
-                        `INSERT INTO incoming_emails 
-                         (resend_id, from_email, to_email, subject, html_content, text_content, received_at)
-                         VALUES (?, ?, ?, ?, ?, ?, ?)
-                         ON DUPLICATE KEY UPDATE
-                         html_content = VALUES(html_content),
-                         text_content = VALUES(text_content),
-                         received_at = VALUES(received_at)`,
-                        [
-                          email.id || email.message_id || `api-${Date.now()}-${Math.random()}`,
-                          email.from || email.from_email || email.sender || '',
-                          Array.isArray(email.to) ? email.to[0] : (email.to || email.to_email || email.recipient || ''),
-                          email.subject || email.subject_line || '(Без темы)',
-                          email.html || email.html_content || email.body_html || '',
-                          email.text || email.text_content || email.body_text || email.body || '',
-                          email.created_at || email.received_at || email.date || new Date().toISOString(),
-                        ]
-                      );
-                    } catch (err: any) {
-                      console.error('[Incoming Emails Sync] Error saving email:', err);
-                    }
-                  }
-                  console.log(`[Incoming Emails Sync] Synced ${emails.length} emails from ${endpoint}`);
-                  synced = true;
-                  break; // Успешно синхронизировали, выходим из цикла
-                }
-              } else {
-                console.log(`[Incoming Emails Sync] ${endpoint} returned ${response.status}: ${response.statusText}`);
-              }
-            } catch (err: any) {
-              console.log(`[Incoming Emails Sync] Error with ${endpoint}:`, err.message);
-            }
-          }
-
-          if (!synced) {
-            console.log('[Incoming Emails Sync] No working API endpoint found. Webhook may be required.');
-          }
-        }
-      } catch (apiError: any) {
-        console.error('[Incoming Emails Sync] Error syncing from API:', apiError);
-        console.error('[Incoming Emails Sync] Error details:', {
-          message: apiError.message,
-          stack: apiError.stack,
-          name: apiError.name,
-        });
-        // Продолжаем с получением из БД
-      }
+      console.log('[Incoming Emails Sync] Sync requested, but Resend Inbox works only via webhook. Use webhook configuration in Resend Dashboard.');
     }
     
     // Создаем таблицу, если её нет
@@ -231,6 +156,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         emails: incomingEmails,
+        emailsCount: incomingEmails.length,
         pagination: {
           page,
           limit,
@@ -247,6 +173,7 @@ export async function GET(request: NextRequest) {
       });
       return NextResponse.json({
         emails: [],
+        emailsCount: 0,
         pagination: {
           page,
           limit,
@@ -258,6 +185,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       emails: incomingEmails,
+      emailsCount: incomingEmails.length,
       pagination: {
         page,
         limit,
@@ -279,21 +207,58 @@ export async function POST(request: NextRequest) {
     // Логируем полную информацию о запросе для отладки
     const url = request.url;
     const method = request.method;
-    console.log('[Incoming Emails Webhook] Request received:', {
+    const contentType = request.headers.get('content-type') || '';
+    
+    console.log('[Incoming Emails Webhook] ===== WEBHOOK REQUEST RECEIVED =====');
+    console.log('[Incoming Emails Webhook] Request details:', {
       url,
       method,
       pathname: new URL(url).pathname,
+      contentType,
       headers: {
-        'content-type': request.headers.get('content-type'),
+        'content-type': contentType,
         'user-agent': request.headers.get('user-agent'),
         'resend-signature': request.headers.get('resend-signature'),
+        'x-resend-signature': request.headers.get('x-resend-signature'),
         'host': request.headers.get('host'),
         'x-forwarded-proto': request.headers.get('x-forwarded-proto'),
         'x-forwarded-host': request.headers.get('x-forwarded-host'),
+        'x-forwarded-for': request.headers.get('x-forwarded-for'),
+        'origin': request.headers.get('origin'),
       },
     });
     
-    const body = await request.json();
+    // Проверяем content-type
+    if (!contentType.includes('application/json')) {
+      console.warn('[Incoming Emails Webhook] Unexpected content-type:', contentType);
+    }
+    
+    // Парсим body с обработкой ошибок
+    let body: any;
+    let bodyText: string = '';
+    try {
+      bodyText = await request.text();
+      console.log('[Incoming Emails Webhook] Raw body (first 500 chars):', bodyText.substring(0, 500));
+      console.log('[Incoming Emails Webhook] Raw body length:', bodyText.length);
+      
+      if (!bodyText || bodyText.trim() === '') {
+        console.error('[Incoming Emails Webhook] Empty body received');
+        return NextResponse.json({ 
+          error: 'Empty request body',
+          success: false
+        }, { status: 400 });
+      }
+      
+      body = JSON.parse(bodyText);
+    } catch (parseError: any) {
+      console.error('[Incoming Emails Webhook] Error parsing JSON:', parseError);
+      console.error('[Incoming Emails Webhook] Body that failed to parse (first 1000 chars):', bodyText.substring(0, 1000));
+      return NextResponse.json({ 
+        error: 'Invalid JSON in request body',
+        details: process.env.NODE_ENV === 'development' ? parseError.message : undefined,
+        success: false
+      }, { status: 400 });
+    }
     
     console.log('[Incoming Emails Webhook] Received webhook:', JSON.stringify(body, null, 2));
     
@@ -373,24 +338,30 @@ export async function POST(request: NextRequest) {
     const pool = getDbPool();
     
     // Create table if it doesn't exist
-    await pool.execute(`
-      CREATE TABLE IF NOT EXISTS incoming_emails (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        resend_id VARCHAR(255) UNIQUE,
-        from_email VARCHAR(255) NOT NULL,
-        to_email VARCHAR(255) NOT NULL,
-        subject VARCHAR(500),
-        html_content TEXT,
-        text_content TEXT,
-        received_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        read_at DATETIME NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        INDEX idx_from_email (from_email),
-        INDEX idx_received_at (received_at),
-        INDEX idx_read_at (read_at),
-        INDEX idx_resend_id (resend_id)
-      )
-    `);
+    try {
+      await pool.execute(`
+        CREATE TABLE IF NOT EXISTS incoming_emails (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          resend_id VARCHAR(255) UNIQUE,
+          from_email VARCHAR(255) NOT NULL,
+          to_email VARCHAR(255) NOT NULL,
+          subject VARCHAR(500),
+          html_content TEXT,
+          text_content TEXT,
+          received_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          read_at DATETIME NULL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          INDEX idx_from_email (from_email),
+          INDEX idx_received_at (received_at),
+          INDEX idx_read_at (read_at),
+          INDEX idx_resend_id (resend_id)
+        )
+      `);
+      console.log('[Incoming Emails Webhook] Table check/creation completed');
+    } catch (tableError: any) {
+      console.error('[Incoming Emails Webhook] Error creating/checking table:', tableError);
+      // Продолжаем выполнение, возможно таблица уже существует
+    }
 
     // Валидация данных перед сохранением
     if (!fromEmail || !toEmail) {
@@ -411,40 +382,79 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert incoming email
-    await pool.execute(
-      `INSERT INTO incoming_emails 
-       (resend_id, from_email, to_email, subject, html_content, text_content, received_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE
-       html_content = VALUES(html_content),
-       text_content = VALUES(text_content),
-       received_at = VALUES(received_at)`,
-      [
+    try {
+      const [result] = await pool.execute(
+        `INSERT INTO incoming_emails 
+         (resend_id, from_email, to_email, subject, html_content, text_content, received_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+         html_content = VALUES(html_content),
+         text_content = VALUES(text_content),
+         received_at = VALUES(received_at)`,
+        [
+          emailId,
+          fromEmail,
+          toEmail,
+          subject,
+          htmlContent,
+          textContent,
+          receivedAt,
+        ]
+      ) as any[];
+
+      const insertId = result?.insertId || 'unknown';
+      console.log('[Incoming Emails Webhook] ===== EMAIL SAVED SUCCESSFULLY =====');
+      console.log('[Incoming Emails Webhook] Saved email:', {
         emailId,
+        insertId,
         fromEmail,
         toEmail,
         subject,
-        htmlContent,
-        textContent,
-        receivedAt,
-      ]
-    );
+        htmlLength: htmlContent?.length || 0,
+        textLength: textContent?.length || 0,
+      });
 
-    console.log('[Incoming Emails Webhook] Email saved successfully:', emailId);
-
-    // Возвращаем успешный ответ сразу, чтобы Resend не повторял запрос
-    return NextResponse.json({ 
-      success: true, 
-      emailId,
-      message: 'Email received and saved'
-    }, { status: 200 });
+      // Возвращаем успешный ответ сразу, чтобы Resend не повторял запрос
+      return NextResponse.json({ 
+        success: true, 
+        emailId,
+        insertId,
+        message: 'Email received and saved'
+      }, { status: 200 });
+    } catch (dbError: any) {
+      console.error('[Incoming Emails Webhook] ===== DATABASE ERROR =====');
+      console.error('[Incoming Emails Webhook] Database error details:', {
+        message: dbError.message,
+        code: dbError.code,
+        errno: dbError.errno,
+        sqlState: dbError.sqlState,
+        sqlMessage: dbError.sqlMessage,
+        stack: dbError.stack,
+      });
+      
+      // Возвращаем ошибку, но с кодом 200, чтобы Resend не повторял запрос
+      // (если это временная ошибка, можно вернуть 500)
+      return NextResponse.json({ 
+        success: false,
+        error: 'Database error while saving email',
+        details: process.env.NODE_ENV === 'development' ? dbError.message : undefined,
+        emailId,
+      }, { status: 200 }); // Используем 200, чтобы Resend не повторял
+    }
   } catch (error: any) {
-    console.error('[Incoming Emails Webhook] Exception:', error);
-    console.error('[Incoming Emails Webhook] Error stack:', error.stack);
+    console.error('[Incoming Emails Webhook] ===== UNEXPECTED EXCEPTION =====');
+    console.error('[Incoming Emails Webhook] Exception type:', error?.constructor?.name);
+    console.error('[Incoming Emails Webhook] Exception message:', error?.message);
+    console.error('[Incoming Emails Webhook] Exception stack:', error?.stack);
+    console.error('[Incoming Emails Webhook] Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+    
+    // Возвращаем ошибку, но с кодом 200, чтобы Resend не повторял запрос бесконечно
+    // В production лучше логировать и возвращать 200, чтобы не засорять логи Resend
     return NextResponse.json({ 
-      error: error.message || 'Internal server error',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-    }, { status: 500 });
+      success: false,
+      error: error?.message || 'Internal server error',
+      details: process.env.NODE_ENV === 'development' ? error?.stack : undefined,
+    }, { status: 200 }); // Используем 200 вместо 500, чтобы Resend не повторял запрос
   }
 }
 
