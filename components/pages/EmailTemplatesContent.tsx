@@ -331,6 +331,9 @@ export default function EmailTemplatesContent() {
   const [folders, setFolders] = useState<any[]>([]);
   const [showFolderModal, setShowFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
+  const [sentSearchQuery, setSentSearchQuery] = useState('');
+  const [sentSearchFilter, setSentSearchFilter] = useState<'all' | 'from' | 'to' | 'subject' | 'content'>('all');
+  const [selectedSentEmailIds, setSelectedSentEmailIds] = useState<Set<number>>(new Set());
   
   // Mark email as read
   const markEmailAsRead = async (emailId: number, read: boolean = true) => {
@@ -441,6 +444,58 @@ export default function EmailTemplatesContent() {
       setSelectedEmailIds(new Set());
     } else {
       setSelectedEmailIds(new Set(filteredIncomingEmails.map(e => e.id)));
+    }
+  };
+  
+  // Filter sent emails by search query
+  const filteredSentEmails = sentEmails.filter(email => {
+    if (!sentSearchQuery) return true;
+    const query = sentSearchQuery.toLowerCase();
+    
+    switch (sentSearchFilter) {
+      case 'from':
+        return email.from?.toLowerCase().includes(query);
+      case 'to':
+        const toEmails = Array.isArray(email.to) ? email.to.join(', ') : email.to;
+        return toEmails?.toLowerCase().includes(query);
+      case 'subject':
+        return email.subject?.toLowerCase().includes(query);
+      case 'content':
+        return (
+          email.text?.toLowerCase().includes(query) ||
+          email.html?.toLowerCase().includes(query)
+        );
+      default:
+        const toEmailsAll = Array.isArray(email.to) ? email.to.join(', ') : email.to;
+        return (
+          email.subject?.toLowerCase().includes(query) ||
+          email.from?.toLowerCase().includes(query) ||
+          toEmailsAll?.toLowerCase().includes(query) ||
+          email.text?.toLowerCase().includes(query) ||
+          email.html?.toLowerCase().includes(query)
+        );
+    }
+  });
+  
+  // Toggle sent email selection
+  const toggleSentEmailSelection = (emailId: number) => {
+    setSelectedSentEmailIds(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(emailId)) {
+        newSet.delete(emailId);
+      } else {
+        newSet.add(emailId);
+      }
+      return newSet;
+    });
+  };
+  
+  // Toggle all sent emails selection
+  const toggleAllSentEmailsSelection = () => {
+    if (selectedSentEmailIds.size === filteredSentEmails.length) {
+      setSelectedSentEmailIds(new Set());
+    } else {
+      setSelectedSentEmailIds(new Set(filteredSentEmails.map(e => e.id)));
     }
   };
   
@@ -741,8 +796,10 @@ export default function EmailTemplatesContent() {
         // Refresh emails to show updated folder assignments
         if (activeTab === 'incoming') {
           fetchIncomingEmails();
+          setSelectedEmailIds(new Set());
         } else if (activeTab === 'sent') {
           fetchSentEmails();
+          setSelectedSentEmailIds(new Set());
         }
       } else {
         const data = await response.json();
@@ -1160,60 +1217,165 @@ export default function EmailTemplatesContent() {
 
         {/* Sent Emails Tab */}
         {activeTab === 'sent' && (
-          <div className="bg-background-secondary rounded-2xl shadow-xl p-6 border border-border">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-text">{t('emailTemplates.sentEmailsTitle')}</h2>
+          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <div className="flex items-center gap-4">
+                <h2 className="text-xl font-bold text-text">{t('emailTemplates.sentEmailsTitle')}</h2>
+                {filteredSentEmails.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedSentEmailIds.size === filteredSentEmails.length && filteredSentEmails.length > 0}
+                      onChange={toggleAllSentEmailsSelection}
+                      className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
+                    />
+                    <span className="text-sm text-text-secondary">
+                      {selectedSentEmailIds.size > 0 ? `Выбрано: ${selectedSentEmailIds.size}` : 'Выбрать все'}
+                    </span>
+                  </div>
+                )}
+              </div>
               <button
                 onClick={fetchSentEmails}
-                className="px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
+                className="px-4 py-2 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors flex items-center gap-2"
               >
-                {t('emailTemplates.refresh')}
+                <span>🔄</span>
+                <span>Обновить</span>
               </button>
+            </div>
+            
+            {/* Actions bar for selected emails */}
+            {selectedSentEmailIds.size > 0 && (
+              <div className="p-3 border-b border-border bg-primary/5 flex items-center gap-2 flex-wrap">
+                <span className="text-sm text-text-secondary mr-2">
+                  Выбрано: {selectedSentEmailIds.size}
+                </span>
+                <button
+                  onClick={() => setSelectedSentEmailIds(new Set())}
+                  className="px-3 py-1 text-sm bg-background-hover rounded hover:bg-background transition-colors"
+                >
+                  Снять выбор
+                </button>
+                <div className="flex items-center gap-2 ml-2">
+                  <span className="text-sm text-text-secondary">Переместить в:</span>
+                  <select
+                    onChange={(e) => {
+                      const folderId = e.target.value === 'null' ? null : parseInt(e.target.value);
+                      moveEmailsToFolder(folderId);
+                    }}
+                    className="px-3 py-1 text-sm bg-background border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>Выберите папку</option>
+                    <option value="null">Убрать из папок</option>
+                    {folders.map(folder => (
+                      <option key={folder.id} value={folder.id}>{folder.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <button
+                  onClick={() => setShowFolderModal(true)}
+                  className="px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors"
+                >
+                  + Создать папку
+                </button>
+              </div>
+            )}
+            
+            {/* Search bar with filters */}
+            <div className="p-3 border-b border-border">
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    placeholder="Поиск писем..."
+                    value={sentSearchQuery}
+                    onChange={(e) => setSentSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  />
+                </div>
+                <select
+                  value={sentSearchFilter}
+                  onChange={(e) => setSentSearchFilter(e.target.value as any)}
+                  className="px-3 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                >
+                  <option value="all">Везде</option>
+                  <option value="from">От</option>
+                  <option value="to">Кому</option>
+                  <option value="subject">Тема</option>
+                  <option value="content">Содержимое</option>
+                </select>
+              </div>
             </div>
 
             {loadingSentEmails ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
+              <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p className="mt-2 text-text-secondary">{t('emailTemplates.loading')}</p>
+                </div>
               </div>
-            ) : sentEmails.length === 0 ? (
-              <div className="text-center py-8 text-text-secondary">
-                <p>{t('emailTemplates.noSentEmails')}</p>
+            ) : filteredSentEmails.length === 0 ? (
+              <div className="flex-1 flex items-center justify-center text-center text-text-secondary p-8">
+                <div>
+                  <p className="text-lg mb-2">{sentEmails.length === 0 ? t('emailTemplates.noSentEmails') : 'Письма не найдены'}</p>
+                </div>
               </div>
             ) : (
-              <div className="space-y-2 max-h-[600px] overflow-y-auto">
-                {sentEmails.map((email: any) => (
-                  <div
-                    key={email.id}
-                    onClick={() => {
-                      setSelectedSentEmail(email);
-                      fetchEmailDetails(email.id);
-                    }}
-                    className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                      selectedSentEmail?.id === email.id
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border hover:border-primary/50 hover:bg-background-hover'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="font-semibold text-text mb-1">{email.subject || t('emailTemplates.noSubject')}</div>
-                        <div className="text-sm text-text-secondary">
-                          <div>{t('emailTemplates.toLabel')} {Array.isArray(email.to) ? email.to.join(', ') : email.to}</div>
-                          <div>{t('emailTemplates.fromLabel')} {email.from}</div>
-                          {email.created_at && (
-                            <div>{t('emailTemplates.dateLabel')} {new Date(email.created_at).toLocaleString(locale)}</div>
-                          )}
+              <div className="flex-1 overflow-y-auto">
+                <div className="divide-y divide-border">
+                  {filteredSentEmails.map((email: any) => (
+                    <div
+                      key={email.id}
+                      className={`p-3 transition-colors hover:bg-background-hover ${
+                        selectedSentEmail?.id === email.id
+                          ? 'bg-primary/10 border-l-4 border-l-primary'
+                          : ''
+                      } ${
+                        selectedSentEmailIds.has(email.id) ? 'bg-primary/5' : 'bg-background-secondary'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        {/* Checkbox for selection */}
+                        <input
+                          type="checkbox"
+                          checked={selectedSentEmailIds.has(email.id)}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            toggleSentEmailSelection(email.id);
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="w-4 h-4 rounded border-border text-primary focus:ring-primary mt-2 flex-shrink-0"
+                        />
+                        
+                        {/* Email content - clickable */}
+                        <div
+                          className="flex-1 min-w-0 cursor-pointer"
+                          onClick={() => {
+                            setSelectedSentEmail(email);
+                            fetchEmailDetails(email.id);
+                          }}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="text-sm font-semibold text-text truncate">
+                              {Array.isArray(email.to) ? email.to.join(', ') : email.to}
+                            </div>
+                            <div className="text-xs text-text-tertiary ml-2 flex-shrink-0">
+                              {email.created_at ? formatEmailDate(email.created_at) : ''}
+                            </div>
+                          </div>
+                          <div className="text-sm font-medium text-text mb-1 truncate">
+                            {email.subject || t('emailTemplates.noSubject')}
+                          </div>
+                          <div className="text-xs text-text-secondary">
+                            От: {email.from}
+                          </div>
                         </div>
                       </div>
-                      {email.created_at && (
-                        <div className="text-xs text-text-tertiary ml-4">
-                          {new Date(email.created_at).toLocaleDateString('ru-RU')}
-                        </div>
-                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
 
@@ -1486,8 +1648,6 @@ export default function EmailTemplatesContent() {
                               }
                             }}
                           >
-                          
-                          <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between mb-1">
                               <div className="text-sm font-semibold text-text truncate">
                                 {email.from || 'Неизвестный отправитель'}
