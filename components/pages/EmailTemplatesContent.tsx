@@ -311,7 +311,7 @@ export default function EmailTemplatesContent() {
   const [useUserLanguage, setUseUserLanguage] = useState(false);
   
   // Tabs state
-  const [activeTab, setActiveTab] = useState<'compose' | 'sent' | 'incoming'>('compose');
+  const [activeTab, setActiveTab] = useState<'compose' | 'sent' | 'incoming'>('incoming');
   
   // Sent emails state
   const [sentEmails, setSentEmails] = useState<any[]>([]);
@@ -1200,6 +1200,16 @@ export default function EmailTemplatesContent() {
         <div className="mb-6 border-b border-border">
           <div className="flex gap-4">
             <button
+              onClick={() => setActiveTab('incoming')}
+              className={`px-6 py-3 font-semibold transition-all border-b-2 ${
+                activeTab === 'incoming'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-text-secondary hover:text-text'
+              }`}
+            >
+              {t('emailTemplates.tabIncoming')} ({incomingEmails.length})
+            </button>
+            <button
               onClick={() => setActiveTab('compose')}
               className={`px-6 py-3 font-semibold transition-all border-b-2 ${
                 activeTab === 'compose'
@@ -1219,22 +1229,12 @@ export default function EmailTemplatesContent() {
             >
               {t('emailTemplates.tabSent')} ({sentEmails.length})
             </button>
-            <button
-              onClick={() => setActiveTab('incoming')}
-              className={`px-6 py-3 font-semibold transition-all border-b-2 ${
-                activeTab === 'incoming'
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-text-secondary hover:text-text'
-              }`}
-            >
-              {t('emailTemplates.tabIncoming')} ({incomingEmails.length})
-            </button>
           </div>
         </div>
 
         {/* Sent Emails Tab */}
         {activeTab === 'sent' && (
-          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col">
+          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div className="flex items-center gap-4">
@@ -1248,7 +1248,7 @@ export default function EmailTemplatesContent() {
                       className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
                     />
                     <span className="text-sm text-text-secondary">
-                      {selectedSentEmailIds.size > 0 ? `Выбрано: ${selectedSentEmailIds.size}` : 'Выбрать все'}
+                      {selectedSentEmailIds.size > 0 ? t('emailTemplates.selectedCount', { count: selectedSentEmailIds.size }) : t('emailTemplates.selectAll')}
                     </span>
                   </div>
                 )}
@@ -1266,16 +1266,16 @@ export default function EmailTemplatesContent() {
             {selectedSentEmailIds.size > 0 && (
               <div className="p-3 border-b border-border bg-primary/5 flex items-center gap-2 flex-wrap">
                 <span className="text-sm text-text-secondary mr-2">
-                  Выбрано: {selectedSentEmailIds.size}
+                  {t('emailTemplates.selectedCount', { count: selectedSentEmailIds.size })}
                 </span>
                 <button
                   onClick={() => setSelectedSentEmailIds(new Set())}
                   className="px-3 py-1 text-sm bg-background-hover rounded hover:bg-background transition-colors"
                 >
-                  Снять выбор
+                  {t('emailTemplates.clearSelection')}
                 </button>
                 <div className="flex items-center gap-2 ml-2">
-                  <span className="text-sm text-text-secondary">Переместить в:</span>
+                  <span className="text-sm text-text-secondary">{t('emailTemplates.moveTo')}</span>
                   <select
                     onChange={(e) => {
                       const folderId = e.target.value === 'null' ? null : parseInt(e.target.value);
@@ -1284,8 +1284,8 @@ export default function EmailTemplatesContent() {
                     className="px-3 py-1 text-sm bg-background border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary/50"
                     defaultValue=""
                   >
-                    <option value="" disabled>Выберите папку</option>
-                    <option value="null">Убрать из папок</option>
+                    <option value="" disabled>{t('emailTemplates.selectFolder')}</option>
+                    <option value="null">{t('emailTemplates.removeFromFolders')}</option>
                     {folders.map(folder => (
                       <option key={folder.id} value={folder.id}>{folder.name}</option>
                     ))}
@@ -1295,7 +1295,7 @@ export default function EmailTemplatesContent() {
                   onClick={() => setShowFolderModal(true)}
                   className="px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors"
                 >
-                  + Создать папку
+                  + {t('emailTemplates.createFolder')}
                 </button>
               </div>
             )}
@@ -1306,7 +1306,7 @@ export default function EmailTemplatesContent() {
                 <div className="flex-1 relative">
                   <input
                     type="text"
-                    placeholder="Поиск писем..."
+                    placeholder={t('emailTemplates.searchEmails')}
                     value={sentSearchQuery}
                     onChange={(e) => setSentSearchQuery(e.target.value)}
                     className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -1317,11 +1317,11 @@ export default function EmailTemplatesContent() {
                   onChange={(e) => setSentSearchFilter(e.target.value as any)}
                   className="px-3 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
-                  <option value="all">Везде</option>
-                  <option value="from">От</option>
-                  <option value="to">Кому</option>
-                  <option value="subject">Тема</option>
-                  <option value="content">Содержимое</option>
+                  <option value="all">{t('emailTemplates.searchEverywhere')}</option>
+                  <option value="from">{t('emailTemplates.searchFrom')}</option>
+                  <option value="to">{t('emailTemplates.searchTo')}</option>
+                  <option value="subject">{t('emailTemplates.searchSubject')}</option>
+                  <option value="content">{t('emailTemplates.searchContent')}</option>
                 </select>
               </div>
             </div>
@@ -1336,7 +1336,7 @@ export default function EmailTemplatesContent() {
             ) : filteredSentEmails.length === 0 ? (
               <div className="flex-1 flex items-center justify-center text-center text-text-secondary p-8">
                 <div>
-                  <p className="text-lg mb-2">{sentEmails.length === 0 ? t('emailTemplates.noSentEmails') : 'Письма не найдены'}</p>
+                  <p className="text-lg mb-2">{sentEmails.length === 0 ? t('emailTemplates.noSentEmails') : t('emailTemplates.noEmailsFound')}</p>
                 </div>
               </div>
             ) : (
@@ -1386,7 +1386,7 @@ export default function EmailTemplatesContent() {
                             {email.subject || t('emailTemplates.noSubject')}
                           </div>
                           <div className="text-xs text-text-secondary">
-                            От: {email.from}
+                            {t('emailTemplates.fromLabel')} {email.from}
                           </div>
                         </div>
                       </div>
@@ -1509,7 +1509,7 @@ export default function EmailTemplatesContent() {
 
         {/* Incoming Emails Tab - Gmail-style layout */}
         {activeTab === 'incoming' && (
-          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col">
+          <div className="bg-background-secondary rounded-2xl shadow-xl border border-border h-[calc(100vh-200px)] flex flex-col overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div className="flex items-center gap-4">
@@ -1523,7 +1523,7 @@ export default function EmailTemplatesContent() {
                       className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
                     />
                     <span className="text-sm text-text-secondary">
-                      {selectedEmailIds.size > 0 ? `Выбрано: ${selectedEmailIds.size}` : 'Выбрать все'}
+                      {selectedEmailIds.size > 0 ? t('emailTemplates.selectedCount', { count: selectedEmailIds.size }) : t('emailTemplates.selectAll')}
                     </span>
                   </div>
                 )}
@@ -1534,10 +1534,10 @@ export default function EmailTemplatesContent() {
                       ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                       : 'bg-background-hover text-text-secondary hover:bg-background'
                   }`}
-                  title="Показать только непрочитанные письма"
+                  title={t('emailTemplates.showUnreadOnly')}
                 >
                   <span>📬</span>
-                  <span>Непрочитанные</span>
+                  <span>{t('emailTemplates.unreadOnly')}</span>
                   {showUnreadOnly && (
                     <span className="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded">
                       {incomingEmails.filter(e => !e.readAt).length}
@@ -1548,10 +1548,10 @@ export default function EmailTemplatesContent() {
               <button
                 onClick={() => fetchIncomingEmails(true)}
                 className="px-4 py-2 text-sm bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors flex items-center gap-2"
-                title="Обновить и синхронизировать с Resend API"
+                title={t('emailTemplates.refreshAndSync')}
               >
                 <span>🔄</span>
-                <span>Обновить</span>
+                <span>{t('emailTemplates.refresh')}</span>
               </button>
             </div>
             
@@ -1559,16 +1559,16 @@ export default function EmailTemplatesContent() {
             {selectedEmailIds.size > 0 && (
               <div className="p-3 border-b border-border bg-primary/5 flex items-center gap-2 flex-wrap">
                 <span className="text-sm text-text-secondary mr-2">
-                  Выбрано: {selectedEmailIds.size}
+                  {t('emailTemplates.selectedCount', { count: selectedEmailIds.size })}
                 </span>
                 <button
                   onClick={() => setSelectedEmailIds(new Set())}
                   className="px-3 py-1 text-sm bg-background-hover rounded hover:bg-background transition-colors"
                 >
-                  Снять выбор
+                  {t('emailTemplates.clearSelection')}
                 </button>
                 <div className="flex items-center gap-2 ml-2">
-                  <span className="text-sm text-text-secondary">Переместить в:</span>
+                  <span className="text-sm text-text-secondary">{t('emailTemplates.moveTo')}</span>
                   <select
                     onChange={(e) => {
                       const folderId = e.target.value === 'null' ? null : parseInt(e.target.value);
@@ -1577,8 +1577,8 @@ export default function EmailTemplatesContent() {
                     className="px-3 py-1 text-sm bg-background border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary/50"
                     defaultValue=""
                   >
-                    <option value="" disabled>Выберите папку</option>
-                    <option value="null">Убрать из папок</option>
+                    <option value="" disabled>{t('emailTemplates.selectFolder')}</option>
+                    <option value="null">{t('emailTemplates.removeFromFolders')}</option>
                     {folders.map(folder => (
                       <option key={folder.id} value={folder.id}>{folder.name}</option>
                     ))}
@@ -1588,7 +1588,7 @@ export default function EmailTemplatesContent() {
                   onClick={() => setShowFolderModal(true)}
                   className="px-3 py-1 text-sm bg-secondary/20 text-secondary rounded hover:bg-secondary/30 transition-colors"
                 >
-                  + Создать папку
+                  + {t('emailTemplates.createFolder')}
                 </button>
               </div>
             )}
@@ -1597,24 +1597,24 @@ export default function EmailTemplatesContent() {
             <div className="p-3 border-b border-border">
               <div className="flex gap-2">
                 <div className="flex-1 relative">
-                  <input
-                    type="text"
-                    placeholder="Поиск писем..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  />
+              <input
+                type="text"
+                placeholder={t('emailTemplates.searchEmails')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text placeholder-text-tertiary focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
                 </div>
                 <select
                   value={searchFilter}
                   onChange={(e) => setSearchFilter(e.target.value as any)}
                   className="px-3 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
-                  <option value="all">Везде</option>
-                  <option value="from">От</option>
-                  <option value="to">Кому</option>
-                  <option value="subject">Тема</option>
-                  <option value="content">Содержимое</option>
+                  <option value="all">{t('emailTemplates.searchEverywhere')}</option>
+                  <option value="from">{t('emailTemplates.searchFrom')}</option>
+                  <option value="to">{t('emailTemplates.searchTo')}</option>
+                  <option value="subject">{t('emailTemplates.searchSubject')}</option>
+                  <option value="content">{t('emailTemplates.searchContent')}</option>
                 </select>
               </div>
             </div>
@@ -1629,7 +1629,7 @@ export default function EmailTemplatesContent() {
             ) : filteredIncomingEmails.length === 0 ? (
               <div className="flex-1 flex items-center justify-center text-center text-text-secondary p-8">
                 <div>
-                  <p className="text-lg mb-2">{incomingEmails.length === 0 ? t('emailTemplates.noIncomingEmails') : 'Письма не найдены'}</p>
+                  <p className="text-lg mb-2">{incomingEmails.length === 0 ? t('emailTemplates.noIncomingEmails') : t('emailTemplates.noEmailsFound')}</p>
                   {incomingEmails.length === 0 && (
                     <p className="text-sm">{t('emailTemplates.incomingEmailsHint')}</p>
                   )}
@@ -1738,7 +1738,7 @@ export default function EmailTemplatesContent() {
                             <button
                               onClick={() => markEmailAsRead(selectedIncomingEmail.id, !selectedIncomingEmail.readAt)}
                               className="p-2 rounded-lg hover:bg-background-hover transition-colors"
-                              title={selectedIncomingEmail.readAt ? 'Пометить непрочитанным' : 'Пометить прочитанным'}
+                              title={selectedIncomingEmail.readAt ? t('emailTemplates.markAsUnread') : t('emailTemplates.markAsRead')}
                             >
                               {selectedIncomingEmail.readAt ? '📬' : '📭'}
                             </button>
@@ -1793,11 +1793,11 @@ export default function EmailTemplatesContent() {
         {showFolderModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-md p-6">
-              <h3 className="text-xl font-bold text-text mb-4">Создать папку</h3>
+              <h3 className="text-xl font-bold text-text mb-4">{t('emailTemplates.createFolder')}</h3>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-semibold text-text-secondary mb-2">
-                    Название папки
+                    {t('emailTemplates.folderName')}
                   </label>
                   <input
                     type="text"
@@ -1809,7 +1809,7 @@ export default function EmailTemplatesContent() {
                       }
                     }}
                     className="w-full px-4 py-3 rounded-xl border-2 border-border bg-background text-text focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                    placeholder="Например: Важные, Архив"
+                    placeholder={t('emailTemplates.folderNamePlaceholder')}
                     autoFocus
                   />
                 </div>
@@ -1821,14 +1821,14 @@ export default function EmailTemplatesContent() {
                     }}
                     className="flex-1 py-3 px-6 bg-background-hover text-text font-semibold rounded-xl hover:bg-background transition-colors"
                   >
-                    Отмена
+                    {t('emailTemplates.cancel')}
                   </button>
                   <button
                     onClick={createFolder}
                     disabled={!newFolderName.trim()}
                     className="flex-1 py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    Создать
+                    {t('emailTemplates.create')}
                   </button>
                 </div>
               </div>
@@ -2429,7 +2429,7 @@ export default function EmailTemplatesContent() {
                 <button
                   onClick={() => setPreviewFullscreen(!previewFullscreen)}
                   className="p-2 text-text-tertiary hover:text-text-secondary transition-colors rounded-lg hover:bg-background-hover"
-                  title={previewFullscreen ? "Свернуть" : "Развернуть на весь экран"}
+                  title={previewFullscreen ? t('emailTemplates.minimize') : t('emailTemplates.maximize')}
                 >
                   {previewFullscreen ? (
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
