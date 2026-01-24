@@ -53,13 +53,137 @@ export async function GET(request: NextRequest) {
 
     const pool = getDbPool();
     
-    // Примечание: Синхронизация через Resend API отключена, так как:
-    // 1. Resend Inbox работает только через webhook
-    // 2. API для получения входящих писем требует UUID конкретного письма
-    // 3. Нет endpoint для получения списка входящих писем через API
-    // Используйте только webhook для получения входящих писем
+    // Если запрошена синхронизация, получаем письма из Resend API
     if (sync) {
-      console.log('[Incoming Emails Sync] Sync requested, but Resend Inbox works only via webhook. Use webhook configuration in Resend Dashboard.');
+      try {
+        const resendApiKey = process.env.RESEND_API_KEY;
+        if (resendApiKey) {
+          console.log('[Incoming Emails Sync] Attempting to sync from Resend API...');
+          
+          try {
+            // Resend API: GET /emails/receiving - список полученных писем из Inbox
+            const response = await fetch('https://api.resend.com/emails/receiving', {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${resendApiKey}`,
+                'Content-Type': 'application/json',
+              },
+            });
+
+            if (response.ok) {
+              const apiData = await response.json();
+              console.log('[Incoming Emails Sync] API response:', {
+                status: response.status,
+                hasData: !!apiData.data,
+                dataType: Array.isArray(apiData.data) ? 'array' : typeof apiData.data,
+                dataLength: Array.isArray(apiData.data) ? apiData.data.length : 'N/A',
+              });
+              
+              // Resend возвращает данные в формате: { data: [...] }
+              const emails = apiData.data || (Array.isArray(apiData) ? apiData : []);
+              
+              if (Array.isArray(emails) && emails.length > 0) {
+                console.log(`[Incoming Emails Sync] Found ${emails.length} emails in Resend Inbox`);
+                
+                // Создаем таблицу, если её нет
+                await pool.execute(`
+                  CREATE TABLE IF NOT EXISTS incoming_emails (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    resend_id VARCHAR(255) UNIQUE,
+                    from_email VARCHAR(255) NOT NULL,
+                    to_email VARCHAR(255) NOT NULL,
+                    subject VARCHAR(500),
+                    html_content TEXT,
+                    text_content TEXT,
+                    received_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    read_at DATETIME NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_from_email (from_email),
+                    INDEX idx_received_at (received_at),
+                    INDEX idx_read_at (read_at),
+                    INDEX idx_resend_id (resend_id)
+                  )
+                `);
+                
+                let savedCount = 0;
+                let errorCount = 0;
+                
+                // Для каждого письма получаем полное содержимое через API
+                for (const email of emails) {
+                  try {
+                    const emailId = email.id || email.email_id;
+                    if (!emailId) {
+                      console.warn('[Incoming Emails Sync] Email without ID, skipping:', email);
+                      continue;
+                    }
+                    
+                    // Получаем полное содержимое письма
+                    let fullEmailData = email;
+                    try {
+                      const detailResponse = await fetch(`https://api.resend.com/emails/receiving/${emailId}`, {
+                        method: 'GET',
+                        headers: {
+                          'Authorization': `Bearer ${resendApiKey}`,
+                          'Content-Type': 'application/json',
+                        },
+                      });
+                      
+                      if (detailResponse.ok) {
+                        const detailData = await detailResponse.json();
+                        fullEmailData = detailData.data || detailData;
+                      }
+                    } catch (detailError: any) {
+                      console.warn(`[Incoming Emails Sync] Could not fetch details for email ${emailId}:`, detailError.message);
+                      // Продолжаем с базовыми данными
+                    }
+                    
+                    // Сохраняем письмо в БД
+                    await pool.execute(
+                      `INSERT INTO incoming_emails 
+                       (resend_id, from_email, to_email, subject, html_content, text_content, received_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?)
+                       ON DUPLICATE KEY UPDATE
+                       html_content = VALUES(html_content),
+                       text_content = VALUES(text_content),
+                       received_at = VALUES(received_at)`,
+                      [
+                        emailId,
+                        fullEmailData.from || fullEmailData.from_email || fullEmailData.sender || '',
+                        Array.isArray(fullEmailData.to) ? fullEmailData.to[0] : (fullEmailData.to || fullEmailData.to_email || fullEmailData.recipient || ''),
+                        fullEmailData.subject || fullEmailData.subject_line || '(Без темы)',
+                        fullEmailData.html || fullEmailData.html_content || fullEmailData.body_html || '',
+                        fullEmailData.text || fullEmailData.text_content || fullEmailData.body_text || fullEmailData.body || '',
+                        fullEmailData.created_at || fullEmailData.received_at || fullEmailData.date || new Date().toISOString(),
+                      ]
+                    );
+                    savedCount++;
+                  } catch (err: any) {
+                    console.error('[Incoming Emails Sync] Error saving email:', err);
+                    errorCount++;
+                  }
+                }
+                
+                console.log(`[Incoming Emails Sync] Synced ${savedCount} emails, ${errorCount} errors`);
+              } else {
+                console.log('[Incoming Emails Sync] No emails found in Resend Inbox');
+              }
+            } else {
+              const errorText = await response.text();
+              console.error(`[Incoming Emails Sync] API returned ${response.status}:`, errorText);
+            }
+          } catch (apiError: any) {
+            console.error('[Incoming Emails Sync] Error calling Resend API:', apiError);
+            console.error('[Incoming Emails Sync] Error details:', {
+              message: apiError.message,
+              stack: apiError.stack,
+            });
+          }
+        } else {
+          console.log('[Incoming Emails Sync] RESEND_API_KEY not configured');
+        }
+      } catch (syncError: any) {
+        console.error('[Incoming Emails Sync] Error during sync:', syncError);
+      }
     }
     
     // Создаем таблицу, если её нет
