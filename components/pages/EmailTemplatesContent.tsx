@@ -2064,7 +2064,6 @@ export default function EmailTemplatesContent() {
           </div>
         </div>
       )}
-        </div>
       </div>
     </div>
   );
