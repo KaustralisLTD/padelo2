@@ -98,12 +98,12 @@ export default function TournamentParticipantsPage() {
     const hasTelegram = telegram.trim();
     
     if (!hasName && !hasPhone && !hasTelegram) {
-      setError('Необходимо заполнить хотя бы одно поле: имя, телефон или телеграм');
+      setError(tTournaments('atLeastOneFieldRequired'));
       return;
     }
 
     if (!categories || categories.length === 0) {
-      setError('Необходимо выбрать хотя бы одну категорию');
+      setError(tTournaments('atLeastOneCategoryRequired'));
       return;
     }
 
@@ -133,7 +133,7 @@ export default function TournamentParticipantsPage() {
       });
 
       if (response.ok) {
-        setSuccess('Участник успешно добавлен');
+        setSuccess(tTournaments('participantAdded'));
         setShowAddParticipantModal(false);
         setAddParticipantForm({
           firstName: '',
@@ -146,10 +146,10 @@ export default function TournamentParticipantsPage() {
         setTimeout(() => setSuccess(null), 3000);
       } else {
         const errorData = await response.json().catch(() => ({}));
-        setError(errorData.error || 'Не удалось добавить участника');
+        setError(errorData.error || tTournaments('participantAddError'));
       }
     } catch (err: any) {
-      setError(err.message || 'Ошибка при добавлении участника');
+      setError(err.message || tTournaments('participantAddError'));
     } finally {
       setAddingParticipant(false);
     }
@@ -1019,12 +1019,12 @@ export default function TournamentParticipantsPage() {
               <button
                 onClick={() => setShowAddParticipantModal(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:opacity-90 transition-opacity font-poppins font-medium shadow-lg"
-                title="Добавить участника вручную"
+                title={tTournaments('addParticipant')}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                <span>Добавить участника</span>
+                <span>{tTournaments('addParticipant')}</span>
               </button>
               <button
                 onClick={async () => {
@@ -2324,7 +2324,7 @@ export default function TournamentParticipantsPage() {
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
               <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-border">
-                <h2 className="text-2xl font-bold text-text">Добавить участника вручную</h2>
+                <h2 className="text-2xl font-bold text-text">{tTournaments('addParticipantManually')}</h2>
                 <button
                   onClick={() => {
                     setShowAddParticipantModal(false);
@@ -2349,41 +2349,41 @@ export default function TournamentParticipantsPage() {
                 <div className="space-y-4">
                   <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
                     <p className="text-sm text-text-secondary">
-                      <strong>Внимание:</strong> Необходимо заполнить хотя бы одно поле: имя, телефон или телеграм аккаунт.
+                      <strong>{tTournaments('addParticipantWarning')}</strong>
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-text-secondary mb-2">
-                        Имя
+                        {tTournaments('firstName')}
                       </label>
                       <input
                         type="text"
                         value={addParticipantForm.firstName}
                         onChange={(e) => setAddParticipantForm({ ...addParticipantForm, firstName: e.target.value })}
                         className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
-                        placeholder="Имя участника"
+                        placeholder={tTournaments('firstName')}
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-text-secondary mb-2">
-                        Фамилия
+                        {tTournaments('lastName')}
                       </label>
                       <input
                         type="text"
                         value={addParticipantForm.lastName}
                         onChange={(e) => setAddParticipantForm({ ...addParticipantForm, lastName: e.target.value })}
                         className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
-                        placeholder="Фамилия участника"
+                        placeholder={tTournaments('lastName')}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-semibold text-text-secondary mb-2">
-                      Телефон
+                      {tTournaments('phone')}
                     </label>
                     <input
                       type="tel"
@@ -2396,7 +2396,7 @@ export default function TournamentParticipantsPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-text-secondary mb-2">
-                      Телеграм аккаунт
+                      {tTournaments('telegramAccount')}
                     </label>
                     <input
                       type="text"
@@ -2409,7 +2409,7 @@ export default function TournamentParticipantsPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-text-secondary mb-2">
-                      Категории <span className="text-red-500">*</span>
+                      {tTournaments('categoriesRequired')} <span className="text-red-500">*</span>
                     </label>
                     <div className="space-y-2">
                       {categoryEntries.map(([code, name]) => (
@@ -2456,7 +2456,7 @@ export default function TournamentParticipantsPage() {
                   }}
                   className="px-6 py-3 border-2 border-border text-text-secondary font-poppins font-semibold rounded-lg hover:border-primary hover:text-primary transition-colors"
                 >
-                  Отмена
+                  {tTournaments('cancel')}
                 </button>
                 <button
                   type="button"
@@ -2464,7 +2464,7 @@ export default function TournamentParticipantsPage() {
                   disabled={addingParticipant || addParticipantForm.categories.length === 0}
                   className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-poppins font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {addingParticipant ? 'Добавление...' : 'Добавить участника'}
+                  {addingParticipant ? tTournaments('adding') : tTournaments('addParticipantButton')}
                 </button>
               </div>
             </div>
