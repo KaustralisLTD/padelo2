@@ -90,6 +90,55 @@ Resend отправляет webhook в следующем формате:
 - Прямой формат: `{ from, to, subject, html, text }`
 - Формат с оберткой: `{ type, data: { ... } }`
 
+## КРИТИЧЕСКИ ВАЖНО: Проверка настроек в Resend Dashboard
+
+⚠️ **Если webhook не получает запросы, проверьте следующее:**
+
+### 1. Проверка настроек Inbound в Resend
+
+1. Войдите в [Resend Dashboard](https://resend.com)
+2. Перейдите в раздел **"Inbound"** (или **"Receiving"**)
+3. Убедитесь, что:
+   - ✅ Домен `padelo2.com` добавлен и верифицирован
+   - ✅ Inbound настроен для домена
+   - ✅ Email адреса настроены (например, `partner@padelo2.com`)
+   - ✅ Inbound активен (enabled)
+
+### 2. Проверка настроек Webhook в Resend
+
+1. В Resend Dashboard → **Inbox** → **Webhooks** (или **Inbound** → **Webhooks**)
+2. Найдите ваш webhook и проверьте:
+   - ✅ URL: `https://padelo2.com/api/admin/partner-emails/incoming` (HTTPS, без www)
+   - ✅ Событие: `email.received` (обязательно!)
+   - ✅ Webhook активен (enabled)
+   - ✅ Статус: "Active" или "Enabled"
+
+### 3. Проверка логов в Resend Dashboard
+
+1. В Resend Dashboard → **Inbox** → **Webhooks** → **Logs**
+2. Проверьте последние попытки отправки webhook:
+   - Есть ли записи о попытках отправки?
+   - Какой статус ответа (200, 301, 404, 500)?
+   - Есть ли ошибки?
+   - Когда была последняя попытка?
+
+**Если в логах нет записей:**
+- Webhook не настроен или не активен
+- Inbound не настроен или не активен
+- Письма не приходят на домен через Resend
+
+**Если в логах есть записи с ошибками:**
+- Проверьте URL webhook (должен быть HTTPS, без www)
+- Проверьте логи в Vercel для деталей ошибки
+
+### 4. Проверка получения писем в Resend
+
+1. Отправьте тестовое письмо на `partner@padelo2.com`
+2. В Resend Dashboard → **Inbox** проверьте:
+   - Пришло ли письмо?
+   - Отображается ли оно в Inbox?
+   - Если письмо не приходит, проверьте DNS записи (MX записи)
+
 ## Тестирование и диагностика
 
 ### 1. Проверка доступности webhook endpoint
@@ -200,19 +249,56 @@ SELECT COUNT(*) as total FROM incoming_emails;
    - Ищите записи с `[Incoming Emails Webhook]`
    - Если запросы приходят, вы увидите логи
 
-### Проблема: Webhook не получает запросы
+### Проблема: Webhook не получает запросы (нет POST запросов в логах Vercel)
+
+**Симптомы:**
+- В логах Vercel нет записей с `[Incoming Emails Webhook]`
+- В логах Vercel нет POST запросов к `/api/admin/partner-emails/incoming`
+- Таблица `incoming_emails` пустая
 
 **Причины:**
-- Webhook не настроен в Resend
+- Webhook не настроен в Resend Dashboard
+- Webhook не активен (disabled)
 - Неправильный URL в настройках webhook
 - Inbound не настроен для домена
+- Inbound не активен
+- Письма не приходят на домен через Resend (проблема с MX записями)
+- Событие webhook не выбрано или выбрано неправильно
 
 **Решение:**
-1. Проверьте настройки webhook в Resend Dashboard
-2. Убедитесь, что URL правильный: `https://padelo2.com/api/admin/partner-emails/incoming`
-3. Настройте Inbound для домена в Resend
-4. Проверьте, что URL webhook доступен из интернета (не localhost)
-5. Используйте ngrok для локальной разработки: `ngrok http 3000`
+1. **Проверьте логи в Resend Dashboard:**
+   - Resend Dashboard → Inbox → Webhooks → Logs
+   - Есть ли попытки отправки webhook?
+   - Какой статус ответа?
+   - Если нет записей вообще → webhook не настроен или не активен
+
+2. **Проверьте настройки webhook в Resend:**
+   - URL: `https://padelo2.com/api/admin/partner-emails/incoming` (HTTPS, без www)
+   - Событие: `email.received` (обязательно!)
+   - Webhook активен (enabled/active)
+
+3. **Проверьте настройки Inbound:**
+   - Inbound настроен для домена `padelo2.com`
+   - Inbound активен (enabled)
+   - Email адреса настроены (например, `partner@padelo2.com`)
+
+4. **Проверьте получение писем:**
+   - Отправьте тестовое письмо на `partner@padelo2.com`
+   - Проверьте, приходит ли оно в Resend Dashboard → Inbox
+   - Если письмо не приходит → проверьте MX записи DNS
+
+5. **Проверьте доступность endpoint:**
+   ```bash
+   curl -X POST https://padelo2.com/api/admin/partner-emails/incoming \
+     -H "Content-Type: application/json" \
+     -d '{"test": "data"}'
+   ```
+   Должен вернуться ответ (даже если с ошибкой валидации)
+
+6. **Проверьте DNS записи:**
+   - MX записи должны указывать на Resend
+   - TXT записи для SPF и DKIM должны быть настроены
+   - Проверьте в Resend Dashboard → Domains → DNS Records
 
 ### Проблема: Webhook получает запросы, но письма не сохраняются
 

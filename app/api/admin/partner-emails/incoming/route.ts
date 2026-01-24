@@ -202,14 +202,34 @@ export async function GET(request: NextRequest) {
 
 // Webhook endpoint for receiving emails from Resend
 // Этот endpoint должен быть доступен без авторизации для webhook от Resend
+// ВАЖНО: POST endpoint НЕ проверяет авторизацию, чтобы Resend мог отправлять webhook
 export async function POST(request: NextRequest) {
+  // Логируем ВСЕ запросы, даже если они не от Resend
+  const url = request.url;
+  const method = request.method;
+  const userAgent = request.headers.get('user-agent') || 'unknown';
+  const contentType = request.headers.get('content-type') || '';
+  
+  console.log('[Incoming Emails Webhook] ===== POST REQUEST RECEIVED =====');
+  console.log('[Incoming Emails Webhook] Request info:', {
+    url,
+    method,
+    userAgent,
+    contentType,
+    timestamp: new Date().toISOString(),
+    pathname: new URL(url).pathname,
+  });
+  
+  // Проверяем, приходит ли запрос от Resend
+  const resendSignature = request.headers.get('resend-signature') || request.headers.get('x-resend-signature');
+  if (!resendSignature) {
+    console.warn('[Incoming Emails Webhook] ⚠️ No Resend signature found in headers. This might not be a request from Resend.');
+    console.warn('[Incoming Emails Webhook] All headers:', Object.fromEntries(request.headers.entries()));
+  } else {
+    console.log('[Incoming Emails Webhook] ✅ Resend signature found:', resendSignature.substring(0, 20) + '...');
+  }
+  
   try {
-    // Логируем полную информацию о запросе для отладки
-    const url = request.url;
-    const method = request.method;
-    const contentType = request.headers.get('content-type') || '';
-    
-    console.log('[Incoming Emails Webhook] ===== WEBHOOK REQUEST RECEIVED =====');
     console.log('[Incoming Emails Webhook] Request details:', {
       url,
       method,
