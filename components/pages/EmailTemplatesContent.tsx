@@ -709,7 +709,16 @@ export default function EmailTemplatesContent() {
     }
   };
 
-  // Load emails when tab changes
+  // Load emails when tab changes and on initial load
+  useEffect(() => {
+    if (!authorized) return;
+    
+    // Always load both sent and incoming emails to show correct counts in tabs
+    fetchSentEmails();
+    fetchIncomingEmails();
+  }, [authorized]);
+  
+  // Also reload when tab changes (for better UX)
   useEffect(() => {
     if (!authorized) return;
     
