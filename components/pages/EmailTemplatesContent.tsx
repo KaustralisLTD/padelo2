@@ -1399,8 +1399,8 @@ export default function EmailTemplatesContent() {
             {/* Email Details Modal */}
             {selectedSentEmail && sentEmailDetails && (
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-                  <div className="flex items-center justify-between p-6 border-b border-border">
+                <div className="bg-background-secondary rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+                  <div className="flex-shrink-0 flex items-center justify-between p-6 border-b border-border">
                     <h2 className="text-2xl font-bold text-text">{t('emailTemplates.emailDetails')}</h2>
                     <button
                       onClick={() => {
@@ -1415,7 +1415,7 @@ export default function EmailTemplatesContent() {
                     </button>
                   </div>
 
-                  <div className="flex-1 overflow-auto p-6">
+                  <div className="flex-1 overflow-y-auto min-h-0 p-6">
                     {loadingEmailDetails ? (
                       <div className="text-center py-8">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
@@ -1705,57 +1705,56 @@ export default function EmailTemplatesContent() {
 
                 {/* Email Content - Right Side */}
                 {selectedIncomingEmail ? (
-                  <div className="flex-1 flex flex-col overflow-hidden md:block">
-                    <div className="flex-1 flex flex-col overflow-y-auto">
-                      {/* Email Header */}
-                      <div className="p-4 border-b border-border bg-background">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex-1">
-                            <h3 className="text-xl font-bold text-text mb-2">
-                              {selectedIncomingEmail.subject || t('emailTemplates.noSubject')}
-                            </h3>
-                            <div className="space-y-1 text-sm text-text-secondary">
-                              <div>
-                                <span className="font-semibold">От:</span> {selectedIncomingEmail.from}
-                              </div>
-                              <div>
-                                <span className="font-semibold">Кому:</span> {selectedIncomingEmail.to}
-                              </div>
-                              {selectedIncomingEmail.receivedAt && (
-                                <div>
-                                  <span className="font-semibold">Дата:</span> {new Date(selectedIncomingEmail.receivedAt).toLocaleString('ru-RU', {
-                                    day: 'numeric',
-                                    month: 'long',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                  })}
-                                </div>
-                              )}
+                  <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+                    {/* Email Header */}
+                    <div className="flex-shrink-0 p-4 border-b border-border bg-background">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-text mb-2">
+                            {selectedIncomingEmail.subject || t('emailTemplates.noSubject')}
+                          </h3>
+                          <div className="space-y-1 text-sm text-text-secondary">
+                            <div>
+                              <span className="font-semibold">{t('emailTemplates.fromLabel')}</span> {selectedIncomingEmail.from}
                             </div>
-                          </div>
-                          <div className="flex gap-2 ml-4">
-                            <button
-                              onClick={() => markEmailAsRead(selectedIncomingEmail.id, !selectedIncomingEmail.readAt)}
-                              className="p-2 rounded-lg hover:bg-background-hover transition-colors"
-                              title={selectedIncomingEmail.readAt ? t('emailTemplates.markAsUnread') : t('emailTemplates.markAsRead')}
-                            >
-                              {selectedIncomingEmail.readAt ? '📬' : '📭'}
-                            </button>
-                            <button
-                              onClick={() => setSelectedIncomingEmail(null)}
-                              className="p-2 rounded-lg hover:bg-background-hover transition-colors md:hidden"
-                            >
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
+                            <div>
+                              <span className="font-semibold">{t('emailTemplates.toLabel')}</span> {selectedIncomingEmail.to}
+                            </div>
+                            {selectedIncomingEmail.receivedAt && (
+                              <div>
+                                <span className="font-semibold">{t('emailTemplates.dateLabel')}</span> {new Date(selectedIncomingEmail.receivedAt).toLocaleString('ru-RU', {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </div>
+                            )}
                           </div>
                         </div>
+                        <div className="flex gap-2 ml-4">
+                          <button
+                            onClick={() => markEmailAsRead(selectedIncomingEmail.id, !selectedIncomingEmail.readAt)}
+                            className="p-2 rounded-lg hover:bg-background-hover transition-colors"
+                            title={selectedIncomingEmail.readAt ? t('emailTemplates.markAsUnread') : t('emailTemplates.markAsRead')}
+                          >
+                            {selectedIncomingEmail.readAt ? '📬' : '📭'}
+                          </button>
+                          <button
+                            onClick={() => setSelectedIncomingEmail(null)}
+                            className="p-2 rounded-lg hover:bg-background-hover transition-colors md:hidden"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
+                    </div>
 
-                      {/* Email Body */}
-                      <div className="flex-1 p-6 overflow-y-auto">
+                    {/* Email Body */}
+                    <div className="flex-1 overflow-y-auto min-h-0">
                         <div className="prose max-w-none text-text">
                           {selectedIncomingEmail.html ? (
                             <div 
@@ -1774,7 +1773,6 @@ export default function EmailTemplatesContent() {
                             </div>
                           )}
                         </div>
-                      </div>
                     </div>
                   </div>
                 ) : (
