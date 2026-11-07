@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import DirectEmailComposer, { getDirectEmailLabels, type DirectEmailDraft } from './DirectEmailComposer';
+import { getSuggestedReply } from '@/lib/direct-email';
 
 type EmailCategory = 'partners' | 'clients' | 'coaches' | 'staff';
 type EmailTemplate = {
@@ -220,6 +222,7 @@ const CATEGORIES = [
 export default function EmailTemplatesContent() {
   const t = useTranslations('Admin');
   const locale = useLocale();
+  const directEmailLabels = getDirectEmailLabels(locale);
   
   // Helper function to convert template ID to translation key (camelCase)
   const templateIdToKey = (templateId: string): string => {
@@ -288,6 +291,9 @@ export default function EmailTemplatesContent() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [authorized, setAuthorized] = useState(false);
+  const [canComposeDirect, setCanComposeDirect] = useState(false);
+  const [directDraft, setDirectDraft] = useState<DirectEmailDraft | null>(null);
+  const [directEmailSent, setDirectEmailSent] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<EmailCategory>('partners');
   const [selectedTemplate, setSelectedTemplate] = useState<string>('sponsorship-proposal');
@@ -543,8 +549,10 @@ export default function EmailTemplatesContent() {
         templateId: 'sponsorship-proposal',
       }),
     })
-      .then((res) => {
+      .then(async (res) => {
         if (res.ok) {
+          const data = await res.json();
+          setCanComposeDirect(data.canComposeDirect === true);
           setAuthorized(true);
         } else {
           setCheckingAuth(false);
@@ -1187,14 +1195,40 @@ export default function EmailTemplatesContent() {
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 pt-8">
         <div className="w-full">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-text mb-2">
-            {t('emailTemplates.pageTitle')}
-          </h1>
-          <p className="text-text-secondary">
-            {t('emailTemplates.pageDescription')}
-          </p>
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold text-text mb-2">
+              {t('emailTemplates.pageTitle')}
+            </h1>
+            <p className="text-text-secondary">
+              {t('emailTemplates.pageDescription')}
+            </p>
+          </div>
+          {canComposeDirect && (
+            <button type="button" className="rounded-lg bg-primary px-4 py-2 font-semibold text-white"
+              onClick={() => {
+                setDirectEmailSent(false);
+                setDirectDraft({ to: '', subject: '', reply: false });
+              }}>
+              {directEmailLabels.newMessage}
+            </button>
+          )}
         </div>
+        {directEmailSent && (
+          <p role="status" className="mb-4 rounded-lg bg-green-500/10 px-4 py-3 text-text">
+            {directEmailLabels.sent}
+          </p>
+        )}
+        {directDraft && (
+          <DirectEmailComposer draft={directDraft} locale={locale}
+            onCancel={() => setDirectDraft(null)}
+            onSent={() => {
+              setDirectDraft(null);
+              setDirectEmailSent(true);
+              if (activeTab === 'sent') fetchSentEmails();
+              else setActiveTab('sent');
+            }} />
+        )}
 
         {/* Tabs */}
         <div className="mb-6 border-b border-border">
@@ -1800,7 +1834,16 @@ export default function EmailTemplatesContent() {
                             )}
                           </div>
                         </div>
-                        <div className="flex gap-2 ml-4">
+                        <div className="flex flex-wrap justify-end gap-2 ml-4">
+                          {canComposeDirect && (
+                            <button type="button" className="rounded-lg border border-border px-3 py-2 text-sm font-semibold text-text"
+                              onClick={() => {
+                                setDirectEmailSent(false);
+                                setDirectDraft({ ...getSuggestedReply(selectedIncomingEmail), reply: true });
+                              }}>
+                              {directEmailLabels.reply}
+                            </button>
+                          )}
                           <button
                             onClick={() => markEmailAsRead(selectedIncomingEmail.id, !selectedIncomingEmail.readAt)}
                             className="p-2 rounded-lg hover:bg-background-hover transition-colors"
