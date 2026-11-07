@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ html });
+    return NextResponse.json({ html, canComposeDirect: access.role === 'superadmin' });
   } catch (error: any) {
     console.error('Error generating preview:', error);
     return NextResponse.json({ 
